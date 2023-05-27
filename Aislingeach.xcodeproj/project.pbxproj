@@ -114,6 +114,8 @@
 		44C6B6902A228D8200C2F013 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6292A228D8200C2F013 /* JSONValue.swift */; };
 		44C6B6912A228D8200C2F013 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B62A2A228D8200C2F013 /* Models.swift */; };
 		44C6B6942A228DFA00C2F013 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 44C6B6932A228DFA00C2F013 /* Alamofire */; };
+		44C6B6972A22ACE700C2F013 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6962A22ACE700C2F013 /* Preferences.swift */; };
+		44C6B6992A22ADDD00C2F013 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6982A22ADDD00C2F013 /* SettingsTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -226,6 +228,8 @@
 		44C6B6292A228D8200C2F013 /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
 		44C6B62A2A228D8200C2F013 /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		44C6B6952A22AA3D00C2F013 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		44C6B6962A22ACE700C2F013 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		44C6B6982A22ADDD00C2F013 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -268,6 +272,8 @@
 				441EB3782A21DC1F00E449BE /* Assets.xcassets */,
 				441EB37A2A21DC1F00E449BE /* LaunchScreen.storyboard */,
 				441EB37D2A21DC1F00E449BE /* Info.plist */,
+				44C6B6962A22ACE700C2F013 /* Preferences.swift */,
+				44C6B6982A22ADDD00C2F013 /* SettingsTableViewController.swift */,
 			);
 			path = Aislingeach;
 			sourceTree = "<group>";
@@ -558,6 +564,7 @@
 				44C6B6862A228D8200C2F013 /* FilterRegex.swift in Sources */,
 				44C6B6742A228D8200C2F013 /* KaiUserIdBody.swift in Sources */,
 				44C6B6392A228D8200C2F013 /* UserDetails.swift in Sources */,
+				44C6B6972A22ACE700C2F013 /* Preferences.swift in Sources */,
 				44C6B65C2A228D8200C2F013 /* ModelGenerationInputKobold.swift in Sources */,
 				44C6B62B2A228D8200C2F013 /* Configuration.swift in Sources */,
 				44C6B6892A228D8200C2F013 /* CodableHelper.swift in Sources */,
@@ -572,6 +579,7 @@
 				44C6B66D2A228D8200C2F013 /* GenerationStable.swift in Sources */,
 				44C6B6682A228D8200C2F013 /* UserRecords.swift in Sources */,
 				44C6B6692A228D8200C2F013 /* InterrogationPopFormPayload.swift in Sources */,
+				44C6B6992A22ADDD00C2F013 /* SettingsTableViewController.swift in Sources */,
 				44C6B64F2A228D8200C2F013 /* RequestInterrogationResponse.swift in Sources */,
 				44C6B6632A228D8200C2F013 /* InterrogationPopInput.swift in Sources */,
 				44C6B66E2A228D8200C2F013 /* ModelPayloadKobold.swift in Sources */,

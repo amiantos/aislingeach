@@ -17,7 +17,7 @@ class ViewController: UIViewController {
 
     @IBAction func generateButtonPressed(_ sender: UIButton) {
         generationSpinner.startAnimating()
-        V2API.postImageAsyncGenerate(body: GenerationInputStable(prompt: "fantastic scenery landscape from the top of the mountain, pine trees, green valleys, magic fog and lightning, epic composition, fibonacci ratio, golden ratio, fancy, incredible detailed game artwork, sharpen and ultra quality, trending, artstation, behance, wikiart, 8 k"), apikey: "") { data, error in
+        V2API.postImageAsyncGenerate(body: GenerationInputStable(prompt: "fantastic scenery landscape from the top of the mountain, pine trees, green valleys, magic fog and lightning, epic composition, fibonacci ratio, golden ratio, fancy, incredible detailed game artwork, sharpen and ultra quality, trending, artstation, behance, wikiart, 8 k"), apikey: Preferences.standard.apiKey) { data, error in
             if let data = data, let generationIdentifier = data._id {
                 self.setNewGenerationRequest(generationIdentifier: generationIdentifier)
             } else {

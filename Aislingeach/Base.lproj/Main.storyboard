@@ -137,22 +137,6 @@
             </objects>
             <point key="canvasLocation" x="1992" y="-2"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="Dob-TA-LvS">
-            <objects>
-                <viewController id="Sqe-i1-4cu" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="b1t-Gz-dBB">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="fYp-qw-nBH"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="PhG-7p-swC"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4z7-QH-A4J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1992" y="733"/>
-        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Vht-Lz-lO5">
             <objects>
@@ -195,7 +179,7 @@
         <!--Settings-->
         <scene sceneID="c6K-OV-IfO">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WQF-rc-YKy" sceneMemberID="viewController">
+                <navigationController title="Settings" automaticallyAdjustsScrollViewInsets="NO" id="WQF-rc-YKy" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Settings" image="gearshape" catalog="system" id="Ufm-6a-HRI"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="d4z-Ht-sbb">
@@ -204,12 +188,72 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Sqe-i1-4cu" kind="relationship" relationship="rootViewController" id="gqU-aZ-qhS"/>
+                        <segue destination="LDh-hx-IdB" kind="relationship" relationship="rootViewController" id="d4i-mk-dIj"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kj0-cz-czX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1065" y="733"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="Jjg-o2-ijg">
+            <objects>
+                <tableViewController title="Settings" id="LDh-hx-IdB" customClass="SettingsTableViewController" customModule="Aislingeach" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="CLt-aw-ycm">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <sections>
+                            <tableViewSection id="tcM-iQ-9Bq">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="sgl-pB-N84">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sgl-pB-N84" id="qgk-g8-LYa">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="API Key" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aRs-Ti-Mxe">
+                                                    <rect key="frame" x="20" y="11.333333333333336" width="58" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Put your API Key here" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="h8H-Ah-ahA">
+                                                    <rect key="frame" x="86" y="5" width="287" height="34"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="password"/>
+                                                    <connections>
+                                                        <action selector="apiKeySaveAction:" destination="LDh-hx-IdB" eventType="primaryActionTriggered" id="3sg-HR-Bv4"/>
+                                                        <action selector="apiKeySaveAction:" destination="LDh-hx-IdB" eventType="editingDidEnd" id="nXc-hJ-Sfp"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="h8H-Ah-ahA" secondAttribute="trailing" constant="20" symbolic="YES" id="6rG-Bo-w34"/>
+                                                <constraint firstItem="aRs-Ti-Mxe" firstAttribute="centerY" secondItem="qgk-g8-LYa" secondAttribute="centerY" id="WFp-0D-M4V"/>
+                                                <constraint firstItem="h8H-Ah-ahA" firstAttribute="centerY" secondItem="qgk-g8-LYa" secondAttribute="centerY" id="rod-Ll-mTw"/>
+                                                <constraint firstItem="h8H-Ah-ahA" firstAttribute="leading" secondItem="aRs-Ti-Mxe" secondAttribute="trailing" constant="8" symbolic="YES" id="x2f-aA-LjR"/>
+                                                <constraint firstItem="aRs-Ti-Mxe" firstAttribute="leading" secondItem="qgk-g8-LYa" secondAttribute="leadingMargin" id="zNb-06-k6a"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="LDh-hx-IdB" id="UEm-qq-SBJ"/>
+                            <outlet property="delegate" destination="LDh-hx-IdB" id="EdU-B8-QdP"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Settings" id="Rli-Hu-bGt"/>
+                    <connections>
+                        <outlet property="apiKeyTextField" destination="h8H-Ah-ahA" id="nj5-SR-qdx"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PTG-BY-IZu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1962.5954198473282" y="731.69014084507046"/>
         </scene>
     </scenes>
     <resources>
