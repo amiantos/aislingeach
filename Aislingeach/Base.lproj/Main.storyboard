@@ -207,20 +207,20 @@
                             <tableViewSection id="tcM-iQ-9Bq">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="sgl-pB-N84">
-                                        <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="50" width="393" height="43.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sgl-pB-N84" id="qgk-g8-LYa">
-                                            <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="43.333332061767578"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="API Key" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aRs-Ti-Mxe">
-                                                    <rect key="frame" x="20" y="11.333333333333336" width="58" height="21"/>
+                                                    <rect key="frame" x="20" y="10.999999999999998" width="58" height="21.333333333333329"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Put your API Key here" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="h8H-Ah-ahA">
-                                                    <rect key="frame" x="86" y="5" width="287" height="34"/>
+                                                    <rect key="frame" x="86" y="4.6666666666666679" width="287" height="34"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="password"/>
                                                     <connections>
@@ -230,8 +230,10 @@
                                                 </textField>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="aRs-Ti-Mxe" firstAttribute="top" secondItem="qgk-g8-LYa" secondAttribute="topMargin" id="1Cq-eo-CvS"/>
                                                 <constraint firstAttribute="trailing" secondItem="h8H-Ah-ahA" secondAttribute="trailing" constant="20" symbolic="YES" id="6rG-Bo-w34"/>
                                                 <constraint firstItem="aRs-Ti-Mxe" firstAttribute="centerY" secondItem="qgk-g8-LYa" secondAttribute="centerY" id="WFp-0D-M4V"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="aRs-Ti-Mxe" secondAttribute="bottom" id="WaH-Mw-Knx"/>
                                                 <constraint firstItem="h8H-Ah-ahA" firstAttribute="centerY" secondItem="qgk-g8-LYa" secondAttribute="centerY" id="rod-Ll-mTw"/>
                                                 <constraint firstItem="h8H-Ah-ahA" firstAttribute="leading" secondItem="aRs-Ti-Mxe" secondAttribute="trailing" constant="8" symbolic="YES" id="x2f-aA-LjR"/>
                                                 <constraint firstItem="aRs-Ti-Mxe" firstAttribute="leading" secondItem="qgk-g8-LYa" secondAttribute="leadingMargin" id="zNb-06-k6a"/>
