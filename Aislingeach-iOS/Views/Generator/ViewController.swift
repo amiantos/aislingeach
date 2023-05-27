@@ -8,6 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController {
+    @IBOutlet weak var scrollView: UIScrollView!
 
     @IBOutlet weak var generationSpinner: UIActivityIndicatorView!
 
@@ -16,8 +17,11 @@ class ViewController: UIViewController {
     @IBOutlet weak var promptTextView: UITextView!
 
     @IBAction func generateButtonPressed(_ sender: UIButton) {
+        let generationText = promptTextView.text!
+        if generationText == "" { return }
+
         generationSpinner.startAnimating()
-        V2API.postImageAsyncGenerate(body: GenerationInputStable(prompt: "fantastic scenery landscape from the top of the mountain, pine trees, green valleys, magic fog and lightning, epic composition, fibonacci ratio, golden ratio, fancy, incredible detailed game artwork, sharpen and ultra quality, trending, artstation, behance, wikiart, 8 k"), apikey: Preferences.standard.apiKey) { data, error in
+        V2API.postImageAsyncGenerate(body: GenerationInputStable(prompt: generationText), apikey: Preferences.standard.apiKey) { data, error in
             if let data = data, let generationIdentifier = data._id {
                 self.setNewGenerationRequest(generationIdentifier: generationIdentifier)
             } else {
@@ -32,6 +36,48 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        registerKeyboardNotifications()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    @objc func keyboardWillShow(notification: NSNotification) {
+        let userInfo: NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
+
+        let tabbarHeight = tabBarController?.tabBar.frame.size.height ?? 0
+        let toolbarHeight = navigationController?.toolbar.frame.size.height ?? 0
+        let bottomInset = keyboardSize.height - tabbarHeight - toolbarHeight
+
+        scrollView.contentInset.bottom = bottomInset
+        scrollView.verticalScrollIndicatorInsets.bottom = bottomInset
+        scrollView.setContentOffset(CGPoint(x: 0,y: scrollView.contentOffset.y+bottomInset), animated: true)
+        print("Shown")
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        scrollView.contentInset = .zero
+        scrollView.scrollIndicatorInsets = .zero
+        print("Hidden")
+    }
+
+    func registerKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                             selector: #selector(keyboardWillShow(notification:)),
+                                             name: UIResponder.keyboardWillShowNotification,
+                                             object: nil)
+        NotificationCenter.default.addObserver(self,
+                                             selector: #selector(keyboardWillHide(notification:)),
+                                             name: UIResponder.keyboardWillHideNotification,
+                                             object: nil)
+    }
+
 
 }
 
