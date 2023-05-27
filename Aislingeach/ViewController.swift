@@ -52,6 +52,7 @@ extension ViewController {
                     self.getFinishedImageAndDisplay()
                 } else if var waitTime = data.waitTime {
                     if waitTime < 1 { waitTime = 1 }
+                    if waitTime > 3 { waitTime = 2 }
                     print("Wait time... \(waitTime) seconds")
                     self.perform(#selector(self.checkCurrentGenerationStatus), with: nil, afterDelay: TimeInterval(waitTime))
                 }

@@ -225,6 +225,7 @@
 		44C6B6282A228D8200C2F013 /* V2API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V2API.swift; sourceTree = "<group>"; };
 		44C6B6292A228D8200C2F013 /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
 		44C6B62A2A228D8200C2F013 /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		44C6B6952A22AA3D00C2F013 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -294,6 +295,7 @@
 				44C6B6292A228D8200C2F013 /* JSONValue.swift */,
 				44C6B5C32A228D8200C2F013 /* Models */,
 				44C6B62A2A228D8200C2F013 /* Models.swift */,
+				44C6B6952A22AA3D00C2F013 /* README.md */,
 			);
 			path = HordeAPI;
 			sourceTree = "<group>";
