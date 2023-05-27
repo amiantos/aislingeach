@@ -247,7 +247,7 @@
 		441EB3632A21DC1E00E449BE = {
 			isa = PBXGroup;
 			children = (
-				441EB36E2A21DC1E00E449BE /* Aislingeach */,
+				441EB36E2A21DC1E00E449BE /* Aislingeach-iOS */,
 				441EB36D2A21DC1E00E449BE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -260,7 +260,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		441EB36E2A21DC1E00E449BE /* Aislingeach */ = {
+		441EB36E2A21DC1E00E449BE /* Aislingeach-iOS */ = {
 			isa = PBXGroup;
 			children = (
 				441EB37D2A21DC1F00E449BE /* Info.plist */,
@@ -271,7 +271,7 @@
 				44C6B69A2A22B0D700C2F013 /* Views */,
 				44C6B69B2A22B0E100C2F013 /* Backend */,
 			);
-			path = Aislingeach;
+			path = "Aislingeach-iOS";
 			sourceTree = "<group>";
 		};
 		441EB3852A21DDD700E449BE /* Dev */ = {
@@ -771,7 +771,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2Y9M69QJKZ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Aislingeach/Info.plist;
+				INFOPLIST_FILE = "Aislingeach-iOS/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Aislingeach;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -801,7 +801,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2Y9M69QJKZ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Aislingeach/Info.plist;
+				INFOPLIST_FILE = "Aislingeach-iOS/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Aislingeach;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
