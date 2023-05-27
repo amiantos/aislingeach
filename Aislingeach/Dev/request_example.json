@@ -1,0 +1,34 @@
+{
+    "prompt": "digital art of , witch world, Halloween theme, scenic Halloween, highly detailed, zbrush, by artist Artgerm, by artist Stephen Hickman, by artist Carne griffiths",
+    "params": {
+        "steps": 30,
+        "n": 1,
+        "sampler_name": "k_euler",
+        "width": 512,
+        "height": 512,
+        "cfg_scale": 7,
+        "clip_skip": 1,
+        "seed_variation": 1000,
+        "seed": "",
+        "karras": true,
+        "denoising_strength": 0.75,
+        "tiling": false,
+        "hires_fix": false,
+        "facefixer_strength": 0.75,
+        "post_processing": []
+    },
+    "nsfw": true,
+    "censor_nsfw": false,
+    "trusted_workers": false,
+    "workers": [],
+    "models": [
+        "stable_diffusion"
+    ],
+    "r2": true,
+    "shared": false,
+    "slow_workers": true,
+    "replacement_filter": false,
+    "jobId": "",
+    "gathered": false,
+    "started": 0
+}
