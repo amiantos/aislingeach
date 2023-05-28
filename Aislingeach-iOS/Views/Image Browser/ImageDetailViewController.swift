@@ -14,6 +14,25 @@ class ImageDetailViewController: UIViewController {
     @IBOutlet weak var promptLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
 
+    @IBAction func shareButtonAction(_ sender: UIBarButtonItem) {
+        Log.debug("Share button pressed...")
+    }
+
+    @IBOutlet weak var favoriteButton: UIBarButtonItem!
+    @IBAction func favoriteButtonAction(_ sender: UIBarButtonItem) {
+        Log.debug("Favorite button pressed...")
+        if let image = generatedImage {
+            ImageDatabase.standard.toggleImageFavorite(generatedImage: image) { [self] image in
+                generatedImage = image
+                loadImage()
+            }
+        }
+    }
+
+    @IBAction func trashButtonAction(_ sender: UIBarButtonItem) {
+        Log.debug("Trash button pressed...")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,6 +44,7 @@ class ImageDetailViewController: UIViewController {
             imageView.image = UIImage(data: image.image!)
             navigationItem.title = "\(image.uuid!)"
             promptLabel.text = image.promptSimple
+            favoriteButton.image = UIImage(systemName: image.isFavorite ? "heart.fill" : "heart")
         }
     }
     

@@ -73,6 +73,19 @@ class ImageDatabase {
         }
     }
 
+    func toggleImageFavorite(generatedImage: GeneratedImage, completion: @escaping (GeneratedImage?) -> Void) {
+        mainManagedObjectContext.perform {
+            do {
+                generatedImage.isFavorite = !generatedImage.isFavorite
+                try self.mainManagedObjectContext.save()
+                self.saveContext()
+                completion(generatedImage)
+            } catch {
+                completion(nil)
+            }
+        }
+    }
+
 //    func createGame(from gameStruct: GameStruct, completion: @escaping (Game?) -> Void) {
 //        mainManagedObjectContext.perform {
 //            do {

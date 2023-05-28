@@ -333,11 +333,23 @@
                                 <rect key="frame" x="0.0" y="774" width="393" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="Share" image="square.and.arrow.up" catalog="system" id="jbP-CG-DKR"/>
+                                    <barButtonItem title="Share" image="square.and.arrow.up" catalog="system" id="jbP-CG-DKR">
+                                        <connections>
+                                            <action selector="shareButtonAction:" destination="ZN2-3F-QUS" id="9M8-sT-7Z1"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="L9g-4z-2TX"/>
-                                    <barButtonItem title="Favorite" image="heart" catalog="system" id="4m2-t2-mEc"/>
+                                    <barButtonItem title="Favorite" image="heart" catalog="system" id="4m2-t2-mEc">
+                                        <connections>
+                                            <action selector="favoriteButtonAction:" destination="ZN2-3F-QUS" id="V6X-rR-1wp"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="usk-Bh-Ozb"/>
-                                    <barButtonItem title="Trash" image="trash" catalog="system" id="Meg-D1-XLf"/>
+                                    <barButtonItem title="Trash" image="trash" catalog="system" id="Meg-D1-XLf">
+                                        <connections>
+                                            <action selector="trashButtonAction:" destination="ZN2-3F-QUS" id="2bA-zC-WNf"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -352,6 +364,7 @@
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="favoriteButton" destination="4m2-t2-mEc" id="nRd-XC-dEe"/>
                         <outlet property="imageView" destination="k1K-sX-Xhj" id="gwD-w8-fb3"/>
                         <outlet property="promptLabel" destination="gPh-yg-gt2" id="i4L-Nd-cFI"/>
                     </connections>
