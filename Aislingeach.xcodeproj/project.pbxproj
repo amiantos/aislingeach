@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		44142AB92A23FD6A0096FFBA /* ImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44142AB82A23FD6A0096FFBA /* ImageDetailViewController.swift */; };
 		441EB3702A21DC1E00E449BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441EB36F2A21DC1E00E449BE /* AppDelegate.swift */; };
 		441EB3722A21DC1E00E449BE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441EB3712A21DC1E00E449BE /* SceneDelegate.swift */; };
 		441EB3742A21DC1E00E449BE /* GeneratorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441EB3732A21DC1E00E449BE /* GeneratorViewController.swift */; };
@@ -130,6 +131,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		44142AB82A23FD6A0096FFBA /* ImageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailViewController.swift; sourceTree = "<group>"; };
 		441EB36C2A21DC1E00E449BE /* Aislingeach.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aislingeach.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		441EB36F2A21DC1E00E449BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		441EB3712A21DC1E00E449BE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 			children = (
 				44C6B6D42A233B0F00C2F013 /* ImageCollectionViewController.swift */,
 				44C6B6D62A233BFB00C2F013 /* ImageCollectionViewCell.swift */,
+				44142AB82A23FD6A0096FFBA /* ImageDetailViewController.swift */,
 			);
 			path = "Image Browser";
 			sourceTree = "<group>";
@@ -625,6 +628,7 @@
 				44C6B6502A228D8200C2F013 /* NoValidRequestFound.swift in Sources */,
 				44C6B6732A228D8200C2F013 /* RequestStatusCheck.swift in Sources */,
 				44C6B68A2A228D8200C2F013 /* JSONEncodingHelper.swift in Sources */,
+				44142AB92A23FD6A0096FFBA /* ImageDetailViewController.swift in Sources */,
 				44C6B68C2A228D8200C2F013 /* AlamofireImplementations.swift in Sources */,
 				44C6B6522A228D8200C2F013 /* UserThingRecords.swift in Sources */,
 				44C6B63F2A228D8200C2F013 /* ActiveModel.swift in Sources */,

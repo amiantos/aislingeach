@@ -88,16 +88,6 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         }
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -131,6 +121,18 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
     }
 
     // MARK: UICollectionViewDelegate
+
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let object = self.resultsController?.object(at: indexPath) else {
+            fatalError("Attempt to configure cell without a managed object")
+        }
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "imageDetailViewController") as! ImageDetailViewController
+        controller.generatedImage = object
+        controller.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
 
     /*
     // Uncomment this method to specify if the specified item should be highlighted during tracking
