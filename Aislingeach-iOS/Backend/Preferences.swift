@@ -19,7 +19,7 @@ struct Preferences {
     static var standard: UserDefaults {
         let database = UserDefaults.standard
         database.register(defaults: [
-            Key.apiKey: ""
+            Key.apiKey: "0000000000"
         ])
 
         return database
@@ -28,7 +28,7 @@ struct Preferences {
 
 extension UserDefaults {
     var apiKey: String {
-        return string(forKey: Preferences.Key.apiKey) ?? ""
+        return string(forKey: Preferences.Key.apiKey) ?? "0000000000"
     }
 
     func set(apiKey: String) {

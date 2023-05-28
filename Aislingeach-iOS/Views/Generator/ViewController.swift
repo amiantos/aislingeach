@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var generationEffectView: UIVisualEffectView!
     @IBOutlet weak var generationSpinner: UIActivityIndicatorView!
 
+    @IBOutlet weak var generationTitleLabel: UILabel!
     @IBOutlet weak var generationTimeLabel: UILabel!
     @IBOutlet weak var mainImageView: UIImageView!
 
@@ -27,8 +28,12 @@ class ViewController: UIViewController {
             if let data = data, let generationIdentifier = data._id {
                 Log.debug("\(data)")
                 self.setNewGenerationRequest(generationIdentifier: generationIdentifier)
-            } else {
-                Log.error("New generaiton error: \(error)")
+            } else if let error = error {
+                if error.code == 401 {
+                    self.showGenerationError(message: "401: Invalid API Key?")
+                } else {
+                    self.showGenerationError(message: error.localizedDescription)
+                }
             }
         }
     }
@@ -37,7 +42,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -93,14 +99,23 @@ extension ViewController {
 
     func startGenerationSpinner() {
         Log.info("New generation started...")
+        generationTitleLabel.text = ""
+        generationTimeLabel.text = "Falling asleep..."
         generationEffectView.isHidden = false
         generationSpinner.startAnimating()
     }
 
-    func stopGenerationDisplay() {
-        Log.info("New generation complete.")
+    func hideGenerationDisplay() {
+        Log.info("Hiding generation progress display.")
         generationSpinner.stopAnimating()
         generationEffectView.isHidden = true
+    }
+
+    func showGenerationError(message: String) {
+        Log.info("Showing error...")
+        generationSpinner.stopAnimating()
+        generationTitleLabel.text = "Error!"
+        generationTimeLabel.text = message
     }
 
     @objc func checkCurrentGenerationStatus() {
@@ -114,9 +129,10 @@ extension ViewController {
                     self.getFinishedImageAndDisplay()
                 } else if let waitTime = data.waitTime {
                     if waitTime > 0 {
+                        self.generationTitleLabel.text = "Dreaming..."
                         self.generationTimeLabel.text = "~\(waitTime) seconds"
                     } else {
-                        self.generationTimeLabel.text = "Loading..."
+                        self.generationTimeLabel.text = "Waking up..."
                     }
                     self.perform(#selector(self.checkCurrentGenerationStatus), with: nil, afterDelay: TimeInterval(1))
                 }
@@ -133,10 +149,16 @@ extension ViewController {
                 if data.finished == 1 {
                     if let generations = data.generations, let generation = generations.first, let urlString = generation.img, let imageUrl = URL(string: urlString) {
                         DispatchQueue.global().async {
-                            let data = try? Data(contentsOf: imageUrl)
-                            DispatchQueue.main.async { [self] in
-                                stopGenerationDisplay()
-                                mainImageView.image = UIImage(data: data!)
+                            if let data = try? Data(contentsOf: imageUrl) {
+                                DispatchQueue.main.async { [self] in
+                                    hideGenerationDisplay()
+                                    mainImageView.image = UIImage(data: data)
+                                    ImageDatabase.standard.saveImage(id: generationIdentifier, image: data, completion: { _ in
+                                        DispatchQueue.main.async {
+                                            Log.info("\(generationIdentifier) - Saved to image database...")
+                                        }
+                                    })
+                                }
                             }
                         }
                     }
