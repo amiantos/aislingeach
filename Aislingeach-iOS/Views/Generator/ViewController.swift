@@ -24,7 +24,7 @@ class ViewController: UIViewController {
         if generationText == "" { return }
 
         startGenerationSpinner()
-        V2API.postImageAsyncGenerate(body: GenerationInputStable(prompt: generationText), apikey: Preferences.standard.apiKey, clientAgent: UAString()) { data, error in
+        V2API.postImageAsyncGenerate(body: GenerationInputStable(prompt: generationText), apikey: Preferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
             if let data = data, let generationIdentifier = data._id {
                 Log.debug("\(data)")
                 self.setNewGenerationRequest(generationIdentifier: generationIdentifier)
@@ -121,7 +121,7 @@ extension ViewController {
     @objc func checkCurrentGenerationStatus() {
         guard let generationIdentifier = self.currentGenerationIdentifier else { return }
         Log.info("\(generationIdentifier) - Checking request status...")
-        V2API.getImageAsyncCheck(_id: generationIdentifier, clientAgent: UAString()) { data, error in
+        V2API.getImageAsyncCheck(_id: generationIdentifier, clientAgent: hordeClientAgent()) { data, error in
             if let data = data {
                 Log.debug("\(data)")
                 if let done = data.done, done {
@@ -143,7 +143,7 @@ extension ViewController {
     func getFinishedImageAndDisplay() {
         guard let generationIdentifier = self.currentGenerationIdentifier else { return }
         Log.info("\(generationIdentifier) - Fetching finished generation...")
-        V2API.getImageAsyncStatus(_id: generationIdentifier, clientAgent: UAString()) { [self] data, error in
+        V2API.getImageAsyncStatus(_id: generationIdentifier, clientAgent: hordeClientAgent()) { [self] data, error in
             if let data = data {
                 Log.debug("\(data)")
                 if data.finished == 1 {
