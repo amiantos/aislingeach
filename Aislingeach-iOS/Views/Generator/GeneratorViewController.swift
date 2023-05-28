@@ -33,6 +33,7 @@ class GeneratorViewController: UIViewController {
             karras: true,
             hiresFix: true,
             clipSkip: 2,
+            steps: 30,
             n: 1
         )
         let generationBody = GenerationInputStable(
