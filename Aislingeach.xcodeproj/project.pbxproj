@@ -126,6 +126,7 @@
 		44C6B6D22A2337BC00C2F013 /* ImageDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6D12A2337BC00C2F013 /* ImageDatabase.swift */; };
 		44C6B6D52A233B0F00C2F013 /* ImageCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6D42A233B0F00C2F013 /* ImageCollectionViewController.swift */; };
 		44C6B6D72A233BFB00C2F013 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6D62A233BFB00C2F013 /* ImageCollectionViewCell.swift */; };
+		44D331D92A23588800BE8DDF /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D331D82A23588800BE8DDF /* UserAgent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -250,6 +251,7 @@
 		44C6B6D12A2337BC00C2F013 /* ImageDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDatabase.swift; sourceTree = "<group>"; };
 		44C6B6D42A233B0F00C2F013 /* ImageCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewController.swift; sourceTree = "<group>"; };
 		44C6B6D62A233BFB00C2F013 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		44D331D82A23588800BE8DDF /* UserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -450,6 +452,7 @@
 				44C6B6A42A23253B00C2F013 /* Utils.swift */,
 				44C6B6A92A2333D500C2F013 /* ImageModel.xcdatamodeld */,
 				44C6B6D12A2337BC00C2F013 /* ImageDatabase.swift */,
+				44D331D82A23588800BE8DDF /* UserAgent.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -574,6 +577,7 @@
 				44C6B65D2A228D8200C2F013 /* ImgModelStats.swift in Sources */,
 				44C6B66F2A228D8200C2F013 /* KudosTransferBody.swift in Sources */,
 				44C6B6562A228D8200C2F013 /* WorkerKudosDetails.swift in Sources */,
+				44D331D92A23588800BE8DDF /* UserAgent.swift in Sources */,
 				44C6B6702A228D8200C2F013 /* ModelInterrogationFormStable.swift in Sources */,
 				44C6B6782A228D8200C2F013 /* TeamDetails.swift in Sources */,
 				44C6B6302A228D8200C2F013 /* GenerationInputKobold.swift in Sources */,
