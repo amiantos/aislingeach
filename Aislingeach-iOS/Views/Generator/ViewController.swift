@@ -10,8 +10,10 @@ import UIKit
 class ViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
 
+    @IBOutlet weak var generationEffectView: UIVisualEffectView!
     @IBOutlet weak var generationSpinner: UIActivityIndicatorView!
 
+    @IBOutlet weak var generationTimeLabel: UILabel!
     @IBOutlet weak var mainImageView: UIImageView!
 
     @IBOutlet weak var promptTextView: UITextView!
@@ -20,12 +22,13 @@ class ViewController: UIViewController {
         let generationText = promptTextView.text!
         if generationText == "" { return }
 
-        generationSpinner.startAnimating()
+        startGenerationSpinner()
         V2API.postImageAsyncGenerate(body: GenerationInputStable(prompt: generationText), apikey: Preferences.standard.apiKey) { data, error in
             if let data = data, let generationIdentifier = data._id {
+                Log.debug("\(data)")
                 self.setNewGenerationRequest(generationIdentifier: generationIdentifier)
             } else {
-                print(error)
+                Log.error("New generaiton error: \(error)")
             }
         }
     }
@@ -83,24 +86,39 @@ class ViewController: UIViewController {
 
 extension ViewController {
     func setNewGenerationRequest(generationIdentifier: String) {
-        print("Got new request \(generationIdentifier)")
+        Log.info("\(generationIdentifier) - New request received...")
         currentGenerationIdentifier = generationIdentifier
         checkCurrentGenerationStatus()
     }
 
+    func startGenerationSpinner() {
+        Log.info("New generation started...")
+        generationEffectView.isHidden = false
+        generationSpinner.startAnimating()
+    }
+
+    func stopGenerationDisplay() {
+        Log.info("New generation complete.")
+        generationSpinner.stopAnimating()
+        generationEffectView.isHidden = true
+    }
+
     @objc func checkCurrentGenerationStatus() {
         guard let generationIdentifier = self.currentGenerationIdentifier else { return }
-        print("Checking generation status...")
+        Log.info("\(generationIdentifier) - Checking request status...")
         V2API.getImageAsyncCheck(_id: generationIdentifier) { data, error in
             if let data = data {
-                if data.finished == 1 {
-                    print("Generation done ")
+                Log.debug("\(data)")
+                if let done = data.done, done {
+                    Log.info("\(generationIdentifier) - Done!")
                     self.getFinishedImageAndDisplay()
-                } else if var waitTime = data.waitTime {
-                    if waitTime < 1 { waitTime = 1 }
-                    if waitTime > 3 { waitTime = 2 }
-                    print("Wait time... \(waitTime) seconds")
-                    self.perform(#selector(self.checkCurrentGenerationStatus), with: nil, afterDelay: TimeInterval(waitTime))
+                } else if let waitTime = data.waitTime {
+                    if waitTime > 0 {
+                        self.generationTimeLabel.text = "~\(waitTime) seconds"
+                    } else {
+                        self.generationTimeLabel.text = "Loading..."
+                    }
+                    self.perform(#selector(self.checkCurrentGenerationStatus), with: nil, afterDelay: TimeInterval(1))
                 }
             }
         }
@@ -108,15 +126,16 @@ extension ViewController {
 
     func getFinishedImageAndDisplay() {
         guard let generationIdentifier = self.currentGenerationIdentifier else { return }
-        print("Fetching finished generation")
+        Log.info("\(generationIdentifier) - Fetching finished generation...")
         V2API.getImageAsyncStatus(_id: generationIdentifier, clientAgent: "Aislingeach (Alpha)") { [self] data, error in
             if let data = data {
+                Log.debug("\(data)")
                 if data.finished == 1 {
                     if let generations = data.generations, let generation = generations.first, let urlString = generation.img, let imageUrl = URL(string: urlString) {
                         DispatchQueue.global().async {
                             let data = try? Data(contentsOf: imageUrl)
                             DispatchQueue.main.async { [self] in
-                                generationSpinner.stopAnimating()
+                                stopGenerationDisplay()
                                 mainImageView.image = UIImage(data: data!)
                             }
                         }

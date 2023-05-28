@@ -118,6 +118,7 @@
 		44C6B6992A22ADDD00C2F013 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6982A22ADDD00C2F013 /* SettingsTableViewController.swift */; };
 		44C6B6A02A22B2F000C2F013 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 44C6B69E2A22B2F000C2F013 /* LICENSE */; };
 		44C6B6A12A22B2F000C2F013 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 44C6B69F2A22B2F000C2F013 /* README.md */; };
+		44C6B6A32A22F83900C2F013 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6A22A22F83900C2F013 /* Logging.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -234,6 +235,7 @@
 		44C6B6982A22ADDD00C2F013 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		44C6B69E2A22B2F000C2F013 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		44C6B69F2A22B2F000C2F013 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		44C6B6A22A22F83900C2F013 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -427,6 +429,7 @@
 			children = (
 				441EB3882A21ECE400E449BE /* HordeAPI */,
 				44C6B6962A22ACE700C2F013 /* Preferences.swift */,
+				44C6B6A22A22F83900C2F013 /* Logging.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -558,6 +561,7 @@
 				44C6B64C2A228D8200C2F013 /* UserAmountRecords.swift in Sources */,
 				44C6B67B2A228D8200C2F013 /* SinglePeriodImgStat.swift in Sources */,
 				44C6B6512A228D8200C2F013 /* RequestAsync.swift in Sources */,
+				44C6B6A32A22F83900C2F013 /* Logging.swift in Sources */,
 				441EB3742A21DC1E00E449BE /* ViewController.swift in Sources */,
 				44C6B62E2A228D8200C2F013 /* TxtModelStats.swift in Sources */,
 				44C6B6452A228D8200C2F013 /* ContributionsDetails.swift in Sources */,

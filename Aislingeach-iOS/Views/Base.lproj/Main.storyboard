@@ -35,20 +35,81 @@
                                                     <constraint firstAttribute="width" secondItem="04T-bw-NZK" secondAttribute="height" multiplier="1:1" id="XsF-Jl-xDr"/>
                                                 </constraints>
                                             </imageView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qaT-kT-1Wu">
-                                                <rect key="frame" x="140.33333333333334" y="401" width="112.33333333333334" height="34.333333333333314"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Generate" image="hourglass.start" catalog="system"/>
-                                                <buttonConfiguration key="configuration" style="filled" image="hourglass.start" catalog="system" title="Generate"/>
-                                                <connections>
-                                                    <action selector="generateButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QCg-l1-TU7"/>
-                                                </connections>
-                                            </button>
-                                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="etR-dw-Kpd">
-                                                <rect key="frame" x="178" y="178" width="37" height="37"/>
-                                            </activityIndicatorView>
+                                            <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KHB-xe-Cm0">
+                                                <rect key="frame" x="0.0" y="0.0" width="393" height="393"/>
+                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="heC-s7-aJ3">
+                                                    <rect key="frame" x="0.0" y="0.0" width="393" height="393"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <subviews>
+                                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="etR-dw-Kpd">
+                                                            <rect key="frame" x="178" y="178" width="37" height="37"/>
+                                                        </activityIndicatorView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~1 second" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cph-Nd-XXB">
+                                                            <rect key="frame" x="147.33333333333334" y="223" width="98.333333333333343" height="26.333333333333343"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dreaming..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yHa-V3-3ni">
+                                                            <rect key="frame" x="128.66666666666666" y="136.33333333333334" width="135.99999999999997" height="33.666666666666657"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="etR-dw-Kpd" firstAttribute="top" secondItem="yHa-V3-3ni" secondAttribute="bottom" constant="8" symbolic="YES" id="08y-RS-Mai"/>
+                                                        <constraint firstItem="Cph-Nd-XXB" firstAttribute="centerX" secondItem="heC-s7-aJ3" secondAttribute="centerX" id="3Z3-bO-vGQ"/>
+                                                        <constraint firstItem="etR-dw-Kpd" firstAttribute="centerX" secondItem="heC-s7-aJ3" secondAttribute="centerX" id="6JU-Sx-mzz"/>
+                                                        <constraint firstItem="etR-dw-Kpd" firstAttribute="centerY" secondItem="heC-s7-aJ3" secondAttribute="centerY" id="JNZ-nh-qRa"/>
+                                                        <constraint firstItem="yHa-V3-3ni" firstAttribute="centerX" secondItem="heC-s7-aJ3" secondAttribute="centerX" id="eW4-fL-klk"/>
+                                                        <constraint firstItem="Cph-Nd-XXB" firstAttribute="top" secondItem="etR-dw-Kpd" secondAttribute="bottom" constant="8" symbolic="YES" id="erq-Pi-IXS"/>
+                                                    </constraints>
+                                                </view>
+                                                <blurEffect style="regular"/>
+                                            </visualEffectView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UQV-CE-OTY">
+                                                <rect key="frame" x="34" y="410" width="325" height="34.333333333333314"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i2Y-S0-KAc">
+                                                        <rect key="frame" x="0.0" y="0.0" width="92.333333333333329" height="34.333333333333336"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Delete" image="trash" catalog="system"/>
+                                                        <buttonConfiguration key="configuration" style="filled" title="Delete">
+                                                            <imageReference key="image" image="trash" catalog="system" symbolScale="default"/>
+                                                        </buttonConfiguration>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qaT-kT-1Wu">
+                                                        <rect key="frame" x="102" y="0.0" width="108.33333333333331" height="34.333333333333336"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Generate" image="hourglass.start" catalog="system"/>
+                                                        <buttonConfiguration key="configuration" style="filled" title="Generate" imagePadding="0.0">
+                                                            <imageReference key="image" image="hourglass.start" catalog="system" symbolScale="default"/>
+                                                        </buttonConfiguration>
+                                                        <connections>
+                                                            <action selector="generateButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QCg-l1-TU7"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H9J-bu-f6G">
+                                                        <rect key="frame" x="220" y="0.0" width="105" height="34.333333333333336"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Favorite">
+                                                            <imageReference key="image" image="star" catalog="system" symbolScale="small"/>
+                                                        </state>
+                                                        <buttonConfiguration key="configuration" style="filled" title="Favorite">
+                                                            <imageReference key="image" image="heart" catalog="system" symbolScale="default"/>
+                                                        </buttonConfiguration>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prompt" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g77-F8-H8w">
+                                                <rect key="frame" x="20" y="471" width="353" height="33.666666666666686"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="EH2-G2-Ba3">
-                                                <rect key="frame" x="20" y="513.33333333333337" width="353" height="166.66666666666663"/>
+                                                <rect key="frame" x="20" y="512.66666666666663" width="353" height="166.66666666666663"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="128" id="Rzs-Nz-guQ"/>
@@ -58,50 +119,28 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H9J-bu-f6G">
-                                                <rect key="frame" x="260.66666666666669" y="401" width="102" height="34.333333333333314"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Favorite">
-                                                    <imageReference key="image" image="star" catalog="system" symbolScale="small"/>
-                                                </state>
-                                                <buttonConfiguration key="configuration" style="filled" title="Favorite">
-                                                    <imageReference key="image" image="star" catalog="system" symbolScale="small"/>
-                                                </buttonConfiguration>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prompt" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g77-F8-H8w">
-                                                <rect key="frame" x="20" y="471.33333333333331" width="88" height="34"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i2Y-S0-KAc">
-                                                <rect key="frame" x="34.999999999999993" y="401" width="97.333333333333314" height="35"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Delete" image="trash" catalog="system"/>
-                                                <buttonConfiguration key="configuration" style="filled" image="trash" catalog="system" title="Delete"/>
-                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="Etn-79-wRh" firstAttribute="centerY" secondItem="04T-bw-NZK" secondAttribute="centerY" id="2B2-5S-9xF"/>
                                             <constraint firstItem="Etn-79-wRh" firstAttribute="centerX" secondItem="04T-bw-NZK" secondAttribute="centerX" id="3mt-IF-OIb"/>
-                                            <constraint firstItem="H9J-bu-f6G" firstAttribute="leading" secondItem="qaT-kT-1Wu" secondAttribute="trailing" constant="8" symbolic="YES" id="42m-dF-Lq4"/>
-                                            <constraint firstItem="etR-dw-Kpd" firstAttribute="centerY" secondItem="04T-bw-NZK" secondAttribute="centerY" id="6pW-Up-YjM"/>
-                                            <constraint firstItem="g77-F8-H8w" firstAttribute="top" secondItem="qaT-kT-1Wu" secondAttribute="bottom" constant="36" id="7ec-rF-24a"/>
                                             <constraint firstItem="EH2-G2-Ba3" firstAttribute="top" secondItem="g77-F8-H8w" secondAttribute="bottom" constant="8" symbolic="YES" id="ApW-IU-MkQ"/>
                                             <constraint firstItem="g77-F8-H8w" firstAttribute="leading" secondItem="tmL-hs-eTv" secondAttribute="leading" constant="20" symbolic="YES" id="Emz-aR-CaO"/>
-                                            <constraint firstItem="qaT-kT-1Wu" firstAttribute="top" secondItem="Etn-79-wRh" secondAttribute="bottom" constant="8" symbolic="YES" id="FFX-s7-vgh"/>
-                                            <constraint firstItem="etR-dw-Kpd" firstAttribute="centerX" secondItem="04T-bw-NZK" secondAttribute="centerX" id="FMh-iT-8G2"/>
+                                            <constraint firstItem="KHB-xe-Cm0" firstAttribute="width" secondItem="04T-bw-NZK" secondAttribute="width" id="HIh-Zz-STc"/>
                                             <constraint firstItem="Etn-79-wRh" firstAttribute="width" secondItem="04T-bw-NZK" secondAttribute="width" id="HgI-wr-Vax"/>
-                                            <constraint firstItem="qaT-kT-1Wu" firstAttribute="leading" secondItem="i2Y-S0-KAc" secondAttribute="trailing" constant="8" symbolic="YES" id="IRZ-E3-43I"/>
-                                            <constraint firstItem="qaT-kT-1Wu" firstAttribute="centerX" secondItem="tmL-hs-eTv" secondAttribute="centerX" id="Mm7-yD-nY2"/>
                                             <constraint firstAttribute="trailing" secondItem="EH2-G2-Ba3" secondAttribute="trailing" constant="20" symbolic="YES" id="N6c-ga-FTY"/>
                                             <constraint firstItem="Etn-79-wRh" firstAttribute="top" secondItem="tmL-hs-eTv" secondAttribute="top" id="NEU-jO-e3E"/>
+                                            <constraint firstItem="UQV-CE-OTY" firstAttribute="centerX" secondItem="tmL-hs-eTv" secondAttribute="centerX" id="NX5-HX-XDU"/>
+                                            <constraint firstItem="g77-F8-H8w" firstAttribute="leading" secondItem="UQV-CE-OTY" secondAttribute="trailing" constant="-339" id="Njn-Vu-u9V"/>
                                             <constraint firstAttribute="height" constant="1800" id="QW1-pS-j6t"/>
+                                            <constraint firstItem="UQV-CE-OTY" firstAttribute="top" secondItem="04T-bw-NZK" secondAttribute="bottom" constant="17" id="Qam-wg-FXL"/>
                                             <constraint firstAttribute="trailing" secondItem="Etn-79-wRh" secondAttribute="trailing" id="V2v-HS-O50"/>
-                                            <constraint firstItem="i2Y-S0-KAc" firstAttribute="top" secondItem="Etn-79-wRh" secondAttribute="bottom" constant="8" symbolic="YES" id="gnK-ym-3ru"/>
+                                            <constraint firstItem="g77-F8-H8w" firstAttribute="top" secondItem="UQV-CE-OTY" secondAttribute="bottom" constant="26.666666666666686" id="Ycu-0B-00a"/>
+                                            <constraint firstItem="KHB-xe-Cm0" firstAttribute="centerY" secondItem="04T-bw-NZK" secondAttribute="centerY" id="bVS-st-CSn"/>
+                                            <constraint firstItem="KHB-xe-Cm0" firstAttribute="centerX" secondItem="04T-bw-NZK" secondAttribute="centerX" id="e9W-zb-lyx"/>
+                                            <constraint firstItem="KHB-xe-Cm0" firstAttribute="height" secondItem="04T-bw-NZK" secondAttribute="height" id="gcF-Ag-biK"/>
                                             <constraint firstItem="Etn-79-wRh" firstAttribute="leading" secondItem="tmL-hs-eTv" secondAttribute="leading" id="gsc-6D-02l"/>
-                                            <constraint firstItem="H9J-bu-f6G" firstAttribute="top" secondItem="Etn-79-wRh" secondAttribute="bottom" constant="8" symbolic="YES" id="qch-tr-p2V"/>
+                                            <constraint firstAttribute="trailing" secondItem="g77-F8-H8w" secondAttribute="trailing" constant="20" symbolic="YES" id="mdP-cq-XGk"/>
                                             <constraint firstItem="Etn-79-wRh" firstAttribute="height" secondItem="04T-bw-NZK" secondAttribute="height" id="wvE-BO-O5h"/>
                                             <constraint firstItem="EH2-G2-Ba3" firstAttribute="leading" secondItem="tmL-hs-eTv" secondAttribute="leading" constant="20" symbolic="YES" id="zfI-3P-cny"/>
                                         </constraints>
@@ -130,7 +169,9 @@
                     <navigationItem key="navigationItem" title="Generate" id="pdJ-B0-C5E"/>
                     <size key="freeformSize" width="393" height="2000"/>
                     <connections>
+                        <outlet property="generationEffectView" destination="KHB-xe-Cm0" id="KMt-to-pWC"/>
                         <outlet property="generationSpinner" destination="etR-dw-Kpd" id="FoO-Fe-a2x"/>
+                        <outlet property="generationTimeLabel" destination="Cph-Nd-XXB" id="AcX-Uj-OGs"/>
                         <outlet property="mainImageView" destination="04T-bw-NZK" id="aCx-Gw-ZX4"/>
                         <outlet property="promptTextView" destination="EH2-G2-Ba3" id="6AA-TI-KG4"/>
                         <outlet property="scrollView" destination="2oe-09-Zu9" id="3bI-fI-6aM"/>
@@ -138,7 +179,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2821" y="-334"/>
+            <point key="canvasLocation" x="2820.6106870229005" y="-334.50704225352115"/>
         </scene>
         <!--Generate-->
         <scene sceneID="lMx-tl-c8v">
@@ -283,20 +324,20 @@
                             <tableViewSection id="tcM-iQ-9Bq">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="sgl-pB-N84">
-                                        <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="50" width="393" height="43"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sgl-pB-N84" id="qgk-g8-LYa">
-                                            <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="API Key" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aRs-Ti-Mxe">
-                                                    <rect key="frame" x="20" y="11.000000000000002" width="58" height="21.666666666666671"/>
+                                                    <rect key="frame" x="20" y="11" width="58" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Put your API Key here" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="h8H-Ah-ahA">
-                                                    <rect key="frame" x="86" y="5" width="287" height="34"/>
+                                                    <rect key="frame" x="86" y="4.6666666666666679" width="287" height="34"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="password"/>
                                                     <connections>
@@ -356,12 +397,16 @@
     <resources>
         <image name="bed.double" catalog="system" width="128" height="82"/>
         <image name="gearshape" catalog="system" width="128" height="123"/>
+        <image name="heart" catalog="system" width="128" height="107"/>
         <image name="hourglass.start" catalog="system" width="103" height="128"/>
         <image name="photo" catalog="system" width="128" height="93"/>
         <image name="star" catalog="system" width="128" height="116"/>
         <image name="trash" catalog="system" width="117" height="128"/>
         <systemColor name="labelColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondarySystemFillColor">
             <color red="0.47058823529411764" green="0.47058823529411764" blue="0.50196078431372548" alpha="0.16" colorSpace="custom" customColorSpace="sRGB"/>
