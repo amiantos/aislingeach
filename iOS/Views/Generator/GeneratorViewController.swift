@@ -49,7 +49,7 @@ class GeneratorViewController: UIViewController {
             replacementFilter: true,
             dryRun: false
         )
-        V2API.postImageAsyncGenerate(body: generationBody, apikey: Preferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
+        V2API.postImageAsyncGenerate(body: generationBody, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
             if let data = data, let generationIdentifier = data._id {
                 Log.debug("\(data)")
                 self.setNewGenerationRequest(generationIdentifier: generationIdentifier, generationBody: generationBody)

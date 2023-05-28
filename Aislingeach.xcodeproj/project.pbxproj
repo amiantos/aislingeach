@@ -115,7 +115,7 @@
 		44C6B6902A228D8200C2F013 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6292A228D8200C2F013 /* JSONValue.swift */; };
 		44C6B6912A228D8200C2F013 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B62A2A228D8200C2F013 /* Models.swift */; };
 		44C6B6942A228DFA00C2F013 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 44C6B6932A228DFA00C2F013 /* Alamofire */; };
-		44C6B6972A22ACE700C2F013 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6962A22ACE700C2F013 /* Preferences.swift */; };
+		44C6B6972A22ACE700C2F013 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6962A22ACE700C2F013 /* UserPreferences.swift */; };
 		44C6B6992A22ADDD00C2F013 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6982A22ADDD00C2F013 /* SettingsTableViewController.swift */; };
 		44C6B6A02A22B2F000C2F013 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 44C6B69E2A22B2F000C2F013 /* LICENSE */; };
 		44C6B6A12A22B2F000C2F013 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 44C6B69F2A22B2F000C2F013 /* README.md */; };
@@ -241,7 +241,7 @@
 		44C6B6292A228D8200C2F013 /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
 		44C6B62A2A228D8200C2F013 /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		44C6B6952A22AA3D00C2F013 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		44C6B6962A22ACE700C2F013 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		44C6B6962A22ACE700C2F013 /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
 		44C6B6982A22ADDD00C2F013 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		44C6B69E2A22B2F000C2F013 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		44C6B69F2A22B2F000C2F013 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -268,29 +268,52 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		44142ABA2A2406E60096FFBA /* Backend */ = {
+		44142ABE2A240DF80096FFBA /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				44C6B6A92A2333D500C2F013 /* ImageModel.xcdatamodeld */,
-				44C6B6D12A2337BC00C2F013 /* ImageDatabase.swift */,
+				441EB3852A21DDD700E449BE /* Dev */,
+				441EB3882A21ECE400E449BE /* HordeAPI (swagger-codegen) */,
+				44142ABF2A240E590096FFBA /* Image Storage */,
+				44142AC02A240E8D0096FFBA /* Preferences Storage */,
+				44142AC12A240EAB0096FFBA /* Utils */,
 			);
-			path = Backend;
+			path = Shared;
 			sourceTree = "<group>";
 		};
-		44142ABB2A2406FB0096FFBA /* Backend */ = {
+		44142ABF2A240E590096FFBA /* Image Storage */ = {
 			isa = PBXGroup;
 			children = (
-				44C6B6962A22ACE700C2F013 /* Preferences.swift */,
+				44C6B6D12A2337BC00C2F013 /* ImageDatabase.swift */,
+				44C6B6A92A2333D500C2F013 /* ImageModel.xcdatamodeld */,
 			);
-			path = Backend;
+			path = "Image Storage";
+			sourceTree = "<group>";
+		};
+		44142AC02A240E8D0096FFBA /* Preferences Storage */ = {
+			isa = PBXGroup;
+			children = (
+				44C6B6962A22ACE700C2F013 /* UserPreferences.swift */,
+			);
+			path = "Preferences Storage";
+			sourceTree = "<group>";
+		};
+		44142AC12A240EAB0096FFBA /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				44C6B6A22A22F83900C2F013 /* Logging.swift */,
+				44D331D82A23588800BE8DDF /* UserAgent.swift */,
+				44C6B6A42A23253B00C2F013 /* Utils.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		441EB3632A21DC1E00E449BE = {
 			isa = PBXGroup;
 			children = (
-				44C6B69E2A22B2F000C2F013 /* LICENSE */,
 				44C6B69F2A22B2F000C2F013 /* README.md */,
-				441EB36E2A21DC1E00E449BE /* Aislingeach-iOS */,
+				44C6B69E2A22B2F000C2F013 /* LICENSE */,
+				44142ABE2A240DF80096FFBA /* Shared */,
+				441EB36E2A21DC1E00E449BE /* iOS */,
 				441EB36D2A21DC1E00E449BE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -303,18 +326,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		441EB36E2A21DC1E00E449BE /* Aislingeach-iOS */ = {
+		441EB36E2A21DC1E00E449BE /* iOS */ = {
 			isa = PBXGroup;
 			children = (
 				441EB37D2A21DC1F00E449BE /* Info.plist */,
 				441EB3782A21DC1F00E449BE /* Assets.xcassets */,
-				441EB3852A21DDD700E449BE /* Dev */,
 				441EB36F2A21DC1E00E449BE /* AppDelegate.swift */,
 				441EB3712A21DC1E00E449BE /* SceneDelegate.swift */,
 				44C6B69A2A22B0D700C2F013 /* Views */,
-				44C6B69B2A22B0E100C2F013 /* Backend */,
 			);
-			path = "Aislingeach-iOS";
+			path = iOS;
 			sourceTree = "<group>";
 		};
 		441EB3852A21DDD700E449BE /* Dev */ = {
@@ -325,7 +346,7 @@
 			path = Dev;
 			sourceTree = "<group>";
 		};
-		441EB3882A21ECE400E449BE /* HordeAPI */ = {
+		441EB3882A21ECE400E449BE /* HordeAPI (swagger-codegen) */ = {
 			isa = PBXGroup;
 			children = (
 				44C6B6242A228D8200C2F013 /* AlamofireImplementations.swift */,
@@ -342,7 +363,7 @@
 				44C6B62A2A228D8200C2F013 /* Models.swift */,
 				44C6B6952A22AA3D00C2F013 /* README.md */,
 			);
-			path = HordeAPI;
+			path = "HordeAPI (swagger-codegen)";
 			sourceTree = "<group>";
 		};
 		44C6B5C32A228D8200C2F013 /* Models */ = {
@@ -462,21 +483,9 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		44C6B69B2A22B0E100C2F013 /* Backend */ = {
-			isa = PBXGroup;
-			children = (
-				441EB3882A21ECE400E449BE /* HordeAPI */,
-				44C6B6A22A22F83900C2F013 /* Logging.swift */,
-				44C6B6A42A23253B00C2F013 /* Utils.swift */,
-				44D331D82A23588800BE8DDF /* UserAgent.swift */,
-			);
-			path = Backend;
-			sourceTree = "<group>";
-		};
 		44C6B69C2A22B0FD00C2F013 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
-				44142ABB2A2406FB0096FFBA /* Backend */,
 				44C6B6982A22ADDD00C2F013 /* SettingsTableViewController.swift */,
 			);
 			path = Preferences;
@@ -501,7 +510,6 @@
 		44C6B6D32A233AF500C2F013 /* Image Browser */ = {
 			isa = PBXGroup;
 			children = (
-				44142ABA2A2406E60096FFBA /* Backend */,
 				44C6B6D42A233B0F00C2F013 /* ImageCollectionViewController.swift */,
 				44C6B6D62A233BFB00C2F013 /* ImageCollectionViewCell.swift */,
 				44142AB82A23FD6A0096FFBA /* ImageDetailViewController.swift */,
@@ -674,7 +682,7 @@
 				44C6B6862A228D8200C2F013 /* FilterRegex.swift in Sources */,
 				44C6B6742A228D8200C2F013 /* KaiUserIdBody.swift in Sources */,
 				44C6B6392A228D8200C2F013 /* UserDetails.swift in Sources */,
-				44C6B6972A22ACE700C2F013 /* Preferences.swift in Sources */,
+				44C6B6972A22ACE700C2F013 /* UserPreferences.swift in Sources */,
 				44C6B65C2A228D8200C2F013 /* ModelGenerationInputKobold.swift in Sources */,
 				44C6B62B2A228D8200C2F013 /* Configuration.swift in Sources */,
 				44C6B6892A228D8200C2F013 /* CodableHelper.swift in Sources */,
@@ -851,7 +859,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2Y9M69QJKZ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Aislingeach-iOS/Info.plist";
+				INFOPLIST_FILE = iOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Aislingeach;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -882,7 +890,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2Y9M69QJKZ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Aislingeach-iOS/Info.plist";
+				INFOPLIST_FILE = iOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Aislingeach;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

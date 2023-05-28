@@ -1,5 +1,5 @@
 //
-//  Preferences.swift
+//  UserPreferences.swift
 //  Aislingeach
 //
 //  Created by Brad Root on 5/27/23.
@@ -11,7 +11,7 @@
 
 import Foundation
 
-struct Preferences {
+struct UserPreferences {
     fileprivate enum Key {
         static let apiKey = "apiKey"
     }
@@ -28,11 +28,11 @@ struct Preferences {
 
 extension UserDefaults {
     var apiKey: String {
-        return string(forKey: Preferences.Key.apiKey) ?? "0000000000"
+        return string(forKey: UserPreferences.Key.apiKey) ?? "0000000000"
     }
 
     func set(apiKey: String) {
-        set(apiKey, for: Preferences.Key.apiKey)
+        set(apiKey, for: UserPreferences.Key.apiKey)
     }
 }
 
