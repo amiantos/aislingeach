@@ -14,7 +14,7 @@
         <!--Generate-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController title="Generate" id="BYZ-38-t0r" customClass="ViewController" customModule="Aislingeach" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Generate" id="BYZ-38-t0r" customClass="GeneratorViewController" customModule="Aislingeach" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kcy-FI-6QF">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="2000"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -237,16 +237,24 @@
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="ZFa-5I-Gjg">
                                             <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                                         </imageView>
+                                        <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9ct-16-O1j">
+                                            <rect key="frame" x="6" y="177" width="16.666666666666668" height="14.333333333333314"/>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <imageReference key="image" image="heart.fill" catalog="system" symbolScale="small"/>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="ZFa-5I-Gjg" firstAttribute="top" secondItem="7M1-mI-nII" secondAttribute="top" id="6iW-qC-NRv"/>
                                         <constraint firstAttribute="bottom" secondItem="ZFa-5I-Gjg" secondAttribute="bottom" id="7NU-LS-QxV"/>
                                         <constraint firstItem="ZFa-5I-Gjg" firstAttribute="leading" secondItem="7M1-mI-nII" secondAttribute="leading" id="Iht-vL-Xzm"/>
+                                        <constraint firstItem="9ct-16-O1j" firstAttribute="leading" secondItem="7M1-mI-nII" secondAttribute="leading" constant="6" id="OVK-05-yQ0"/>
                                         <constraint firstAttribute="trailing" secondItem="ZFa-5I-Gjg" secondAttribute="trailing" id="TmQ-KX-nQP"/>
+                                        <constraint firstAttribute="bottom" secondItem="9ct-16-O1j" secondAttribute="bottom" constant="6" id="mqe-hS-qX0"/>
                                     </constraints>
                                 </collectionViewCellContentView>
                                 <size key="customSize" width="200" height="200"/>
                                 <connections>
+                                    <outlet property="favoriteIcon" destination="9ct-16-O1j" id="tGw-eQ-yYd"/>
                                     <outlet property="imageView" destination="ZFa-5I-Gjg" id="QgG-Cp-9nr"/>
                                 </connections>
                             </collectionViewCell>
@@ -473,6 +481,7 @@
         <image name="brain.head.profile" catalog="system" width="120" height="128"/>
         <image name="gearshape" catalog="system" width="128" height="123"/>
         <image name="heart" catalog="system" width="128" height="107"/>
+        <image name="heart.fill" catalog="system" width="128" height="107"/>
         <image name="moon" catalog="system" width="128" height="123"/>
         <image name="photo" catalog="system" width="128" height="93"/>
         <image name="star" catalog="system" width="128" height="116"/>

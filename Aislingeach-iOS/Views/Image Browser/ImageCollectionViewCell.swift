@@ -8,5 +8,6 @@
 import UIKit
 
 class ImageCollectionViewCell: UICollectionViewCell {
+    @IBOutlet weak var favoriteIcon: UIImageView!
     @IBOutlet weak var imageView: UIImageView!
 }

@@ -124,6 +124,7 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         }
         // Configure the cell
         cell.imageView.image = UIImage(data: object.image!)
+        cell.favoriteIcon.isHidden = !object.isFavorite
         cell.autoresizesSubviews = true
     
         return cell

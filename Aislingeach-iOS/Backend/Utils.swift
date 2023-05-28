@@ -28,3 +28,16 @@ func hordeClientAgent() -> String {
     let name = dictionary["CFBundleName"] as! String
     return "\(name):\(version):https://github.com/amiantos/aislingeach"
 }
+
+extension Encodable {
+
+    func toJSONString() -> String {
+        let jsonData = try! JSONEncoder().encode(self)
+        return String(data: jsonData, encoding: .utf8)!
+    }
+
+}
+
+func instantiate<T: Decodable>(jsonString: String) -> T? {
+    return try? JSONDecoder().decode(T.self, from: jsonString.data(using: .utf8)!)
+}

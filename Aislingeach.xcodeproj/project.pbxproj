@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		441EB3702A21DC1E00E449BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441EB36F2A21DC1E00E449BE /* AppDelegate.swift */; };
 		441EB3722A21DC1E00E449BE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441EB3712A21DC1E00E449BE /* SceneDelegate.swift */; };
-		441EB3742A21DC1E00E449BE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441EB3732A21DC1E00E449BE /* ViewController.swift */; };
+		441EB3742A21DC1E00E449BE /* GeneratorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441EB3732A21DC1E00E449BE /* GeneratorViewController.swift */; };
 		441EB3772A21DC1E00E449BE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 441EB3752A21DC1E00E449BE /* Main.storyboard */; };
 		441EB3792A21DC1F00E449BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 441EB3782A21DC1F00E449BE /* Assets.xcassets */; };
 		441EB37C2A21DC1F00E449BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 441EB37A2A21DC1F00E449BE /* LaunchScreen.storyboard */; };
@@ -133,7 +133,7 @@
 		441EB36C2A21DC1E00E449BE /* Aislingeach.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aislingeach.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		441EB36F2A21DC1E00E449BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		441EB3712A21DC1E00E449BE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		441EB3732A21DC1E00E449BE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		441EB3732A21DC1E00E449BE /* GeneratorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratorViewController.swift; sourceTree = "<group>"; };
 		441EB3762A21DC1E00E449BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		441EB3782A21DC1F00E449BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		441EB37B2A21DC1F00E449BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -468,7 +468,7 @@
 		44C6B69D2A22B10500C2F013 /* Generator */ = {
 			isa = PBXGroup;
 			children = (
-				441EB3732A21DC1E00E449BE /* ViewController.swift */,
+				441EB3732A21DC1E00E449BE /* GeneratorViewController.swift */,
 			);
 			path = Generator;
 			sourceTree = "<group>";
@@ -604,7 +604,7 @@
 				44C6B67B2A228D8200C2F013 /* SinglePeriodImgStat.swift in Sources */,
 				44C6B6512A228D8200C2F013 /* RequestAsync.swift in Sources */,
 				44C6B6A32A22F83900C2F013 /* Logging.swift in Sources */,
-				441EB3742A21DC1E00E449BE /* ViewController.swift in Sources */,
+				441EB3742A21DC1E00E449BE /* GeneratorViewController.swift in Sources */,
 				44C6B62E2A228D8200C2F013 /* TxtModelStats.swift in Sources */,
 				44C6B6452A228D8200C2F013 /* ContributionsDetails.swift in Sources */,
 				44C6B6822A228D8200C2F013 /* AestheticsPayload.swift in Sources */,

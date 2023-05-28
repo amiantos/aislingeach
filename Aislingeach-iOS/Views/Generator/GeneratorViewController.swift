@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  GeneratorViewController.swift
 //  Aislingeach
 //
 //  Created by Brad Root on 5/26/23.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class GeneratorViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
 
     @IBOutlet weak var generationEffectView: UIVisualEffectView!
@@ -24,10 +24,34 @@ class ViewController: UIViewController {
         if generationText == "" { return }
 
         startGenerationSpinner()
-        V2API.postImageAsyncGenerate(body: GenerationInputStable(prompt: generationText), apikey: Preferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
+        let modelParams = ModelGenerationInputStable(
+            samplerName: .kEulerA,
+            cfgScale: 7.5,
+            denoisingStrength: 0.75,
+            height: 512,
+            width: 512,
+            karras: true,
+            hiresFix: true,
+            clipSkip: 2,
+            n: 1
+        )
+        let generationBody = GenerationInputStable(
+            prompt: generationText,
+            params: modelParams,
+            nsfw: false,
+            trustedWorkers: true,
+            slowWorkers: true,
+            censorNsfw: true,
+            models: ["stable_diffusion"],
+            r2: true,
+            shared: true,
+            replacementFilter: true,
+            dryRun: false
+        )
+        V2API.postImageAsyncGenerate(body: generationBody, apikey: Preferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
             if let data = data, let generationIdentifier = data._id {
                 Log.debug("\(data)")
-                self.setNewGenerationRequest(generationIdentifier: generationIdentifier)
+                self.setNewGenerationRequest(generationIdentifier: generationIdentifier, generationBody: generationBody)
             } else if let error = error {
                 if error.code == 401 {
                     self.showGenerationError(message: "401: Invalid API Key?")
@@ -39,10 +63,11 @@ class ViewController: UIViewController {
     }
 
     var currentGenerationIdentifier: String?
+    var currentGenerationBody: GenerationInputStable?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        print(hordeClientAgent())
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 
@@ -90,10 +115,11 @@ class ViewController: UIViewController {
 
 }
 
-extension ViewController {
-    func setNewGenerationRequest(generationIdentifier: String) {
+extension GeneratorViewController {
+    func setNewGenerationRequest(generationIdentifier: String, generationBody: GenerationInputStable) {
         Log.info("\(generationIdentifier) - New request received...")
         currentGenerationIdentifier = generationIdentifier
+        currentGenerationBody = generationBody
         checkCurrentGenerationStatus()
     }
 
@@ -124,7 +150,7 @@ extension ViewController {
         V2API.getImageAsyncCheck(_id: generationIdentifier, clientAgent: hordeClientAgent()) { data, error in
             if let data = data {
                 Log.debug("\(data)")
-                if let done = data.done, done {
+                if let done = data.done, let restarted = data.restarted, done, restarted <= 0 {
                     Log.info("\(generationIdentifier) - Done!")
                     self.getFinishedImageAndDisplay()
                 } else if let waitTime = data.waitTime {
@@ -142,6 +168,7 @@ extension ViewController {
 
     func getFinishedImageAndDisplay() {
         guard let generationIdentifier = self.currentGenerationIdentifier else { return }
+        guard var generationBody = self.currentGenerationBody else { return }
         Log.info("\(generationIdentifier) - Fetching finished generation...")
         V2API.getImageAsyncStatus(_id: generationIdentifier, clientAgent: hordeClientAgent()) { [self] data, error in
             if let data = data {
@@ -153,11 +180,14 @@ extension ViewController {
                                 DispatchQueue.main.async { [self] in
                                     hideGenerationDisplay()
                                     mainImageView.image = UIImage(data: data)
-                                    ImageDatabase.standard.saveImage(id: generationIdentifier, image: data, completion: { _ in
-                                        DispatchQueue.main.async {
-                                            Log.info("\(generationIdentifier) - Saved to image database...")
-                                        }
-                                    })
+                                    if !(generation.censored ?? false) {
+                                        generationBody.params?.seed = generation.seed!
+                                        ImageDatabase.standard.saveImage(id: generationIdentifier, image: data, body: generationBody, completion: { _ in
+                                            DispatchQueue.main.async {
+                                                Log.info("\(generationIdentifier) - Saved to image database...")
+                                            }
+                                        })
+                                    }
                                 }
                             }
                         }
