@@ -7,5 +7,10 @@ Aislingeach is an iOS app providing access to the [Stable Horde](https://aihorde
 - Low / no external dependencies
 - Good app architecture
 
+## How to use
+- Install it somehow
+- Go to settings and put in your horde API key or use the slow default
+- Press "Dream" to start generating images
+
 # Community
 - Discuss Aislingeach on [the AI Horde Discord](https://discord.gg/Vc8fsQgW5E)
