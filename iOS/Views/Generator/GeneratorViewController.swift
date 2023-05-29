@@ -122,7 +122,7 @@ class GeneratorViewController: UIViewController {
     var currentGenerationIdentifier: String?
     var currentGenerationBody: GenerationInputStable?
     var currentGenerationHeight: Int = 8
-    var currentGenerationWidth: Int = 6
+    var currentGenerationWidth: Int = 8
     var currentRatioLock: Bool = false
 
     override func viewDidLoad() {
@@ -134,6 +134,8 @@ class GeneratorViewController: UIViewController {
         widthSlider.setValue(Float(currentGenerationWidth), animated: false)
         heightSlider.setValue(Float(currentGenerationHeight), animated: false)
         updateSliderLabels()
+
+        self.hideKeyboardWhenTappedAround() 
     }
 
     override func viewWillAppear(_ animated: Bool) {

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension Error {
     var code: Int {
@@ -73,5 +74,18 @@ func gcdBinaryRecursiveStein(_ m: Int, _ n: Int) -> Int {
     } else {
         // reduce larger argument
         return gcdBinaryRecursiveStein((n - m) >> 1, m)
+    }
+}
+
+// Put this piece of code anywhere you like
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }

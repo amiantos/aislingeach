@@ -23,7 +23,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="2000"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tmL-hs-eTv" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="1800"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="886.33333333333337"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Etn-79-wRh" userLabel="Image Container">
                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="393"/>
@@ -135,7 +135,7 @@
                                                 <rect key="frame" x="20" y="693.33333333333337" width="353" height="34.333333333333371"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hAl-ep-fbE">
-                                                        <rect key="frame" x="0.0" y="0.0" width="353" height="34.333333333333336"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="353" height="34.333333333333314"/>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="tinted" title="Edit Prompt">
                                                             <imageReference key="image" image="square.and.pencil" catalog="system" symbolScale="default"/>
@@ -276,7 +276,7 @@
                                             <constraint firstAttribute="trailing" secondItem="EH2-G2-Ba3" secondAttribute="trailing" constant="20" symbolic="YES" id="N6c-ga-FTY"/>
                                             <constraint firstItem="Etn-79-wRh" firstAttribute="top" secondItem="tmL-hs-eTv" secondAttribute="top" id="NEU-jO-e3E"/>
                                             <constraint firstItem="SqX-K4-Koy" firstAttribute="top" secondItem="EH2-G2-Ba3" secondAttribute="bottom" constant="12" id="NEj-tP-6e9"/>
-                                            <constraint firstAttribute="height" constant="1800" id="QW1-pS-j6t"/>
+                                            <constraint firstAttribute="bottom" secondItem="ERA-Sn-1oD" secondAttribute="bottom" constant="20" symbolic="YES" id="RP8-1B-rZn"/>
                                             <constraint firstItem="g77-F8-H8w" firstAttribute="top" secondItem="UQV-CE-OTY" secondAttribute="bottom" constant="24" id="SRw-IL-V1Z"/>
                                             <constraint firstAttribute="trailing" secondItem="Etn-79-wRh" secondAttribute="trailing" id="V2v-HS-O50"/>
                                             <constraint firstAttribute="trailing" secondItem="UQV-CE-OTY" secondAttribute="trailing" constant="20" symbolic="YES" id="ZW6-qI-ADE"/>
