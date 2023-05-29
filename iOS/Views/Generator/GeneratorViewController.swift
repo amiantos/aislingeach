@@ -16,6 +16,7 @@ class GeneratorViewController: UIViewController {
     @IBOutlet var generationTitleLabel: UILabel!
     @IBOutlet var generationTimeLabel: UILabel!
     @IBOutlet var mainImageView: UIImageView!
+    @IBOutlet weak var mainImageViewHeightConstraint: NSLayoutConstraint!
 
     @IBOutlet var promptTextView: UITextView!
 
@@ -28,8 +29,8 @@ class GeneratorViewController: UIViewController {
             samplerName: .kEulerA,
             cfgScale: 7.5,
             denoisingStrength: 0.75,
-            height: 512,
-            width: 512,
+            height: 64*8,
+            width: 64*6,
             karras: true,
             hiresFix: true,
             clipSkip: 2,
@@ -70,6 +71,7 @@ class GeneratorViewController: UIViewController {
         super.viewDidLoad()
         print(hordeClientAgent())
         navigationController?.navigationBar.prefersLargeTitles = true
+        mainImageViewHeightConstraint.constant = view.frame.width
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -177,10 +179,20 @@ extension GeneratorViewController {
                 if data.finished == 1 {
                     if let generations = data.generations, let generation = generations.first, let urlString = generation.img, let imageUrl = URL(string: urlString) {
                         DispatchQueue.global().async {
-                            if let data = try? Data(contentsOf: imageUrl) {
+                            if let data = try? Data(contentsOf: imageUrl), let image = UIImage(data: data) {
                                 DispatchQueue.main.async { [self] in
                                     hideGenerationDisplay()
-                                    mainImageView.image = UIImage(data: data)
+                                    let imageWidth = image.size.width
+                                    let imageHeight = image.size.height
+                                    let viewWidth = view.frame.size.width
+
+                                    let ratio = viewWidth/imageWidth
+                                    let scaledHeight = imageHeight * ratio
+                                    mainImageViewHeightConstraint.constant = scaledHeight
+                                    UIView.animate(withDuration: 0.3) {
+                                        self.view.layoutIfNeeded()
+                                        self.mainImageView.image = image
+                                    }
                                     if !(generation.censored ?? false) {
                                         generationBody.params?.seed = generation.seed!
                                         ImageDatabase.standard.saveImage(id: generationIdentifier, image: data, body: generationBody, completion: { _ in
