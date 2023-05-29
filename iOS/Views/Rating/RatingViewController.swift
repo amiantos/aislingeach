@@ -8,13 +8,11 @@
 import UIKit
 
 class RatingViewController: UIViewController {
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet var imageView: UIImageView!
 
-    @IBOutlet weak var ratingButton: UIButton!
+    @IBOutlet var ratingButton: UIButton!
 
-    @IBAction func ratingButtonAction(_ sender: UIButton) {
-        
-    }
+    @IBAction func ratingButtonAction(_: UIButton) {}
 
     override func viewDidLoad() {
         super.viewDidLoad()

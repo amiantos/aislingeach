@@ -68,7 +68,7 @@ func gcdBinaryRecursiveStein(_ m: Int, _ n: Int) -> Int {
     } else if (n & 1) == 0 {
         // m is odd, n is even
         return gcdBinaryRecursiveStein(m, n >> 1)
-    } else if (m > n) {
+    } else if m > n {
         // reduce larger argument
         return gcdBinaryRecursiveStein((m - n) >> 1, n)
     } else {
