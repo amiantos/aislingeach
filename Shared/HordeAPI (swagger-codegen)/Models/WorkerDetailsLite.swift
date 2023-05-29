@@ -7,15 +7,13 @@
 
 import Foundation
 
-
-
 public struct WorkerDetailsLite: Codable {
-
-    public enum ModelType: String, Codable { 
-        case image = "image"
-        case text = "text"
-        case interrogation = "interrogation"
+    public enum ModelType: String, Codable {
+        case image
+        case text
+        case interrogation
     }
+
     /** The Type of worker this is. */
     public var type: ModelType?
     /** The Name given to this worker. */
@@ -32,11 +30,10 @@ public struct WorkerDetailsLite: Codable {
         self.online = online
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case type
         case name
         case _id = "id"
         case online
     }
-
 }

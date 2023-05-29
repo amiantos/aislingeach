@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct InterrogateSubmitBody: Codable {
-
     public var _id: String?
     public var result: String?
     public var state: String?
@@ -21,10 +18,9 @@ public struct InterrogateSubmitBody: Codable {
         self.state = state
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case result
         case state
     }
-
 }

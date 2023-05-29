@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct UserAmountRecords: Codable {
-
     /** How many images this user has generated or requested */
     public var image: Int?
     /** How many texts this user has generated or requested */
@@ -23,6 +20,4 @@ public struct UserAmountRecords: Codable {
         self.text = text
         self.interrogation = interrogation
     }
-
-
 }

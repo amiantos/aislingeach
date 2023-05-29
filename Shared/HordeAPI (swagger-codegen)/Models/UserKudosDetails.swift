@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct UserKudosDetails: Codable {
-
     /** The ammount of Kudos accumulated or used for generating images. */
     public var accumulated: Decimal?
     /** The amount of Kudos this user has given to other users. */
@@ -32,6 +29,4 @@ public struct UserKudosDetails: Codable {
         self.recurring = recurring
         self.awarded = awarded
     }
-
-
 }

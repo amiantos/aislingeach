@@ -7,15 +7,13 @@
 
 import Foundation
 
-
-
 public struct WorkerDetails: Codable {
-
-    public enum ModelType: String, Codable { 
-        case image = "image"
-        case text = "text"
-        case interrogation = "interrogation"
+    public enum ModelType: String, Codable {
+        case image
+        case text
+        case interrogation
     }
+
     /** The Type of worker this is. */
     public var type: ModelType?
     /** The Name given to this worker. */
@@ -113,7 +111,7 @@ public struct WorkerDetails: Codable {
         self.tokensGenerated = tokensGenerated
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case type
         case name
         case _id = "id"
@@ -147,5 +145,4 @@ public struct WorkerDetails: Codable {
         case maxContextLength = "max_context_length"
         case tokensGenerated = "tokens_generated"
     }
-
 }

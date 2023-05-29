@@ -8,20 +8,20 @@
 import UIKit
 
 class GeneratorViewController: UIViewController {
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet var scrollView: UIScrollView!
 
-    @IBOutlet weak var generationEffectView: UIVisualEffectView!
-    @IBOutlet weak var generationSpinner: UIActivityIndicatorView!
+    @IBOutlet var generationEffectView: UIVisualEffectView!
+    @IBOutlet var generationSpinner: UIActivityIndicatorView!
 
-    @IBOutlet weak var generationTitleLabel: UILabel!
-    @IBOutlet weak var generationTimeLabel: UILabel!
-    @IBOutlet weak var mainImageView: UIImageView!
+    @IBOutlet var generationTitleLabel: UILabel!
+    @IBOutlet var generationTimeLabel: UILabel!
+    @IBOutlet var mainImageView: UIImageView!
 
-    @IBOutlet weak var promptTextView: UITextView!
+    @IBOutlet var promptTextView: UITextView!
 
-    @IBAction func generateButtonPressed(_ sender: UIButton) {
-        let generationText = promptTextView.text!
-        if generationText == "" { return }
+    @IBAction func generateButtonPressed(_: UIButton) {
+        guard let generationText = promptTextView.text, generationText != "" else { return }
+        promptTextView.resignFirstResponder()
 
         startGenerationSpinner()
         let modelParams = ModelGenerationInputStable(
@@ -65,7 +65,7 @@ class GeneratorViewController: UIViewController {
 
     var currentGenerationIdentifier: String?
     var currentGenerationBody: GenerationInputStable?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         print(hordeClientAgent())
@@ -86,17 +86,19 @@ class GeneratorViewController: UIViewController {
         let userInfo: NSDictionary = notification.userInfo! as NSDictionary
         let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
 
+        // TODO: This should check if the text entry point will be off screen when the keyboard appears and only scroll if needed
+
         let tabbarHeight = tabBarController?.tabBar.frame.size.height ?? 0
         let toolbarHeight = navigationController?.toolbar.frame.size.height ?? 0
         let bottomInset = keyboardSize.height - tabbarHeight - toolbarHeight
 
         scrollView.contentInset.bottom = bottomInset
         scrollView.verticalScrollIndicatorInsets.bottom = bottomInset
-        scrollView.setContentOffset(CGPoint(x: 0,y: scrollView.contentOffset.y+bottomInset), animated: true)
+        scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + bottomInset), animated: true)
         print("Shown")
     }
 
-    @objc func keyboardWillHide(notification: NSNotification) {
+    @objc func keyboardWillHide(notification _: NSNotification) {
         scrollView.contentInset = .zero
         scrollView.scrollIndicatorInsets = .zero
         print("Hidden")
@@ -104,16 +106,14 @@ class GeneratorViewController: UIViewController {
 
     func registerKeyboardNotifications() {
         NotificationCenter.default.addObserver(self,
-                                             selector: #selector(keyboardWillShow(notification:)),
-                                             name: UIResponder.keyboardWillShowNotification,
-                                             object: nil)
+                                               selector: #selector(keyboardWillShow(notification:)),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
         NotificationCenter.default.addObserver(self,
-                                             selector: #selector(keyboardWillHide(notification:)),
-                                             name: UIResponder.keyboardWillHideNotification,
-                                             object: nil)
+                                               selector: #selector(keyboardWillHide(notification:)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
     }
-
-
 }
 
 extension GeneratorViewController {
@@ -146,9 +146,9 @@ extension GeneratorViewController {
     }
 
     @objc func checkCurrentGenerationStatus() {
-        guard let generationIdentifier = self.currentGenerationIdentifier else { return }
+        guard let generationIdentifier = currentGenerationIdentifier else { return }
         Log.info("\(generationIdentifier) - Checking request status...")
-        V2API.getImageAsyncCheck(_id: generationIdentifier, clientAgent: hordeClientAgent()) { data, error in
+        V2API.getImageAsyncCheck(_id: generationIdentifier, clientAgent: hordeClientAgent()) { data, _ in
             if let data = data {
                 Log.debug("\(data)")
                 if let done = data.done, let restarted = data.restarted, done, restarted <= 0 {
@@ -168,10 +168,10 @@ extension GeneratorViewController {
     }
 
     func getFinishedImageAndDisplay() {
-        guard let generationIdentifier = self.currentGenerationIdentifier else { return }
-        guard var generationBody = self.currentGenerationBody else { return }
+        guard let generationIdentifier = currentGenerationIdentifier else { return }
+        guard var generationBody = currentGenerationBody else { return }
         Log.info("\(generationIdentifier) - Fetching finished generation...")
-        V2API.getImageAsyncStatus(_id: generationIdentifier, clientAgent: hordeClientAgent()) { [self] data, error in
+        V2API.getImageAsyncStatus(_id: generationIdentifier, clientAgent: hordeClientAgent()) { [self] data, _ in
             if let data = data {
                 Log.debug("\(data)")
                 if data.finished == 1 {
@@ -199,6 +199,4 @@ extension GeneratorViewController {
             }
         }
     }
-
 }
-

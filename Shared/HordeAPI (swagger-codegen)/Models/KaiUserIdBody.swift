@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct KaiUserIdBody: Codable {
-
     public var kaiId: Int?
     public var kudosAmount: Int?
     public var trusted: Bool?
@@ -21,10 +18,9 @@ public struct KaiUserIdBody: Codable {
         self.trusted = trusted
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case kaiId = "kai_id"
         case kudosAmount = "kudos_amount"
         case trusted
     }
-
 }

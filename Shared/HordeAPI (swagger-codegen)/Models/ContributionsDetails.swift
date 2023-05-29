@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct ContributionsDetails: Codable {
-
     /** How many megapixelsteps this user has generated */
     public var megapixelsteps: Decimal?
     /** How many images this user has generated */
@@ -20,6 +17,4 @@ public struct ContributionsDetails: Codable {
         self.megapixelsteps = megapixelsteps
         self.fulfillments = fulfillments
     }
-
-
 }

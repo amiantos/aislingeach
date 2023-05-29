@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct GenerationInputKobold: Codable {
-
     /** The prompt which will be sent to KoboldAI to generate text */
     public var prompt: String?
     public var params: ModelGenerationInputKobold?
@@ -39,7 +36,7 @@ public struct GenerationInputKobold: Codable {
         self.dryRun = dryRun
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case prompt
         case params
         case softprompt
@@ -50,5 +47,4 @@ public struct GenerationInputKobold: Codable {
         case models
         case dryRun = "dry_run"
     }
-
 }

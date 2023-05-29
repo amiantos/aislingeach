@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct TeamDetailsLite: Codable {
-
     /** The Name given to this team. */
     public var name: String?
     /** The UUID of this team. */
@@ -21,9 +18,8 @@ public struct TeamDetailsLite: Codable {
         self._id = _id
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case name
         case _id = "id"
     }
-
 }

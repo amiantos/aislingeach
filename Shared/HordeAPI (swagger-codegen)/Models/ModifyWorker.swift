@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct ModifyWorker: Codable {
-
     /** The new state of the &#x27;maintenance&#x27; var for this worker. When True, this worker will not pick up any new requests. */
     public var maintenance: Bool?
     /** The new state of the &#x27;paused&#x27; var for this worker. When True, this worker will not be given any new requests. */
@@ -29,6 +26,4 @@ public struct ModifyWorker: Codable {
         self.name = name
         self.team = team
     }
-
-
 }

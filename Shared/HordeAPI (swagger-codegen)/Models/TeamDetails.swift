@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct TeamDetails: Codable {
-
     /** The Name given to this team. */
     public var name: String?
     /** The UUID of this team. */
@@ -43,7 +40,7 @@ public struct TeamDetails: Codable {
         self.models = models
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case name
         case _id = "id"
         case info
@@ -55,5 +52,4 @@ public struct TeamDetails: Codable {
         case workers
         case models
     }
-
 }

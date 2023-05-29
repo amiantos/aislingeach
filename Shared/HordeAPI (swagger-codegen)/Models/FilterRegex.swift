@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct FilterRegex: Codable {
-
     /** The integer defining this filter type */
     public var filterType: Int
     /** The full regex for this filter type. */
@@ -21,9 +18,8 @@ public struct FilterRegex: Codable {
         self.regex = regex
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case filterType = "filter_type"
         case regex
     }
-
 }

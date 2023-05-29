@@ -7,11 +7,8 @@
 
 import Foundation
 
-
-
 public struct ModelPayloadRootStable: Codable {
-
-    public enum SamplerName: String, Codable { 
+    public enum SamplerName: String, Codable {
         case kLms = "k_lms"
         case kHeun = "k_heun"
         case kEuler = "k_euler"
@@ -22,11 +19,12 @@ public struct ModelPayloadRootStable: Codable {
         case kDpmAdaptive = "k_dpm_adaptive"
         case kDpmpp2sA = "k_dpmpp_2s_a"
         case kDpmpp2m = "k_dpmpp_2m"
-        case dpmsolver = "dpmsolver"
+        case dpmsolver
         case kDpmppSde = "k_dpmpp_sde"
         case ddim = "DDIM"
     }
-    public enum PostProcessing: String, Codable { 
+
+    public enum PostProcessing: String, Codable {
         case gfpgan = "GFPGAN"
         case realesrganX4plus = "RealESRGAN_x4plus"
         case realesrganX2plus = "RealESRGAN_x2plus"
@@ -36,17 +34,19 @@ public struct ModelPayloadRootStable: Codable {
         case codeFormers = "CodeFormers"
         case stripBackground = "strip_background"
     }
-    public enum ControlType: String, Codable { 
-        case canny = "canny"
-        case hed = "hed"
-        case depth = "depth"
-        case normal = "normal"
-        case openpose = "openpose"
-        case seg = "seg"
-        case scribble = "scribble"
-        case fakescribbles = "fakescribbles"
-        case hough = "hough"
+
+    public enum ControlType: String, Codable {
+        case canny
+        case hed
+        case depth
+        case normal
+        case openpose
+        case seg
+        case scribble
+        case fakescribbles
+        case hough
     }
+
     public var samplerName: SamplerName?
     public var cfgScale: Decimal?
     public var denoisingStrength: Decimal?
@@ -95,7 +95,7 @@ public struct ModelPayloadRootStable: Codable {
         self.loras = loras
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case samplerName = "sampler_name"
         case cfgScale = "cfg_scale"
         case denoisingStrength = "denoising_strength"
@@ -114,5 +114,4 @@ public struct ModelPayloadRootStable: Codable {
         case facefixerStrength = "facefixer_strength"
         case loras
     }
-
 }

@@ -8,18 +8,17 @@
 import UIKit
 
 class ImageDetailViewController: UIViewController {
-
     var generatedImage: GeneratedImage?
 
-    @IBOutlet weak var promptLabel: UILabel!
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet var promptLabel: UILabel!
+    @IBOutlet var imageView: UIImageView!
 
-    @IBAction func shareButtonAction(_ sender: UIBarButtonItem) {
+    @IBAction func shareButtonAction(_: UIBarButtonItem) {
         Log.debug("Share button pressed...")
     }
 
-    @IBOutlet weak var favoriteButton: UIBarButtonItem!
-    @IBAction func favoriteButtonAction(_ sender: UIBarButtonItem) {
+    @IBOutlet var favoriteButton: UIBarButtonItem!
+    @IBAction func favoriteButtonAction(_: UIBarButtonItem) {
         Log.debug("Favorite button pressed...")
         if let image = generatedImage {
             ImageDatabase.standard.toggleImageFavorite(generatedImage: image) { [self] image in
@@ -29,7 +28,7 @@ class ImageDetailViewController: UIViewController {
         }
     }
 
-    @IBAction func trashButtonAction(_ sender: UIBarButtonItem) {
+    @IBAction func trashButtonAction(_: UIBarButtonItem) {
         Log.debug("Trash button pressed...")
     }
 
@@ -47,16 +46,14 @@ class ImageDetailViewController: UIViewController {
             favoriteButton.image = UIImage(systemName: image.isFavorite ? "heart.fill" : "heart")
         }
     }
-    
 
     /*
-    // MARK: - Navigation
+     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+         // Get the new view controller using segue.destination.
+         // Pass the selected object to the new view controller.
+     }
+     */
 }

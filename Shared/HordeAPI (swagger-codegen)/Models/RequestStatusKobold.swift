@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct RequestStatusKobold: Codable {
-
     /** The amount of finished jobs in this request */
     public var finished: Int?
     /** The amount of still processing jobs in this request */
@@ -47,7 +44,7 @@ public struct RequestStatusKobold: Codable {
         self.generations = generations
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case finished
         case processing
         case restarted
@@ -60,5 +57,4 @@ public struct RequestStatusKobold: Codable {
         case isPossible = "is_possible"
         case generations
     }
-
 }

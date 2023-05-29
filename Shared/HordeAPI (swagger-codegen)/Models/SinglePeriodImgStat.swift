@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct SinglePeriodImgStat: Codable {
-
     /** The amount of text requests generated during this period. */
     public var requests: Int?
     /** The amount of tokens generated during this period. */
@@ -20,6 +17,4 @@ public struct SinglePeriodImgStat: Codable {
         self.requests = requests
         self.tokens = tokens
     }
-
-
 }

@@ -5,21 +5,21 @@
 //  Created by Brad Root on 5/28/23.
 //
 
-import UIKit
 import CoreData
+import UIKit
 
 private let reuseIdentifier = "imageCell"
 
 class ImageCollectionViewController: UICollectionViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout {
-
     var resultsController: NSFetchedResultsController<GeneratedImage>?
 
     private let itemsPerRow: CGFloat = 3
     private let sectionInsets = UIEdgeInsets(
-      top: 2,
-      left: 2,
-      bottom: 2,
-      right: 2)
+        top: 2,
+        left: 2,
+        bottom: 2,
+        right: 2
+    )
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,49 +40,48 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         } catch {
             fatalError("Failed to fetch entities: \(error)")
         }
-
     }
 
     func collectionView(
         _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-      ) -> CGSize {
+        layout _: UICollectionViewLayout,
+        sizeForItemAt _: IndexPath
+    ) -> CGSize {
         // 2
-          let paddingSpace = (sectionInsets.left + collectionView.contentInset.left) * (itemsPerRow + 1)
-          let availableWidth = view.frame.width - paddingSpace
+        let paddingSpace = (sectionInsets.left + collectionView.contentInset.left) * (itemsPerRow + 1)
+        let availableWidth = view.frame.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
         return CGSize(width: widthPerItem, height: widthPerItem)
-      }
+    }
 
-      // 3
-      func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        insetForSectionAt section: Int
-      ) -> UIEdgeInsets {
+    // 3
+    func collectionView(
+        _: UICollectionView,
+        layout _: UICollectionViewLayout,
+        insetForSectionAt _: Int
+    ) -> UIEdgeInsets {
         return sectionInsets
-      }
+    }
 
-      // 4
-      func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        minimumLineSpacingForSectionAt section: Int
-      ) -> CGFloat {
+    // 4
+    func collectionView(
+        _: UICollectionView,
+        layout _: UICollectionViewLayout,
+        minimumLineSpacingForSectionAt _: Int
+    ) -> CGFloat {
         return sectionInsets.left
-      }
+    }
 
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+    func controller(_: NSFetchedResultsController<NSFetchRequestResult>, didChange _: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
         case .insert:
-            self.collectionView.insertItems(at: [newIndexPath!])
+            collectionView.insertItems(at: [newIndexPath!])
         case .delete:
-            self.collectionView.deleteItems(at: [indexPath!])
+            collectionView.deleteItems(at: [indexPath!])
         case .update:
-            self.collectionView.reloadItems(at: [indexPath!])
+            collectionView.reloadItems(at: [indexPath!])
         case .move:
-            self.collectionView.moveItem(at: indexPath!, to: newIndexPath!)
+            collectionView.moveItem(at: indexPath!, to: newIndexPath!)
         @unknown default:
             fatalError()
         }
@@ -90,16 +89,15 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
     // MARK: UICollectionViewDataSource
 
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        if let frc = self.resultsController {
+    override func numberOfSections(in _: UICollectionView) -> Int {
+        if let frc = resultsController {
             return frc.sections!.count
         }
         return 0
     }
 
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let sections = self.resultsController?.sections else {
+    override func collectionView(_: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let sections = resultsController?.sections else {
             fatalError("No sections in fetchedResultsController")
         }
         let sectionInfo = sections[section]
@@ -109,21 +107,21 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ImageCollectionViewCell
-        guard let object = self.resultsController?.object(at: indexPath) else {
+        guard let object = resultsController?.object(at: indexPath) else {
             fatalError("Attempt to configure cell without a managed object")
         }
         // Configure the cell
         cell.imageView.image = UIImage(data: object.image!)
         cell.favoriteIcon.isHidden = !object.isFavorite
         cell.autoresizesSubviews = true
-    
+
         return cell
     }
 
     // MARK: UICollectionViewDelegate
 
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let object = self.resultsController?.object(at: indexPath) else {
+    override func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let object = resultsController?.object(at: indexPath) else {
             fatalError("Attempt to configure cell without a managed object")
         }
 
@@ -131,36 +129,35 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         let controller = storyboard.instantiateViewController(withIdentifier: "imageDetailViewController") as! ImageDetailViewController
         controller.generatedImage = object
         controller.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(controller, animated: true)
+        navigationController?.pushViewController(controller, animated: true)
     }
 
     /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
+     // Uncomment this method to specify if the specified item should be highlighted during tracking
+     override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
+         return true
+     }
+     */
 
     /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
+     // Uncomment this method to specify if the specified item should be selected
+     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+         return true
+     }
+     */
 
     /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
+     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
+     override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
+         return false
+     }
 
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
+     override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+         return false
+     }
 
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
+     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
 
+     }
+     */
 }

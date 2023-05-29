@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct KudosTransferBody: Codable {
-
     public var username: String?
     public var amount: Int?
 
@@ -18,6 +15,4 @@ public struct KudosTransferBody: Codable {
         self.username = username
         self.amount = amount
     }
-
-
 }

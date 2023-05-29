@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct UserDetails: Codable {
-
     /** The user&#x27;s unique Username. It is a combination of their chosen alias plus their ID. */
     public var username: String?
     /** The user unique ID. It is always an integer. */
@@ -74,7 +71,7 @@ public struct UserDetails: Codable {
         self.records = records
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case username
         case _id = "id"
         case kudos
@@ -98,5 +95,4 @@ public struct UserDetails: Codable {
         case contributions
         case records
     }
-
 }

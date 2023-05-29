@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct ModifyTeam: Codable {
-
     /** The ID of the team */
     public var _id: String?
     /** The Name of the team */
@@ -24,10 +21,9 @@ public struct ModifyTeam: Codable {
         self.info = info
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case name
         case info
     }
-
 }

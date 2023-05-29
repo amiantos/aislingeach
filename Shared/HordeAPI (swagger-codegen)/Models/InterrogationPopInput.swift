@@ -7,14 +7,11 @@
 
 import Foundation
 
-
-
 public struct InterrogationPopInput: Codable {
-
-    public enum Forms: String, Codable { 
-        case caption = "caption"
-        case interrogation = "interrogation"
-        case nsfw = "nsfw"
+    public enum Forms: String, Codable {
+        case caption
+        case interrogation
+        case nsfw
         case gfpgan = "GFPGAN"
         case realesrganX4plus = "RealESRGAN_x4plus"
         case realesrganX2plus = "RealESRGAN_x2plus"
@@ -24,6 +21,7 @@ public struct InterrogationPopInput: Codable {
         case codeFormers = "CodeFormers"
         case stripBackground = "strip_background"
     }
+
     /** The Name of the Worker */
     public var name: String?
     public var priorityUsernames: [String]?
@@ -50,7 +48,7 @@ public struct InterrogationPopInput: Codable {
         self.maxTiles = maxTiles
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case name
         case priorityUsernames = "priority_usernames"
         case forms
@@ -60,5 +58,4 @@ public struct InterrogationPopInput: Codable {
         case threads
         case maxTiles = "max_tiles"
     }
-
 }

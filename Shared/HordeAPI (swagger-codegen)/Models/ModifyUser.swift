@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct ModifyUser: Codable {
-
     /** The new total Kudos this user has after this request */
     public var newKudos: Decimal?
     /** The request concurrency this user has after this request */
@@ -57,7 +54,7 @@ public struct ModifyUser: Codable {
         self.contact = contact
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case newKudos = "new_kudos"
         case concurrency
         case usageMultiplier = "usage_multiplier"
@@ -73,5 +70,4 @@ public struct ModifyUser: Codable {
         case newSuspicion = "new_suspicion"
         case contact
     }
-
 }

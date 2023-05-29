@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct NoValidRequestFound: Codable {
-
     /** How many waiting requests were skipped because they demanded a specific worker */
     public var workerId: Int?
     /** How many waiting requests were skipped because they required higher performance */
@@ -39,7 +36,7 @@ public struct NoValidRequestFound: Codable {
         self.kudos = kudos
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case workerId = "worker_id"
         case performance
         case nsfw
@@ -49,5 +46,4 @@ public struct NoValidRequestFound: Codable {
         case bridgeVersion = "bridge_version"
         case kudos
     }
-
 }

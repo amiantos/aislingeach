@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct ModifyWorkerInput: Codable {
-
     /** Set to true to put this worker into maintenance. */
     public var maintenance: Bool?
     /** if maintenance is True, you can optionally provide a message to be used instead of the default maintenance message, so that the owner is informed. */
@@ -33,7 +30,7 @@ public struct ModifyWorkerInput: Codable {
         self.team = team
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case maintenance
         case maintenanceMsg = "maintenance_msg"
         case paused
@@ -41,5 +38,4 @@ public struct ModifyWorkerInput: Codable {
         case name
         case team
     }
-
 }

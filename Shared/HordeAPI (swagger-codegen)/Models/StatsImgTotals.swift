@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct StatsImgTotals: Codable {
-
     public var minute: SinglePeriodImgStat?
     public var hour: SinglePeriodImgStat?
     public var day: SinglePeriodImgStat?
@@ -24,6 +21,4 @@ public struct StatsImgTotals: Codable {
         self.month = month
         self.total = total
     }
-
-
 }

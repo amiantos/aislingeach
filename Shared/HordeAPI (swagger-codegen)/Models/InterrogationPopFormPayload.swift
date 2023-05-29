@@ -7,14 +7,11 @@
 
 import Foundation
 
-
-
 public struct InterrogationPopFormPayload: Codable {
-
-    public enum Form: String, Codable { 
-        case caption = "caption"
-        case interrogation = "interrogation"
-        case nsfw = "nsfw"
+    public enum Form: String, Codable {
+        case caption
+        case interrogation
+        case nsfw
         case gfpgan = "GFPGAN"
         case realesrganX4plus = "RealESRGAN_x4plus"
         case realesrganX2plus = "RealESRGAN_x2plus"
@@ -24,6 +21,7 @@ public struct InterrogationPopFormPayload: Codable {
         case codeFormers = "CodeFormers"
         case stripBackground = "strip_background"
     }
+
     /** The UUID of the interrogation form. Use this to post the results in the future */
     public var _id: String?
     /** The name of this interrogation form */
@@ -42,12 +40,11 @@ public struct InterrogationPopFormPayload: Codable {
         self.r2Upload = r2Upload
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case form
         case payload
         case sourceImage = "source_image"
         case r2Upload = "r2_upload"
     }
-
 }

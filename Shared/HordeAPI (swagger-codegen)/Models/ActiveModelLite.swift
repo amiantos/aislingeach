@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct ActiveModelLite: Codable {
-
     /** The Name of a model available by workers in this horde. */
     public var name: String?
     /** How many of workers in this horde are running this model. */
@@ -20,6 +17,4 @@ public struct ActiveModelLite: Codable {
         self.name = name
         self.count = count
     }
-
-
 }

@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct GenerationPayload: Codable {
-
     public var payload: ModelPayloadKobold?
     /** The UUID for this text generation */
     public var _id: String?
@@ -28,12 +25,11 @@ public struct GenerationPayload: Codable {
         self.model = model
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case payload
         case _id = "id"
         case skipped
         case softprompt
         case model
     }
-
 }

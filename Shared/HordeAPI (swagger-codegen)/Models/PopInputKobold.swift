@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct PopInputKobold: Codable {
-
     /** The Name of the Worker */
     public var name: String?
     public var priorityUsernames: [String]?
@@ -45,7 +42,7 @@ public struct PopInputKobold: Codable {
         self.softprompts = softprompts
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case name
         case priorityUsernames = "priority_usernames"
         case nsfw
@@ -58,5 +55,4 @@ public struct PopInputKobold: Codable {
         case maxContextLength = "max_context_length"
         case softprompts
     }
-
 }

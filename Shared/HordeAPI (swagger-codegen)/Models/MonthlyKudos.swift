@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct MonthlyKudos: Codable {
-
     /** How much recurring Kudos this user receives monthly. */
     public var amount: Int?
     /** Last date this user received monthly Kudos. */
@@ -21,9 +18,8 @@ public struct MonthlyKudos: Codable {
         self.lastReceived = lastReceived
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case amount
         case lastReceived = "last_received"
     }
-
 }

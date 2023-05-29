@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct RequestInterrogationResponse: Codable {
-
     /** The UUID of the request. Use this to retrieve the request status in the future */
     public var _id: String?
     /** Any extra information from the horde about this request */
@@ -21,9 +18,8 @@ public struct RequestInterrogationResponse: Codable {
         self.message = message
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case message
     }
-
 }

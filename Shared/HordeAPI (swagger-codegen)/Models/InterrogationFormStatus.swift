@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct InterrogationFormStatus: Codable {
-
     /** The name of this interrogation form */
     public var form: String?
     /** The overall status of this interrogation */
@@ -22,6 +19,4 @@ public struct InterrogationFormStatus: Codable {
         self.state = state
         self.result = result
     }
-
-
 }

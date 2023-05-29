@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct NoValidRequestFoundKobold: Codable {
-
     /** How many waiting requests were skipped because they demanded a specific worker */
     public var workerId: Int?
     /** How many waiting requests were skipped because they required higher performance */
@@ -48,7 +45,7 @@ public struct NoValidRequestFoundKobold: Codable {
         self.matchingSoftprompt = matchingSoftprompt
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case workerId = "worker_id"
         case performance
         case nsfw
@@ -61,5 +58,4 @@ public struct NoValidRequestFoundKobold: Codable {
         case maxLength = "max_length"
         case matchingSoftprompt = "matching_softprompt"
     }
-
 }

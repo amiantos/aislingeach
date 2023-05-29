@@ -14,20 +14,19 @@ enum DateError: String, Error {
 }
 
 open class CodableHelper {
-
     public static var dateformatter: DateFormatter?
 
-    open class func decode<T>(_ type: T.Type, from data: Data) -> (decodableObj: T?, error: Error?) where T : Decodable {
+    open class func decode<T>(_ type: T.Type, from data: Data) -> (decodableObj: T?, error: Error?) where T: Decodable {
         var returnedDecodable: T? = nil
         var returnedError: Error? = nil
 
         let decoder = JSONDecoder()
 
-        if let df = self.dateformatter {
+        if let df = dateformatter {
             decoder.dateDecodingStrategy = .formatted(df)
         } else {
             decoder.dataDecodingStrategy = .base64
-            decoder.dateDecodingStrategy = .custom({ (decoder) -> Date in
+            decoder.dateDecodingStrategy = .custom { decoder -> Date in
                 let container = try decoder.singleValueContainer()
                 let dateStr = try container.decode(String.self)
 
@@ -38,23 +37,22 @@ open class CodableHelper {
                     "yyyy-MM-dd'T'HH:mm:ss'Z'",
                     "yyyy-MM-dd'T'HH:mm:ss.SSS",
                     "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                    "yyyy-MM-dd HH:mm:ss"
-                    ].map { (format: String) -> DateFormatter in
-                        let formatter = DateFormatter()
-                        formatter.locale = Locale(identifier: "en_US_POSIX")
-                        formatter.dateFormat = format
-                        return formatter
+                    "yyyy-MM-dd HH:mm:ss",
+                ].map { (format: String) -> DateFormatter in
+                    let formatter = DateFormatter()
+                    formatter.locale = Locale(identifier: "en_US_POSIX")
+                    formatter.dateFormat = format
+                    return formatter
                 }
 
                 for formatter in formatters {
-
                     if let date = formatter.date(from: dateStr) {
                         return date
                     }
                 }
 
                 throw DateError.invalidDate
-            })
+            }
         }
 
         do {
@@ -66,7 +64,7 @@ open class CodableHelper {
         return (returnedDecodable, returnedError)
     }
 
-    open class func encode<T>(_ value: T, prettyPrint: Bool = false) -> EncodeResult where T : Encodable {
+    open class func encode<T>(_ value: T, prettyPrint: Bool = false) -> EncodeResult where T: Encodable {
         var returnedData: Data?
         var returnedError: Error? = nil
 

@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct NoValidRequestFoundStable: Codable {
-
     /** How many waiting requests were skipped because they demanded a specific worker */
     public var workerId: Int?
     /** How many waiting requests were skipped because they required higher performance */
@@ -60,7 +57,7 @@ public struct NoValidRequestFoundStable: Codable {
         self.controlnet = controlnet
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case workerId = "worker_id"
         case performance
         case nsfw
@@ -77,5 +74,4 @@ public struct NoValidRequestFoundStable: Codable {
         case lora
         case controlnet
     }
-
 }

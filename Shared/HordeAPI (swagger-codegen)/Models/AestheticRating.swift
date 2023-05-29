@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct AestheticRating: Codable {
-
     /** The UUID of image being rated */
     public var _id: String
     /** The aesthetic rating 1-10 for this image */
@@ -24,10 +21,9 @@ public struct AestheticRating: Codable {
         self.artifacts = artifacts
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case rating
         case artifacts
     }
-
 }

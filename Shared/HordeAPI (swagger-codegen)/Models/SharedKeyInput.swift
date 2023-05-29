@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct SharedKeyInput: Codable {
-
     /** The Kudos limit assigned to this key. If -1, then anyone with this key can use an unlimited amount of kudos from this account. */
     public var kudos: Int?
     /** The amount of days after which this key will expire. If -1, this key will not expire */
@@ -23,6 +20,4 @@ public struct SharedKeyInput: Codable {
         self.expiry = expiry
         self.name = name
     }
-
-
 }

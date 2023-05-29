@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct TxtModelStats: Codable {
-
     public var day: Int?
     public var month: Int?
     public var total: Int?
@@ -20,6 +17,4 @@ public struct TxtModelStats: Codable {
         self.month = month
         self.total = total
     }
-
-
 }

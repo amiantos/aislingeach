@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct InterrogationPopPayload: Codable {
-
     public var forms: [InterrogationPopFormPayload]?
     public var skipped: NoValidInterrogationsFound?
 
@@ -18,6 +15,4 @@ public struct InterrogationPopPayload: Codable {
         self.forms = forms
         self.skipped = skipped
     }
-
-
 }

@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct ModifyTeamInput: Codable {
-
     /** The name of the team. No profanity allowed! */
     public var name: String?
     /** Extra information or comments about this team. */
@@ -20,6 +17,4 @@ public struct ModifyTeamInput: Codable {
         self.name = name
         self.info = info
     }
-
-
 }

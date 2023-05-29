@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct NoValidInterrogationsFound: Codable {
-
     /** How many waiting requests were skipped because they demanded a specific worker */
     public var workerId: Int?
     /** How many waiting requests were skipped because they demanded a trusted worker which this worker is not. */
@@ -24,10 +21,9 @@ public struct NoValidInterrogationsFound: Codable {
         self.bridgeVersion = bridgeVersion
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case workerId = "worker_id"
         case untrusted
         case bridgeVersion = "bridge_version"
     }
-
 }

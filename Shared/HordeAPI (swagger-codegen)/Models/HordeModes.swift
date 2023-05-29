@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct HordeModes: Codable {
-
     /** When True, this Horde will not accept new requests for image generation, but will finish processing the ones currently in the queue. */
     public var maintenanceMode: Bool?
     /** When True, this Horde will not only accept worker explicitly invited to join. */
@@ -24,10 +21,9 @@ public struct HordeModes: Codable {
         self.raidMode = raidMode
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case maintenanceMode = "maintenance_mode"
         case inviteOnlyMode = "invite_only_mode"
         case raidMode = "raid_mode"
     }
-
 }

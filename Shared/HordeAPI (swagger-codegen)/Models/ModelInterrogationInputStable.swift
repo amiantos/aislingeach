@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct ModelInterrogationInputStable: Codable {
-
     public var forms: [ModelInterrogationFormStable]?
     /** The public URL of the image to interrogate */
     public var sourceImage: String?
@@ -23,10 +20,9 @@ public struct ModelInterrogationInputStable: Codable {
         self.slowWorkers = slowWorkers
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case forms
         case sourceImage = "source_image"
         case slowWorkers = "slow_workers"
     }
-
 }

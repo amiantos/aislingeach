@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct UsageDetails: Codable {
-
     /** How many megapixelsteps this user has requested */
     public var megapixelsteps: Decimal?
     /** How many images this user has requested */
@@ -20,6 +17,4 @@ public struct UsageDetails: Codable {
         self.megapixelsteps = megapixelsteps
         self.requests = requests
     }
-
-
 }

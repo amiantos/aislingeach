@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct StatusModesBody: Codable {
-
     public var maintenance: Bool?
     public var inviteOnly: Bool?
     public var raid: Bool?
@@ -21,10 +18,9 @@ public struct StatusModesBody: Codable {
         self.raid = raid
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case maintenance
         case inviteOnly = "invite_only"
         case raid
     }
-
 }

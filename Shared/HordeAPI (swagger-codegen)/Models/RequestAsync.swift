@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct RequestAsync: Codable {
-
     /** The UUID of the request. Use this to retrieve the request status in the future */
     public var _id: String?
     /** The expected kudos consumption for this request. */
@@ -24,10 +21,9 @@ public struct RequestAsync: Codable {
         self.message = message
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case kudos
         case message
     }
-
 }

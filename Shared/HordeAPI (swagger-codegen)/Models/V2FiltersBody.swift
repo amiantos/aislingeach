@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct V2FiltersBody: Codable {
-
     public var prompt: String?
     public var filterType: Int?
 
@@ -19,9 +16,8 @@ public struct V2FiltersBody: Codable {
         self.filterType = filterType
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case prompt
         case filterType = "filter_type"
     }
-
 }

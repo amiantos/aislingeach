@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct ModelPayloadKobold: Codable {
-
     public var n: Int?
     /** Input formatting option. When enabled, adds a leading space to your input if there is no trailing whitespace at the end of the previous action. */
     public var frmtadsnsp: Bool?
@@ -70,7 +67,7 @@ public struct ModelPayloadKobold: Codable {
         self.prompt = prompt
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case n
         case frmtadsnsp
         case frmtrmblln
@@ -91,5 +88,4 @@ public struct ModelPayloadKobold: Codable {
         case samplerOrder = "sampler_order"
         case prompt
     }
-
 }

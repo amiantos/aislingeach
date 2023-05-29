@@ -7,16 +7,14 @@
 
 import Foundation
 
-
-
 public struct SubmitInput: Codable {
-
-    public enum State: String, Codable { 
-        case ok = "ok"
-        case censored = "censored"
-        case faulted = "faulted"
-        case csam = "csam"
+    public enum State: String, Codable {
+        case ok
+        case censored
+        case faulted
+        case csam
     }
+
     /** The UUID of this generation */
     public var _id: String
     /** R2 result was uploaded to R2, else the string of the result. */
@@ -30,10 +28,9 @@ public struct SubmitInput: Codable {
         self.state = state
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case generation
         case state
     }
-
 }

@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct Newspiece: Codable {
-
     /** The date this newspiece was published */
     public var datePublished: String?
     /** The actual piece of news */
@@ -24,10 +21,9 @@ public struct Newspiece: Codable {
         self.importance = importance
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case datePublished = "date_published"
         case newspiece
         case importance
     }
-
 }

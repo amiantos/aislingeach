@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct SharedKeyDetails: Codable {
-
     /** The SharedKey ID */
     public var _id: String?
     /** The owning user&#x27;s unique Username. It is a combination of their chosen alias plus their ID. */
@@ -30,12 +27,11 @@ public struct SharedKeyDetails: Codable {
         self.utilized = utilized
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case username
         case kudos
         case expiry
         case utilized
     }
-
 }

@@ -7,16 +7,11 @@
 
 import Foundation
 
-
-
 public struct KudosAwarded: Codable {
-
     /** The amount of Kudos awarded */
     public var awarded: Int?
 
     public init(awarded: Int? = nil) {
         self.awarded = awarded
     }
-
-
 }

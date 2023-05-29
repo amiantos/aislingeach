@@ -7,16 +7,11 @@
 
 import Foundation
 
-
-
 public struct SimpleResponse: Codable {
-
     /** The result of this operation */
     public var message: String
 
     public init(message: String) {
         self.message = message
     }
-
-
 }

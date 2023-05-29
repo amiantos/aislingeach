@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct RequestStatusCheck: Codable {
-
     /** The amount of finished jobs in this request */
     public var finished: Int?
     /** The amount of still processing jobs in this request */
@@ -45,7 +42,7 @@ public struct RequestStatusCheck: Codable {
         self.isPossible = isPossible
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case finished
         case processing
         case restarted
@@ -57,5 +54,4 @@ public struct RequestStatusCheck: Codable {
         case kudos
         case isPossible = "is_possible"
     }
-
 }

@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct ModifyUserInput: Codable {
-
     /** The amount of kudos to modify (can be negative) */
     public var kudos: Decimal?
     /** The amount of concurrent request this user can have */
@@ -57,7 +54,7 @@ public struct ModifyUserInput: Codable {
         self.contact = contact
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case kudos
         case concurrency
         case usageMultiplier = "usage_multiplier"
@@ -73,5 +70,4 @@ public struct ModifyUserInput: Codable {
         case resetSuspicion = "reset_suspicion"
         case contact
     }
-
 }

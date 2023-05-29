@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct ModelGenerationInputKobold: Codable {
-
     public var n: Int?
     /** Input formatting option. When enabled, adds a leading space to your input if there is no trailing whitespace at the end of the previous action. */
     public var frmtadsnsp: Bool?
@@ -67,7 +64,7 @@ public struct ModelGenerationInputKobold: Codable {
         self.samplerOrder = samplerOrder
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case n
         case frmtadsnsp
         case frmtrmblln
@@ -87,5 +84,4 @@ public struct ModelGenerationInputKobold: Codable {
         case typical
         case samplerOrder = "sampler_order"
     }
-
 }

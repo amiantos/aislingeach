@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct PopInputStable: Codable {
-
     /** The Name of the Worker */
     public var name: String?
     public var priorityUsernames: [String]?
@@ -60,7 +57,7 @@ public struct PopInputStable: Codable {
         self.allowLora = allowLora
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case name
         case priorityUsernames = "priority_usernames"
         case nsfw
@@ -78,5 +75,4 @@ public struct PopInputStable: Codable {
         case allowControlnet = "allow_controlnet"
         case allowLora = "allow_lora"
     }
-
 }

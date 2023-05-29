@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct DeletedWorker: Codable {
-
     /** The ID of the deleted worker */
     public var deletedId: String?
     /** The Name of the deleted worker */
@@ -21,9 +18,8 @@ public struct DeletedWorker: Codable {
         self.deletedName = deletedName
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case deletedId = "deleted_id"
         case deletedName = "deleted_name"
     }
-
 }

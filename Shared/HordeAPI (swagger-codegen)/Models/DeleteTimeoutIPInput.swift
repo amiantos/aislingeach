@@ -7,16 +7,11 @@
 
 import Foundation
 
-
-
 public struct DeleteTimeoutIPInput: Codable {
-
     /** The IP address to remove from timeout */
     public var ipaddr: String
 
     public init(ipaddr: String) {
         self.ipaddr = ipaddr
     }
-
-
 }

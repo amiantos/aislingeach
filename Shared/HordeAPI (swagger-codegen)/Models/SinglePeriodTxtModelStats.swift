@@ -7,18 +7,14 @@
 
 import Foundation
 
-
-
 public struct SinglePeriodTxtModelStats: Codable {
+    public var: [String: Int]?
 
-    public var : [String:Int]?
-
-    public init(: [String:Int]? = nil) {
-        self. = 
+    public init(: [String: Int]? = nil) {
+        self. =
     }
 
-    public enum CodingKeys: String, CodingKey { 
-        case  = "*"
+    public enum CodingKeys: String, CodingKey {
+        case = "*"
     }
-
 }

@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct FilterDetails: Codable {
-
     /** The UUID of this filter. */
     public var _id: String
     /** The regex for this filter. */
@@ -33,7 +30,7 @@ public struct FilterDetails: Codable {
         self.user = user
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case regex
         case filterType = "filter_type"
@@ -41,5 +38,4 @@ public struct FilterDetails: Codable {
         case replacement
         case user
     }
-
 }

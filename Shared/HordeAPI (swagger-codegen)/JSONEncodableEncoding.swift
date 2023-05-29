@@ -5,11 +5,10 @@
 // https://github.com/swagger-api/swagger-codegen
 //
 
-import Foundation
 import Alamofire
+import Foundation
 
 public struct JSONDataEncoding: ParameterEncoding {
-
     // MARK: Properties
 
     private static let jsonDataKey = "jsonData"
@@ -50,5 +49,4 @@ public struct JSONDataEncoding: ParameterEncoding {
         }
         return returnedParams
     }
-
 }

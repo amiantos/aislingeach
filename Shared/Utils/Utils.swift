@@ -8,13 +8,12 @@
 import Foundation
 
 extension Error {
-
     var code: Int {
         guard let err = self as? ErrorResponse
-            else { return (self as NSError).code }
+        else { return (self as NSError).code }
 
-        switch err{
-        case ErrorResponse.error(let code, _, _):
+        switch err {
+        case let ErrorResponse.error(code, _, _):
             return code
         }
     }
@@ -30,12 +29,10 @@ func hordeClientAgent() -> String {
 }
 
 extension Encodable {
-
     func toJSONString() -> String {
         let jsonData = try! JSONEncoder().encode(self)
         return String(data: jsonData, encoding: .utf8)!
     }
-
 }
 
 func instantiate<T: Decodable>(jsonString: String) -> T? {

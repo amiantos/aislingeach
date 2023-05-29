@@ -7,15 +7,13 @@
 
 import Foundation
 
-
-
 public struct GenerationPayloadStable: Codable {
-
-    public enum SourceProcessing: String, Codable { 
-        case img2img = "img2img"
-        case inpainting = "inpainting"
-        case outpainting = "outpainting"
+    public enum SourceProcessing: String, Codable {
+        case img2img
+        case inpainting
+        case outpainting
     }
+
     public var payload: ModelPayloadStable?
     /** The UUID for this image generation */
     public var _id: String?
@@ -42,7 +40,7 @@ public struct GenerationPayloadStable: Codable {
         self.r2Upload = r2Upload
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case payload
         case _id = "id"
         case skipped
@@ -52,5 +50,4 @@ public struct GenerationPayloadStable: Codable {
         case sourceMask = "source_mask"
         case r2Upload = "r2_upload"
     }
-
 }

@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct FilterPromptSuspicion: Codable {
-
     /** Rates how suspicious the provided prompt is. A suspicion over 2 means it would be blocked. */
     public var suspicion: String
     public var matches: [String]?
@@ -19,6 +16,4 @@ public struct FilterPromptSuspicion: Codable {
         self.suspicion = suspicion
         self.matches = matches
     }
-
-
 }

@@ -7,14 +7,12 @@
 
 import Foundation
 
-
-
 public struct Generation: Codable {
-
-    public enum State: String, Codable { 
-        case ok = "ok"
-        case censored = "censored"
+    public enum State: String, Codable {
+        case ok
+        case censored
     }
+
     /** The UUID of the worker which generated this image */
     public var workerId: String?
     /** The name of the worker which generated this image */
@@ -31,11 +29,10 @@ public struct Generation: Codable {
         self.state = state
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case workerId = "worker_id"
         case workerName = "worker_name"
         case model
         case state
     }
-
 }

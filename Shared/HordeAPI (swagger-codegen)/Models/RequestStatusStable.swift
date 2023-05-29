@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct RequestStatusStable: Codable {
-
     /** The amount of finished jobs in this request */
     public var finished: Int?
     /** The amount of still processing jobs in this request */
@@ -50,7 +47,7 @@ public struct RequestStatusStable: Codable {
         self.shared = shared
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case finished
         case processing
         case restarted
@@ -64,5 +61,4 @@ public struct RequestStatusStable: Codable {
         case generations
         case shared
     }
-
 }

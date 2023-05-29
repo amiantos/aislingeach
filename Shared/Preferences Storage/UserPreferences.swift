@@ -19,7 +19,7 @@ struct UserPreferences {
     static var standard: UserDefaults {
         let database = UserDefaults.standard
         database.register(defaults: [
-            Key.apiKey: "0000000000"
+            Key.apiKey: "0000000000",
         ])
 
         return database

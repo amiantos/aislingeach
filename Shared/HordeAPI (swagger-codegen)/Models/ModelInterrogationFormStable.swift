@@ -7,14 +7,11 @@
 
 import Foundation
 
-
-
 public struct ModelInterrogationFormStable: Codable {
-
-    public enum Name: String, Codable { 
-        case caption = "caption"
-        case interrogation = "interrogation"
-        case nsfw = "nsfw"
+    public enum Name: String, Codable {
+        case caption
+        case interrogation
+        case nsfw
         case gfpgan = "GFPGAN"
         case realesrganX4plus = "RealESRGAN_x4plus"
         case realesrganX2plus = "RealESRGAN_x2plus"
@@ -24,6 +21,7 @@ public struct ModelInterrogationFormStable: Codable {
         case codeFormers = "CodeFormers"
         case stripBackground = "strip_background"
     }
+
     /** The type of interrogation this is */
     public var name: Name
     public var payload: String?
@@ -32,6 +30,4 @@ public struct ModelInterrogationFormStable: Codable {
         self.name = name
         self.payload = payload
     }
-
-
 }

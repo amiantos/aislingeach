@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct UserRecords: Codable {
-
     public var usage: UserThingRecords?
     public var contribution: UserThingRecords?
     public var fulfillment: UserAmountRecords?
@@ -22,6 +19,4 @@ public struct UserRecords: Codable {
         self.fulfillment = fulfillment
         self.request = request
     }
-
-
 }

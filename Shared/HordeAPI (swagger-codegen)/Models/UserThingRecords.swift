@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct UserThingRecords: Codable {
-
     /** How many megapixelsteps this user has generated or requested */
     public var megapixelsteps: Decimal?
     /** How many token this user has generated or requested */
@@ -20,6 +17,4 @@ public struct UserThingRecords: Codable {
         self.megapixelsteps = megapixelsteps
         self.tokens = tokens
     }
-
-
 }

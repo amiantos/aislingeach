@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct AestheticsPayload: Codable {
-
     /** The UUID of the best image in this generation batch (only used when 2+ images generated). If 2+ aesthetic ratings are also provided, then they take precedence if they&#x27;re not tied. */
     public var best: String?
     public var ratings: [AestheticRating]?
@@ -19,6 +16,4 @@ public struct AestheticsPayload: Codable {
         self.best = best
         self.ratings = ratings
     }
-
-
 }

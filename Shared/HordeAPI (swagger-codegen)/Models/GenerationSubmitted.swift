@@ -7,16 +7,11 @@
 
 import Foundation
 
-
-
 public struct GenerationSubmitted: Codable {
-
     /** The amount of kudos gained for submitting this request */
     public var reward: Decimal?
 
     public init(reward: Decimal? = nil) {
         self.reward = reward
     }
-
-
 }

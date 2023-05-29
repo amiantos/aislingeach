@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct ModelPayloadLorasStable: Codable {
-
     /** The exact name of the LoRa */
     public var name: String
     /** The strength of the LoRa to apply to the SD model. */
@@ -27,11 +24,10 @@ public struct ModelPayloadLorasStable: Codable {
         self.injectTrigger = injectTrigger
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case name
         case model
         case clip
         case injectTrigger = "inject_trigger"
     }
-
 }

@@ -8,8 +8,7 @@
 import UIKit
 
 class SettingsTableViewController: UITableViewController, UITextFieldDelegate {
-
-    @IBOutlet weak var apiKeyTextField: UITextField!
+    @IBOutlet var apiKeyTextField: UITextField!
 
     @IBAction func apiKeySaveAction(_ sender: UITextField) {
         if var newKey = sender.text, newKey != UserPreferences.standard.apiKey {

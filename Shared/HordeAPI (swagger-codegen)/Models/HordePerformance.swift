@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct HordePerformance: Codable {
-
     /** The amount of waiting and processing image requests currently in this Horde */
     public var queuedRequests: Int?
     /** The amount of waiting and processing text requests currently in this Horde */
@@ -54,7 +51,7 @@ public struct HordePerformance: Codable {
         self.pastMinuteTokens = pastMinuteTokens
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case queuedRequests = "queued_requests"
         case queuedTextRequests = "queued_text_requests"
         case workerCount = "worker_count"
@@ -69,5 +66,4 @@ public struct HordePerformance: Codable {
         case queuedTokens = "queued_tokens"
         case pastMinuteTokens = "past_minute_tokens"
     }
-
 }

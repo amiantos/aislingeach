@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct WorkerKudosDetails: Codable {
-
     /** How much Kudos this worker has received for generating images */
     public var generated: Decimal?
     /** How much Kudos this worker has received for staying online longer */
@@ -20,6 +17,4 @@ public struct WorkerKudosDetails: Codable {
         self.generated = generated
         self.uptime = uptime
     }
-
-
 }

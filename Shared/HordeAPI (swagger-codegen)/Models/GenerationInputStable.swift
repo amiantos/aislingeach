@@ -7,15 +7,13 @@
 
 import Foundation
 
-
-
 public struct GenerationInputStable: Codable {
-
-    public enum SourceProcessing: String, Codable { 
-        case img2img = "img2img"
-        case inpainting = "inpainting"
-        case outpainting = "outpainting"
+    public enum SourceProcessing: String, Codable {
+        case img2img
+        case inpainting
+        case outpainting
     }
+
     /** The prompt which will be sent to Stable Diffusion to generate an image */
     public var prompt: String
     public var params: ModelGenerationInputStable?
@@ -65,7 +63,7 @@ public struct GenerationInputStable: Codable {
         self.dryRun = dryRun
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case prompt
         case params
         case nsfw
@@ -83,5 +81,4 @@ public struct GenerationInputStable: Codable {
         case replacementFilter = "replacement_filter"
         case dryRun = "dry_run"
     }
-
 }
