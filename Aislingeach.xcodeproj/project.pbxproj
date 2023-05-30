@@ -10,6 +10,7 @@
 		44142AB92A23FD6A0096FFBA /* ImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44142AB82A23FD6A0096FFBA /* ImageDetailViewController.swift */; };
 		44142AC42A242B4E0096FFBA /* .swift-version in Resources */ = {isa = PBXBuildFile; fileRef = 44142AC22A242B4E0096FFBA /* .swift-version */; };
 		44142AC52A242B4E0096FFBA /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = 44142AC32A242B4E0096FFBA /* .swiftformat */; };
+		44142ACA2A25D0380096FFBA /* Cosmos in Frameworks */ = {isa = PBXBuildFile; productRef = 44142AC92A25D0380096FFBA /* Cosmos */; };
 		441EB3702A21DC1E00E449BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441EB36F2A21DC1E00E449BE /* AppDelegate.swift */; };
 		441EB3722A21DC1E00E449BE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441EB3712A21DC1E00E449BE /* SceneDelegate.swift */; };
 		441EB3742A21DC1E00E449BE /* GeneratorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441EB3732A21DC1E00E449BE /* GeneratorViewController.swift */; };
@@ -265,6 +266,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44142ACA2A25D0380096FFBA /* Cosmos in Frameworks */,
 				44C6B6942A228DFA00C2F013 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -541,6 +543,7 @@
 			name = Aislingeach;
 			packageProductDependencies = (
 				44C6B6932A228DFA00C2F013 /* Alamofire */,
+				44142AC92A25D0380096FFBA /* Cosmos */,
 			);
 			productName = Aislingeach;
 			productReference = 441EB36C2A21DC1E00E449BE /* Aislingeach.app */;
@@ -572,6 +575,7 @@
 			mainGroup = 441EB3632A21DC1E00E449BE;
 			packageReferences = (
 				44C6B6922A228DFA00C2F013 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				44142AC82A25D0380096FFBA /* XCRemoteSwiftPackageReference "Cosmos" */,
 			);
 			productRefGroup = 441EB36D2A21DC1E00E449BE /* Products */;
 			projectDirPath = "";
@@ -944,6 +948,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		44142AC82A25D0380096FFBA /* XCRemoteSwiftPackageReference "Cosmos" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/Cosmos.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 23.0.0;
+			};
+		};
 		44C6B6922A228DFA00C2F013 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
@@ -955,6 +967,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		44142AC92A25D0380096FFBA /* Cosmos */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 44142AC82A25D0380096FFBA /* XCRemoteSwiftPackageReference "Cosmos" */;
+			productName = Cosmos;
+		};
 		44C6B6932A228DFA00C2F013 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 44C6B6922A228DFA00C2F013 /* XCRemoteSwiftPackageReference "Alamofire" */;
