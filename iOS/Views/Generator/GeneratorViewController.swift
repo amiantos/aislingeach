@@ -8,6 +8,17 @@
 import UIKit
 
 class GeneratorViewController: UIViewController {
+
+    // MARK: - Variables
+
+    var currentGenerationIdentifier: String?
+    var currentGenerationBody: GenerationInputStable?
+    var currentGenerationHeight: Int = 8
+    var currentGenerationWidth: Int = 8
+    var currentRatioLock: Bool = false
+
+    // MARK: - IBOutlets
+
     @IBOutlet var scrollView: UIScrollView!
 
     @IBOutlet var generationEffectView: UIVisualEffectView!
@@ -27,8 +38,8 @@ class GeneratorViewController: UIViewController {
             // TODO: This isn't quite right
             let difference = Int(currentGenerationWidth - Int(sender.value))
             var newHeight = currentGenerationHeight - difference
-            heightSlider.setValue(Float(currentGenerationHeight - difference), animated: true)
-            currentGenerationHeight = currentGenerationHeight - difference
+            heightSlider.setValue(Float(newHeight), animated: true)
+            currentGenerationHeight = newHeight
         }
         currentGenerationWidth = Int(sender.value)
         updateSliderLabels()
@@ -41,8 +52,8 @@ class GeneratorViewController: UIViewController {
             // TODO: This isn't quite right
             let difference = Int(currentGenerationHeight - Int(sender.value))
             var newWidth = currentGenerationWidth - difference
-            widthSlider.setValue(Float(currentGenerationWidth - difference), animated: true)
-            currentGenerationWidth = currentGenerationWidth - difference
+            widthSlider.setValue(Float(newWidth), animated: true)
+            currentGenerationWidth = newWidth
         }
 
         currentGenerationHeight = Int(sender.value)
@@ -119,11 +130,7 @@ class GeneratorViewController: UIViewController {
         }
     }
 
-    var currentGenerationIdentifier: String?
-    var currentGenerationBody: GenerationInputStable?
-    var currentGenerationHeight: Int = 8
-    var currentGenerationWidth: Int = 8
-    var currentRatioLock: Bool = false
+    // MARK: - View Setup
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -148,6 +155,11 @@ class GeneratorViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
 
+}
+
+// MARK: - Everything Else
+
+extension GeneratorViewController {
     func updateSliderLabels() {
         widthSliderSizeLabel.text = "\(currentGenerationWidth * 64)"
         heightSliderSizeLabel.text = "\(currentGenerationHeight * 64)"
@@ -157,41 +169,6 @@ class GeneratorViewController: UIViewController {
         aspectRatioButton.sizeToFit()
     }
 
-    @objc func keyboardWillShow(notification: NSNotification) {
-        let userInfo: NSDictionary = notification.userInfo! as NSDictionary
-        let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
-
-        // TODO: This should check if the text entry point will be off screen when the keyboard appears and only scroll if needed
-
-        let tabbarHeight = tabBarController?.tabBar.frame.size.height ?? 0
-        let toolbarHeight = navigationController?.toolbar.frame.size.height ?? 0
-        let bottomInset = keyboardSize.height - tabbarHeight - toolbarHeight
-
-        scrollView.contentInset.bottom = bottomInset
-        scrollView.verticalScrollIndicatorInsets.bottom = bottomInset
-        scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + bottomInset), animated: true)
-        print("Shown")
-    }
-
-    @objc func keyboardWillHide(notification _: NSNotification) {
-        scrollView.contentInset = .zero
-        scrollView.scrollIndicatorInsets = .zero
-        print("Hidden")
-    }
-
-    func registerKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillShow(notification:)),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillHide(notification:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
-    }
-}
-
-extension GeneratorViewController {
     func setNewGenerationRequest(generationIdentifier: String, generationBody: GenerationInputStable) {
         Log.info("\(generationIdentifier) - New request received...")
         currentGenerationIdentifier = generationIdentifier
@@ -283,5 +260,43 @@ extension GeneratorViewController {
                 }
             }
         }
+    }
+}
+
+
+// MARK: -Keyboard Stuff
+
+extension GeneratorViewController {
+    @objc func keyboardWillShow(notification: NSNotification) {
+        let userInfo: NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
+
+        // TODO: This should check if the text entry point will be off screen when the keyboard appears and only scroll if needed
+
+        let tabbarHeight = tabBarController?.tabBar.frame.size.height ?? 0
+        let toolbarHeight = navigationController?.toolbar.frame.size.height ?? 0
+        let bottomInset = keyboardSize.height - tabbarHeight - toolbarHeight
+
+        scrollView.contentInset.bottom = bottomInset
+        scrollView.verticalScrollIndicatorInsets.bottom = bottomInset
+        scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + bottomInset), animated: true)
+        print("Shown")
+    }
+
+    @objc func keyboardWillHide(notification _: NSNotification) {
+        scrollView.contentInset = .zero
+        scrollView.scrollIndicatorInsets = .zero
+        print("Hidden")
+    }
+
+    func registerKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow(notification:)),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide(notification:)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
     }
 }
