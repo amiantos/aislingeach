@@ -685,15 +685,15 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LVv-qk-u3e">
-                                                <rect key="frame" x="195" y="812.33333333333337" width="3.3333333333333428" height="13.333333333333371"/>
+                                                <rect key="frame" x="195" y="808.33333333333337" width="3.3333333333333428" height="13.333333333333371"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="xLT-tJ-wg2">
-                                                <rect key="frame" x="20" y="849.66666666666663" width="353" height="54.666666666666629"/>
+                                                <rect key="frame" x="20" y="845.66666666666663" width="353" height="54.666666666666629"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XUy-yc-jFz">
+                                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XUy-yc-jFz">
                                                         <rect key="frame" x="0.0" y="0.0" width="353" height="54.666666666666664"/>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="tinted" imagePlacement="top" title="Submit Rating">
@@ -779,7 +779,7 @@
                                             <constraint firstItem="vvx-UT-rwg" firstAttribute="centerX" secondItem="YhJ-JC-7Yq" secondAttribute="centerX" id="KId-fh-fEa"/>
                                             <constraint firstItem="4Ya-X2-YU7" firstAttribute="leading" secondItem="YhJ-JC-7Yq" secondAttribute="leading" constant="20" symbolic="YES" id="Mi4-gu-Thh"/>
                                             <constraint firstItem="fJ6-WF-Po3" firstAttribute="centerX" secondItem="YhJ-JC-7Yq" secondAttribute="centerX" id="PDu-yi-GNV"/>
-                                            <constraint firstItem="4Ya-X2-YU7" firstAttribute="top" secondItem="xLT-tJ-wg2" secondAttribute="bottom" constant="8" symbolic="YES" id="bl3-3U-1dC"/>
+                                            <constraint firstItem="4Ya-X2-YU7" firstAttribute="top" secondItem="xLT-tJ-wg2" secondAttribute="bottom" constant="12" id="bl3-3U-1dC"/>
                                             <constraint firstItem="LZC-be-azg" firstAttribute="top" secondItem="vvx-UT-rwg" secondAttribute="bottom" constant="8" symbolic="YES" id="ckz-GI-3MV"/>
                                             <constraint firstItem="LVv-qk-u3e" firstAttribute="top" secondItem="maj-AT-NcT" secondAttribute="bottom" constant="8" symbolic="YES" id="dv6-Ya-O5x"/>
                                             <constraint firstAttribute="bottom" secondItem="4Ya-X2-YU7" secondAttribute="bottom" constant="20" symbolic="YES" id="esP-fb-dlI"/>
@@ -833,13 +833,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sfc-FY-qxb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2788.5496183206105" y="807.3943661971831"/>
+            <point key="canvasLocation" x="2788.5496183206105" y="807.04225352112678"/>
         </scene>
         <!--Settings-->
         <scene sceneID="c6K-OV-IfO">
             <objects>
                 <navigationController title="Settings" automaticallyAdjustsScrollViewInsets="NO" id="WQF-rc-YKy" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Settings" image="gearshape" catalog="system" id="Ufm-6a-HRI"/>
+                    <tabBarItem key="tabBarItem" title="You" image="person.crop.circle" catalog="system" id="Ufm-6a-HRI"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="d4z-Ht-sbb">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
@@ -940,12 +940,12 @@
     <resources>
         <image name="aspectratio" catalog="system" width="128" height="93"/>
         <image name="brain.head.profile" catalog="system" width="120" height="128"/>
-        <image name="gearshape" catalog="system" width="128" height="123"/>
         <image name="heart" catalog="system" width="128" height="107"/>
         <image name="heart.fill" catalog="system" width="128" height="107"/>
         <image name="lock.open" catalog="system" width="128" height="110"/>
         <image name="moon" catalog="system" width="128" height="123"/>
         <image name="paperplane" catalog="system" width="128" height="119"/>
+        <image name="person.crop.circle" catalog="system" width="128" height="123"/>
         <image name="photo" catalog="system" width="128" height="93"/>
         <image name="rectangle.2.swap" catalog="system" width="128" height="102"/>
         <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
