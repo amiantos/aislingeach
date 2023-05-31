@@ -11,13 +11,19 @@ import Cosmos
 class RatingViewController: UIViewController {
 
     @IBOutlet weak var tenStarsView: CosmosView!
+    @IBOutlet weak var sixStarsView: CosmosView!
     @IBOutlet weak var imageContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet var imageView: UIImageView!
 
     @IBOutlet var ratingButton: UIButton!
 
 
+    @IBOutlet weak var kudosStatsLabel: UILabel!
+    @IBOutlet weak var kudosStatsContainer: UIView!
+    @IBOutlet weak var imageStatsLabel: UILabel!
+    @IBOutlet weak var imageStatsContainer: UIView!
     @IBOutlet weak var ratingLabel: UILabel!
+    @IBOutlet weak var artifactRatingLabel: UILabel!
     @IBAction func ratingButtonAction(_: UIButton) {
         print("Foo")
     }
@@ -32,6 +38,10 @@ class RatingViewController: UIViewController {
 
         let starSize = (view.frame.size.width) / 14
         tenStarsView.settings.starSize = starSize
+        sixStarsView.settings.starSize = starSize
+
+        kudosStatsContainer.layer.cornerRadius = 5
+        imageStatsContainer.layer.cornerRadius = 5
 
         imageContainerHeightConstraint.constant = view.frame.width
         tenStarsView.didTouchCosmos = { [self] rating in
@@ -56,6 +66,24 @@ class RatingViewController: UIViewController {
                 ratingLabel.text = "The Best"
             default:
                 ratingLabel.text = "OK"
+            }
+        }
+
+        sixStarsView.didTouchCosmos = { [self] rating in
+            switch Int(rating) {
+            case 1:
+                artifactRatingLabel.text = "Complete Mess"
+            case 2:
+                artifactRatingLabel.text = "Serious Issues"
+            case 3:
+                artifactRatingLabel.text = "Minor Issues"
+            case 4:
+                artifactRatingLabel.text = "Noticable Flaws"
+            case 5:
+                artifactRatingLabel.text = "Small Errors"
+            default:
+                artifactRatingLabel.text = "Flawless"
+
             }
         }
 

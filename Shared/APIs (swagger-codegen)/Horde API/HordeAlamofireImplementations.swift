@@ -7,13 +7,13 @@
 import Alamofire
 import Foundation
 
-class AlamofireRequestBuilderFactory: RequestBuilderFactory {
-    func getNonDecodableBuilder<T>() -> RequestBuilder<T>.Type {
-        return AlamofireRequestBuilder<T>.self
+class HordeAlamofireRequestBuilderFactory: HordeRequestBuilderFactory {
+    func getNonDecodableBuilder<T>() -> HordeRequestBuilder<T>.Type {
+        return HordeAlamofireRequestBuilder<T>.self
     }
 
-    func getBuilder<T: Decodable>() -> RequestBuilder<T>.Type {
-        return AlamofireDecodableRequestBuilder<T>.self
+    func getBuilder<T: Decodable>() -> HordeRequestBuilder<T>.Type {
+        return HordeAlamofireDecodableRequestBuilder<T>.self
     }
 }
 
@@ -23,7 +23,7 @@ private var managerStore: [String: Alamofire.SessionManager] = [:]
 // Sync queue to manage safe access to the store manager
 private let syncQueue = DispatchQueue(label: "thread-safe-sync-queue", attributes: .concurrent)
 
-open class AlamofireRequestBuilder<T>: RequestBuilder<T> {
+open class HordeAlamofireRequestBuilder<T>: HordeRequestBuilder<T> {
     public required init(method: String, URLString: String, parameters: [String: Any]?, isBody: Bool, headers: [String: String] = [:]) {
         super.init(method: method, URLString: URLString, parameters: parameters, isBody: isBody, headers: headers)
     }
@@ -296,14 +296,14 @@ private enum DownloadException: Error {
     case requestMissingURL
 }
 
-public enum AlamofireDecodableRequestBuilderError: Error {
+public enum HordeAlamofireDecodableRequestBuilderError: Error {
     case emptyDataResponse
     case nilHTTPResponse
     case jsonDecoding(DecodingError)
     case generalError(Error)
 }
 
-open class AlamofireDecodableRequestBuilder<T: Decodable>: AlamofireRequestBuilder<T> {
+open class HordeAlamofireDecodableRequestBuilder<T: Decodable>: HordeAlamofireRequestBuilder<T> {
     override fileprivate func processRequest(request: DataRequest, _ managerId: String, _ completion: @escaping (_ response: Response<T>?, _ error: Error?) -> Void) {
         if let credential = credential {
             request.authenticate(usingCredential: credential)
@@ -388,12 +388,12 @@ open class AlamofireDecodableRequestBuilder<T: Decodable>: AlamofireRequestBuild
                 }
 
                 guard let data = dataResponse.data, !data.isEmpty else {
-                    completion(nil, ErrorResponse.error(-1, nil, AlamofireDecodableRequestBuilderError.emptyDataResponse))
+                    completion(nil, ErrorResponse.error(-1, nil, HordeAlamofireDecodableRequestBuilderError.emptyDataResponse))
                     return
                 }
 
                 guard let httpResponse = dataResponse.response else {
-                    completion(nil, ErrorResponse.error(-2, nil, AlamofireDecodableRequestBuilderError.nilHTTPResponse))
+                    completion(nil, ErrorResponse.error(-2, nil, HordeAlamofireDecodableRequestBuilderError.nilHTTPResponse))
                     return
                 }
 

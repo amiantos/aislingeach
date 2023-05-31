@@ -6,14 +6,7 @@
 
 import Foundation
 
-open class SwaggerClientAPI {
-    public static var basePath = "https://stablehorde.net/api"
-    public static var credential: URLCredential?
-    public static var customHeaders: [String: String] = [:]
-    public static var requestBuilderFactory: RequestBuilderFactory = AlamofireRequestBuilderFactory()
-}
-
-open class RequestBuilder<T> {
+open class HordeRequestBuilder<T> {
     var credential: URLCredential?
     var headers: [String: String]
     public let parameters: [String: Any]?
@@ -31,7 +24,7 @@ open class RequestBuilder<T> {
         self.isBody = isBody
         self.headers = headers
 
-        addHeaders(SwaggerClientAPI.customHeaders)
+        addHeaders(HordeClientAPI.customHeaders)
     }
 
     open func addHeaders(_ aHeaders: [String: String]) {
@@ -50,12 +43,12 @@ open class RequestBuilder<T> {
     }
 
     open func addCredential() -> Self {
-        credential = SwaggerClientAPI.credential
+        credential = HordeClientAPI.credential
         return self
     }
 }
 
-public protocol RequestBuilderFactory {
-    func getNonDecodableBuilder<T>() -> RequestBuilder<T>.Type
-    func getBuilder<T: Decodable>() -> RequestBuilder<T>.Type
+public protocol HordeRequestBuilderFactory {
+    func getNonDecodableBuilder<T>() -> HordeRequestBuilder<T>.Type
+    func getBuilder<T: Decodable>() -> HordeRequestBuilder<T>.Type
 }

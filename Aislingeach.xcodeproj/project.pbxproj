@@ -111,10 +111,10 @@
 		44C6B6892A228D8200C2F013 /* CodableHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6212A228D8200C2F013 /* CodableHelper.swift */; };
 		44C6B68A2A228D8200C2F013 /* JSONEncodingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6222A228D8200C2F013 /* JSONEncodingHelper.swift */; };
 		44C6B68B2A228D8200C2F013 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6232A228D8200C2F013 /* Extensions.swift */; };
-		44C6B68C2A228D8200C2F013 /* AlamofireImplementations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6242A228D8200C2F013 /* AlamofireImplementations.swift */; };
+		44C6B68C2A228D8200C2F013 /* HordeAlamofireImplementations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6242A228D8200C2F013 /* HordeAlamofireImplementations.swift */; };
 		44C6B68D2A228D8200C2F013 /* JSONEncodableEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6252A228D8200C2F013 /* JSONEncodableEncoding.swift */; };
-		44C6B68E2A228D8200C2F013 /* APIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6262A228D8200C2F013 /* APIs.swift */; };
-		44C6B68F2A228D8200C2F013 /* V2API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6282A228D8200C2F013 /* V2API.swift */; };
+		44C6B68E2A228D8200C2F013 /* HordeAPIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6262A228D8200C2F013 /* HordeAPIs.swift */; };
+		44C6B68F2A228D8200C2F013 /* HordeV2API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6282A228D8200C2F013 /* HordeV2API.swift */; };
 		44C6B6902A228D8200C2F013 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6292A228D8200C2F013 /* JSONValue.swift */; };
 		44C6B6912A228D8200C2F013 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B62A2A228D8200C2F013 /* Models.swift */; };
 		44C6B6942A228DFA00C2F013 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 44C6B6932A228DFA00C2F013 /* Alamofire */; };
@@ -131,6 +131,18 @@
 		44C6B6D52A233B0F00C2F013 /* ImageCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6D42A233B0F00C2F013 /* ImageCollectionViewController.swift */; };
 		44C6B6D72A233BFB00C2F013 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6D62A233BFB00C2F013 /* ImageCollectionViewCell.swift */; };
 		44D331D92A23588800BE8DDF /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D331D82A23588800BE8DDF /* UserAgent.swift */; };
+		44F2AA6D2A26B81200FB8E93 /* DatasetImagePopResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F2AA602A26B81200FB8E93 /* DatasetImagePopResponse.swift */; };
+		44F2AA6E2A26B81200FB8E93 /* RequestAccepted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F2AA612A26B81200FB8E93 /* RequestAccepted.swift */; };
+		44F2AA6F2A26B81200FB8E93 /* DatasetsGetResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F2AA622A26B81200FB8E93 /* DatasetsGetResponse.swift */; };
+		44F2AA702A26B81200FB8E93 /* RatePostInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F2AA632A26B81200FB8E93 /* RatePostInput.swift */; };
+		44F2AA712A26B81200FB8E93 /* TeamsGetResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F2AA642A26B81200FB8E93 /* TeamsGetResponse.swift */; };
+		44F2AA722A26B81200FB8E93 /* RatePostResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F2AA652A26B81200FB8E93 /* RatePostResponse.swift */; };
+		44F2AA732A26B81200FB8E93 /* UploadStdBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F2AA662A26B81200FB8E93 /* UploadStdBody.swift */; };
+		44F2AA742A26B81200FB8E93 /* ModifyUserIdBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F2AA672A26B81200FB8E93 /* ModifyUserIdBody.swift */; };
+		44F2AA752A26B81200FB8E93 /* RatingSetBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F2AA682A26B81200FB8E93 /* RatingSetBody.swift */; };
+		44F2AA772A26B81200FB8E93 /* RatingsAPIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F2AA6A2A26B81200FB8E93 /* RatingsAPIs.swift */; };
+		44F2AA782A26B81200FB8E93 /* RatingsV1API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F2AA6B2A26B81200FB8E93 /* RatingsV1API.swift */; };
+		44F2AA792A26B81200FB8E93 /* RatingsAlamofireImplementations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F2AA6C2A26B81200FB8E93 /* RatingsAlamofireImplementations.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -239,10 +251,10 @@
 		44C6B6212A228D8200C2F013 /* CodableHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableHelper.swift; sourceTree = "<group>"; };
 		44C6B6222A228D8200C2F013 /* JSONEncodingHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONEncodingHelper.swift; sourceTree = "<group>"; };
 		44C6B6232A228D8200C2F013 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		44C6B6242A228D8200C2F013 /* AlamofireImplementations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireImplementations.swift; sourceTree = "<group>"; };
+		44C6B6242A228D8200C2F013 /* HordeAlamofireImplementations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HordeAlamofireImplementations.swift; sourceTree = "<group>"; };
 		44C6B6252A228D8200C2F013 /* JSONEncodableEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONEncodableEncoding.swift; sourceTree = "<group>"; };
-		44C6B6262A228D8200C2F013 /* APIs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIs.swift; sourceTree = "<group>"; };
-		44C6B6282A228D8200C2F013 /* V2API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V2API.swift; sourceTree = "<group>"; };
+		44C6B6262A228D8200C2F013 /* HordeAPIs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HordeAPIs.swift; sourceTree = "<group>"; };
+		44C6B6282A228D8200C2F013 /* HordeV2API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HordeV2API.swift; sourceTree = "<group>"; };
 		44C6B6292A228D8200C2F013 /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
 		44C6B62A2A228D8200C2F013 /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		44C6B6952A22AA3D00C2F013 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -259,6 +271,18 @@
 		44C6B6D42A233B0F00C2F013 /* ImageCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewController.swift; sourceTree = "<group>"; };
 		44C6B6D62A233BFB00C2F013 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		44D331D82A23588800BE8DDF /* UserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgent.swift; sourceTree = "<group>"; };
+		44F2AA602A26B81200FB8E93 /* DatasetImagePopResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatasetImagePopResponse.swift; sourceTree = "<group>"; };
+		44F2AA612A26B81200FB8E93 /* RequestAccepted.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestAccepted.swift; sourceTree = "<group>"; };
+		44F2AA622A26B81200FB8E93 /* DatasetsGetResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatasetsGetResponse.swift; sourceTree = "<group>"; };
+		44F2AA632A26B81200FB8E93 /* RatePostInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatePostInput.swift; sourceTree = "<group>"; };
+		44F2AA642A26B81200FB8E93 /* TeamsGetResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsGetResponse.swift; sourceTree = "<group>"; };
+		44F2AA652A26B81200FB8E93 /* RatePostResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatePostResponse.swift; sourceTree = "<group>"; };
+		44F2AA662A26B81200FB8E93 /* UploadStdBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadStdBody.swift; sourceTree = "<group>"; };
+		44F2AA672A26B81200FB8E93 /* ModifyUserIdBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModifyUserIdBody.swift; sourceTree = "<group>"; };
+		44F2AA682A26B81200FB8E93 /* RatingSetBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingSetBody.swift; sourceTree = "<group>"; };
+		44F2AA6A2A26B81200FB8E93 /* RatingsAPIs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingsAPIs.swift; sourceTree = "<group>"; };
+		44F2AA6B2A26B81200FB8E93 /* RatingsV1API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingsV1API.swift; sourceTree = "<group>"; };
+		44F2AA6C2A26B81200FB8E93 /* RatingsAlamofireImplementations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingsAlamofireImplementations.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,7 +302,7 @@
 			isa = PBXGroup;
 			children = (
 				441EB3852A21DDD700E449BE /* Dev */,
-				441EB3882A21ECE400E449BE /* HordeAPI (swagger-codegen) */,
+				441EB3882A21ECE400E449BE /* APIs (swagger-codegen) */,
 				44142ABF2A240E590096FFBA /* Image Storage */,
 				44142AC02A240E8D0096FFBA /* Preferences Storage */,
 				44142AC12A240EAB0096FFBA /* Utils */,
@@ -354,24 +378,15 @@
 			path = Dev;
 			sourceTree = "<group>";
 		};
-		441EB3882A21ECE400E449BE /* HordeAPI (swagger-codegen) */ = {
+		441EB3882A21ECE400E449BE /* APIs (swagger-codegen) */ = {
 			isa = PBXGroup;
 			children = (
-				44C6B6242A228D8200C2F013 /* AlamofireImplementations.swift */,
-				44C6B6202A228D8200C2F013 /* APIHelper.swift */,
-				44C6B6272A228D8200C2F013 /* APIs */,
-				44C6B6262A228D8200C2F013 /* APIs.swift */,
-				44C6B6212A228D8200C2F013 /* CodableHelper.swift */,
-				44C6B5C22A228D8200C2F013 /* Configuration.swift */,
-				44C6B6232A228D8200C2F013 /* Extensions.swift */,
-				44C6B6252A228D8200C2F013 /* JSONEncodableEncoding.swift */,
-				44C6B6222A228D8200C2F013 /* JSONEncodingHelper.swift */,
-				44C6B6292A228D8200C2F013 /* JSONValue.swift */,
-				44C6B5C32A228D8200C2F013 /* Models */,
-				44C6B62A2A228D8200C2F013 /* Models.swift */,
+				44F2AA5E2A26B7DE00FB8E93 /* Ratings API */,
+				44F2AA5D2A26B7B100FB8E93 /* Horde API */,
+				44F2AA7A2A26B9C000FB8E93 /* Shared */,
 				44C6B6952A22AA3D00C2F013 /* README.md */,
 			);
-			path = "HordeAPI (swagger-codegen)";
+			path = "APIs (swagger-codegen)";
 			sourceTree = "<group>";
 		};
 		44C6B5C32A228D8200C2F013 /* Models */ = {
@@ -469,14 +484,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		44C6B6272A228D8200C2F013 /* APIs */ = {
-			isa = PBXGroup;
-			children = (
-				44C6B6282A228D8200C2F013 /* V2API.swift */,
-			);
-			path = APIs;
-			sourceTree = "<group>";
-		};
 		44C6B69A2A22B0D700C2F013 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -523,6 +530,59 @@
 				44142AB82A23FD6A0096FFBA /* ImageDetailViewController.swift */,
 			);
 			path = "Image Browser";
+			sourceTree = "<group>";
+		};
+		44F2AA5D2A26B7B100FB8E93 /* Horde API */ = {
+			isa = PBXGroup;
+			children = (
+				44C6B5C32A228D8200C2F013 /* Models */,
+				44C6B6242A228D8200C2F013 /* HordeAlamofireImplementations.swift */,
+				44C6B6282A228D8200C2F013 /* HordeV2API.swift */,
+				44C6B6262A228D8200C2F013 /* HordeAPIs.swift */,
+			);
+			path = "Horde API";
+			sourceTree = "<group>";
+		};
+		44F2AA5E2A26B7DE00FB8E93 /* Ratings API */ = {
+			isa = PBXGroup;
+			children = (
+				44F2AA5F2A26B81200FB8E93 /* Models */,
+				44F2AA6C2A26B81200FB8E93 /* RatingsAlamofireImplementations.swift */,
+				44F2AA6B2A26B81200FB8E93 /* RatingsV1API.swift */,
+				44F2AA6A2A26B81200FB8E93 /* RatingsAPIs.swift */,
+			);
+			path = "Ratings API";
+			sourceTree = "<group>";
+		};
+		44F2AA5F2A26B81200FB8E93 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				44F2AA602A26B81200FB8E93 /* DatasetImagePopResponse.swift */,
+				44F2AA612A26B81200FB8E93 /* RequestAccepted.swift */,
+				44F2AA622A26B81200FB8E93 /* DatasetsGetResponse.swift */,
+				44F2AA632A26B81200FB8E93 /* RatePostInput.swift */,
+				44F2AA642A26B81200FB8E93 /* TeamsGetResponse.swift */,
+				44F2AA652A26B81200FB8E93 /* RatePostResponse.swift */,
+				44F2AA662A26B81200FB8E93 /* UploadStdBody.swift */,
+				44F2AA672A26B81200FB8E93 /* ModifyUserIdBody.swift */,
+				44F2AA682A26B81200FB8E93 /* RatingSetBody.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		44F2AA7A2A26B9C000FB8E93 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				44C6B6202A228D8200C2F013 /* APIHelper.swift */,
+				44C6B6212A228D8200C2F013 /* CodableHelper.swift */,
+				44C6B5C22A228D8200C2F013 /* Configuration.swift */,
+				44C6B6232A228D8200C2F013 /* Extensions.swift */,
+				44C6B6252A228D8200C2F013 /* JSONEncodableEncoding.swift */,
+				44C6B6222A228D8200C2F013 /* JSONEncodingHelper.swift */,
+				44C6B6292A228D8200C2F013 /* JSONValue.swift */,
+				44C6B62A2A228D8200C2F013 /* Models.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -609,7 +669,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44C6B68F2A228D8200C2F013 /* V2API.swift in Sources */,
+				44C6B68F2A228D8200C2F013 /* HordeV2API.swift in Sources */,
 				44C6B6312A228D8200C2F013 /* ModifyWorkerInput.swift in Sources */,
 				44C6B66A2A228D8200C2F013 /* HordePerformance.swift in Sources */,
 				44C6B6812A228D8200C2F013 /* InterrogateSubmitBody.swift in Sources */,
@@ -620,23 +680,28 @@
 				44C6B6702A228D8200C2F013 /* ModelInterrogationFormStable.swift in Sources */,
 				44C6B6782A228D8200C2F013 /* TeamDetails.swift in Sources */,
 				44C6B6302A228D8200C2F013 /* GenerationInputKobold.swift in Sources */,
+				44F2AA712A26B81200FB8E93 /* TeamsGetResponse.swift in Sources */,
 				44C6B6802A228D8200C2F013 /* StatusModesBody.swift in Sources */,
 				44C6B6642A228D8200C2F013 /* ModifyUserInput.swift in Sources */,
 				44C6B64A2A228D8200C2F013 /* UsageDetails.swift in Sources */,
 				44C6B6432A228D8200C2F013 /* AestheticRating.swift in Sources */,
 				44C6B6532A228D8200C2F013 /* ModelPayloadRootKobold.swift in Sources */,
 				44C6B6D52A233B0F00C2F013 /* ImageCollectionViewController.swift in Sources */,
+				44F2AA722A26B81200FB8E93 /* RatePostResponse.swift in Sources */,
 				44C6B6872A228D8200C2F013 /* ModifyTeamInput.swift in Sources */,
 				44C6B6672A228D8200C2F013 /* PopInputStable.swift in Sources */,
 				44C6B6402A228D8200C2F013 /* GenerationInputStable.swift in Sources */,
+				44F2AA702A26B81200FB8E93 /* RatePostInput.swift in Sources */,
 				44C6B6832A228D8200C2F013 /* V2FiltersBody.swift in Sources */,
 				44C6B6582A228D8200C2F013 /* ModelPayloadLorasStable.swift in Sources */,
 				44C6B6612A228D8200C2F013 /* MonthlyKudos.swift in Sources */,
 				44C6B65A2A228D8200C2F013 /* DeletedTeam.swift in Sources */,
 				44C6B62F2A228D8200C2F013 /* NoValidInterrogationsFound.swift in Sources */,
 				44C6B6602A228D8200C2F013 /* SubmitInput.swift in Sources */,
+				44F2AA752A26B81200FB8E93 /* RatingSetBody.swift in Sources */,
 				44C6B6472A228D8200C2F013 /* ModelGenerationInputStable.swift in Sources */,
 				44C6B6412A228D8200C2F013 /* NoValidRequestFoundStable.swift in Sources */,
+				44F2AA6D2A26B81200FB8E93 /* DatasetImagePopResponse.swift in Sources */,
 				44C6B63E2A228D8200C2F013 /* PutNewFilter.swift in Sources */,
 				44C6B6462A228D8200C2F013 /* RequestStatusStable.swift in Sources */,
 				44C6B64C2A228D8200C2F013 /* UserAmountRecords.swift in Sources */,
@@ -662,10 +727,12 @@
 				44C6B63A2A228D8200C2F013 /* KudosAwarded.swift in Sources */,
 				44C6B6852A228D8200C2F013 /* Generation.swift in Sources */,
 				44C6B6502A228D8200C2F013 /* NoValidRequestFound.swift in Sources */,
+				44F2AA6E2A26B81200FB8E93 /* RequestAccepted.swift in Sources */,
 				44C6B6732A228D8200C2F013 /* RequestStatusCheck.swift in Sources */,
 				44C6B68A2A228D8200C2F013 /* JSONEncodingHelper.swift in Sources */,
 				44142AB92A23FD6A0096FFBA /* ImageDetailViewController.swift in Sources */,
-				44C6B68C2A228D8200C2F013 /* AlamofireImplementations.swift in Sources */,
+				44F2AA742A26B81200FB8E93 /* ModifyUserIdBody.swift in Sources */,
+				44C6B68C2A228D8200C2F013 /* HordeAlamofireImplementations.swift in Sources */,
 				44C6B6522A228D8200C2F013 /* UserThingRecords.swift in Sources */,
 				44C6B63F2A228D8200C2F013 /* ActiveModel.swift in Sources */,
 				441EB3702A21DC1E00E449BE /* AppDelegate.swift in Sources */,
@@ -683,10 +750,13 @@
 				44C6B6722A228D8200C2F013 /* GenerationPayloadStable.swift in Sources */,
 				44C6B6752A228D8200C2F013 /* SharedKeyDetails.swift in Sources */,
 				44C6B66C2A228D8200C2F013 /* PopInputKobold.swift in Sources */,
+				44F2AA732A26B81200FB8E93 /* UploadStdBody.swift in Sources */,
+				44F2AA772A26B81200FB8E93 /* RatingsAPIs.swift in Sources */,
 				44C6B67C2A228D8200C2F013 /* InterrogationStatus.swift in Sources */,
 				44C6B6382A228D8200C2F013 /* UserKudosDetails.swift in Sources */,
 				44C6B65B2A228D8200C2F013 /* RequestStatusKobold.swift in Sources */,
 				44C6B64E2A228D8200C2F013 /* PopInput.swift in Sources */,
+				44F2AA792A26B81200FB8E93 /* RatingsAlamofireImplementations.swift in Sources */,
 				44C6B6772A228D8200C2F013 /* GenerationPayload.swift in Sources */,
 				44C6B62D2A228D8200C2F013 /* DeletedWorker.swift in Sources */,
 				44C6B6422A228D8200C2F013 /* ModifyUser.swift in Sources */,
@@ -696,15 +766,17 @@
 				44C6B6392A228D8200C2F013 /* UserDetails.swift in Sources */,
 				44C6B6972A22ACE700C2F013 /* UserPreferences.swift in Sources */,
 				44C6B65C2A228D8200C2F013 /* ModelGenerationInputKobold.swift in Sources */,
+				44F2AA6F2A26B81200FB8E93 /* DatasetsGetResponse.swift in Sources */,
 				44C6B62B2A228D8200C2F013 /* Configuration.swift in Sources */,
 				44C6B6892A228D8200C2F013 /* CodableHelper.swift in Sources */,
 				44C6B6882A228D8200C2F013 /* APIHelper.swift in Sources */,
 				44C6B6342A228D8200C2F013 /* WorkerDetailsLite.swift in Sources */,
 				441EB3722A21DC1E00E449BE /* SceneDelegate.swift in Sources */,
+				44F2AA782A26B81200FB8E93 /* RatingsV1API.swift in Sources */,
 				44C6B66B2A228D8200C2F013 /* PatchExistingFilter.swift in Sources */,
 				44C6B6552A228D8200C2F013 /* HordeModes.swift in Sources */,
 				44C6B67E2A228D8200C2F013 /* GenerationSubmitted.swift in Sources */,
-				44C6B68E2A228D8200C2F013 /* APIs.swift in Sources */,
+				44C6B68E2A228D8200C2F013 /* HordeAPIs.swift in Sources */,
 				44C6B6762A228D8200C2F013 /* ModelInterrogationInputStable.swift in Sources */,
 				44C6B66D2A228D8200C2F013 /* GenerationStable.swift in Sources */,
 				44C6B6A82A232E6200C2F013 /* RatingViewController.swift in Sources */,

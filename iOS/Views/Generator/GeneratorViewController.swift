@@ -116,7 +116,7 @@ class GeneratorViewController: UIViewController {
             replacementFilter: true,
             dryRun: false
         )
-        V2API.postImageAsyncGenerate(body: generationBody, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
+        HordeV2API.postImageAsyncGenerate(body: generationBody, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
             if let data = data, let generationIdentifier = data._id {
                 Log.debug("\(data)")
                 self.setNewGenerationRequest(generationIdentifier: generationIdentifier, generationBody: generationBody)
@@ -200,7 +200,7 @@ extension GeneratorViewController {
     @objc func checkCurrentGenerationStatus() {
         guard let generationIdentifier = currentGenerationIdentifier else { return }
         Log.info("\(generationIdentifier) - Checking request status...")
-        V2API.getImageAsyncCheck(_id: generationIdentifier, clientAgent: hordeClientAgent()) { data, _ in
+        HordeV2API.getImageAsyncCheck(_id: generationIdentifier, clientAgent: hordeClientAgent()) { data, _ in
             if let data = data {
                 Log.debug("\(data)")
                 if let done = data.done, let restarted = data.restarted, done, restarted <= 0 {
@@ -223,7 +223,7 @@ extension GeneratorViewController {
         guard let generationIdentifier = currentGenerationIdentifier else { return }
         guard var generationBody = currentGenerationBody else { return }
         Log.info("\(generationIdentifier) - Fetching finished generation...")
-        V2API.getImageAsyncStatus(_id: generationIdentifier, clientAgent: hordeClientAgent()) { [self] data, _ in
+        HordeV2API.getImageAsyncStatus(_id: generationIdentifier, clientAgent: hordeClientAgent()) { [self] data, _ in
             if let data = data {
                 Log.debug("\(data)")
                 if data.finished == 1 {
