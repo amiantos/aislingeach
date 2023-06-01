@@ -596,17 +596,56 @@
                                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BdB-sW-Vdn">
                                                         <rect key="frame" x="0.0" y="0.0" width="393" height="393"/>
                                                     </imageView>
+                                                    <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mvC-mW-GUv">
+                                                        <rect key="frame" x="0.0" y="0.0" width="393" height="393"/>
+                                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="yNk-k3-jUY">
+                                                            <rect key="frame" x="0.0" y="0.0" width="393" height="393"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="918-Nl-ikO">
+                                                                    <rect key="frame" x="138.33333333333334" y="136.33333333333334" width="116.66666666666666" height="33.666666666666657"/>
+                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="RzN-09-M7C">
+                                                                    <rect key="frame" x="186" y="186" width="20" height="20"/>
+                                                                </activityIndicatorView>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Just a long error message to test whether long error messages will wrap properly in this box if needed." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tNR-xa-MyX">
+                                                                    <rect key="frame" x="20" y="223.00000000000003" width="353" height="82.333333333333343"/>
+                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="tNR-xa-MyX" firstAttribute="top" secondItem="RzN-09-M7C" secondAttribute="bottom" constant="8" symbolic="YES" id="0JO-aK-Q8E"/>
+                                                                <constraint firstItem="RzN-09-M7C" firstAttribute="top" secondItem="918-Nl-ikO" secondAttribute="bottom" constant="8" symbolic="YES" id="1dZ-F8-m7O"/>
+                                                                <constraint firstItem="918-Nl-ikO" firstAttribute="centerX" secondItem="yNk-k3-jUY" secondAttribute="centerX" id="2Ig-P8-whi"/>
+                                                                <constraint firstItem="tNR-xa-MyX" firstAttribute="leading" secondItem="yNk-k3-jUY" secondAttribute="leading" constant="20" symbolic="YES" id="63h-z8-rkr"/>
+                                                                <constraint firstItem="RzN-09-M7C" firstAttribute="centerY" secondItem="yNk-k3-jUY" secondAttribute="centerY" id="MPW-tr-qvh"/>
+                                                                <constraint firstItem="tNR-xa-MyX" firstAttribute="centerX" secondItem="yNk-k3-jUY" secondAttribute="centerX" id="byr-bA-buU"/>
+                                                                <constraint firstItem="RzN-09-M7C" firstAttribute="centerX" secondItem="yNk-k3-jUY" secondAttribute="centerX" id="fUG-1d-mV2"/>
+                                                                <constraint firstAttribute="trailing" secondItem="tNR-xa-MyX" secondAttribute="trailing" constant="20" symbolic="YES" id="uLM-5W-Guj"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <blurEffect style="regular"/>
+                                                    </visualEffectView>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="trailing" secondItem="BdB-sW-Vdn" secondAttribute="trailing" id="1xP-5d-sSe"/>
                                                     <constraint firstItem="BdB-sW-Vdn" firstAttribute="leading" secondItem="R4W-uW-89c" secondAttribute="leading" id="7X5-KE-usI"/>
+                                                    <constraint firstAttribute="bottom" secondItem="mvC-mW-GUv" secondAttribute="bottom" id="AUP-rE-gMO"/>
                                                     <constraint firstAttribute="bottom" secondItem="BdB-sW-Vdn" secondAttribute="bottom" id="GH0-st-enC"/>
                                                     <constraint firstAttribute="height" constant="393" id="LKN-7P-HDS"/>
+                                                    <constraint firstItem="mvC-mW-GUv" firstAttribute="leading" secondItem="R4W-uW-89c" secondAttribute="leading" id="R2e-QI-Wcx"/>
                                                     <constraint firstItem="h66-cL-SjW" firstAttribute="centerY" secondItem="R4W-uW-89c" secondAttribute="centerY" id="apD-kI-Bac"/>
+                                                    <constraint firstAttribute="trailing" secondItem="mvC-mW-GUv" secondAttribute="trailing" id="cNw-wz-aFw"/>
                                                     <constraint firstItem="h66-cL-SjW" firstAttribute="leading" secondItem="R4W-uW-89c" secondAttribute="leading" constant="20" symbolic="YES" id="hrV-iw-gsb"/>
                                                     <constraint firstAttribute="trailing" secondItem="h66-cL-SjW" secondAttribute="trailing" constant="20" symbolic="YES" id="p3n-wx-6vP"/>
                                                     <constraint firstItem="BdB-sW-Vdn" firstAttribute="top" secondItem="R4W-uW-89c" secondAttribute="top" id="rRI-Jb-nP5"/>
+                                                    <constraint firstItem="mvC-mW-GUv" firstAttribute="top" secondItem="R4W-uW-89c" secondAttribute="top" id="tMW-Op-P84"/>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How much do you like this image?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nh2-wr-FFc">
@@ -685,13 +724,13 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LVv-qk-u3e">
-                                                <rect key="frame" x="195" y="808.33333333333337" width="3.3333333333333428" height="13.333333333333371"/>
+                                                <rect key="frame" x="195" y="702.66666666666663" width="3.3333333333333428" height="13.333333333333371"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="xLT-tJ-wg2">
-                                                <rect key="frame" x="20" y="845.66666666666663" width="353" height="54.666666666666629"/>
+                                                <rect key="frame" x="20" y="740" width="353" height="54.666666666666629"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XUy-yc-jFz">
                                                         <rect key="frame" x="0.0" y="0.0" width="353" height="54.666666666666664"/>
@@ -699,11 +738,14 @@
                                                         <buttonConfiguration key="configuration" style="tinted" imagePlacement="top" title="Submit Rating">
                                                             <imageReference key="image" image="paperplane" catalog="system" symbolScale="default"/>
                                                         </buttonConfiguration>
+                                                        <connections>
+                                                            <action selector="submitRatingButtonAction:" destination="j2z-b5-dLB" eventType="touchUpInside" id="3hh-Tz-jHW"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="4Ya-X2-YU7">
-                                                <rect key="frame" x="20" y="912.33333333333337" width="353" height="67.666666666666629"/>
+                                                <rect key="frame" x="20" y="806.66666666666663" width="353" height="67.666666666666629"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zlf-3k-JIM">
                                                         <rect key="frame" x="0.0" y="0.0" width="170.66666666666666" height="67.666666666666671"/>
@@ -718,7 +760,7 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kudos Earned" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jvy-x9-to4">
-                                                                        <rect key="frame" x="0.0" y="33.666666666666629" width="154.66666666666666" height="18"/>
+                                                                        <rect key="frame" x="0.0" y="33.666666666666742" width="154.66666666666666" height="18"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                         <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -747,7 +789,7 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Images Rated" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vqY-6k-0jm">
-                                                                        <rect key="frame" x="0.0" y="33.666666666666629" width="154.33333333333334" height="18"/>
+                                                                        <rect key="frame" x="0.0" y="33.666666666666742" width="154.33333333333334" height="18"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                         <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -765,6 +807,24 @@
                                                     </view>
                                                 </subviews>
                                             </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Du0-4v-bYB">
+                                                <rect key="frame" x="20" y="898.33333333333337" width="353" height="81.666666666666629"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What does &quot;you must rate this image X&quot; mean?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wY2-E4-dj2">
+                                                        <rect key="frame" x="0.0" y="0.0" width="353" height="18"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                        <color key="textColor" systemColor="tertiaryLabelColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gu1-ty-YmF">
+                                                        <rect key="frame" x="0.0" y="29.999999999999883" width="353" height="51.666666666666657"/>
+                                                        <string key="text">This is a form of captcha meant to ensure you are properly rating images and not trying to submit garbage ratings to farm kudos. Be good, or you'll get timed out!</string>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
@@ -776,14 +836,17 @@
                                             <constraint firstItem="xLT-tJ-wg2" firstAttribute="leading" secondItem="YhJ-JC-7Yq" secondAttribute="leading" constant="20" symbolic="YES" id="Dd3-Pe-jNo"/>
                                             <constraint firstItem="R4W-uW-89c" firstAttribute="top" secondItem="YhJ-JC-7Yq" secondAttribute="top" id="Dkk-lm-sl1"/>
                                             <constraint firstItem="fJ6-WF-Po3" firstAttribute="top" secondItem="LZC-be-azg" secondAttribute="bottom" constant="24" id="EVk-qV-14E"/>
+                                            <constraint firstAttribute="trailing" secondItem="Du0-4v-bYB" secondAttribute="trailing" constant="20" symbolic="YES" id="FhG-FO-JtQ"/>
                                             <constraint firstItem="vvx-UT-rwg" firstAttribute="centerX" secondItem="YhJ-JC-7Yq" secondAttribute="centerX" id="KId-fh-fEa"/>
+                                            <constraint firstItem="Du0-4v-bYB" firstAttribute="leading" secondItem="YhJ-JC-7Yq" secondAttribute="leading" constant="20" symbolic="YES" id="M4o-Bs-ZW1"/>
                                             <constraint firstItem="4Ya-X2-YU7" firstAttribute="leading" secondItem="YhJ-JC-7Yq" secondAttribute="leading" constant="20" symbolic="YES" id="Mi4-gu-Thh"/>
+                                            <constraint firstItem="Du0-4v-bYB" firstAttribute="top" secondItem="4Ya-X2-YU7" secondAttribute="bottom" constant="24" id="P93-76-djI"/>
                                             <constraint firstItem="fJ6-WF-Po3" firstAttribute="centerX" secondItem="YhJ-JC-7Yq" secondAttribute="centerX" id="PDu-yi-GNV"/>
                                             <constraint firstItem="4Ya-X2-YU7" firstAttribute="top" secondItem="xLT-tJ-wg2" secondAttribute="bottom" constant="12" id="bl3-3U-1dC"/>
                                             <constraint firstItem="LZC-be-azg" firstAttribute="top" secondItem="vvx-UT-rwg" secondAttribute="bottom" constant="8" symbolic="YES" id="ckz-GI-3MV"/>
                                             <constraint firstItem="LVv-qk-u3e" firstAttribute="top" secondItem="maj-AT-NcT" secondAttribute="bottom" constant="8" symbolic="YES" id="dv6-Ya-O5x"/>
-                                            <constraint firstAttribute="bottom" secondItem="4Ya-X2-YU7" secondAttribute="bottom" constant="20" symbolic="YES" id="esP-fb-dlI"/>
                                             <constraint firstAttribute="trailing" secondItem="R4W-uW-89c" secondAttribute="trailing" id="gk3-7b-OoJ"/>
+                                            <constraint firstAttribute="bottom" secondItem="Du0-4v-bYB" secondAttribute="bottom" constant="20" symbolic="YES" id="hBF-HB-d7g"/>
                                             <constraint firstItem="Nh2-wr-FFc" firstAttribute="top" secondItem="R4W-uW-89c" secondAttribute="bottom" constant="24" id="hLw-bH-8Ne"/>
                                             <constraint firstItem="xLT-tJ-wg2" firstAttribute="top" secondItem="LVv-qk-u3e" secondAttribute="bottom" constant="24" id="meO-EY-QjQ"/>
                                             <constraint firstItem="maj-AT-NcT" firstAttribute="centerX" secondItem="YhJ-JC-7Yq" secondAttribute="centerX" id="s9u-1M-WXn"/>
@@ -825,9 +888,14 @@
                         <outlet property="imageView" destination="BdB-sW-Vdn" id="nzj-q4-lNf"/>
                         <outlet property="kudosStatsContainer" destination="zlf-3k-JIM" id="LPr-5p-Qji"/>
                         <outlet property="kudosStatsLabel" destination="PRU-0n-ULy" id="pnR-Kv-nk8"/>
+                        <outlet property="loadingMessageActivityIndicator" destination="RzN-09-M7C" id="MrZ-py-Hsd"/>
+                        <outlet property="loadingMessageContainer" destination="mvC-mW-GUv" id="mtH-xA-zwx"/>
+                        <outlet property="loadingMessageSubtitleLabel" destination="tNR-xa-MyX" id="Gus-uU-Jx5"/>
+                        <outlet property="loadingMessageTitleLabel" destination="918-Nl-ikO" id="2sH-rb-aBG"/>
                         <outlet property="ratingButton" destination="53R-dI-kda" id="5qq-fm-DmU"/>
                         <outlet property="ratingLabel" destination="LZC-be-azg" id="sy2-nb-rWP"/>
                         <outlet property="sixStarsView" destination="maj-AT-NcT" id="sYB-1V-fQR"/>
+                        <outlet property="submitRatingButton" destination="XUy-yc-jFz" id="KU0-Bu-DwI"/>
                         <outlet property="tenStarsView" destination="vvx-UT-rwg" id="O90-ku-0Dv"/>
                     </connections>
                 </viewController>
@@ -969,6 +1037,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="tertiaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29803921568627451" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

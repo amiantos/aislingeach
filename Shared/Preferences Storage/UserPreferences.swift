@@ -14,12 +14,16 @@ import Foundation
 struct UserPreferences {
     fileprivate enum Key {
         static let apiKey = "apiKey"
+        static let ratingKudos = "ratingKudos"
+        static let ratingImages = "ratingImages"
     }
 
     static var standard: UserDefaults {
         let database = UserDefaults.standard
         database.register(defaults: [
             Key.apiKey: "0000000000",
+            Key.ratingKudos: 0,
+            Key.ratingImages: 0,
         ])
 
         return database
@@ -33,6 +37,22 @@ extension UserDefaults {
 
     func set(apiKey: String) {
         set(apiKey, for: UserPreferences.Key.apiKey)
+    }
+
+    var ratingKudos: Int {
+        return integer(forKey: UserPreferences.Key.ratingKudos)
+    }
+
+    func add(ratingKudos: Int) {
+        set(self.ratingKudos+ratingKudos, for: UserPreferences.Key.ratingKudos)
+    }
+
+    var ratingImages: Int {
+        return integer(forKey: UserPreferences.Key.ratingImages)
+    }
+
+    func add(ratingImages: Int) {
+        set(self.ratingImages+ratingImages, for: UserPreferences.Key.ratingImages)
     }
 }
 
