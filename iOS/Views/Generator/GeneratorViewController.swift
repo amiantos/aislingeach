@@ -12,9 +12,7 @@ class GeneratorViewController: UIViewController {
 
     var currentGenerationIdentifier: String?
     var currentGenerationBody: GenerationInputStable?
-    var currentGenerationHeight: Int = 8
-    var currentGenerationWidth: Int = 8
-    var currentRatioLock: Bool = false
+    var currentRatioLock: Int?
 
     var lastGeneratedImage: GeneratedImage? {
         didSet {
@@ -70,69 +68,75 @@ class GeneratorViewController: UIViewController {
     @IBOutlet var widthSlider: UISlider!
     @IBOutlet var widthSliderSizeLabel: UILabel!
     @IBAction func widthSliderChanged(_ sender: UISlider) {
-        if currentRatioLock {
-            // TODO: This isn't quite right
-            let difference = Int(currentGenerationWidth - Int(sender.value))
-            var newHeight = currentGenerationHeight - difference
-            heightSlider.setValue(Float(newHeight), animated: true)
-            currentGenerationHeight = newHeight
+        if let ratioLock = currentRatioLock {
+            let newHeightValue = widthSlider.value - Float(ratioLock)
+            if newHeightValue < heightSlider.minimumValue {
+                widthSlider.value = heightSlider.minimumValue+Float(ratioLock)
+            } else if newHeightValue > heightSlider.maximumValue {
+                widthSlider.value = heightSlider.maximumValue+Float(ratioLock)
+            } else {
+                heightSlider.value = newHeightValue
+            }
         }
-        currentGenerationWidth = Int(sender.value)
         updateSliderLabels()
     }
 
     @IBOutlet var heightSlider: UISlider!
     @IBOutlet var heightSliderSizeLabel: UILabel!
     @IBAction func heightSliderChanged(_ sender: UISlider) {
-        if currentRatioLock {
-            // TODO: This isn't quite right
-            let difference = Int(currentGenerationHeight - Int(sender.value))
-            var newWidth = currentGenerationWidth - difference
-            widthSlider.setValue(Float(newWidth), animated: true)
-            currentGenerationWidth = newWidth
+        if let ratioLock = currentRatioLock {
+            let newWidthValue = heightSlider.value + Float(ratioLock)
+            if newWidthValue > widthSlider.maximumValue {
+                heightSlider.value = heightSlider.maximumValue-Float(ratioLock)
+            } else if newWidthValue < widthSlider.minimumValue {
+                heightSlider.value = heightSlider.minimumValue-Float(ratioLock)
+            } else {
+                widthSlider.value = newWidthValue
+            }
         }
-
-        currentGenerationHeight = Int(sender.value)
         updateSliderLabels()
     }
 
     @IBOutlet var sizingButtonsStackView: UIStackView!
     @IBOutlet var aspectRatioButton: UIButton!
     @IBAction func swapDimensionsButtonAction(_: UIButton) {
-        let currW = currentGenerationWidth
-        let currH = currentGenerationHeight
-        currentGenerationWidth = currH
-        currentGenerationHeight = currW
-        widthSlider.setValue(Float(currentGenerationWidth), animated: false)
-        heightSlider.setValue(Float(currentGenerationHeight), animated: false)
-
+        let currentDimensions = getCurrentWidthAndHeight()
+        let currW = currentDimensions.0
+        let currH = currentDimensions.1
+        if let ratioLock = currentRatioLock {
+            currentRatioLock = -(ratioLock)
+        }
+        widthSlider.setValue(Float(currH), animated: false)
+        heightSlider.setValue(Float(currW), animated: false)
         updateSliderLabels()
     }
 
     @IBOutlet var lockRatioButton: UIButton!
     @IBAction func lockRatioButtonAction(_: UIButton) {
-        if currentRatioLock {
-            currentRatioLock = false
-            lockRatioButton.setImage(UIImage(systemName: "lock.open"), for: .normal)
-            lockRatioButton.setPreferredSymbolConfiguration(.init(scale: .default), forImageIn: .normal)
+        if currentRatioLock == nil {
+            currentRatioLock = Int(widthSlider.value) - Int(heightSlider.value)
+            self.lockRatioButton.setImage(UIImage(systemName: "lock"), for: .normal)
         } else {
-            currentRatioLock = true
-            lockRatioButton.setImage(UIImage(systemName: "lock"), for: .normal)
-            lockRatioButton.setPreferredSymbolConfiguration(.init(scale: .default), forImageIn: .normal)
+            currentRatioLock = nil
+            self.lockRatioButton.setImage(UIImage(systemName: "lock.open"), for: .normal)
         }
+        self.lockRatioButton.setPreferredSymbolConfiguration(.init(scale: .default), forImageIn: .normal)
+        Log.info("Ratio locked to: \(currentRatioLock)")
     }
 
     @IBAction func generateButtonPressed(_: UIButton) {
         guard let generationText = promptTextView.text, generationText != "" else { return }
         promptTextView.resignFirstResponder()
 
+        let currentDimensions = getCurrentWidthAndHeight()
+
         startGenerationSpinner()
         let modelParams = ModelGenerationInputStable(
             samplerName: .kEulerA,
             cfgScale: 7.5,
             denoisingStrength: 0.75,
-            height: 64 * currentGenerationHeight,
-            width: 64 * currentGenerationWidth,
+            height: 64 * currentDimensions.0,
+            width: 64 * currentDimensions.1,
             karras: true,
             hiresFix: true,
             clipSkip: 2,
@@ -174,8 +178,8 @@ class GeneratorViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         mainImageViewHeightConstraint.constant = view.frame.width
 
-        widthSlider.setValue(Float(currentGenerationWidth), animated: false)
-        heightSlider.setValue(Float(currentGenerationHeight), animated: false)
+        widthSlider.setValue(Float(8), animated: false)
+        heightSlider.setValue(Float(8), animated: false)
         updateSliderLabels()
 
         hideKeyboardWhenTappedAround()
@@ -197,6 +201,9 @@ class GeneratorViewController: UIViewController {
 // MARK: - Everything Else
 
 extension GeneratorViewController {
+    func getCurrentWidthAndHeight() -> (Int, Int) {
+        return (Int(widthSlider.value), Int(heightSlider.value))
+    }
 
     @objc func checkIfCurrentGenerationWasDeleted() {
         if let generatedImage = lastGeneratedImage {
@@ -217,16 +224,19 @@ extension GeneratorViewController {
     }
     
     func updateSliderLabels() {
-        widthSliderSizeLabel.text = "\(currentGenerationWidth * 64)"
-        heightSliderSizeLabel.text = "\(currentGenerationHeight * 64)"
+        let currentDimensions = getCurrentWidthAndHeight()
+        widthSliderSizeLabel.text = "\(currentDimensions.0 * 64)"
+        heightSliderSizeLabel.text = "\(currentDimensions.1 * 64)"
 
-        let gcd = gcdBinaryRecursiveStein(currentGenerationWidth, currentGenerationHeight)
-        aspectRatioButton.titleLabel?.text = "Aspect Ratio: \(currentGenerationWidth / gcd):\(currentGenerationHeight / gcd)"
+        let gcd = gcdBinaryRecursiveStein(currentDimensions.0, currentDimensions.1)
+        aspectRatioButton.titleLabel?.text = "Aspect Ratio: \(currentDimensions.0 / gcd):\(currentDimensions.1 / gcd)"
         aspectRatioButton.sizeToFit()
     }
 
     func setNewGenerationRequest(generationIdentifier: String, generationBody: GenerationInputStable) {
         Log.info("\(generationIdentifier) - New request received...")
+        favoriteButton.isEnabled = false
+        deleteButton.isEnabled = false
         currentGenerationIdentifier = generationIdentifier
         currentGenerationBody = generationBody
         checkCurrentGenerationStatus()

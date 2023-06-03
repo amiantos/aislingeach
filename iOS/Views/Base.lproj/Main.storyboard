@@ -154,7 +154,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hAl-ep-fbE">
                                                         <rect key="frame" x="0.0" y="0.0" width="353" height="34.333333333333336"/>
                                                         <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="tinted" title="Edit Prompt">
+                                                        <buttonConfiguration key="configuration" style="tinted" title="Advanced Prompt Editor">
                                                             <imageReference key="image" image="square.and.pencil" catalog="system" symbolScale="default"/>
                                                         </buttonConfiguration>
                                                     </button>
@@ -269,7 +269,7 @@
                                                             <action selector="swapDimensionsButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gl2-AW-8ls"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LNZ-kb-mWN">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LNZ-kb-mWN">
                                                         <rect key="frame" x="285.33333333333331" y="0.0" width="67.666666666666686" height="54.666666666666664"/>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="tinted" imagePlacement="top" title="Lock">
