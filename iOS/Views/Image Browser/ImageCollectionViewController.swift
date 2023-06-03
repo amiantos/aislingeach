@@ -31,7 +31,7 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
         let fetchRequest = NSFetchRequest<GeneratedImage>(entityName: "GeneratedImage")
         // Configure the request's entity, and optionally its predicate
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: ImageDatabase.standard.mainManagedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         resultsController = controller
         controller.delegate = self
@@ -111,10 +111,7 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
             fatalError("Attempt to configure cell without a managed object")
         }
         // Configure the cell
-        cell.imageView.image = UIImage(data: object.image!)
-        cell.favoriteIcon.isHidden = !object.isFavorite
-        cell.autoresizesSubviews = true
-
+        cell.setup(object: object)
         return cell
     }
 

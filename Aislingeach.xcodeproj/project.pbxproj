@@ -18,6 +18,7 @@
 		441EB3792A21DC1F00E449BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 441EB3782A21DC1F00E449BE /* Assets.xcassets */; };
 		441EB37C2A21DC1F00E449BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 441EB37A2A21DC1F00E449BE /* LaunchScreen.storyboard */; };
 		441EB3842A21DDAC00E449BE /* request_example.json in Resources */ = {isa = PBXBuildFile; fileRef = 441EB3832A21DDAC00E449BE /* request_example.json */; };
+		4485C63F2A2A9E7F0040D864 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4485C63E2A2A9E7F0040D864 /* ImageCache.swift */; };
 		44C6B62B2A228D8200C2F013 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B5C22A228D8200C2F013 /* Configuration.swift */; };
 		44C6B62C2A228D8200C2F013 /* Newspiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B5C42A228D8200C2F013 /* Newspiece.swift */; };
 		44C6B62D2A228D8200C2F013 /* DeletedWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B5C52A228D8200C2F013 /* DeletedWorker.swift */; };
@@ -158,6 +159,7 @@
 		441EB37B2A21DC1F00E449BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		441EB37D2A21DC1F00E449BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		441EB3832A21DDAC00E449BE /* request_example.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = request_example.json; sourceTree = "<group>"; };
+		4485C63E2A2A9E7F0040D864 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		44C6B5C22A228D8200C2F013 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		44C6B5C42A228D8200C2F013 /* Newspiece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newspiece.swift; sourceTree = "<group>"; };
 		44C6B5C52A228D8200C2F013 /* DeletedWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletedWorker.swift; sourceTree = "<group>"; };
@@ -528,6 +530,7 @@
 				44C6B6D42A233B0F00C2F013 /* ImageCollectionViewController.swift */,
 				44C6B6D62A233BFB00C2F013 /* ImageCollectionViewCell.swift */,
 				44142AB82A23FD6A0096FFBA /* ImageDetailViewController.swift */,
+				4485C63E2A2A9E7F0040D864 /* ImageCache.swift */,
 			);
 			path = "Image Browser";
 			sourceTree = "<group>";
@@ -688,6 +691,7 @@
 				44C6B6532A228D8200C2F013 /* ModelPayloadRootKobold.swift in Sources */,
 				44C6B6D52A233B0F00C2F013 /* ImageCollectionViewController.swift in Sources */,
 				44F2AA722A26B81200FB8E93 /* RatePostResponse.swift in Sources */,
+				4485C63F2A2A9E7F0040D864 /* ImageCache.swift in Sources */,
 				44C6B6872A228D8200C2F013 /* ModifyTeamInput.swift in Sources */,
 				44C6B6672A228D8200C2F013 /* PopInputStable.swift in Sources */,
 				44C6B6402A228D8200C2F013 /* GenerationInputStable.swift in Sources */,

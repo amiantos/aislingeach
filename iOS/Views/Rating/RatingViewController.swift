@@ -12,6 +12,7 @@ class RatingViewController: UIViewController {
 
     var currentImageIdentifier: String?
 
+    @IBOutlet weak var startMessageView: UIStackView!
     @IBOutlet weak var tenStarsView: CosmosView!
     @IBOutlet weak var sixStarsView: CosmosView!
     @IBOutlet weak var imageContainerHeightConstraint: NSLayoutConstraint!
@@ -41,8 +42,6 @@ class RatingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.navigationBar.prefersLargeTitles = true
-
         let starSize = (view.frame.size.width) / 14
         tenStarsView.settings.starSize = starSize
         sixStarsView.settings.starSize = starSize
@@ -56,57 +55,70 @@ class RatingViewController: UIViewController {
 
         imageContainerHeightConstraint.constant = view.frame.width
         tenStarsView.didTouchCosmos = { [self] rating in
-            switch Int(rating) {
-            case 1:
-                ratingLabel.text = "Worst"
-            case 2:
-                ratingLabel.text = "Terrible"
-            case 3:
-                ratingLabel.text = "Very Bad"
-            case 4:
-                ratingLabel.text = "Rather Bad"
-            case 5:
-                ratingLabel.text = "OK"
-            case 6:
-                ratingLabel.text = "Not Bad"
-            case 7:
-                ratingLabel.text = "Rather Good"
-            case 8:
-                ratingLabel.text = "Very Good"
-            case 9:
-                ratingLabel.text = "Excellent"
-            case 10:
-                ratingLabel.text = "The Best"
-            default:
-                ratingLabel.text = " "
-            }
-            self.checkIfEnableRatingButton()
+            setRatingLabel(rating: Int(rating))
+            checkIfEnableRatingButton()
         }
-
         sixStarsView.didTouchCosmos = { [self] rating in
-            switch Int(rating) {
-            case 1:
-                artifactRatingLabel.text = "Complete Mess"
-            case 2:
-                artifactRatingLabel.text = "Serious Issues"
-            case 3:
-                artifactRatingLabel.text = "Minor Issues"
-            case 4:
-                artifactRatingLabel.text = "Noticable Flaws"
-            case 5:
-                artifactRatingLabel.text = "Small Errors"
-            case 6:
-                artifactRatingLabel.text = "Flawless"
-            default:
-                artifactRatingLabel.text = " "
-            }
-            self.checkIfEnableRatingButton()
+            setArtifactLabel(rating: Int(rating))
+            checkIfEnableRatingButton()
+        }
+        sixStarsView.didFinishTouchingCosmos = { [self] rating in
+            setArtifactLabel(rating: Int(rating))
+            checkIfEnableRatingButton()
+        }
+        tenStarsView.didFinishTouchingCosmos = { [self] rating in
+            setRatingLabel(rating: Int(rating))
+            checkIfEnableRatingButton()
         }
 
     }
 }
 
 extension RatingViewController {
+    func setRatingLabel(rating: Int) {
+        switch Int(rating) {
+        case 1:
+            ratingLabel.text = "1 - Worst"
+        case 2:
+            ratingLabel.text = "2 - Terrible"
+        case 3:
+            ratingLabel.text = "3 - Very Bad"
+        case 4:
+            ratingLabel.text = "4 - Rather Bad"
+        case 5:
+            ratingLabel.text = "5 - OK"
+        case 6:
+            ratingLabel.text = "6 - Not Bad"
+        case 7:
+            ratingLabel.text = "7 - Rather Good"
+        case 8:
+            ratingLabel.text = "8 - Very Good"
+        case 9:
+            ratingLabel.text = "9 - Excellent"
+        case 10:
+            ratingLabel.text = "10 - The Best"
+        default:
+            ratingLabel.text = " "
+        }
+    }
+    func setArtifactLabel(rating: Int) {
+        switch Int(rating) {
+        case 1:
+            artifactRatingLabel.text = "1 - Complete Mess"
+        case 2:
+            artifactRatingLabel.text = "2 - Serious Issues"
+        case 3:
+            artifactRatingLabel.text = "3 - Minor Issues"
+        case 4:
+            artifactRatingLabel.text = "4 - Noticable Flaws"
+        case 5:
+            artifactRatingLabel.text = "5 - Small Errors"
+        case 6:
+            artifactRatingLabel.text = "6 - Flawless"
+        default:
+            artifactRatingLabel.text = " "
+        }
+    }
     func grabImageToRate() {
         startLoadingSpinner()
         RatingsV1API.getDefaultDatasetImagePop(apikey: UserPreferences.standard.apiKey) { data, error in
@@ -129,13 +141,13 @@ extension RatingViewController {
             DispatchQueue.global().async {
                 if let data = try? Data(contentsOf: imageUrl), let image = UIImage(data: data) {
                     DispatchQueue.main.async { [self] in
-                        let imageWidth = image.size.width
-                        let imageHeight = image.size.height
-                        let viewWidth = view.frame.size.width
-
-                        let ratio = viewWidth / imageWidth
-                        let scaledHeight = imageHeight * ratio
-                        imageContainerHeightConstraint.constant = scaledHeight
+//                        let imageWidth = image.size.width
+//                        let imageHeight = image.size.height
+//                        let viewWidth = view.frame.size.width
+//
+//                        let ratio = viewWidth / imageWidth
+//                        let scaledHeight = imageHeight * ratio
+//                        imageContainerHeightConstraint.constant = scaledHeight
                         UIView.animate(withDuration: 0.3) {
                             self.view.layoutIfNeeded()
                             self.imageView.image = image
@@ -179,8 +191,9 @@ extension RatingViewController {
     }
 
     func startLoadingSpinner() {
+        startMessageView.isHidden = true
         loadingMessageContainer.isHidden = false
-        loadingMessageTitleLabel.text = "Loading..."
+        loadingMessageTitleLabel.text = ""
         loadingMessageActivityIndicator.startAnimating()
         loadingMessageSubtitleLabel.text = ""
     }

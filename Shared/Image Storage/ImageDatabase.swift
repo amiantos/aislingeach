@@ -86,6 +86,12 @@ class ImageDatabase {
         }
     }
 
+    func deleteImage(_ generatedImage: GeneratedImage, completion: @escaping (GeneratedImage?) -> Void) {
+        mainManagedObjectContext.delete(generatedImage)
+        saveContext()
+        completion(nil)
+    }
+
 //    func createGame(from gameStruct: GameStruct, completion: @escaping (Game?) -> Void) {
 //        mainManagedObjectContext.perform {
 //            do {
