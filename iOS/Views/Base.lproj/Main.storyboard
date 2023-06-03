@@ -522,7 +522,7 @@
                                 <rect key="frame" x="0.0" y="774" width="393" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem enabled="NO" title="Share" image="square.and.arrow.up" catalog="system" id="jbP-CG-DKR">
+                                    <barButtonItem title="Share" image="square.and.arrow.up" catalog="system" id="jbP-CG-DKR">
                                         <connections>
                                             <action selector="shareButtonAction:" destination="ZN2-3F-QUS" id="9M8-sT-7Z1"/>
                                         </connections>

@@ -15,8 +15,13 @@ class ImageDetailViewController: UIViewController {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet var imageView: UIImageView!
 
-    @IBAction func shareButtonAction(_: UIBarButtonItem) {
+    @IBAction func shareButtonAction(_ sender: UIBarButtonItem) {
         Log.debug("Share button pressed...")
+        if let currentImage = imageView.image {
+            let ac = UIActivityViewController(activityItems: [currentImage], applicationActivities: nil)
+            ac.popoverPresentationController?.sourceView = self.tabBarController?.view
+            present(ac, animated: true)
+        }
     }
 
     @IBOutlet var favoriteButton: UIBarButtonItem!

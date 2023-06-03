@@ -136,7 +136,7 @@ extension RatingViewController {
 
     func setNewImageToRate(imageResponse: DatasetImagePopResponse) {
         currentImageIdentifier = imageResponse._id
-        Log.info("\(currentImageIdentifier) - New image to rate received, downloading image...")
+        Log.info("\(String(describing: currentImageIdentifier)) - New image to rate received, downloading image...")
         if let urlString = imageResponse.url, let imageUrl = URL(string: urlString) {
             DispatchQueue.global().async {
                 if let data = try? Data(contentsOf: imageUrl), let image = UIImage(data: data) {
@@ -158,7 +158,7 @@ extension RatingViewController {
                             self.artifactRatingLabel.text = " "
                             self.submitRatingButton.isEnabled = false
                             self.hideLoadingDisplay()
-                            Log.info("\(currentImageIdentifier) - Image loaded.")
+                            Log.info("\(String(describing: self.currentImageIdentifier)) - Image loaded.")
                         }
                     }
                 }
@@ -177,9 +177,9 @@ extension RatingViewController {
         startLoadingSpinner()
         let postBody = RatePostInput(rating: rating, artifacts: artifacts)
         Log.info("\(currentImageIdentifier) - Submitting... Rating: \(rating), Artifacts: \(artifacts)")
-        RatingsV1API.postRate(body: RatePostInput(rating: rating, artifacts: artifacts), apikey: UserPreferences.standard.apiKey, imageId: currentImageIdentifier) { data, error in
+        RatingsV1API.postRate(body: postBody, apikey: UserPreferences.standard.apiKey, imageId: currentImageIdentifier) { data, error in
             if let data = data {
-                Log.info("\(currentImageIdentifier) - Rating submitted successfully. \(data.reward) kudos rewarded.")
+                Log.info("\(currentImageIdentifier) - Rating submitted successfully. \(String(describing: data.reward)) kudos rewarded.")
                 UserPreferences.standard.add(ratingKudos: data.reward ?? 0)
                 UserPreferences.standard.add(ratingImages: 1)
                 self.updateStatLabels()
