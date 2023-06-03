@@ -87,9 +87,27 @@ class ImageDatabase {
     }
 
     func deleteImage(_ generatedImage: GeneratedImage, completion: @escaping (GeneratedImage?) -> Void) {
+        // TODO: Should trash...
         mainManagedObjectContext.delete(generatedImage)
         saveContext()
         completion(nil)
+    }
+
+    func pruneImages() {
+        mainManagedObjectContext.perform { [self] in
+            do {
+                let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
+                fetchRequest.predicate = NSPredicate(format: "isFavorite = %d", false)
+                let images = try mainManagedObjectContext.fetch(fetchRequest) as [GeneratedImage]
+                for image in images {
+                    // TODO: Should trash...
+                    mainManagedObjectContext.delete(image)
+                }
+                saveContext()
+            } catch {
+                Log.debug("Uh oh...")
+            }
+        }
     }
 
 //    func createGame(from gameStruct: GameStruct, completion: @escaping (Game?) -> Void) {

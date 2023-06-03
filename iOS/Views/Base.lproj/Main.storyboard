@@ -410,7 +410,13 @@
                             <outlet property="delegate" destination="Gxv-NW-hB9" id="dY8-sD-f4W"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Image Gallery" id="1sg-Ax-UmU"/>
+                    <navigationItem key="navigationItem" title="Image Gallery" id="1sg-Ax-UmU">
+                        <barButtonItem key="rightBarButtonItem" title="Prune" id="Mca-fw-rwt">
+                            <connections>
+                                <action selector="editButtonAction:" destination="Gxv-NW-hB9" id="KfZ-ZM-Rg1"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4R3-kS-gx5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
