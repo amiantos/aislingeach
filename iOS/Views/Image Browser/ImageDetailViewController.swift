@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LinkPresentation
 
 class ImageDetailViewController: UIViewController {
     var generatedImage: GeneratedImage?
@@ -17,8 +18,8 @@ class ImageDetailViewController: UIViewController {
 
     @IBAction func shareButtonAction(_ sender: UIBarButtonItem) {
         Log.debug("Share button pressed...")
-        if let currentImage = imageView.image {
-            let ac = UIActivityViewController(activityItems: [currentImage.pngData()], applicationActivities: nil)
+        if let currentImage = imageView.image?.pngData() {
+            let ac = UIActivityViewController(activityItems: [currentImage, self], applicationActivities: nil)
             ac.popoverPresentationController?.sourceView = self.tabBarController?.view
             present(ac, animated: true)
         }
@@ -85,4 +86,25 @@ class ImageDetailViewController: UIViewController {
          // Pass the selected object to the new view controller.
      }
      */
+}
+
+extension ImageDetailViewController: UIActivityItemSource {
+    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        return ""
+    }
+
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        return nil
+    }
+
+    func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
+        let image = imageView.image!
+        let imageProvider = NSItemProvider(object: image)
+        let metadata = LPLinkMetadata()
+        metadata.imageProvider = imageProvider
+        metadata.title = "Share generation"
+        return metadata
+    }
+
+
 }
