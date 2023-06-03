@@ -8,7 +8,6 @@
 import UIKit
 
 class GeneratorViewController: UIViewController {
-
     // MARK: - Variables
 
     var currentGenerationIdentifier: String?
@@ -16,6 +15,8 @@ class GeneratorViewController: UIViewController {
     var currentGenerationHeight: Int = 8
     var currentGenerationWidth: Int = 8
     var currentRatioLock: Bool = false
+
+    var generationStack: [GeneratedImage] = []
 
     // MARK: - IBOutlets
 
@@ -154,7 +155,6 @@ class GeneratorViewController: UIViewController {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
     }
-
 }
 
 // MARK: - Everything Else
@@ -263,8 +263,7 @@ extension GeneratorViewController {
     }
 }
 
-
-// MARK: -Keyboard Stuff
+// MARK: - Keyboard Stuff
 
 extension GeneratorViewController {
     @objc func keyboardWillShow(notification: NSNotification) {

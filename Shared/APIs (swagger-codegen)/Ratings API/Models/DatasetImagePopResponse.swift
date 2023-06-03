@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct DatasetImagePopResponse: Codable {
-
     /** The UUID of the image to rate */
     public var _id: String?
     /** The URL from which to download the image */
@@ -24,10 +21,9 @@ public struct DatasetImagePopResponse: Codable {
         self.datasetId = datasetId
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case url
         case datasetId = "dataset_id"
     }
-
 }

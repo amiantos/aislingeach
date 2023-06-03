@@ -5,37 +5,38 @@
 //  Created by Brad Root on 5/27/23.
 //
 
-import UIKit
 import Cosmos
+import UIKit
 
 class RatingViewController: UIViewController {
-
     var currentImageIdentifier: String?
 
-    @IBOutlet weak var startMessageView: UIStackView!
-    @IBOutlet weak var tenStarsView: CosmosView!
-    @IBOutlet weak var sixStarsView: CosmosView!
-    @IBOutlet weak var imageContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var startMessageView: UIStackView!
+    @IBOutlet var tenStarsView: CosmosView!
+    @IBOutlet var sixStarsView: CosmosView!
+    @IBOutlet var imageContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var ratingButton: UIButton!
-    @IBOutlet weak var loadingMessageTitleLabel: UILabel!
-    @IBOutlet weak var loadingMessageActivityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var loadingMessageSubtitleLabel: UILabel!
-    @IBOutlet weak var loadingMessageContainer: UIVisualEffectView!
-    @IBOutlet weak var kudosStatsLabel: UILabel!
-    @IBOutlet weak var kudosStatsContainer: UIView!
-    @IBOutlet weak var imageStatsLabel: UILabel!
-    @IBOutlet weak var imageStatsContainer: UIView!
-    @IBOutlet weak var ratingLabel: UILabel!
-    @IBOutlet weak var artifactRatingLabel: UILabel!
+    @IBOutlet var loadingMessageTitleLabel: UILabel!
+    @IBOutlet var loadingMessageActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet var loadingMessageSubtitleLabel: UILabel!
+    @IBOutlet var loadingMessageContainer: UIVisualEffectView!
+    @IBOutlet var kudosStatsLabel: UILabel!
+    @IBOutlet var kudosStatsContainer: UIView!
+    @IBOutlet var imageStatsLabel: UILabel!
+    @IBOutlet var imageStatsContainer: UIView!
+    @IBOutlet var ratingLabel: UILabel!
+    @IBOutlet var artifactRatingLabel: UILabel!
     @IBAction func ratingButtonAction(_: UIButton) {
         grabImageToRate()
     }
+
     @IBAction func touchDownStarButtonAction(_ sender: UIButton) {
         Log.info("Button touched: \(sender.tag)")
     }
-    @IBOutlet weak var submitRatingButton: UIButton!
-    @IBAction func submitRatingButtonAction(_ sender: UIButton) {
+
+    @IBOutlet var submitRatingButton: UIButton!
+    @IBAction func submitRatingButtonAction(_: UIButton) {
         submitRating()
     }
 
@@ -50,7 +51,7 @@ class RatingViewController: UIViewController {
         imageStatsContainer.layer.cornerRadius = 5
 
         updateStatLabels()
-        
+
         loadingMessageSubtitleLabel.text = ""
 
         imageContainerHeightConstraint.constant = view.frame.width
@@ -70,7 +71,6 @@ class RatingViewController: UIViewController {
             setRatingLabel(rating: Int(rating))
             checkIfEnableRatingButton()
         }
-
     }
 }
 
@@ -101,6 +101,7 @@ extension RatingViewController {
             ratingLabel.text = " "
         }
     }
+
     func setArtifactLabel(rating: Int) {
         switch Int(rating) {
         case 1:
@@ -119,6 +120,7 @@ extension RatingViewController {
             artifactRatingLabel.text = " "
         }
     }
+
     func grabImageToRate() {
         startLoadingSpinner()
         RatingsV1API.getDefaultDatasetImagePop(apikey: UserPreferences.standard.apiKey) { data, error in
@@ -166,7 +168,7 @@ extension RatingViewController {
         guard let currentImageIdentifier = currentImageIdentifier else { return }
 
         let rating = Int(tenStarsView.rating)
-        let artifacts = Int(-((sixStarsView.rating-1)-5))
+        let artifacts = Int(-((sixStarsView.rating - 1) - 5))
         startLoadingSpinner()
         let postBody = RatePostInput(rating: rating, artifacts: artifacts)
         Log.info("\(currentImageIdentifier) - Submitting... Rating: \(rating), Artifacts: \(artifacts)")
@@ -203,7 +205,7 @@ extension RatingViewController {
     }
 
     func checkIfEnableRatingButton() {
-        if tenStarsView.rating > 0 && sixStarsView.rating > 0 {
+        if tenStarsView.rating > 0, sixStarsView.rating > 0 {
             submitRatingButton.isEnabled = true
         }
     }

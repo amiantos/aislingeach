@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct RatePostInput: Codable {
-
     /** The aesthetic rating for this image. How much do you like this image subjectively and in isolation from comparison with other images or with its own prompt. */
     public var rating: Int?
     /** The artifacts rating for this image. 0 for flawless generation that perfectly fits to the prompt. 1 for small, hardly recognizable flaws. 2 small flaws that can easily be spotted, but don not harm the aesthetic experience. 3 for flaws that look obviously wrong, but only mildly harm the aesthetic experience. 4 for flaws that look obviously wrong &amp; significantly harm the aesthetic experience. 5 for flaws that make the image look like total garbage */
@@ -20,6 +17,4 @@ public struct RatePostInput: Codable {
         self.rating = rating
         self.artifacts = artifacts
     }
-
-
 }

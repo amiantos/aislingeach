@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct RatingSetBody: Codable {
-
     public var _set: String?
     public var ratings: String?
     public var best: String?
@@ -27,7 +24,7 @@ public struct RatingSetBody: Codable {
         self.clientAgent = clientAgent
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _set = "set"
         case ratings
         case best
@@ -35,5 +32,4 @@ public struct RatingSetBody: Codable {
         case user
         case clientAgent = "client_agent"
     }
-
 }

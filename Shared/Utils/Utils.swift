@@ -91,7 +91,6 @@ extension UIViewController {
 }
 
 extension Data {
-
     func printJson() -> String? {
         do {
             let json = try JSONSerialization.jsonObject(with: self, options: [])

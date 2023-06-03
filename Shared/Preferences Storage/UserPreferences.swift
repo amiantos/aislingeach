@@ -44,7 +44,7 @@ extension UserDefaults {
     }
 
     func add(ratingKudos: Int) {
-        set(self.ratingKudos+ratingKudos, for: UserPreferences.Key.ratingKudos)
+        set(self.ratingKudos + ratingKudos, for: UserPreferences.Key.ratingKudos)
     }
 
     var ratingImages: Int {
@@ -52,7 +52,7 @@ extension UserDefaults {
     }
 
     func add(ratingImages: Int) {
-        set(self.ratingImages+ratingImages, for: UserPreferences.Key.ratingImages)
+        set(self.ratingImages + ratingImages, for: UserPreferences.Key.ratingImages)
     }
 }
 

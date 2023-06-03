@@ -12,10 +12,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Generate-->
+        <!--Create-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController title="Generate" id="BYZ-38-t0r" customClass="GeneratorViewController" customModule="Aislingeach" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Generate" id="BYZ-38-t0r" userLabel="Create" customClass="GeneratorViewController" customModule="Aislingeach" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kcy-FI-6QF">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="2000"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

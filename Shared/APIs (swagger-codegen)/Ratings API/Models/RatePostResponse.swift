@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct RatePostResponse: Codable {
-
     /** Any extra information about the submitted rating */
     public var message: String?
     /** The amount of kudos awarded for this rating */
@@ -20,6 +17,4 @@ public struct RatePostResponse: Codable {
         self.message = message
         self.reward = reward
     }
-
-
 }

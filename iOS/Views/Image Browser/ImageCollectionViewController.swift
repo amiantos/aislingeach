@@ -21,7 +21,7 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         right: 2
     )
 
-    @IBAction func editButtonAction(_ sender: UIBarButtonItem) {
+    @IBAction func editButtonAction(_: UIBarButtonItem) {
         let alert = UIAlertController(title: "Prune Image History", message: "This action will delete all images from your library that are not marked as a Favorite. Are you sure you want to continue?", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .destructive) { _ in
             ImageDatabase.standard.pruneImages()
@@ -85,33 +85,33 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
     var ops: [BlockOperation] = []
 
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+    func controller(_: NSFetchedResultsController<NSFetchRequestResult>, didChange _: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
-            case .insert:
-                ops.append(BlockOperation(block: { [weak self] in
-                    self?.collectionView.insertItems(at: [newIndexPath!])
-                }))
-            case .delete:
-                ops.append(BlockOperation(block: { [weak self] in
-                    self?.collectionView.deleteItems(at: [indexPath!])
-                }))
-            case .update:
-                ops.append(BlockOperation(block: { [weak self] in
-                    self?.collectionView.reloadItems(at: [indexPath!])
-                }))
-            case .move:
-                ops.append(BlockOperation(block: { [weak self] in
-                    self?.collectionView.moveItem(at: indexPath!, to: newIndexPath!)
-                }))
-            @unknown default:
-                break
+        case .insert:
+            ops.append(BlockOperation(block: { [weak self] in
+                self?.collectionView.insertItems(at: [newIndexPath!])
+            }))
+        case .delete:
+            ops.append(BlockOperation(block: { [weak self] in
+                self?.collectionView.deleteItems(at: [indexPath!])
+            }))
+        case .update:
+            ops.append(BlockOperation(block: { [weak self] in
+                self?.collectionView.reloadItems(at: [indexPath!])
+            }))
+        case .move:
+            ops.append(BlockOperation(block: { [weak self] in
+                self?.collectionView.moveItem(at: indexPath!, to: newIndexPath!)
+            }))
+        @unknown default:
+            break
         }
     }
 
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        collectionView.performBatchUpdates({ () -> Void in
+    func controllerDidChangeContent(_: NSFetchedResultsController<NSFetchRequestResult>) {
+        collectionView.performBatchUpdates({ () in
             for op: BlockOperation in self.ops { op.start() }
-        }, completion: { (finished) -> Void in self.ops.removeAll() })
+        }, completion: { _ in self.ops.removeAll() })
     }
 
     deinit {

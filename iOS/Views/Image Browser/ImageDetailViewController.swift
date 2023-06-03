@@ -5,22 +5,22 @@
 //  Created by Brad Root on 5/28/23.
 //
 
-import UIKit
 import LinkPresentation
+import UIKit
 
 class ImageDetailViewController: UIViewController {
     var generatedImage: GeneratedImage?
 
-    @IBOutlet weak var imageHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var imageHeightConstraint: NSLayoutConstraint!
     @IBOutlet var promptLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet var dateLabel: UILabel!
     @IBOutlet var imageView: UIImageView!
 
-    @IBAction func shareButtonAction(_ sender: UIBarButtonItem) {
+    @IBAction func shareButtonAction(_: UIBarButtonItem) {
         Log.debug("Share button pressed...")
         if let currentImage = imageView.image?.pngData() {
             let ac = UIActivityViewController(activityItems: [currentImage, self], applicationActivities: nil)
-            ac.popoverPresentationController?.sourceView = self.tabBarController?.view
+            ac.popoverPresentationController?.sourceView = tabBarController?.view
             present(ac, animated: true)
         }
     }
@@ -89,15 +89,15 @@ class ImageDetailViewController: UIViewController {
 }
 
 extension ImageDetailViewController: UIActivityItemSource {
-    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+    func activityViewControllerPlaceholderItem(_: UIActivityViewController) -> Any {
         return ""
     }
 
-    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+    func activityViewController(_: UIActivityViewController, itemForActivityType _: UIActivity.ActivityType?) -> Any? {
         return nil
     }
 
-    func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
+    func activityViewControllerLinkMetadata(_: UIActivityViewController) -> LPLinkMetadata? {
         let image = imageView.image!
         let imageProvider = NSItemProvider(object: image)
         let metadata = LPLinkMetadata()
@@ -105,6 +105,4 @@ extension ImageDetailViewController: UIActivityItemSource {
         metadata.title = "Share generation"
         return metadata
     }
-
-
 }

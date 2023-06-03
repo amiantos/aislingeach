@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct DatasetsGetResponse: Codable {
-
     /** The unique identifier for this dataset */
     public var _id: String?
     /** The name of this dataset */
@@ -27,11 +24,10 @@ public struct DatasetsGetResponse: Codable {
         self.imageCount = imageCount
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case name
         case _description = "description"
         case imageCount = "image_count"
     }
-
 }

@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct TeamsGetResponse: Codable {
-
     /** The unique identifier for this team */
     public var _id: String?
     /** The name of this team */
@@ -24,10 +21,9 @@ public struct TeamsGetResponse: Codable {
         self.isPrivate = isPrivate
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case teamName = "team_name"
         case isPrivate = "is_private"
     }
-
 }

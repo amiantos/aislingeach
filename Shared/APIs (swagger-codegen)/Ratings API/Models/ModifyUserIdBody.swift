@@ -7,10 +7,7 @@
 
 import Foundation
 
-
-
 public struct ModifyUserIdBody: Codable {
-
     public var validated: Bool?
     public var flagged: Bool?
 
@@ -18,6 +15,4 @@ public struct ModifyUserIdBody: Codable {
         self.validated = validated
         self.flagged = flagged
     }
-
-
 }

@@ -7,15 +7,10 @@
 
 import Foundation
 
-
-
 public struct UploadStdBody: Codable {
-
     public var file: Data
 
     public init(file: Data) {
         self.file = file
     }
-
-
 }
