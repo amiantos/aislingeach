@@ -18,7 +18,7 @@ class ImageDetailViewController: UIViewController {
     @IBAction func shareButtonAction(_ sender: UIBarButtonItem) {
         Log.debug("Share button pressed...")
         if let currentImage = imageView.image {
-            let ac = UIActivityViewController(activityItems: [currentImage], applicationActivities: nil)
+            let ac = UIActivityViewController(activityItems: [currentImage.pngData()], applicationActivities: nil)
             ac.popoverPresentationController?.sourceView = self.tabBarController?.view
             present(ac, animated: true)
         }
