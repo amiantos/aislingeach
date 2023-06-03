@@ -11,6 +11,9 @@ Aislingeach is an iOS app providing access to the [Stable Horde](https://aihorde
 - Low / no external dependencies
 - Good app architecture
 
+# Alpha/Beta Test
+- [Sign up for the alpha/beta on TestFlight](https://testflight.apple.com/join/Q6WyyEpS)
+
 # Development
 1. `git clone https://github.com/amiantos/aislingeach.git`
 2. Open `Aislingeach.xcproject` in Xcode 14.3 or higher.
