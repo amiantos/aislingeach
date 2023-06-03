@@ -16,7 +16,17 @@ class GeneratorViewController: UIViewController {
     var currentGenerationWidth: Int = 8
     var currentRatioLock: Bool = false
 
-    var generationStack: [GeneratedImage] = []
+    var lastGeneratedImage: GeneratedImage? {
+        didSet {
+            if lastGeneratedImage != nil {
+                favoriteButton.isEnabled = true
+                deleteButton.isEnabled = true
+            } else {
+                favoriteButton.isEnabled = false
+                deleteButton.isEnabled = false
+            }
+        }
+    }
 
     // MARK: - IBOutlets
 
@@ -25,10 +35,35 @@ class GeneratorViewController: UIViewController {
     @IBOutlet var generationEffectView: UIVisualEffectView!
     @IBOutlet var generationSpinner: UIActivityIndicatorView!
 
+    @IBOutlet weak var generationWarningImageView: UIImageView!
     @IBOutlet var generationTitleLabel: UILabel!
     @IBOutlet var generationTimeLabel: UILabel!
     @IBOutlet var mainImageView: UIImageView!
     @IBOutlet var mainImageViewHeightConstraint: NSLayoutConstraint!
+
+    @IBOutlet weak var deleteButton: UIButton!
+    @IBAction func deleteButtonAction(_ sender: UIButton) {
+        if let generatedImage = lastGeneratedImage {
+            ImageDatabase.standard.deleteImage(generatedImage) { [self] image in
+                if image == nil {
+                    lastGeneratedImage = nil
+                    mainImageView.image = nil
+                }
+            }
+        }
+    }
+
+    @IBOutlet weak var favoriteButton: UIButton!
+    @IBAction func favoriteButtonAction(_ sender: UIButton) {
+        if let generatedImage = lastGeneratedImage {
+            ImageDatabase.standard.toggleImageFavorite(generatedImage: generatedImage) { gImage in
+                if let gImage = gImage {
+                    self.lastGeneratedImage = gImage
+                    self.updateImageActionButtons()
+                }
+            }
+        }
+    }
 
     @IBOutlet var promptTextView: UITextView!
 
@@ -144,6 +179,8 @@ class GeneratorViewController: UIViewController {
         updateSliderLabels()
 
         hideKeyboardWhenTappedAround()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(checkIfCurrentGenerationWasDeleted), name: .deletedGeneratedImage, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -153,13 +190,32 @@ class GeneratorViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
+        tearDownKeyboardNotifications()
     }
 }
 
 // MARK: - Everything Else
 
 extension GeneratorViewController {
+
+    @objc func checkIfCurrentGenerationWasDeleted() {
+        if let generatedImage = lastGeneratedImage {
+            if generatedImage.managedObjectContext == nil {
+                lastGeneratedImage = nil
+                mainImageView.image = nil
+            }
+        }
+    }
+
+    func updateImageActionButtons() {
+        if let lastGeneratedImage = lastGeneratedImage, lastGeneratedImage.isFavorite {
+            self.favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        } else {
+            self.favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        }
+        self.favoriteButton.setPreferredSymbolConfiguration(.init(scale: .default), forImageIn: .normal)
+    }
+    
     func updateSliderLabels() {
         widthSliderSizeLabel.text = "\(currentGenerationWidth * 64)"
         heightSliderSizeLabel.text = "\(currentGenerationHeight * 64)"
@@ -181,6 +237,7 @@ extension GeneratorViewController {
         generationTitleLabel.text = ""
         generationTimeLabel.text = "Falling asleep..."
         generationEffectView.isHidden = false
+        generationWarningImageView.isHidden = true
         generationSpinner.startAnimating()
     }
 
@@ -193,6 +250,7 @@ extension GeneratorViewController {
     func showGenerationError(message: String) {
         Log.info("Showing error...")
         generationSpinner.stopAnimating()
+        generationWarningImageView.isHidden = false
         generationTitleLabel.text = "Error!"
         generationTimeLabel.text = message
     }
@@ -227,29 +285,37 @@ extension GeneratorViewController {
             if let data = data {
                 Log.debug("\(data)")
                 if data.finished == 1 {
-                    if let generations = data.generations, let generation = generations.first, let urlString = generation.img, let imageUrl = URL(string: urlString) {
-                        DispatchQueue.global().async {
-                            if let data = try? Data(contentsOf: imageUrl), let image = UIImage(data: data) {
-                                DispatchQueue.main.async { [self] in
-                                    let imageWidth = image.size.width
-                                    let imageHeight = image.size.height
-                                    let viewWidth = view.frame.size.width
+                    if let generations = data.generations,
+                       let generation = generations.first
+                    {
+                        if generation.censored ?? false {
+                            showGenerationError(message: "Unable to generate this image.\nTry again with a different prompt?\n(Code 42)")
+                        } else if let urlString = generation.img,
+                           let imageUrl = URL(string: urlString)
+                        {
+                            DispatchQueue.global().async {
+                                if let data = try? Data(contentsOf: imageUrl), let image = UIImage(data: data) {
+                                    DispatchQueue.main.async { [self] in
+                                        let imageWidth = image.size.width
+                                        let imageHeight = image.size.height
+                                        let viewWidth = view.frame.size.width
 
-                                    let ratio = viewWidth / imageWidth
-                                    let scaledHeight = imageHeight * ratio
-                                    mainImageViewHeightConstraint.constant = scaledHeight
-                                    UIView.animate(withDuration: 0.3) {
-                                        self.view.layoutIfNeeded()
-                                        self.mainImageView.image = image
-                                        self.hideGenerationDisplay()
-                                    }
-                                    if !(generation.censored ?? false) {
-                                        generationBody.params?.seed = generation.seed!
-                                        ImageDatabase.standard.saveImage(id: generationIdentifier, image: data, body: generationBody, completion: { _ in
-                                            DispatchQueue.main.async {
-                                                Log.info("\(generationIdentifier) - Saved to image database...")
-                                            }
-                                        })
+                                        let ratio = viewWidth / imageWidth
+                                        let scaledHeight = imageHeight * ratio
+                                        mainImageViewHeightConstraint.constant = scaledHeight
+                                        UIView.animate(withDuration: 0.3) {
+                                            self.view.layoutIfNeeded()
+                                            self.mainImageView.image = image
+                                            self.hideGenerationDisplay()
+                                        }
+                                        if !(generation.censored ?? false) {
+                                            generationBody.params?.seed = generation.seed!
+                                            ImageDatabase.standard.saveImage(id: generationIdentifier, image: data, body: generationBody, completion: { generatedImage in
+                                                guard let generatedImage = generatedImage else { return }
+                                                self.lastGeneratedImage = generatedImage
+                                                self.updateImageActionButtons()
+                                            })
+                                        }
                                     }
                                 }
                             }
@@ -297,5 +363,10 @@ extension GeneratorViewController {
                                                selector: #selector(keyboardWillHide(notification:)),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
+    }
+
+    func tearDownKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 }

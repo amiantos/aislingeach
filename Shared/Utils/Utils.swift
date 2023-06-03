@@ -105,3 +105,7 @@ extension Data {
         }
     }
 }
+
+extension Notification.Name {
+    static let deletedGeneratedImage = Notification.Name("deletedGeneratedImage")
+}

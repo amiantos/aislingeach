@@ -65,7 +65,6 @@ class ImageDatabase {
                 generatedImage.backend = "horde"
                 try self.mainManagedObjectContext.save()
                 self.saveContext()
-//                NotificationCenter.default.post(name: .didAddNewBook, object: nil)
                 completion(generatedImage)
             } catch {
                 completion(nil)

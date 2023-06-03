@@ -42,6 +42,7 @@ class ImageDetailViewController: UIViewController {
 
         ImageDatabase.standard.deleteImage(generatedImage) { generatedImage in
             if generatedImage == nil {
+                NotificationCenter.default.post(name: .deletedGeneratedImage, object: nil)
                 self.navigationController?.popViewController(animated: true)
             }
         }
