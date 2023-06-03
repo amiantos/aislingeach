@@ -141,13 +141,6 @@ extension RatingViewController {
             DispatchQueue.global().async {
                 if let data = try? Data(contentsOf: imageUrl), let image = UIImage(data: data) {
                     DispatchQueue.main.async { [self] in
-//                        let imageWidth = image.size.width
-//                        let imageHeight = image.size.height
-//                        let viewWidth = view.frame.size.width
-//
-//                        let ratio = viewWidth / imageWidth
-//                        let scaledHeight = imageHeight * ratio
-//                        imageContainerHeightConstraint.constant = scaledHeight
                         UIView.animate(withDuration: 0.3) {
                             self.view.layoutIfNeeded()
                             self.imageView.image = image
