@@ -7,6 +7,8 @@
 
 import UIKit
 
+
+
 class GeneratorViewController: UIViewController {
     // MARK: - Variables
 
@@ -39,6 +41,7 @@ class GeneratorViewController: UIViewController {
     @IBOutlet var mainImageView: UIImageView!
     @IBOutlet var mainImageViewHeightConstraint: NSLayoutConstraint!
 
+    @IBOutlet weak var modelPickButton: UIButton!
     @IBOutlet var upscalerPickButton: UIButton!
     @IBOutlet var samplerPickButton: UIButton!
 
@@ -234,11 +237,18 @@ class GeneratorViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerKeyboardNotifications()
+        updateSliderLabels()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tearDownKeyboardNotifications()
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "openModelsViewSegue", let destinationView = segue.destination as? ModelsTableViewController {
+            destinationView.delegate = self
+        }
     }
 }
 
@@ -422,5 +432,11 @@ extension GeneratorViewController {
     func tearDownKeyboardNotifications() {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+}
+
+extension GeneratorViewController: ModelsTableViewControllerDelegate {
+    func selectedModel(name: String) {
+        modelPickButton.setTitle(name, for: .normal)
     }
 }
