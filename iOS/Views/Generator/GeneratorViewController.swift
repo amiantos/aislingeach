@@ -229,7 +229,7 @@ extension GeneratorViewController {
         heightSliderSizeLabel.text = "\(currentDimensions.1 * 64)"
 
         let gcd = gcdBinaryRecursiveStein(currentDimensions.0, currentDimensions.1)
-        aspectRatioButton.titleLabel?.text = "Aspect Ratio: \(currentDimensions.0 / gcd):\(currentDimensions.1 / gcd)"
+        aspectRatioButton.titleLabel?.text = "\(currentDimensions.0 / gcd):\(currentDimensions.1 / gcd)"
         aspectRatioButton.sizeToFit()
     }
 

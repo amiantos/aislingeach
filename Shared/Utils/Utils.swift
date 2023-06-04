@@ -109,3 +109,24 @@ extension Data {
 extension Notification.Name {
     static let deletedGeneratedImage = Notification.Name("deletedGeneratedImage")
 }
+
+class UIRoundedCornerView: UIView {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setup()
+    }
+
+    private func setup() {
+        layer.cornerRadius = 10
+//        layer.shadowRadius = 10
+//        layer.shadowOffset = .zero
+//        layer.shadowOpacity = 0.1
+//        layer.shouldRasterize = true
+//        layer.rasterizationScale = UIScreen.main.scale
+    }
+}
