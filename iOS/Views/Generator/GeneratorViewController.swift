@@ -33,14 +33,17 @@ class GeneratorViewController: UIViewController {
     @IBOutlet var generationEffectView: UIVisualEffectView!
     @IBOutlet var generationSpinner: UIActivityIndicatorView!
 
-    @IBOutlet weak var generationWarningImageView: UIImageView!
+    @IBOutlet var generationWarningImageView: UIImageView!
     @IBOutlet var generationTitleLabel: UILabel!
     @IBOutlet var generationTimeLabel: UILabel!
     @IBOutlet var mainImageView: UIImageView!
     @IBOutlet var mainImageViewHeightConstraint: NSLayoutConstraint!
 
-    @IBOutlet weak var deleteButton: UIButton!
-    @IBAction func deleteButtonAction(_ sender: UIButton) {
+    @IBOutlet var upscalerPickButton: UIButton!
+    @IBOutlet var samplerPickButton: UIButton!
+
+    @IBOutlet var deleteButton: UIButton!
+    @IBAction func deleteButtonAction(_: UIButton) {
         if let generatedImage = lastGeneratedImage {
             ImageDatabase.standard.deleteImage(generatedImage) { [self] image in
                 if image == nil {
@@ -51,8 +54,8 @@ class GeneratorViewController: UIViewController {
         }
     }
 
-    @IBOutlet weak var favoriteButton: UIButton!
-    @IBAction func favoriteButtonAction(_ sender: UIButton) {
+    @IBOutlet var favoriteButton: UIButton!
+    @IBAction func favoriteButtonAction(_: UIButton) {
         if let generatedImage = lastGeneratedImage {
             ImageDatabase.standard.toggleImageFavorite(generatedImage: generatedImage) { gImage in
                 if let gImage = gImage {
@@ -67,13 +70,13 @@ class GeneratorViewController: UIViewController {
 
     @IBOutlet var widthSlider: UISlider!
     @IBOutlet var widthSliderSizeLabel: UILabel!
-    @IBAction func widthSliderChanged(_ sender: UISlider) {
+    @IBAction func widthSliderChanged(_: UISlider) {
         if let ratioLock = currentRatioLock {
             let newHeightValue = widthSlider.value - Float(ratioLock)
             if newHeightValue < heightSlider.minimumValue {
-                widthSlider.value = heightSlider.minimumValue+Float(ratioLock)
+                widthSlider.value = heightSlider.minimumValue + Float(ratioLock)
             } else if newHeightValue > heightSlider.maximumValue {
-                widthSlider.value = heightSlider.maximumValue+Float(ratioLock)
+                widthSlider.value = heightSlider.maximumValue + Float(ratioLock)
             } else {
                 heightSlider.value = newHeightValue
             }
@@ -83,13 +86,13 @@ class GeneratorViewController: UIViewController {
 
     @IBOutlet var heightSlider: UISlider!
     @IBOutlet var heightSliderSizeLabel: UILabel!
-    @IBAction func heightSliderChanged(_ sender: UISlider) {
+    @IBAction func heightSliderChanged(_: UISlider) {
         if let ratioLock = currentRatioLock {
             let newWidthValue = heightSlider.value + Float(ratioLock)
             if newWidthValue > widthSlider.maximumValue {
-                heightSlider.value = heightSlider.maximumValue-Float(ratioLock)
+                heightSlider.value = heightSlider.maximumValue - Float(ratioLock)
             } else if newWidthValue < widthSlider.minimumValue {
-                heightSlider.value = heightSlider.minimumValue-Float(ratioLock)
+                heightSlider.value = heightSlider.minimumValue - Float(ratioLock)
             } else {
                 widthSlider.value = newWidthValue
             }
@@ -104,7 +107,7 @@ class GeneratorViewController: UIViewController {
         let currW = currentDimensions.0
         let currH = currentDimensions.1
         if let ratioLock = currentRatioLock {
-            currentRatioLock = -(ratioLock)
+            currentRatioLock = -ratioLock
         }
         widthSlider.setValue(Float(currH), animated: false)
         heightSlider.setValue(Float(currW), animated: false)
@@ -115,12 +118,12 @@ class GeneratorViewController: UIViewController {
     @IBAction func lockRatioButtonAction(_: UIButton) {
         if currentRatioLock == nil {
             currentRatioLock = Int(widthSlider.value) - Int(heightSlider.value)
-            self.lockRatioButton.setImage(UIImage(systemName: "lock"), for: .normal)
+            lockRatioButton.setImage(UIImage(systemName: "lock"), for: .normal)
         } else {
             currentRatioLock = nil
-            self.lockRatioButton.setImage(UIImage(systemName: "lock.open"), for: .normal)
+            lockRatioButton.setImage(UIImage(systemName: "lock.open"), for: .normal)
         }
-        self.lockRatioButton.setPreferredSymbolConfiguration(.init(scale: .default), forImageIn: .normal)
+        lockRatioButton.setPreferredSymbolConfiguration(.init(scale: .default), forImageIn: .normal)
         Log.info("Ratio locked to: \(currentRatioLock)")
     }
 
@@ -185,6 +188,47 @@ class GeneratorViewController: UIViewController {
         hideKeyboardWhenTappedAround()
 
         NotificationCenter.default.addObserver(self, selector: #selector(checkIfCurrentGenerationWasDeleted), name: .deletedGeneratedImage, object: nil)
+
+        // setup button?
+        let upscalerOptions: [String] = ["No Upscaler", "RealESRGAN_x4plus", "RealESRGAN_x4plus_anime_6B", "RealESRGAN_x4plus_anime_6B", "NMKD_Siax", "4x_AnimeSharp"]
+        let menuChildren: [UIAction] = {
+            var actions: [UIAction] = []
+            upscalerOptions.forEach { option in
+                actions.append(UIAction(title: option, state: .on, handler: { foo in
+                    print(foo)
+                }))
+            }
+            return actions
+        }()
+        upscalerPickButton.menu = UIMenu(children: menuChildren)
+        upscalerPickButton.showsMenuAsPrimaryAction = true
+        upscalerPickButton.changesSelectionAsPrimaryAction = true
+
+        let samplerOptions: [String] = [
+            "k_euler_a",
+            "k_euler",
+            "k_heun",
+            "k_lms",
+            "k_dpm_fast",
+            "k_dpm_adaptive",
+            "k_dpm_2_a",
+            "k_dpm_2",
+            "k_dpmpp_2m",
+            "k_dpmpp_2s_a",
+            "k_dpmpp_sde",
+        ]
+        let sampelrMenuChildren: [UIAction] = {
+            var actions: [UIAction] = []
+            samplerOptions.forEach { option in
+                actions.append(UIAction(title: option, state: .on, handler: { foo in
+                    print(foo)
+                }))
+            }
+            return actions
+        }()
+        samplerPickButton.menu = UIMenu(children: sampelrMenuChildren)
+        samplerPickButton.showsMenuAsPrimaryAction = true
+        samplerPickButton.changesSelectionAsPrimaryAction = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -216,13 +260,13 @@ extension GeneratorViewController {
 
     func updateImageActionButtons() {
         if let lastGeneratedImage = lastGeneratedImage, lastGeneratedImage.isFavorite {
-            self.favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         } else {
-            self.favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
         }
-        self.favoriteButton.setPreferredSymbolConfiguration(.init(scale: .default), forImageIn: .normal)
+        favoriteButton.setPreferredSymbolConfiguration(.init(scale: .default), forImageIn: .normal)
     }
-    
+
     func updateSliderLabels() {
         let currentDimensions = getCurrentWidthAndHeight()
         widthSliderSizeLabel.text = "\(currentDimensions.0 * 64)"
@@ -301,7 +345,7 @@ extension GeneratorViewController {
                         if generation.censored ?? false {
                             showGenerationError(message: "Unable to generate this image.\nTry again with a different prompt?\n(Code 42)")
                         } else if let urlString = generation.img,
-                           let imageUrl = URL(string: urlString)
+                                  let imageUrl = URL(string: urlString)
                         {
                             DispatchQueue.global().async {
                                 if let data = try? Data(contentsOf: imageUrl), let image = UIImage(data: data) {
