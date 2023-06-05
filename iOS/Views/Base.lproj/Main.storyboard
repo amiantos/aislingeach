@@ -21,7 +21,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2oe-09-Zu9">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="1999.9999999999998"/>
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="2000"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tmL-hs-eTv" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="2006.6666666666667"/>
@@ -103,7 +103,7 @@
                                                 <rect key="frame" x="20" y="410" width="353" height="54.666666666666686"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i2Y-S0-KAc">
-                                                        <rect key="frame" x="0.0" y="0.0" width="87.666666666666671" height="54.666666666666664"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="92" height="54.666666666666664"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <buttonConfiguration key="configuration" style="filled" imagePlacement="top" title="Delete" imagePadding="0.0" titleAlignment="center">
                                                             <imageReference key="image" image="trash" catalog="system" symbolScale="default"/>
@@ -113,7 +113,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H9J-bu-f6G">
-                                                        <rect key="frame" x="99.666666666666657" y="0.0" width="100.66666666666666" height="54.666666666666664"/>
+                                                        <rect key="frame" x="104" y="0.0" width="105.66666666666669" height="54.666666666666664"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <buttonConfiguration key="configuration" style="filled" imagePlacement="top" title="Favorite" imagePadding="0.0" titleAlignment="center">
                                                             <imageReference key="image" image="heart" catalog="system" symbolScale="default"/>
@@ -123,9 +123,9 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qaT-kT-1Wu">
-                                                        <rect key="frame" x="212.33333333333337" y="0.0" width="140.66666666666663" height="54.666666666666664"/>
+                                                        <rect key="frame" x="221.66666666666663" y="0.0" width="131.33333333333337" height="54.666666666666664"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                        <buttonConfiguration key="configuration" style="filled" imagePlacement="leading" title="Dream" subtitle="134 Kudos" imagePadding="6" titleAlignment="automatic">
+                                                        <buttonConfiguration key="configuration" style="filled" imagePlacement="leading" title="Dream" subtitle="8 Kudos" imagePadding="6" titleAlignment="automatic">
                                                             <imageReference key="image" image="moon" catalog="system" symbolScale="default"/>
                                                         </buttonConfiguration>
                                                         <connections>
@@ -135,7 +135,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Hhc-TQ-Ydf">
-                                                <rect key="frame" x="20" y="488.66666666666674" width="353" height="1497.9999999999998"/>
+                                                <rect key="frame" x="20" y="488.66666666666674" width="353" height="1498"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="3ab-zd-6Fe">
                                                         <rect key="frame" x="0.0" y="0.0" width="353" height="411.33333333333331"/>
@@ -661,6 +661,7 @@
                         <outlet property="aspectRatioButton" destination="PCG-9z-aHr" id="vqF-2k-WRP"/>
                         <outlet property="deleteButton" destination="i2Y-S0-KAc" id="csO-In-czv"/>
                         <outlet property="favoriteButton" destination="H9J-bu-f6G" id="5ed-MQ-3YT"/>
+                        <outlet property="generateButton" destination="qaT-kT-1Wu" id="4ll-R9-hCe"/>
                         <outlet property="generationEffectView" destination="KHB-xe-Cm0" id="KMt-to-pWC"/>
                         <outlet property="generationSpinner" destination="etR-dw-Kpd" id="FoO-Fe-a2x"/>
                         <outlet property="generationTimeLabel" destination="Cph-Nd-XXB" id="AcX-Uj-OGs"/>

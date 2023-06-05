@@ -28,6 +28,8 @@ class GeneratorViewController: UIViewController {
         }
     }
 
+    var kudosEstimateTimer: Timer?
+
     // MARK: - IBOutlets
 
     @IBOutlet var scrollView: UIScrollView!
@@ -127,50 +129,24 @@ class GeneratorViewController: UIViewController {
             lockRatioButton.setImage(UIImage(systemName: "lock.open"), for: .normal)
         }
         lockRatioButton.setPreferredSymbolConfiguration(.init(scale: .default), forImageIn: .normal)
-        Log.info("Ratio locked to: \(currentRatioLock)")
+        Log.info("Ratio locked to: \(String(describing: currentRatioLock))")
     }
 
+    @IBOutlet weak var generateButton: UIButton!
     @IBAction func generateButtonPressed(_: UIButton) {
-        guard let generationText = promptTextView.text, generationText != "" else { return }
         promptTextView.resignFirstResponder()
-
-        let currentDimensions = getCurrentWidthAndHeight()
-
-        startGenerationSpinner()
-        let modelParams = ModelGenerationInputStable(
-            samplerName: .kEulerA,
-            cfgScale: 7.5,
-            denoisingStrength: 0.75,
-            height: 64 * currentDimensions.1,
-            width: 64 * currentDimensions.0,
-            karras: true,
-            hiresFix: true,
-            clipSkip: 2,
-            steps: 30,
-            n: 1
-        )
-        let generationBody = GenerationInputStable(
-            prompt: generationText,
-            params: modelParams,
-            nsfw: false,
-            trustedWorkers: true,
-            slowWorkers: true,
-            censorNsfw: true,
-            models: ["stable_diffusion"],
-            r2: true,
-            shared: true,
-            replacementFilter: true,
-            dryRun: false
-        )
-        HordeV2API.postImageAsyncGenerate(body: generationBody, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
-            if let data = data, let generationIdentifier = data._id {
-                Log.debug("\(data)")
-                self.setNewGenerationRequest(generationIdentifier: generationIdentifier, generationBody: generationBody)
-            } else if let error = error {
-                if error.code == 401 {
-                    self.showGenerationError(message: "401: Invalid API Key?")
-                } else {
-                    self.showGenerationError(message: error.localizedDescription)
+        if let generationBody = getCurrentGenerationBody() {
+            startGenerationSpinner()
+            HordeV2API.postImageAsyncGenerate(body: generationBody, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
+                if let data = data, let generationIdentifier = data._id {
+                    Log.debug("\(data)")
+                    self.setNewGenerationRequest(generationIdentifier: generationIdentifier, generationBody: generationBody)
+                } else if let error = error {
+                    if error.code == 401 {
+                        self.showGenerationError(message: "401: Invalid API Key?")
+                    } else {
+                        self.showGenerationError(message: error.localizedDescription)
+                    }
                 }
             }
         }
@@ -232,6 +208,8 @@ class GeneratorViewController: UIViewController {
         samplerPickButton.menu = UIMenu(children: sampelrMenuChildren)
         samplerPickButton.showsMenuAsPrimaryAction = true
         samplerPickButton.changesSelectionAsPrimaryAction = true
+
+        flagKudosEstimatorForUpdate()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -255,6 +233,70 @@ class GeneratorViewController: UIViewController {
 // MARK: - Everything Else
 
 extension GeneratorViewController {
+    func flagKudosEstimatorForUpdate() {
+        guard getCurrentGenerationBody(dryRun: true) != nil else { return }
+        self.kudosEstimateTimer?.invalidate()
+        kudosEstimateTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { timer in
+            self.fetchAndDisplayKudosEstimate()
+        })
+
+    }
+    func fetchAndDisplayKudosEstimate() {
+        guard let currentGen = getCurrentGenerationBody(dryRun: true) else { return }
+        DispatchQueue.main.async {
+            HordeV2API.postImageAsyncGenerate(body: currentGen, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
+                if let data = data, let kudosEstimate = data.kudos {
+                    Log.debug(data)
+                    self.generateButton.configuration?.subtitle = "\(kudosEstimate) Kudos"
+                } else if let error = error {
+                    Log.error(error)
+                }
+            }
+        }
+    }
+    func getCurrentGenerationBody(dryRun: Bool = false) -> GenerationInputStable? {
+        guard let generationText = promptTextView.text, generationText != "" else { return nil }
+        let currentDimensions = getCurrentWidthAndHeight()
+        let modelParams = ModelGenerationInputStable(
+            samplerName: .kEulerA,
+            cfgScale: 9,
+            denoisingStrength: 0.75,
+            height: 64 * currentDimensions.1,
+            width: 64 * currentDimensions.0,
+            seedVariation: nil,
+            postProcessing: nil,
+            karras: true,
+            tiling: false,
+            hiresFix: true,
+            clipSkip: 2,
+            controlType: nil,
+            imageIsControl: false,
+            returnControlMap: nil,
+            facefixerStrength: 0.75,
+            loras: nil,
+            steps: 20,
+            n: 1
+        )
+        return GenerationInputStable(
+            prompt: generationText,
+            params: modelParams,
+            nsfw: false,
+            trustedWorkers: true,
+            slowWorkers: true,
+            censorNsfw: true,
+            workers: nil,
+            workerBlacklist: nil,
+            models: [modelPickButton.titleLabel?.text ?? "stable_diffusion"],
+            sourceImage: nil,
+            sourceProcessing: nil,
+            sourceMask: nil,
+            r2: true,
+            shared: true,
+            replacementFilter: true,
+            dryRun: dryRun
+        )
+    }
+
     func getCurrentWidthAndHeight() -> (Int, Int) {
         return (Int(widthSlider.value), Int(heightSlider.value))
     }
@@ -285,6 +327,8 @@ extension GeneratorViewController {
         let gcd = gcdBinaryRecursiveStein(currentDimensions.0, currentDimensions.1)
         aspectRatioButton.titleLabel?.text = "\(currentDimensions.0 / gcd):\(currentDimensions.1 / gcd)"
         aspectRatioButton.sizeToFit()
+
+        flagKudosEstimatorForUpdate()
     }
 
     func setNewGenerationRequest(generationIdentifier: String, generationBody: GenerationInputStable) {
