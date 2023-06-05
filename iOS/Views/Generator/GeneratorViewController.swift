@@ -270,7 +270,6 @@ extension GeneratorViewController {
                 postprocessing = [upscaler]
         }
 
-
         let modelParams = ModelGenerationInputStable(
             samplerName: samplerName,
             cfgScale: 9,
@@ -279,9 +278,9 @@ extension GeneratorViewController {
             width: 64 * currentDimensions.0,
             seedVariation: nil,
             postProcessing: postprocessing,
-            karras: true,
-            tiling: false,
-            hiresFix: true,
+            karras: karrasToggleButton.isSelected,
+            tiling: tilingToggleButton.isSelected,
+            hiresFix: hiresFixToggleButton.isSelected,
             clipSkip: 2,
             controlType: nil,
             imageIsControl: false,
