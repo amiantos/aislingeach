@@ -225,22 +225,22 @@
                                                                                 <rect key="frame" x="0.0" y="310.33333333333337" width="313" height="120"/>
                                                                                 <subviews>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="W0x-X1-h7S">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="41.666666666666664" height="120"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="46.666666666666664" height="120"/>
                                                                                         <subviews>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Steps" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j5X-J9-mYY">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="41.666666666666664" height="32"/>
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="46.666666666666664" height="32"/>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Guidance" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwK-LV-jrp">
-                                                                                                <rect key="frame" x="0.0" y="44" width="41.666666666666664" height="32"/>
+                                                                                                <rect key="frame" x="0.0" y="44" width="46.666666666666664" height="32"/>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CLIP Skip" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NNS-Xn-3gQ">
-                                                                                                <rect key="frame" x="0.0" y="88" width="41.666666666666664" height="32"/>
+                                                                                                <rect key="frame" x="0.0" y="88" width="46.666666666666664" height="32"/>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
@@ -260,16 +260,19 @@
                                                                                         </constraints>
                                                                                     </stackView>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="7dC-9c-DSW">
-                                                                                        <rect key="frame" x="53.666666666666671" y="0.0" width="134" height="120"/>
+                                                                                        <rect key="frame" x="58.666666666666671" y="0.0" width="212.33333333333331" height="120"/>
                                                                                         <subviews>
                                                                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="20" minValue="1" maxValue="150" translatesAutoresizingMaskIntoConstraints="NO" id="bFo-sQ-8IW">
-                                                                                                <rect key="frame" x="-2" y="0.0" width="138" height="33"/>
+                                                                                                <rect key="frame" x="-2" y="0.0" width="216.33333333333334" height="33"/>
+                                                                                                <connections>
+                                                                                                    <action selector="stepsSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="Wk4-tl-xVO"/>
+                                                                                                </connections>
                                                                                             </slider>
                                                                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="9" minValue="1" maxValue="30" translatesAutoresizingMaskIntoConstraints="NO" id="1ak-6U-Nj3">
-                                                                                                <rect key="frame" x="-2" y="44" width="138" height="33"/>
+                                                                                                <rect key="frame" x="-2" y="44" width="216.33333333333334" height="33"/>
                                                                                             </slider>
                                                                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="HZK-9c-0rL">
-                                                                                                <rect key="frame" x="-2" y="88" width="138" height="33"/>
+                                                                                                <rect key="frame" x="-2" y="88" width="216.33333333333334" height="33"/>
                                                                                             </slider>
                                                                                         </subviews>
                                                                                         <constraints>
@@ -285,23 +288,23 @@
                                                                                             <constraint firstAttribute="trailing" secondItem="HZK-9c-0rL" secondAttribute="trailing" id="wjR-49-p05"/>
                                                                                         </constraints>
                                                                                     </stackView>
-                                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="sNB-jl-wWJ">
-                                                                                        <rect key="frame" x="199.66666666666666" y="0.0" width="7.3333333333333428" height="120"/>
+                                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="sNB-jl-wWJ">
+                                                                                        <rect key="frame" x="283" y="0.0" width="30" height="120"/>
                                                                                         <subviews>
-                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oPc-DW-WST">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="7.333333333333333" height="32"/>
+                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oPc-DW-WST">
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="30" height="32"/>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
-                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZdW-f2-woy">
-                                                                                                <rect key="frame" x="0.0" y="44" width="7.333333333333333" height="32"/>
+                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZdW-f2-woy">
+                                                                                                <rect key="frame" x="0.0" y="44" width="30" height="32"/>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
-                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rGd-ff-yP6">
-                                                                                                <rect key="frame" x="0.0" y="88" width="7.333333333333333" height="32"/>
+                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rGd-ff-yP6">
+                                                                                                <rect key="frame" x="0.0" y="88" width="30" height="32"/>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
@@ -317,20 +320,24 @@
                                                                                             <constraint firstItem="oPc-DW-WST" firstAttribute="leading" secondItem="sNB-jl-wWJ" secondAttribute="leading" id="MdK-k6-Iwa"/>
                                                                                             <constraint firstItem="oPc-DW-WST" firstAttribute="top" secondItem="sNB-jl-wWJ" secondAttribute="top" id="cUZ-Gz-puE"/>
                                                                                             <constraint firstItem="rGd-ff-yP6" firstAttribute="top" secondItem="ZdW-f2-woy" secondAttribute="bottom" constant="12" id="nKo-JI-A8h"/>
+                                                                                            <constraint firstAttribute="width" constant="30" id="ncE-P6-uT7"/>
                                                                                             <constraint firstAttribute="bottom" secondItem="rGd-ff-yP6" secondAttribute="bottom" id="pjS-IU-2r9"/>
                                                                                         </constraints>
                                                                                     </stackView>
-                                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="D3P-Sg-JUF">
-                                                                                        <rect key="frame" x="219" y="0.0" width="94" height="120"/>
+                                                                                    <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="D3P-Sg-JUF">
+                                                                                        <rect key="frame" x="313" y="0.0" width="0.0" height="120"/>
                                                                                         <subviews>
                                                                                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" wraps="YES" value="1" minimumValue="1" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="8Eo-be-5Uc">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="94" height="32"/>
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="32"/>
+                                                                                                <connections>
+                                                                                                    <action selector="stepsStepperValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="u7C-Gl-kko"/>
+                                                                                                </connections>
                                                                                             </stepper>
                                                                                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" wraps="YES" value="1" minimumValue="1" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="mE1-Nv-uPg">
-                                                                                                <rect key="frame" x="0.0" y="44" width="94" height="32"/>
+                                                                                                <rect key="frame" x="0.0" y="44" width="0.0" height="32"/>
                                                                                             </stepper>
                                                                                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" wraps="YES" value="1" minimumValue="1" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="DuY-Jc-c8Z">
-                                                                                                <rect key="frame" x="0.0" y="88" width="94" height="32"/>
+                                                                                                <rect key="frame" x="0.0" y="88" width="0.0" height="32"/>
                                                                                             </stepper>
                                                                                         </subviews>
                                                                                         <constraints>
@@ -679,6 +686,8 @@
                         <outlet property="samplerPickButton" destination="Vid-tX-doa" id="yLN-ku-CP1"/>
                         <outlet property="scrollView" destination="2oe-09-Zu9" id="3bI-fI-6aM"/>
                         <outlet property="sizingButtonsStackView" destination="ERA-Sn-1oD" id="IWF-We-as0"/>
+                        <outlet property="stepsLabel" destination="oPc-DW-WST" id="5NY-jW-7Dq"/>
+                        <outlet property="stepsSlider" destination="bFo-sQ-8IW" id="iZT-6L-haf"/>
                         <outlet property="tilingToggleButton" destination="0Zl-Wf-mBa" id="dME-40-LNc"/>
                         <outlet property="upscalerPickButton" destination="kEh-ef-XWK" id="A2z-j9-S5Y"/>
                         <outlet property="widthSlider" destination="fG1-FY-hQM" id="2U5-fj-3t7"/>

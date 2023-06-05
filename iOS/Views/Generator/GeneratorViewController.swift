@@ -77,6 +77,19 @@ class GeneratorViewController: UIViewController {
 
     @IBOutlet var promptTextView: UITextView!
 
+    @IBOutlet weak var stepsSlider: UISlider!
+    @IBOutlet weak var stepsLabel: UILabel!
+
+    @IBAction func stepsSliderChanged(_ sender: UISlider) {
+        let intValue = Int(sender.value)
+        stepsLabel.text = "\(intValue)"
+        flagKudosEstimatorForUpdate()
+    }
+    @IBAction func stepsStepperValueChanged(_ sender: UIStepper) {
+
+    }
+
+
     @IBOutlet var widthSlider: UISlider!
     @IBOutlet var widthSliderSizeLabel: UILabel!
     @IBAction func widthSliderChanged(_: UISlider) {
@@ -287,7 +300,7 @@ extension GeneratorViewController {
             returnControlMap: nil,
             facefixerStrength: 0.75,
             loras: nil,
-            steps: 20,
+            steps: Int(stepsSlider.value),
             n: 1
         )
         let input = GenerationInputStable(
