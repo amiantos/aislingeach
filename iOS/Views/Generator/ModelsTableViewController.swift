@@ -19,22 +19,37 @@ class ModelsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(refreshModelList), for: .valueChanged)
+
         if let cache = ModelsCache.standard.get() {
             self.activeModels = cache
             self.tableView.reloadData()
         } else {
+            refreshModelList()
+        }
+    }
+
+    @objc func refreshModelList() {
+        self.activeModels = []
+        self.tableView.reloadData()
+        DispatchQueue.global().async {
             HordeV2API.getModels(clientAgent: hordeClientAgent(), minCount: 1) { data, error in
                 if var data = data {
                     data.sort { $0.count ?? 0 > $1.count ?? 0 }
-                    ModelsCache.standard.cache(models: data)
-                    self.activeModels = data
-                    self.tableView.reloadData()
+                    DispatchQueue.main.async {
+                        ModelsCache.standard.cache(models: data)
+                        self.activeModels = data
+                        self.tableView.refreshControl?.endRefreshing()
+                        self.tableView.reloadData()
+                    }
                 } else if let error = error {
                     self.activeModels = []
                     Log.error("Unable to load active models. \(error)")
                 }
             }
         }
+
     }
 
     // MARK: - Table view data source
