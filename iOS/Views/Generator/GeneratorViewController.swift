@@ -47,6 +47,10 @@ class GeneratorViewController: UIViewController {
     @IBOutlet var upscalerPickButton: UIButton!
     @IBOutlet var samplerPickButton: UIButton!
 
+    @IBOutlet weak var karrasToggleButton: UIButton!
+    @IBOutlet weak var hiresFixToggleButton: UIButton!
+    @IBOutlet weak var tilingToggleButton: UIButton!
+
     @IBOutlet var deleteButton: UIButton!
     @IBAction func deleteButtonAction(_: UIButton) {
         if let generatedImage = lastGeneratedImage {
@@ -169,12 +173,12 @@ class GeneratorViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(checkIfCurrentGenerationWasDeleted), name: .deletedGeneratedImage, object: nil)
 
         // setup button?
-        let upscalerOptions: [String] = ["No Upscaler", "RealESRGAN_x4plus", "RealESRGAN_x4plus_anime_6B", "RealESRGAN_x4plus_anime_6B", "NMKD_Siax", "4x_AnimeSharp"]
+        let upscalerOptions: [String] = ["No Upscaler", "RealESRGAN_x4plus","RealESRGAN_x2plus", "RealESRGAN_x4plus_anime_6B", "RealESRGAN_x4plus_anime_6B", "NMKD_Siax", "4x_AnimeSharp"]
         let menuChildren: [UIAction] = {
             var actions: [UIAction] = []
             upscalerOptions.forEach { option in
-                actions.append(UIAction(title: option, state: .on, handler: { foo in
-                    print(foo)
+                actions.append(UIAction(title: option, state: .on, handler: { _ in
+                    self.flagKudosEstimatorForUpdate()
                 }))
             }
             return actions
@@ -259,6 +263,14 @@ extension GeneratorViewController {
         let currentDimensions = getCurrentWidthAndHeight()
         let samplerString = samplerPickButton.menu?.selectedElements[0].title ?? "k_euler_a"
         let samplerName = ModelGenerationInputStable.SamplerName(rawValue: samplerString)
+
+        var postprocessing: [ModelGenerationInputStable.PostProcessing]? = nil
+
+        if let menuItem = upscalerPickButton.menu?.selectedElements.first, let upscaler = ModelGenerationInputStable.PostProcessing(rawValue: menuItem.title) {
+                postprocessing = [upscaler]
+        }
+
+
         let modelParams = ModelGenerationInputStable(
             samplerName: samplerName,
             cfgScale: 9,
@@ -266,7 +278,7 @@ extension GeneratorViewController {
             height: 64 * currentDimensions.1,
             width: 64 * currentDimensions.0,
             seedVariation: nil,
-            postProcessing: nil,
+            postProcessing: postprocessing,
             karras: true,
             tiling: false,
             hiresFix: true,
@@ -279,7 +291,7 @@ extension GeneratorViewController {
             steps: 20,
             n: 1
         )
-        return GenerationInputStable(
+        let input = GenerationInputStable(
             prompt: generationText,
             params: modelParams,
             nsfw: false,
@@ -297,6 +309,8 @@ extension GeneratorViewController {
             replacementFilter: true,
             dryRun: dryRun
         )
+        Log.debug(input)
+        return input
     }
 
     func getCurrentWidthAndHeight() -> (Int, Int) {

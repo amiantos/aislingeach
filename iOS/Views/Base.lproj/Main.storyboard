@@ -669,6 +669,8 @@
                         <outlet property="generationWarningImageView" destination="nea-i4-Sh9" id="WiK-50-Mql"/>
                         <outlet property="heightSlider" destination="37z-oU-lmB" id="lqx-Ai-fi6"/>
                         <outlet property="heightSliderSizeLabel" destination="OGV-z1-z6v" id="6xt-JG-E7Q"/>
+                        <outlet property="hiresFixToggleButton" destination="lXD-ji-EaU" id="xtu-HS-tbx"/>
+                        <outlet property="karrasToggleButton" destination="aeX-eL-Xcf" id="mvk-wF-rdd"/>
                         <outlet property="lockRatioButton" destination="LNZ-kb-mWN" id="cP8-ch-47G"/>
                         <outlet property="mainImageView" destination="04T-bw-NZK" id="aCx-Gw-ZX4"/>
                         <outlet property="mainImageViewHeightConstraint" destination="q8O-iX-lXI" id="afJ-CT-dRt"/>
@@ -677,6 +679,7 @@
                         <outlet property="samplerPickButton" destination="Vid-tX-doa" id="yLN-ku-CP1"/>
                         <outlet property="scrollView" destination="2oe-09-Zu9" id="3bI-fI-6aM"/>
                         <outlet property="sizingButtonsStackView" destination="ERA-Sn-1oD" id="IWF-We-as0"/>
+                        <outlet property="tilingToggleButton" destination="0Zl-Wf-mBa" id="dME-40-LNc"/>
                         <outlet property="upscalerPickButton" destination="kEh-ef-XWK" id="A2z-j9-S5Y"/>
                         <outlet property="widthSlider" destination="fG1-FY-hQM" id="2U5-fj-3t7"/>
                         <outlet property="widthSliderSizeLabel" destination="ZQZ-aJ-HZO" id="T6Y-LF-xEs"/>
