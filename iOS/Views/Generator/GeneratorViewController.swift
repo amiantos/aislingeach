@@ -196,16 +196,16 @@ class GeneratorViewController: UIViewController {
             "k_dpmpp_2s_a",
             "k_dpmpp_sde",
         ]
-        let sampelrMenuChildren: [UIAction] = {
+        let samplerMenuChildren: [UIAction] = {
             var actions: [UIAction] = []
             samplerOptions.forEach { option in
-                actions.append(UIAction(title: option, state: .on, handler: { foo in
-                    print(foo)
+                actions.append(UIAction(title: option, state: .on, handler: { _ in
+                    self.flagKudosEstimatorForUpdate()
                 }))
             }
             return actions
         }()
-        samplerPickButton.menu = UIMenu(children: sampelrMenuChildren)
+        samplerPickButton.menu = UIMenu(children: samplerMenuChildren)
         samplerPickButton.showsMenuAsPrimaryAction = true
         samplerPickButton.changesSelectionAsPrimaryAction = true
 
@@ -236,7 +236,7 @@ extension GeneratorViewController {
     func flagKudosEstimatorForUpdate() {
         guard getCurrentGenerationBody(dryRun: true) != nil else { return }
         self.kudosEstimateTimer?.invalidate()
-        kudosEstimateTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { timer in
+        kudosEstimateTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { timer in
             self.fetchAndDisplayKudosEstimate()
         })
 
@@ -257,8 +257,10 @@ extension GeneratorViewController {
     func getCurrentGenerationBody(dryRun: Bool = false) -> GenerationInputStable? {
         guard let generationText = promptTextView.text, generationText != "" else { return nil }
         let currentDimensions = getCurrentWidthAndHeight()
+        let samplerString = samplerPickButton.menu?.selectedElements[0].title ?? "k_euler_a"
+        let samplerName = ModelGenerationInputStable.SamplerName(rawValue: samplerString)
         let modelParams = ModelGenerationInputStable(
-            samplerName: .kEulerA,
+            samplerName: samplerName,
             cfgScale: 9,
             denoisingStrength: 0.75,
             height: 64 * currentDimensions.1,
@@ -482,5 +484,6 @@ extension GeneratorViewController {
 extension GeneratorViewController: ModelsTableViewControllerDelegate {
     func selectedModel(name: String) {
         modelPickButton.setTitle(name, for: .normal)
+        flagKudosEstimatorForUpdate()
     }
 }
