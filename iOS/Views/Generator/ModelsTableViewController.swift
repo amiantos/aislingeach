@@ -19,14 +19,20 @@ class ModelsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        HordeV2API.getModels(clientAgent: hordeClientAgent(), minCount: 1) { data, error in
-            if var data = data {
-                data.sort { $0.count ?? 0 > $1.count ?? 0 }
-                self.activeModels = data
-                self.tableView.reloadData()
-            } else if let error = error {
-                self.activeModels = []
-                Log.error("Unable to load active models. \(error)")
+        if let cache = ModelsCache.standard.get() {
+            self.activeModels = cache
+            self.tableView.reloadData()
+        } else {
+            HordeV2API.getModels(clientAgent: hordeClientAgent(), minCount: 1) { data, error in
+                if var data = data {
+                    data.sort { $0.count ?? 0 > $1.count ?? 0 }
+                    ModelsCache.standard.cache(models: data)
+                    self.activeModels = data
+                    self.tableView.reloadData()
+                } else if let error = error {
+                    self.activeModels = []
+                    Log.error("Unable to load active models. \(error)")
+                }
             }
         }
     }
