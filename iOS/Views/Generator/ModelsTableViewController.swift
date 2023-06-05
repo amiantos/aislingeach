@@ -31,21 +31,21 @@ class ModelsTableViewController: UITableViewController {
     }
 
     @objc func refreshModelList() {
+        self.tableView.refreshControl?.endRefreshing()
         self.activeModels = []
         self.tableView.reloadData()
-        DispatchQueue.global().async {
+        DispatchQueue.global(qos: .userInitiated).async {
             HordeV2API.getModels(clientAgent: hordeClientAgent(), minCount: 1) { data, error in
-                if var data = data {
-                    data.sort { $0.count ?? 0 > $1.count ?? 0 }
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    if var data = data {
+                        data.sort { $0.count ?? 0 > $1.count ?? 0 }
                         ModelsCache.standard.cache(models: data)
                         self.activeModels = data
-                        self.tableView.refreshControl?.endRefreshing()
                         self.tableView.reloadData()
+                    } else if let error = error {
+                        self.activeModels = []
+                        Log.error("Unable to load active models. \(error)")
                     }
-                } else if let error = error {
-                    self.activeModels = []
-                    Log.error("Unable to load active models. \(error)")
                 }
             }
         }
