@@ -50,6 +50,9 @@ class GeneratorViewController: UIViewController {
     @IBOutlet weak var karrasToggleButton: UIButton!
     @IBOutlet weak var hiresFixToggleButton: UIButton!
     @IBOutlet weak var tilingToggleButton: UIButton!
+    @IBAction func toggleButtonChanged(_ sender: UIButton) {
+        flagKudosEstimatorForUpdate()
+    }
 
     @IBOutlet var deleteButton: UIButton!
     @IBAction func deleteButtonAction(_: UIButton) {
@@ -79,15 +82,28 @@ class GeneratorViewController: UIViewController {
 
     @IBOutlet weak var stepsSlider: UISlider!
     @IBOutlet weak var stepsLabel: UILabel!
-
     @IBAction func stepsSliderChanged(_ sender: UISlider) {
         let intValue = Int(sender.value)
         stepsLabel.text = "\(intValue)"
         flagKudosEstimatorForUpdate()
     }
-    @IBAction func stepsStepperValueChanged(_ sender: UIStepper) {
 
+    @IBOutlet weak var guidanceSlider: UISlider!
+    @IBOutlet weak var guidanceLabel: UILabel!
+    @IBAction func guidanceSliderChanged(_ sender: UISlider) {
+        let intValue = Int(sender.value)
+        guidanceLabel.text = "\(intValue)"
+        flagKudosEstimatorForUpdate()
     }
+
+    @IBOutlet weak var clipSkipSlider: UISlider!
+    @IBOutlet weak var clipSkipLabel: UILabel!
+    @IBAction func clipSkipSliderChanged(_ sender: UISlider) {
+        let intValue = Int(sender.value)
+        clipSkipLabel.text = "\(intValue)"
+        flagKudosEstimatorForUpdate()
+    }
+
 
 
     @IBOutlet var widthSlider: UISlider!
@@ -103,6 +119,7 @@ class GeneratorViewController: UIViewController {
                 heightSlider.value = newHeightValue
             }
         }
+        flagKudosEstimatorForUpdate()
         updateSliderLabels()
     }
 
@@ -119,6 +136,7 @@ class GeneratorViewController: UIViewController {
                 widthSlider.value = newWidthValue
             }
         }
+        flagKudosEstimatorForUpdate()
         updateSliderLabels()
     }
 
@@ -169,6 +187,25 @@ class GeneratorViewController: UIViewController {
         }
     }
 
+    @IBOutlet weak var faceFixSegmentedControl: UISegmentedControl!
+    @IBAction func faceFixSegmentedControl(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 1:
+            faceFixerStrengthSlider.isEnabled = true
+        case 2:
+            faceFixerStrengthSlider.isEnabled = true
+        default:
+            faceFixerStrengthSlider.isEnabled = false
+
+        }
+        flagKudosEstimatorForUpdate()
+    }
+    @IBOutlet weak var faceFixerStrengthSlider: UISlider!
+    @IBOutlet weak var faceFixStrengthLabel: UILabel!
+    @IBAction func faceFixStrengthSliderChanged(_ sender: UISlider) {
+        faceFixStrengthLabel.text = "\(round(sender.value * 100) / 100.0)"
+        flagKudosEstimatorForUpdate()
+    }
     // MARK: - View Setup
 
     override func viewDidLoad() {
@@ -186,7 +223,14 @@ class GeneratorViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(checkIfCurrentGenerationWasDeleted), name: .deletedGeneratedImage, object: nil)
 
         // setup button?
-        let upscalerOptions: [String] = ["No Upscaler", "RealESRGAN_x4plus","RealESRGAN_x2plus", "RealESRGAN_x4plus_anime_6B", "RealESRGAN_x4plus_anime_6B", "NMKD_Siax", "4x_AnimeSharp"]
+        let upscalerOptions: [String] = [
+            "No Upscaler",
+            "RealESRGAN_x4plus",
+            "RealESRGAN_x2plus",
+            "RealESRGAN_x4plus_anime_6B",
+            "NMKD_Siax",
+            "4x_AnimeSharp"
+        ]
         let menuChildren: [UIAction] = {
             var actions: [UIAction] = []
             upscalerOptions.forEach { option in
@@ -235,6 +279,11 @@ class GeneratorViewController: UIViewController {
         updateSliderLabels()
     }
 
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        updateSliderLabels()
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tearDownKeyboardNotifications()
@@ -277,15 +326,25 @@ extension GeneratorViewController {
         let samplerString = samplerPickButton.menu?.selectedElements[0].title ?? "k_euler_a"
         let samplerName = ModelGenerationInputStable.SamplerName(rawValue: samplerString)
 
-        var postprocessing: [ModelGenerationInputStable.PostProcessing]? = nil
+        var postprocessing: [ModelGenerationInputStable.PostProcessing]? = []
 
         if let menuItem = upscalerPickButton.menu?.selectedElements.first, let upscaler = ModelGenerationInputStable.PostProcessing(rawValue: menuItem.title) {
-                postprocessing = [upscaler]
+            postprocessing?.append(upscaler)
+        }
+
+        if faceFixSegmentedControl.selectedSegmentIndex == 1 {
+            postprocessing?.append(.gfpgan)
+        } else if faceFixSegmentedControl.selectedSegmentIndex == 2 {
+            postprocessing?.append(.codeFormers)
+        }
+
+        if let pp = postprocessing, pp.isEmpty {
+            postprocessing = nil
         }
 
         let modelParams = ModelGenerationInputStable(
             samplerName: samplerName,
-            cfgScale: 9,
+            cfgScale: Decimal(Int(guidanceSlider.value)),
             denoisingStrength: 0.75,
             height: 64 * currentDimensions.1,
             width: 64 * currentDimensions.0,
@@ -294,11 +353,11 @@ extension GeneratorViewController {
             karras: karrasToggleButton.isSelected,
             tiling: tilingToggleButton.isSelected,
             hiresFix: hiresFixToggleButton.isSelected,
-            clipSkip: 2,
+            clipSkip: Int(clipSkipSlider.value),
             controlType: nil,
             imageIsControl: false,
             returnControlMap: nil,
-            facefixerStrength: 0.75,
+            facefixerStrength: Decimal(round(Double(faceFixerStrengthSlider.value) * 100.0) / 100.0),
             loras: nil,
             steps: Int(stepsSlider.value),
             n: 1
@@ -355,8 +414,6 @@ extension GeneratorViewController {
         let gcd = gcdBinaryRecursiveStein(currentDimensions.0, currentDimensions.1)
         aspectRatioButton.titleLabel?.text = "\(currentDimensions.0 / gcd):\(currentDimensions.1 / gcd)"
         aspectRatioButton.sizeToFit()
-
-        flagKudosEstimatorForUpdate()
     }
 
     func setNewGenerationRequest(generationIdentifier: String, generationBody: GenerationInputStable) {

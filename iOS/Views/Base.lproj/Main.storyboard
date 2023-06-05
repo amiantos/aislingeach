@@ -225,22 +225,22 @@
                                                                                 <rect key="frame" x="0.0" y="310.33333333333337" width="313" height="120"/>
                                                                                 <subviews>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="W0x-X1-h7S">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="46.666666666666664" height="120"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="41.666666666666664" height="120"/>
                                                                                         <subviews>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Steps" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j5X-J9-mYY">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="46.666666666666664" height="32"/>
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="41.666666666666664" height="32"/>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Guidance" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwK-LV-jrp">
-                                                                                                <rect key="frame" x="0.0" y="44" width="46.666666666666664" height="32"/>
+                                                                                                <rect key="frame" x="0.0" y="44" width="41.666666666666664" height="32"/>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CLIP Skip" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NNS-Xn-3gQ">
-                                                                                                <rect key="frame" x="0.0" y="88" width="46.666666666666664" height="32"/>
+                                                                                                <rect key="frame" x="0.0" y="88" width="41.666666666666664" height="32"/>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
@@ -260,19 +260,25 @@
                                                                                         </constraints>
                                                                                     </stackView>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="7dC-9c-DSW">
-                                                                                        <rect key="frame" x="58.666666666666671" y="0.0" width="212.33333333333331" height="120"/>
+                                                                                        <rect key="frame" x="53.666666666666671" y="0.0" width="217.33333333333331" height="120"/>
                                                                                         <subviews>
                                                                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="20" minValue="1" maxValue="150" translatesAutoresizingMaskIntoConstraints="NO" id="bFo-sQ-8IW">
-                                                                                                <rect key="frame" x="-2" y="0.0" width="216.33333333333334" height="33"/>
+                                                                                                <rect key="frame" x="-2" y="0.0" width="221.33333333333334" height="33"/>
                                                                                                 <connections>
                                                                                                     <action selector="stepsSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="Wk4-tl-xVO"/>
                                                                                                 </connections>
                                                                                             </slider>
                                                                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="9" minValue="1" maxValue="30" translatesAutoresizingMaskIntoConstraints="NO" id="1ak-6U-Nj3">
-                                                                                                <rect key="frame" x="-2" y="44" width="216.33333333333334" height="33"/>
+                                                                                                <rect key="frame" x="-2" y="44" width="221.33333333333334" height="33"/>
+                                                                                                <connections>
+                                                                                                    <action selector="guidanceSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="x9d-MK-4aR"/>
+                                                                                                </connections>
                                                                                             </slider>
                                                                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="HZK-9c-0rL">
-                                                                                                <rect key="frame" x="-2" y="88" width="216.33333333333334" height="33"/>
+                                                                                                <rect key="frame" x="-2" y="88" width="221.33333333333334" height="33"/>
+                                                                                                <connections>
+                                                                                                    <action selector="clipSkipSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="Idq-qO-cPb"/>
+                                                                                                </connections>
                                                                                             </slider>
                                                                                         </subviews>
                                                                                         <constraints>
@@ -329,9 +335,6 @@
                                                                                         <subviews>
                                                                                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" wraps="YES" value="1" minimumValue="1" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="8Eo-be-5Uc">
                                                                                                 <rect key="frame" x="0.0" y="0.0" width="0.0" height="32"/>
-                                                                                                <connections>
-                                                                                                    <action selector="stepsStepperValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="u7C-Gl-kko"/>
-                                                                                                </connections>
                                                                                             </stepper>
                                                                                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" wraps="YES" value="1" minimumValue="1" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="mE1-Nv-uPg">
                                                                                                 <rect key="frame" x="0.0" y="44" width="0.0" height="32"/>
@@ -362,16 +365,25 @@
                                                                                         <rect key="frame" x="0.0" y="0.0" width="96.333333333333329" height="34.333333333333336"/>
                                                                                         <state key="normal" title="Button"/>
                                                                                         <buttonConfiguration key="configuration" style="tinted" title="Karras"/>
+                                                                                        <connections>
+                                                                                            <action selector="toggleButtonChanged:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ge0-0S-e9W"/>
+                                                                                        </connections>
                                                                                     </button>
                                                                                     <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lXD-ji-EaU">
                                                                                         <rect key="frame" x="108.33333333333334" y="0.0" width="96.333333333333343" height="34.333333333333336"/>
                                                                                         <state key="normal" title="Button"/>
                                                                                         <buttonConfiguration key="configuration" style="tinted" title="Hires Fix"/>
+                                                                                        <connections>
+                                                                                            <action selector="toggleButtonChanged:" destination="BYZ-38-t0r" eventType="touchUpInside" id="p7o-D1-BGQ"/>
+                                                                                        </connections>
                                                                                     </button>
                                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Zl-Wf-mBa">
                                                                                         <rect key="frame" x="216.66666666666671" y="0.0" width="96.333333333333343" height="34.333333333333336"/>
                                                                                         <state key="normal" title="Button"/>
                                                                                         <buttonConfiguration key="configuration" style="tinted" title="Tiling"/>
+                                                                                        <connections>
+                                                                                            <action selector="toggleButtonChanged:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qev-C1-hJv"/>
+                                                                                        </connections>
                                                                                     </button>
                                                                                 </subviews>
                                                                             </stackView>
@@ -563,49 +575,51 @@
                                                                                 <rect key="frame" x="0.0" y="0.0" width="313" height="123.33333333333333"/>
                                                                                 <subviews>
                                                                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="cdf-9j-Vea">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="313" height="80.333333333333329"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="313" height="82.333333333333329"/>
                                                                                         <segments>
                                                                                             <segment title="Disabled"/>
                                                                                             <segment title="GFPGAN"/>
                                                                                             <segment title="CodeFormers"/>
                                                                                         </segments>
+                                                                                        <connections>
+                                                                                            <action selector="faceFixSegmentedControl:" destination="BYZ-38-t0r" eventType="valueChanged" id="zr6-uU-Cby"/>
+                                                                                        </connections>
                                                                                     </segmentedControl>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Xag-9p-sBf">
-                                                                                        <rect key="frame" x="0.0" y="91.333333333333485" width="313" height="32"/>
+                                                                                        <rect key="frame" x="0.0" y="93.333333333333485" width="313" height="30"/>
                                                                                         <subviews>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Strength" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NQb-Im-Aqd">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="63" height="32"/>
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="63" height="30"/>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                                 <color key="textColor" systemColor="tertiaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
-                                                                                            <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.050000000000000003" minValue="0.050000000000000003" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Y93-XZ-MTJ">
-                                                                                                <rect key="frame" x="73" y="0.0" width="91.666666666666686" height="33"/>
+                                                                                            <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.75" minValue="0.050000000000000003" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Y93-XZ-MTJ">
+                                                                                                <rect key="frame" x="73" y="0.0" width="196" height="31"/>
+                                                                                                <connections>
+                                                                                                    <action selector="faceFixStrengthSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="7Ck-Dl-Akm"/>
+                                                                                                </connections>
                                                                                             </slider>
-                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.55" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K8Q-E3-Zwh">
-                                                                                                <rect key="frame" x="174.66666666666666" y="0.0" width="32.333333333333343" height="32"/>
+                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.75" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K8Q-E3-Zwh">
+                                                                                                <rect key="frame" x="279" y="0.0" width="34" height="30"/>
+                                                                                                <constraints>
+                                                                                                    <constraint firstAttribute="width" constant="34" id="kYn-zy-Pde"/>
+                                                                                                </constraints>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                                 <color key="textColor" systemColor="tertiaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
-                                                                                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="5" minimumValue="5" maximumValue="100" stepValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="F7S-21-0UZ">
-                                                                                                <rect key="frame" x="219" y="0.0" width="94" height="32"/>
-                                                                                            </stepper>
                                                                                         </subviews>
                                                                                         <constraints>
-                                                                                            <constraint firstItem="F7S-21-0UZ" firstAttribute="top" secondItem="Xag-9p-sBf" secondAttribute="top" id="3hP-MV-k8d"/>
-                                                                                            <constraint firstAttribute="trailing" secondItem="F7S-21-0UZ" secondAttribute="trailing" id="3tB-2Q-rSU"/>
                                                                                             <constraint firstItem="K8Q-E3-Zwh" firstAttribute="leading" secondItem="Y93-XZ-MTJ" secondAttribute="trailing" constant="12" id="O6h-ZT-WOA"/>
                                                                                             <constraint firstAttribute="bottom" secondItem="K8Q-E3-Zwh" secondAttribute="bottom" id="SmS-wN-JjH"/>
                                                                                             <constraint firstItem="Y93-XZ-MTJ" firstAttribute="top" secondItem="Xag-9p-sBf" secondAttribute="top" id="UAS-Vx-8Qx"/>
-                                                                                            <constraint firstAttribute="bottom" secondItem="F7S-21-0UZ" secondAttribute="bottom" id="ZuS-M2-YcF"/>
                                                                                             <constraint firstItem="Y93-XZ-MTJ" firstAttribute="leading" secondItem="NQb-Im-Aqd" secondAttribute="trailing" constant="12" id="bUq-8y-tPU"/>
                                                                                             <constraint firstItem="NQb-Im-Aqd" firstAttribute="leading" secondItem="Xag-9p-sBf" secondAttribute="leading" id="cYD-0w-swI"/>
                                                                                             <constraint firstAttribute="bottom" secondItem="NQb-Im-Aqd" secondAttribute="bottom" id="fRW-lq-o1l"/>
                                                                                             <constraint firstItem="K8Q-E3-Zwh" firstAttribute="top" secondItem="Xag-9p-sBf" secondAttribute="top" id="khY-gh-hPM"/>
                                                                                             <constraint firstAttribute="bottom" secondItem="Y93-XZ-MTJ" secondAttribute="bottom" id="lEI-i3-1s7"/>
                                                                                             <constraint firstItem="NQb-Im-Aqd" firstAttribute="top" secondItem="Xag-9p-sBf" secondAttribute="top" id="u1C-3S-pwv"/>
-                                                                                            <constraint firstItem="F7S-21-0UZ" firstAttribute="leading" secondItem="K8Q-E3-Zwh" secondAttribute="trailing" constant="12" id="vcQ-Oz-EMp"/>
                                                                                         </constraints>
                                                                                     </stackView>
                                                                                 </subviews>
@@ -666,7 +680,12 @@
                     <size key="freeformSize" width="393" height="2000"/>
                     <connections>
                         <outlet property="aspectRatioButton" destination="PCG-9z-aHr" id="vqF-2k-WRP"/>
+                        <outlet property="clipSkipLabel" destination="rGd-ff-yP6" id="oDX-Nu-Ffk"/>
+                        <outlet property="clipSkipSlider" destination="HZK-9c-0rL" id="VRF-yo-DC8"/>
                         <outlet property="deleteButton" destination="i2Y-S0-KAc" id="csO-In-czv"/>
+                        <outlet property="faceFixSegmentedControl" destination="cdf-9j-Vea" id="O0T-dk-b03"/>
+                        <outlet property="faceFixStrengthLabel" destination="K8Q-E3-Zwh" id="REr-d8-Nze"/>
+                        <outlet property="faceFixerStrengthSlider" destination="Y93-XZ-MTJ" id="LUC-oB-a8h"/>
                         <outlet property="favoriteButton" destination="H9J-bu-f6G" id="5ed-MQ-3YT"/>
                         <outlet property="generateButton" destination="qaT-kT-1Wu" id="4ll-R9-hCe"/>
                         <outlet property="generationEffectView" destination="KHB-xe-Cm0" id="KMt-to-pWC"/>
@@ -674,6 +693,8 @@
                         <outlet property="generationTimeLabel" destination="Cph-Nd-XXB" id="AcX-Uj-OGs"/>
                         <outlet property="generationTitleLabel" destination="yHa-V3-3ni" id="Wr1-or-1ww"/>
                         <outlet property="generationWarningImageView" destination="nea-i4-Sh9" id="WiK-50-Mql"/>
+                        <outlet property="guidanceLabel" destination="ZdW-f2-woy" id="Xx3-Vp-ANj"/>
+                        <outlet property="guidanceSlider" destination="1ak-6U-Nj3" id="Zfq-54-3UH"/>
                         <outlet property="heightSlider" destination="37z-oU-lmB" id="lqx-Ai-fi6"/>
                         <outlet property="heightSliderSizeLabel" destination="OGV-z1-z6v" id="6xt-JG-E7Q"/>
                         <outlet property="hiresFixToggleButton" destination="lXD-ji-EaU" id="xtu-HS-tbx"/>
