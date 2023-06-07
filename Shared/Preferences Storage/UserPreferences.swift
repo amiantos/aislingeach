@@ -97,9 +97,9 @@ extension UserDefaults {
         Log.debug("Fetching: \(string)")
         return try? JSONDecoder().decode(
             GenerationInputStable.self,
-            from: string.data(using: .utf8)!)
+            from: string.data(using: .utf8)!
+        )
     }
-
 }
 
 private extension UserDefaults {

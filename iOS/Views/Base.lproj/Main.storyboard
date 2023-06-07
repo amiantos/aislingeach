@@ -731,9 +731,7 @@
                             <constraint firstAttribute="bottom" secondItem="2oe-09-Zu9" secondAttribute="bottom" id="pTh-Sk-DXc"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Create" id="pdJ-B0-C5E">
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="gear" catalog="system" id="hR8-jv-68J"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Create" id="pdJ-B0-C5E"/>
                     <size key="freeformSize" width="393" height="2396"/>
                     <connections>
                         <outlet property="aspectRatioButton" destination="PCG-9z-aHr" id="vqF-2k-WRP"/>
@@ -1055,7 +1053,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NbL-bm-IhA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2919.8473282442746" y="-2.1126760563380285"/>
+            <point key="canvasLocation" x="2837" y="-167"/>
         </scene>
         <!--Tab Bar View Controller-->
         <scene sceneID="Vht-Lz-lO5">
@@ -1526,7 +1524,6 @@
         <image name="brain" catalog="system" width="128" height="107"/>
         <image name="brain.head.profile" catalog="system" width="120" height="128"/>
         <image name="eyedropper.halffull" catalog="system" width="128" height="118"/>
-        <image name="gear" catalog="system" width="128" height="122"/>
         <image name="heart" catalog="system" width="128" height="107"/>
         <image name="heart.fill" catalog="system" width="128" height="107"/>
         <image name="lock.open" catalog="system" width="128" height="110"/>

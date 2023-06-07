@@ -16,6 +16,8 @@ class ImageDetailViewController: UIViewController {
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var imageView: UIImageView!
 
+    var menuButton: UIBarButtonItem = .init()
+
     @IBAction func shareButtonAction(_: UIBarButtonItem) {
         Log.debug("Share button pressed...")
         if let currentImage = imageView.image?.pngData() {
@@ -52,6 +54,15 @@ class ImageDetailViewController: UIViewController {
         super.viewDidLoad()
 
         loadImage()
+
+        menuButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: nil)
+        navigationItem.rightBarButtonItem = menuButton
+
+        menuButton.menu = UIMenu(children: [
+            UIAction(title: "Foo", state: .off, handler: { _ in
+                Log.debug("foo")
+            }),
+        ])
 
         let font = UIFont.monospacedSystemFont(ofSize: 12.0, weight: .regular)
         promptLabel.font = font

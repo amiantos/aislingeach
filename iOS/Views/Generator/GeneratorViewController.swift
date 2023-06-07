@@ -7,8 +7,6 @@
 
 import UIKit
 
-
-
 class GeneratorViewController: UIViewController {
     // MARK: - Variables
 
@@ -45,14 +43,14 @@ class GeneratorViewController: UIViewController {
     @IBOutlet var mainImageView: UIImageView!
     @IBOutlet var mainImageViewHeightConstraint: NSLayoutConstraint!
 
-    @IBOutlet weak var modelPickButton: UIButton!
+    @IBOutlet var modelPickButton: UIButton!
     @IBOutlet var upscalerPickButton: UIButton!
     @IBOutlet var samplerPickButton: UIButton!
 
-    @IBOutlet weak var karrasToggleButton: UIButton!
-    @IBOutlet weak var hiresFixToggleButton: UIButton!
-    @IBOutlet weak var tilingToggleButton: UIButton!
-    @IBAction func toggleButtonChanged(_ sender: UIButton) {
+    @IBOutlet var karrasToggleButton: UIButton!
+    @IBOutlet var hiresFixToggleButton: UIButton!
+    @IBOutlet var tilingToggleButton: UIButton!
+    @IBAction func toggleButtonChanged(_: UIButton) {
         generationSettingsUpdated()
     }
 
@@ -82,24 +80,24 @@ class GeneratorViewController: UIViewController {
 
     @IBOutlet var promptTextView: UITextView!
 
-    @IBOutlet weak var stepsSlider: UISlider!
-    @IBOutlet weak var stepsLabel: UILabel!
+    @IBOutlet var stepsSlider: UISlider!
+    @IBOutlet var stepsLabel: UILabel!
     @IBAction func stepsSliderChanged(_ sender: UISlider) {
         let intValue = Int(sender.value)
         stepsLabel.text = "\(intValue)"
         generationSettingsUpdated()
     }
 
-    @IBOutlet weak var guidanceSlider: UISlider!
-    @IBOutlet weak var guidanceLabel: UILabel!
+    @IBOutlet var guidanceSlider: UISlider!
+    @IBOutlet var guidanceLabel: UILabel!
     @IBAction func guidanceSliderChanged(_ sender: UISlider) {
         let intValue = Int(sender.value)
         guidanceLabel.text = "\(intValue)"
         generationSettingsUpdated()
     }
 
-    @IBOutlet weak var clipSkipSlider: UISlider!
-    @IBOutlet weak var clipSkipLabel: UILabel!
+    @IBOutlet var clipSkipSlider: UISlider!
+    @IBOutlet var clipSkipLabel: UILabel!
     @IBAction func clipSkipSliderChanged(_ sender: UISlider) {
         let intValue = Int(sender.value)
         clipSkipLabel.text = "\(intValue)"
@@ -167,7 +165,7 @@ class GeneratorViewController: UIViewController {
         Log.info("Ratio locked to: \(String(describing: currentRatioLock))")
     }
 
-    @IBOutlet weak var generateButton: UIButton!
+    @IBOutlet var generateButton: UIButton!
     @IBAction func generateButtonPressed(_: UIButton) {
         promptTextView.resignFirstResponder()
         if let generationBody = createGeneratonBodyForCurrentSettings() {
@@ -187,7 +185,7 @@ class GeneratorViewController: UIViewController {
         }
     }
 
-    @IBOutlet weak var faceFixSegmentedControl: UISegmentedControl!
+    @IBOutlet var faceFixSegmentedControl: UISegmentedControl!
     @IBAction func faceFixSegmentedControl(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 1:
@@ -196,28 +194,30 @@ class GeneratorViewController: UIViewController {
             faceFixerStrengthSlider.isEnabled = true
         default:
             faceFixerStrengthSlider.isEnabled = false
-
         }
         generationSettingsUpdated()
     }
-    @IBOutlet weak var faceFixerStrengthSlider: UISlider!
-    @IBOutlet weak var faceFixStrengthLabel: UILabel!
+
+    @IBOutlet var faceFixerStrengthSlider: UISlider!
+    @IBOutlet var faceFixStrengthLabel: UILabel!
     @IBAction func faceFixStrengthSliderChanged(_ sender: UISlider) {
         faceFixStrengthLabel.text = "\(round(sender.value * 100) / 100.0)"
         generationSettingsUpdated()
     }
 
-    @IBOutlet weak var slowWorkersButton: UIButton!
+    @IBOutlet var slowWorkersButton: UIButton!
     @IBAction func slowWorkersButtonAction(_ sender: UIButton) {
         UserPreferences.standard.set(slowWorkers: sender.isSelected)
         generationSettingsUpdated()
     }
-    @IBOutlet weak var trustedWorkersButton: UIButton!
+
+    @IBOutlet var trustedWorkersButton: UIButton!
     @IBAction func trustedWorkersButtonAction(_ sender: UIButton) {
         UserPreferences.standard.set(trustedWorkers: sender.isSelected)
         generationSettingsUpdated()
     }
-    @IBOutlet weak var debugModeButton: UIButton!
+
+    @IBOutlet var debugModeButton: UIButton!
     @IBAction func debugModeButtonAction(_ sender: UIButton) {
         UserPreferences.standard.set(debugMode: sender.isSelected)
         generationSettingsUpdated()
@@ -242,7 +242,6 @@ class GeneratorViewController: UIViewController {
 
         samplerPickButton.showsMenuAsPrimaryAction = true
         samplerPickButton.changesSelectionAsPrimaryAction = true
-
 
         slowWorkersButton.isSelected = UserPreferences.standard.slowWorkers
         trustedWorkersButton.isSelected = UserPreferences.standard.trustedWorkers
@@ -272,7 +271,7 @@ class GeneratorViewController: UIViewController {
         generationSettingsUpdated()
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         if segue.identifier == "openModelsViewSegue", let destinationView = segue.destination as? ModelsTableViewController {
             destinationView.delegate = self
         }
@@ -283,9 +282,8 @@ class GeneratorViewController: UIViewController {
 
 extension GeneratorViewController {
     func loadSettingsIntoUI(settings: GenerationInputStable?) {
-
-        let initialWidth = ((settings?.params?.width) != nil) ? (settings?.params?.width)!/64 : 8
-        let initialHeight = ((settings?.params?.height) != nil) ? (settings?.params?.height)!/64 : 8
+        let initialWidth = ((settings?.params?.width) != nil) ? (settings?.params?.width)! / 64 : 8
+        let initialHeight = ((settings?.params?.height) != nil) ? (settings?.params?.height)! / 64 : 8
         widthSlider.setValue(Float(initialWidth), animated: false)
         heightSlider.setValue(Float(initialHeight), animated: false)
 
@@ -298,7 +296,7 @@ extension GeneratorViewController {
             "RealESRGAN_x2plus",
             "RealESRGAN_x4plus_anime_6B",
             "NMKD_Siax",
-            "4x_AnimeSharp"
+            "4x_AnimeSharp",
         ]
         let menuChildren: [UIAction] = {
             var actions: [UIAction] = []
@@ -369,7 +367,7 @@ extension GeneratorViewController {
 
         if let postProcessing = settings?.params?.postProcessing {
             postProcessing.forEach { processor in
-                switch (processor) {
+                switch processor {
                 case .gfpgan:
                     faceFixSegmentedControl.selectedSegmentIndex = 1
                 case .codeFormers:
@@ -403,7 +401,6 @@ extension GeneratorViewController {
             self.fetchAndDisplayKudosEstimate()
             timer.invalidate()
         })
-
     }
 
     func saveGenerationSettings() {
@@ -631,11 +628,10 @@ extension GeneratorViewController {
 // Let us know the prompt was changed
 
 extension GeneratorViewController: UITextViewDelegate {
-    func textViewDidEndEditing(_ textView: UITextView) {
+    func textViewDidEndEditing(_: UITextView) {
         generationSettingsUpdated()
     }
 }
-
 
 // MARK: - Keyboard Stuff
 

@@ -12,7 +12,6 @@ protocol ModelsTableViewControllerDelegate {
 }
 
 class ModelsTableViewController: UITableViewController {
-
     var activeModels: [ActiveModel] = []
     var delegate: ModelsTableViewControllerDelegate?
 
@@ -23,17 +22,17 @@ class ModelsTableViewController: UITableViewController {
         tableView.refreshControl?.addTarget(self, action: #selector(refreshModelList), for: .valueChanged)
 
         if let cache = ModelsCache.standard.get() {
-            self.activeModels = cache
-            self.tableView.reloadData()
+            activeModels = cache
+            tableView.reloadData()
         } else {
             refreshModelList()
         }
     }
 
     @objc func refreshModelList() {
-        self.tableView.refreshControl?.endRefreshing()
-        self.activeModels = []
-        self.tableView.reloadData()
+        tableView.refreshControl?.endRefreshing()
+        activeModels = []
+        tableView.reloadData()
         DispatchQueue.global(qos: .userInitiated).async {
             HordeV2API.getModels(clientAgent: hordeClientAgent(), minCount: 1) { data, error in
                 DispatchQueue.main.async {
@@ -49,16 +48,15 @@ class ModelsTableViewController: UITableViewController {
                 }
             }
         }
-
     }
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in _: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return activeModels.count
     }
@@ -73,23 +71,21 @@ class ModelsTableViewController: UITableViewController {
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         let activeModel = activeModels[indexPath.row]
         if let name = activeModel.name {
             delegate?.selectedModel(name: name)
             navigationController?.popViewController(animated: true)
         }
-
     }
 
     /*
-    // MARK: - Navigation
+     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+         // Get the new view controller using segue.destination.
+         // Pass the selected object to the new view controller.
+     }
+     */
 }
