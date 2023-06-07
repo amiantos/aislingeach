@@ -66,7 +66,7 @@ class ImageDetailViewController: UIViewController {
                     }
                 }
             }),
-            UIAction(title: "Load Settings", image: UIImage(systemName: "doc.on.doc"), state: .off, handler: { _ in
+            UIAction(title: "Load Settings", image: UIImage(systemName: "arrow.counterclockwise"), state: .off, handler: { _ in
                 Log.debug(self.tabBarController?.viewControllers)
                 if let jsonString = self.generatedImage?.fullRequest, let jsonData = jsonString.data(using: .utf8), let settings = try? JSONDecoder().decode(
                     GenerationInputStable.self,
