@@ -233,124 +233,22 @@ class GeneratorViewController: UIViewController {
 
         let recentSettings = UserPreferences.standard.recentSettings
 
-        let initialWidth = ((recentSettings?.params?.width) != nil) ? (recentSettings?.params?.width)!/64 : 8
-        let initialHeight = ((recentSettings?.params?.height) != nil) ? (recentSettings?.params?.height)!/64 : 8
-        widthSlider.setValue(Float(initialWidth), animated: false)
-        heightSlider.setValue(Float(initialHeight), animated: false)
-
         hideKeyboardWhenTappedAround()
 
         NotificationCenter.default.addObserver(self, selector: #selector(checkIfCurrentGenerationWasDeleted), name: .deletedGeneratedImage, object: nil)
 
-        // setup button?
-        let upscalerOptions: [String] = [
-            "No Upscaler",
-            "RealESRGAN_x4plus",
-            "RealESRGAN_x2plus",
-            "RealESRGAN_x4plus_anime_6B",
-            "NMKD_Siax",
-            "4x_AnimeSharp"
-        ]
-        let menuChildren: [UIAction] = {
-            var actions: [UIAction] = []
-            upscalerOptions.forEach { option in
-                var state: UIMenuElement.State = .off
-                if let postProcessing = recentSettings?.params?.postProcessing {
-                    Log.debug(postProcessing)
-                    state = postProcessing.contains(where: { opt in
-                        opt == ModelGenerationInputStable.PostProcessing(rawValue: option)
-                    }) ? .on : .off
-                }
-                actions.append(UIAction(title: option, state: state, handler: { _ in
-                    self.generationSettingsUpdated()
-                }))
-            }
-            return actions
-        }()
-        upscalerPickButton.menu = UIMenu(children: menuChildren)
         upscalerPickButton.showsMenuAsPrimaryAction = true
         upscalerPickButton.changesSelectionAsPrimaryAction = true
 
-        let samplerOptions: [String] = [
-            "k_euler_a",
-            "k_euler",
-            "k_heun",
-            "k_lms",
-            "k_dpm_fast",
-            "k_dpm_adaptive",
-            "k_dpm_2_a",
-            "k_dpm_2",
-            "k_dpmpp_2m",
-            "k_dpmpp_2s_a",
-            "k_dpmpp_sde",
-        ]
-        let samplerMenuChildren: [UIAction] = {
-            var actions: [UIAction] = []
-            samplerOptions.forEach { option in
-                let state: UIMenuElement.State = recentSettings?.params?.samplerName?.rawValue == option ? .on : .off
-                actions.append(UIAction(title: option, state: state, handler: { _ in
-                    self.generationSettingsUpdated()
-                }))
-            }
-            return actions
-        }()
-        samplerPickButton.menu = UIMenu(children: samplerMenuChildren)
         samplerPickButton.showsMenuAsPrimaryAction = true
         samplerPickButton.changesSelectionAsPrimaryAction = true
+
 
         slowWorkersButton.isSelected = UserPreferences.standard.slowWorkers
         trustedWorkersButton.isSelected = UserPreferences.standard.trustedWorkers
         debugModeButton.isSelected = UserPreferences.standard.debugMode
 
-        modelPickButton.setTitle(recentSettings?.models?.first ?? "stable_diffusion", for: .normal)
-
-        if let recentGuidance = recentSettings?.params?.cfgScale {
-            let floatScale = Float(truncating: recentGuidance as NSNumber)
-            guidanceSlider.setValue(floatScale, animated: false)
-            guidanceLabel.text = "\(recentGuidance)"
-        }
-
-        if let recentSteps = recentSettings?.params?.steps {
-            let floatScale = Float(truncating: recentSteps as NSNumber)
-            stepsSlider.setValue(floatScale, animated: false)
-            stepsLabel.text = "\(recentSteps)"
-        }
-
-        if let recentClipSkip = recentSettings?.params?.clipSkip {
-            let floatScale = Float(truncating: recentClipSkip as NSNumber)
-            clipSkipSlider.setValue(floatScale, animated: false)
-            clipSkipLabel.text = "\(recentClipSkip)"
-        }
-
-        karrasToggleButton.isSelected = recentSettings?.params?.karras ?? true
-        hiresFixToggleButton.isSelected = recentSettings?.params?.hiresFix ?? true
-        tilingToggleButton.isSelected = recentSettings?.params?.tiling ?? false
-
-        if let postProcessing = recentSettings?.params?.postProcessing {
-            postProcessing.forEach { processor in
-                switch (processor) {
-                case .gfpgan:
-                    faceFixSegmentedControl.selectedSegmentIndex = 1
-                case .codeFormers:
-                    faceFixSegmentedControl.selectedSegmentIndex = 2
-                default:
-                    break
-                }
-            }
-        }
-
-        if faceFixSegmentedControl.selectedSegmentIndex != 0 {
-            faceFixerStrengthSlider.isEnabled = true
-            if let faceFixStrength = recentSettings?.params?.facefixerStrength {
-                let float = Float(truncating: faceFixStrength as NSNumber)
-                faceFixStrengthLabel.text = "\(faceFixStrength)"
-                faceFixerStrengthSlider.setValue(float, animated: false)
-            }
-        }
-
-        if let prompt = recentSettings?.prompt {
-            promptTextView.text = prompt
-        }
+        loadSettingsIntoUI(settings: recentSettings)
 
         updateSliderLabels()
     }
@@ -384,14 +282,124 @@ class GeneratorViewController: UIViewController {
 // MARK: - Everything Else
 
 extension GeneratorViewController {
+    func loadSettingsIntoUI(settings: GenerationInputStable?) {
+
+        let initialWidth = ((settings?.params?.width) != nil) ? (settings?.params?.width)!/64 : 8
+        let initialHeight = ((settings?.params?.height) != nil) ? (settings?.params?.height)!/64 : 8
+        widthSlider.setValue(Float(initialWidth), animated: false)
+        heightSlider.setValue(Float(initialHeight), animated: false)
+
+        modelPickButton.setTitle(settings?.models?.first ?? "stable_diffusion", for: .normal)
+
+        // setup button?
+        let upscalerOptions: [String] = [
+            "No Upscaler",
+            "RealESRGAN_x4plus",
+            "RealESRGAN_x2plus",
+            "RealESRGAN_x4plus_anime_6B",
+            "NMKD_Siax",
+            "4x_AnimeSharp"
+        ]
+        let menuChildren: [UIAction] = {
+            var actions: [UIAction] = []
+            upscalerOptions.forEach { option in
+                var state: UIMenuElement.State = .off
+                if let postProcessing = settings?.params?.postProcessing {
+                    Log.debug(postProcessing)
+                    state = postProcessing.contains(where: { opt in
+                        opt == ModelGenerationInputStable.PostProcessing(rawValue: option)
+                    }) ? .on : .off
+                }
+                actions.append(UIAction(title: option, state: state, handler: { _ in
+                    self.generationSettingsUpdated()
+                }))
+            }
+            return actions
+        }()
+        upscalerPickButton.menu = UIMenu(children: menuChildren)
+        upscalerPickButton.showsMenuAsPrimaryAction = true
+        upscalerPickButton.changesSelectionAsPrimaryAction = true
+
+        let samplerOptions: [String] = [
+            "k_euler_a",
+            "k_euler",
+            "k_heun",
+            "k_lms",
+            "k_dpm_fast",
+            "k_dpm_adaptive",
+            "k_dpm_2_a",
+            "k_dpm_2",
+            "k_dpmpp_2m",
+            "k_dpmpp_2s_a",
+            "k_dpmpp_sde",
+        ]
+        let samplerMenuChildren: [UIAction] = {
+            var actions: [UIAction] = []
+            samplerOptions.forEach { option in
+                let state: UIMenuElement.State = settings?.params?.samplerName?.rawValue == option ? .on : .off
+                actions.append(UIAction(title: option, state: state, handler: { _ in
+                    self.generationSettingsUpdated()
+                }))
+            }
+            return actions
+        }()
+        samplerPickButton.menu = UIMenu(children: samplerMenuChildren)
+
+        if let recentGuidance = settings?.params?.cfgScale {
+            let floatScale = Float(truncating: recentGuidance as NSNumber)
+            guidanceSlider.setValue(floatScale, animated: false)
+            guidanceLabel.text = "\(recentGuidance)"
+        }
+
+        if let recentSteps = settings?.params?.steps {
+            let floatScale = Float(truncating: recentSteps as NSNumber)
+            stepsSlider.setValue(floatScale, animated: false)
+            stepsLabel.text = "\(recentSteps)"
+        }
+
+        if let recentClipSkip = settings?.params?.clipSkip {
+            let floatScale = Float(truncating: recentClipSkip as NSNumber)
+            clipSkipSlider.setValue(floatScale, animated: false)
+            clipSkipLabel.text = "\(recentClipSkip)"
+        }
+
+        karrasToggleButton.isSelected = settings?.params?.karras ?? true
+        hiresFixToggleButton.isSelected = settings?.params?.hiresFix ?? true
+        tilingToggleButton.isSelected = settings?.params?.tiling ?? false
+
+        if let postProcessing = settings?.params?.postProcessing {
+            postProcessing.forEach { processor in
+                switch (processor) {
+                case .gfpgan:
+                    faceFixSegmentedControl.selectedSegmentIndex = 1
+                case .codeFormers:
+                    faceFixSegmentedControl.selectedSegmentIndex = 2
+                default:
+                    break
+                }
+            }
+        }
+
+        if faceFixSegmentedControl.selectedSegmentIndex != 0 {
+            faceFixerStrengthSlider.isEnabled = true
+            if let faceFixStrength = settings?.params?.facefixerStrength {
+                let float = Float(truncating: faceFixStrength as NSNumber)
+                faceFixStrengthLabel.text = "\(faceFixStrength)"
+                faceFixerStrengthSlider.setValue(float, animated: false)
+            }
+        }
+        promptTextView.text = settings?.prompt ?? "temple in ruins, forest, stairs, columns, cinematic, detailed, atmospheric, epic, concept art, Matte painting, background, mist, photo-realistic, concept art, volumetric light, cinematic epic + rule of thirds octane render, 8k, corona render, movie concept art, octane render, cinematic, trending on artstation, movie concept art, cinematic composition, ultra-detailed, realistic, hyper-realistic, volumetric lighting, 8k"
+    }
+
     func generationSettingsUpdated() {
         saveGenerationSettingsTimer?.invalidate()
-        saveGenerationSettingsTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { timer in
+        saveGenerationSettingsTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { timer in
             self.saveGenerationSettings()
+            timer.invalidate()
         })
 
         kudosEstimateTimer?.invalidate()
-        kudosEstimateTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { timer in
+        kudosEstimateTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { timer in
             self.fetchAndDisplayKudosEstimate()
             timer.invalidate()
         })
