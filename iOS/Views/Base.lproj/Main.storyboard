@@ -895,13 +895,7 @@
                             <outlet property="delegate" destination="Gxv-NW-hB9" id="dY8-sD-f4W"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Image Gallery" id="1sg-Ax-UmU">
-                        <barButtonItem key="rightBarButtonItem" title="Prune" id="Mca-fw-rwt">
-                            <connections>
-                                <action selector="editButtonAction:" destination="Gxv-NW-hB9" id="KfZ-ZM-Rg1"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Image Gallery" id="1sg-Ax-UmU"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4R3-kS-gx5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1515,7 +1509,7 @@
         <image name="star.fill" catalog="system" width="128" height="116"/>
         <image name="trash" catalog="system" width="117" height="128"/>
         <namedColor name="AccentColor">
-            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.76499998569488525" green="0.64999997615814209" blue="0.66600000858306885" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="labelColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

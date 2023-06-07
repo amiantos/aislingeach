@@ -55,6 +55,9 @@ class ImageDetailViewController: UIViewController {
     fileprivate func setupMenuItems() {
         let favoriteMenuImage: UIImage? = generatedImage?.isFavorite ?? false ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
 
+        let hideMenuImage: UIImage? = generatedImage?.isHidden ?? false ? UIImage(systemName: "eye") : UIImage(systemName: "eye.slash")
+        let hideMenuTitle: String = generatedImage?.isHidden ?? false ? "Unhide" : "Hide"
+
         menuButton.menu = UIMenu(children: [
             UIAction(title: "Favorite", image: favoriteMenuImage, state: .off, handler: { [self] _ in
                 Log.debug("Favorite button pressed...")
@@ -83,6 +86,16 @@ class ImageDetailViewController: UIViewController {
                     ac.popoverPresentationController?.sourceView = tabBarController?.view
                     present(ac, animated: true)
                 }
+            }),
+            UIAction(title: hideMenuTitle, image: hideMenuImage, state: .off, handler: { [self] _ in
+                Log.debug("Hide button pressed...")
+                if let image = generatedImage {
+                    ImageDatabase.standard.toggleImageHidden(generatedImage: image) { [self] image in
+                        generatedImage = image
+                        loadImage()
+                    }
+                }
+
             }),
             UIAction(title: "Delete", image: UIImage(systemName: "trash"), state: .off, handler: { [self] _ in
                 Log.debug("Trash button pressed...")

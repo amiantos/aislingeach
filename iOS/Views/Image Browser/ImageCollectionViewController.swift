@@ -13,6 +13,10 @@ private let reuseIdentifier = "imageCell"
 class ImageCollectionViewController: UICollectionViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout {
     var resultsController: NSFetchedResultsController<GeneratedImage>?
 
+    var menuButton: UIBarButtonItem = .init()
+
+    var showHiddenItems: Bool = false
+
     private let itemsPerRow: CGFloat = 3
     private let sectionInsets = UIEdgeInsets(
         top: 2,
@@ -21,28 +25,21 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         right: 2
     )
 
-    @IBAction func editButtonAction(_: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Prune Image History", message: "This action will delete all images from your library that are not marked as a Favorite. Are you sure you want to continue?", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .destructive) { _ in
-            ImageDatabase.standard.pruneImages()
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        alert.addAction(okAction)
-        alert.addAction(cancelAction)
-        present(alert, animated: true)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
-        // Do any additional setup after loading the view.
         navigationController?.navigationBar.prefersLargeTitles = true
+
+        // setup menu
+        menuButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: nil)
+        navigationItem.rightBarButtonItem = menuButton
 
         let fetchRequest = NSFetchRequest<GeneratedImage>(entityName: "GeneratedImage")
         // Configure the request's entity, and optionally its predicate
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
+        fetchRequest.predicate = NSPredicate(format: "isHidden = %d", showHiddenItems)
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: ImageDatabase.standard.mainManagedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         resultsController = controller
         controller.delegate = self
@@ -51,6 +48,8 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         } catch {
             fatalError("Failed to fetch entities: \(error)")
         }
+
+        setupMenu()
     }
 
     func collectionView(
@@ -188,4 +187,45 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
      }
      */
+}
+
+extension ImageCollectionViewController {
+    func setupMenu() {
+        let hiddenMenuItemTitle = showHiddenItems ? "Hide Hidden" : "Show Hidden"
+        let hiddenMenuItemImage = showHiddenItems ? UIImage(systemName: "eye") : UIImage(systemName: "eye.slash")
+        menuButton.menu = UIMenu(children:[
+            UIAction(title: hiddenMenuItemTitle, image: hiddenMenuItemImage, handler: { action in
+                if self.showHiddenItems == false {
+                    let alert = UIAlertController(title: "Show Hidden Items", message: "Are you... sure you want to do this?", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .destructive) { _ in
+                        self.toggleHiddenItems()
+                    }
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+                    alert.addAction(okAction)
+                    alert.addAction(cancelAction)
+                    self.present(alert, animated: true)
+                } else {
+                    self.toggleHiddenItems()
+                }
+            }),
+            UIAction(title: "Prune Gallery", image: UIImage(systemName: "trash"), handler: { action in
+                let alert = UIAlertController(title: "Prune Image History", message: "This action will delete all images from your library that are not marked as a Favorite. Are you sure you want to continue?", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .destructive) { _ in
+                    ImageDatabase.standard.pruneImages()
+                }
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+                alert.addAction(okAction)
+                alert.addAction(cancelAction)
+                self.present(alert, animated: true)
+            }),
+        ])
+    }
+
+    func toggleHiddenItems() {
+        showHiddenItems = !showHiddenItems
+        resultsController?.fetchRequest.predicate =  NSPredicate(format: "isHidden = %d", showHiddenItems)
+        try? resultsController?.performFetch()
+        collectionView.reloadData()
+        setupMenu()
+    }
 }

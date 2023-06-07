@@ -85,6 +85,19 @@ class ImageDatabase {
         }
     }
 
+    func toggleImageHidden(generatedImage: GeneratedImage, completion: @escaping (GeneratedImage?) -> Void) {
+        mainManagedObjectContext.perform {
+            do {
+                generatedImage.isHidden = !generatedImage.isHidden
+                try self.mainManagedObjectContext.save()
+                self.saveContext()
+                completion(generatedImage)
+            } catch {
+                completion(nil)
+            }
+        }
+    }
+
     func deleteImage(_ generatedImage: GeneratedImage, completion: @escaping (GeneratedImage?) -> Void) {
         // TODO: Should trash...
         mainManagedObjectContext.delete(generatedImage)
