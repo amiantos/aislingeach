@@ -4,15 +4,15 @@
 // https://github.com/swagger-api/swagger-codegen
 //
 
-import Alamofire
 import Foundation
+import Alamofire
 
 class RatingsRatingsAlamofireRequestBuilderFactory: RequestBuilderFactory {
     func getNonDecodableBuilder<T>() -> RatingsRequestBuilder<T>.Type {
         return RatingsAlamofireRequestBuilder<T>.self
     }
 
-    func getBuilder<T: Decodable>() -> RatingsRequestBuilder<T>.Type {
+    func getBuilder<T:Decodable>() -> RatingsRequestBuilder<T>.Type {
         return RatingsAlamofireDecodableRequestBuilder<T>.self
     }
 }
@@ -24,7 +24,7 @@ private var managerStore: [String: Alamofire.SessionManager] = [:]
 private let syncQueue = DispatchQueue(label: "thread-safe-sync-queue", attributes: .concurrent)
 
 open class RatingsAlamofireRequestBuilder<T>: RatingsRequestBuilder<T> {
-    public required init(method: String, URLString: String, parameters: [String: Any]?, isBody: Bool, headers: [String: String] = [:]) {
+    required public init(method: String, URLString: String, parameters: [String : Any]?, isBody: Bool, headers: [String : String] = [:]) {
         super.init(method: method, URLString: URLString, parameters: parameters, isBody: isBody, headers: headers)
     }
 
@@ -45,7 +45,7 @@ open class RatingsAlamofireRequestBuilder<T>: RatingsRequestBuilder<T> {
      Return nil to use the default behavior (inferring the Content-Type from
      the file extension).  Return the desired Content-Type otherwise.
      */
-    open func contentTypeForFormPart(fileURL _: URL) -> String? {
+    open func contentTypeForFormPart(fileURL: URL) -> String? {
         return nil
     }
 
@@ -53,23 +53,23 @@ open class RatingsAlamofireRequestBuilder<T>: RatingsRequestBuilder<T> {
      May be overridden by a subclass if you want to control the request
      configuration (e.g. to override the cache policy).
      */
-    open func makeRequest(manager: SessionManager, method: HTTPMethod, encoding: ParameterEncoding, headers: [String: String]) -> DataRequest {
+    open func makeRequest(manager: SessionManager, method: HTTPMethod, encoding: ParameterEncoding, headers: [String:String]) -> DataRequest {
         return manager.request(URLString, method: method, parameters: parameters, encoding: encoding, headers: headers)
     }
 
     override open func execute(_ completion: @escaping (_ response: Response<T>?, _ error: Error?) -> Void) {
-        let managerId: String = UUID().uuidString
+        let managerId:String = UUID().uuidString
         // Create a new manager for each request to customize its request header
         let manager = createSessionManager()
         syncQueue.async(flags: .barrier) {
             managerStore[managerId] = manager
         }
 
-        let encoding: ParameterEncoding = isBody ? JSONDataEncoding() : URLEncoding()
+        let encoding:ParameterEncoding = isBody ? JSONDataEncoding() : URLEncoding()
 
         let xMethod = Alamofire.HTTPMethod(rawValue: method)
         let fileKeys = parameters == nil ? [] : parameters!.filter { $1 is NSURL }
-            .map { $0.0 }
+                                                           .map { $0.0 }
 
         if fileKeys.count > 0 {
             manager.upload(multipartFormData: { mpForm in
@@ -78,7 +78,8 @@ open class RatingsAlamofireRequestBuilder<T>: RatingsRequestBuilder<T> {
                     case let fileURL as URL:
                         if let mimeType = self.contentTypeForFormPart(fileURL: fileURL) {
                             mpForm.append(fileURL, withName: k, fileName: fileURL.lastPathComponent, mimeType: mimeType)
-                        } else {
+                        }
+                        else {
                             mpForm.append(fileURL, withName: k)
                         }
                     case let string as String:
@@ -89,34 +90,35 @@ open class RatingsAlamofireRequestBuilder<T>: RatingsRequestBuilder<T> {
                         fatalError("Unprocessable value \(v) with key \(k)")
                     }
                 }
-            }, to: URLString, method: xMethod!, headers: nil, encodingCompletion: { encodingResult in
+                }, to: URLString, method: xMethod!, headers: nil, encodingCompletion: { encodingResult in
                 switch encodingResult {
-                case let .success(upload, _, _):
+                case .success(let upload, _, _):
                     if let onProgressReady = self.onProgressReady {
                         onProgressReady(upload.uploadProgress)
                     }
                     self.processRequest(request: upload, managerId, completion)
-                case let .failure(encodingError):
+                case .failure(let encodingError):
                     completion(nil, ErrorResponse.error(415, nil, encodingError))
                 }
             })
         } else {
             let request = makeRequest(manager: manager, method: xMethod!, encoding: encoding, headers: headers)
-            if let onProgressReady = onProgressReady {
+            if let onProgressReady = self.onProgressReady {
                 onProgressReady(request.progress)
             }
             processRequest(request: request, managerId, completion)
         }
+
     }
 
     fileprivate func processRequest(request: DataRequest, _ managerId: String, _ completion: @escaping (_ response: Response<T>?, _ error: Error?) -> Void) {
-        if let credential = credential {
+        if let credential = self.credential {
             request.authenticate(usingCredential: credential)
         }
 
         let cleanupRequest = {
             syncQueue.async(flags: .barrier) {
-                _ = managerStore.removeValue(forKey: managerId)
+                 _ = managerStore.removeValue(forKey: managerId)
             }
         }
 
@@ -124,7 +126,7 @@ open class RatingsAlamofireRequestBuilder<T>: RatingsRequestBuilder<T> {
 
         switch T.self {
         case is String.Type:
-            validatedRequest.responseString(completionHandler: { stringResponse in
+            validatedRequest.responseString(completionHandler: { (stringResponse) in
                 cleanupRequest()
 
                 if stringResponse.result.isFailure {
@@ -138,16 +140,17 @@ open class RatingsAlamofireRequestBuilder<T>: RatingsRequestBuilder<T> {
                 completion(
                     Response(
                         response: stringResponse.response!,
-                        body: (stringResponse.result.value ?? "") as! T
+                        body: ((stringResponse.result.value ?? "") as! T)
                     ),
                     nil
                 )
             })
         case is URL.Type:
-            validatedRequest.responseData(completionHandler: { dataResponse in
+            validatedRequest.responseData(completionHandler: { (dataResponse) in
                 cleanupRequest()
 
                 do {
+
                     guard !dataResponse.result.isFailure else {
                         throw DownloadException.responseFailed
                     }
@@ -180,19 +183,20 @@ open class RatingsAlamofireRequestBuilder<T>: RatingsRequestBuilder<T> {
                     completion(
                         Response(
                             response: dataResponse.response!,
-                            body: filePath as! T
+                            body: (filePath as! T)
                         ),
                         nil
                     )
 
                 } catch let requestParserError as DownloadException {
                     completion(nil, ErrorResponse.error(400, dataResponse.data, requestParserError))
-                } catch {
+                } catch let error {
                     completion(nil, ErrorResponse.error(400, dataResponse.data, error))
                 }
+                return
             })
         case is Void.Type:
-            validatedRequest.responseData(completionHandler: { voidResponse in
+            validatedRequest.responseData(completionHandler: { (voidResponse) in
                 cleanupRequest()
 
                 if voidResponse.result.isFailure {
@@ -206,13 +210,12 @@ open class RatingsAlamofireRequestBuilder<T>: RatingsRequestBuilder<T> {
                 completion(
                     Response(
                         response: voidResponse.response!,
-                        body: nil
-                    ),
+                        body: nil),
                     nil
                 )
             })
         default:
-            validatedRequest.responseData(completionHandler: { dataResponse in
+            validatedRequest.responseData(completionHandler: { (dataResponse) in
                 cleanupRequest()
 
                 if dataResponse.result.isFailure {
@@ -226,7 +229,7 @@ open class RatingsAlamofireRequestBuilder<T>: RatingsRequestBuilder<T> {
                 completion(
                     Response(
                         response: dataResponse.response!,
-                        body: dataResponse.data as! T
+                        body: (dataResponse.data as! T)
                     ),
                     nil
                 )
@@ -236,22 +239,24 @@ open class RatingsAlamofireRequestBuilder<T>: RatingsRequestBuilder<T> {
 
     open func buildHeaders() -> [String: String] {
         var httpHeaders = SessionManager.defaultHTTPHeaders
-        for (key, value) in headers {
+        for (key, value) in self.headers {
             httpHeaders[key] = value
         }
         return httpHeaders
     }
 
-    fileprivate func getFileName(fromContentDisposition contentDisposition: String?) -> String? {
+    fileprivate func getFileName(fromContentDisposition contentDisposition : String?) -> String? {
+
         guard let contentDisposition = contentDisposition else {
             return nil
         }
 
         let items = contentDisposition.components(separatedBy: ";")
 
-        var filename: String? = nil
+        var filename : String? = nil
 
         for contentItem in items {
+
             let filenameKey = "filename="
             guard let range = contentItem.range(of: filenameKey) else {
                 break
@@ -259,15 +264,17 @@ open class RatingsAlamofireRequestBuilder<T>: RatingsRequestBuilder<T> {
 
             filename = contentItem
             return filename?
-                .replacingCharacters(in: range, with: "")
+                .replacingCharacters(in: range, with:"")
                 .replacingOccurrences(of: "\"", with: "")
                 .trimmingCharacters(in: .whitespacesAndNewlines)
         }
 
         return filename
+
     }
 
-    fileprivate func getPath(from url: URL) throws -> String {
+    fileprivate func getPath(from url : URL) throws -> String {
+
         guard var path = URLComponents(url: url, resolvingAgainstBaseURL: true)?.path else {
             throw DownloadException.requestMissingPath
         }
@@ -277,18 +284,21 @@ open class RatingsAlamofireRequestBuilder<T>: RatingsRequestBuilder<T> {
         }
 
         return path
+
     }
 
-    fileprivate func getURL(from urlRequest: URLRequest) throws -> URL {
+    fileprivate func getURL(from urlRequest : URLRequest) throws -> URL {
+
         guard let url = urlRequest.url else {
             throw DownloadException.requestMissingURL
         }
 
         return url
     }
+
 }
 
-private enum DownloadException: Error {
+fileprivate enum DownloadException : Error {
     case responseDataMissing
     case responseFailed
     case requestMissing
@@ -303,9 +313,10 @@ public enum RatingsAlamofireDecodableRequestBuilderError: Error {
     case generalError(Error)
 }
 
-open class RatingsAlamofireDecodableRequestBuilder<T: Decodable>: RatingsAlamofireRequestBuilder<T> {
+open class RatingsAlamofireDecodableRequestBuilder<T:Decodable>: RatingsAlamofireRequestBuilder<T> {
+
     override fileprivate func processRequest(request: DataRequest, _ managerId: String, _ completion: @escaping (_ response: Response<T>?, _ error: Error?) -> Void) {
-        if let credential = credential {
+        if let credential = self.credential {
             request.authenticate(usingCredential: credential)
         }
 
@@ -319,7 +330,7 @@ open class RatingsAlamofireDecodableRequestBuilder<T: Decodable>: RatingsAlamofi
 
         switch T.self {
         case is String.Type:
-            validatedRequest.responseString(completionHandler: { stringResponse in
+            validatedRequest.responseString(completionHandler: { (stringResponse) in
                 cleanupRequest()
 
                 if stringResponse.result.isFailure {
@@ -333,13 +344,13 @@ open class RatingsAlamofireDecodableRequestBuilder<T: Decodable>: RatingsAlamofi
                 completion(
                     Response(
                         response: stringResponse.response!,
-                        body: (stringResponse.result.value ?? "") as! T
+                        body: ((stringResponse.result.value ?? "") as! T)
                     ),
                     nil
                 )
             })
         case is Void.Type:
-            validatedRequest.responseData(completionHandler: { voidResponse in
+            validatedRequest.responseData(completionHandler: { (voidResponse) in
                 cleanupRequest()
 
                 if voidResponse.result.isFailure {
@@ -353,13 +364,12 @@ open class RatingsAlamofireDecodableRequestBuilder<T: Decodable>: RatingsAlamofi
                 completion(
                     Response(
                         response: voidResponse.response!,
-                        body: nil
-                    ),
+                        body: nil),
                     nil
                 )
             })
         case is Data.Type:
-            validatedRequest.responseData(completionHandler: { dataResponse in
+            validatedRequest.responseData(completionHandler: { (dataResponse) in
                 cleanupRequest()
 
                 if dataResponse.result.isFailure {
@@ -373,7 +383,7 @@ open class RatingsAlamofireDecodableRequestBuilder<T: Decodable>: RatingsAlamofi
                 completion(
                     Response(
                         response: dataResponse.response!,
-                        body: dataResponse.data as! T
+                        body: (dataResponse.data as! T)
                     ),
                     nil
                 )
@@ -397,7 +407,7 @@ open class RatingsAlamofireDecodableRequestBuilder<T: Decodable>: RatingsAlamofi
                     return
                 }
 
-                var responseObj: Response<T>?
+                var responseObj: Response<T>? = nil
 
                 let decodeResult: (decodableObj: T?, error: Error?) = CodableHelper.decode(T.self, from: data)
                 if decodeResult.error == nil {
@@ -408,4 +418,5 @@ open class RatingsAlamofireDecodableRequestBuilder<T: Decodable>: RatingsAlamofi
             })
         }
     }
+
 }

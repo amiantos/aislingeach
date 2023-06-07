@@ -138,7 +138,7 @@ open class HordeAlamofireRequestBuilder<T>: HordeRequestBuilder<T> {
                 completion(
                     Response(
                         response: stringResponse.response!,
-                        body: (stringResponse.result.value ?? "") as! T
+                        body: ((stringResponse.result.value ?? "") as! T)
                     ),
                     nil
                 )
@@ -180,7 +180,7 @@ open class HordeAlamofireRequestBuilder<T>: HordeRequestBuilder<T> {
                     completion(
                         Response(
                             response: dataResponse.response!,
-                            body: filePath as! T
+                            body: (filePath as! T)
                         ),
                         nil
                     )
@@ -226,7 +226,7 @@ open class HordeAlamofireRequestBuilder<T>: HordeRequestBuilder<T> {
                 completion(
                     Response(
                         response: dataResponse.response!,
-                        body: dataResponse.data as! T
+                        body: (dataResponse.data as! T)
                     ),
                     nil
                 )
@@ -333,7 +333,7 @@ open class HordeAlamofireDecodableRequestBuilder<T: Decodable>: HordeAlamofireRe
                 completion(
                     Response(
                         response: stringResponse.response!,
-                        body: (stringResponse.result.value ?? "") as! T
+                        body: ((stringResponse.result.value ?? "") as! T)
                     ),
                     nil
                 )
@@ -373,7 +373,7 @@ open class HordeAlamofireDecodableRequestBuilder<T: Decodable>: HordeAlamofireRe
                 completion(
                     Response(
                         response: dataResponse.response!,
-                        body: dataResponse.data as! T
+                        body: (dataResponse.data as! T)
                     ),
                     nil
                 )
