@@ -18,56 +18,18 @@ class ImageDetailViewController: UIViewController {
 
     var menuButton: UIBarButtonItem = .init()
 
-    @IBAction func shareButtonAction(_: UIBarButtonItem) {
-        Log.debug("Share button pressed...")
-        if let currentImage = imageView.image?.pngData() {
-            let ac = UIActivityViewController(activityItems: [currentImage, self], applicationActivities: nil)
-            ac.popoverPresentationController?.sourceView = tabBarController?.view
-            present(ac, animated: true)
-        }
-    }
-
-    @IBOutlet var favoriteButton: UIBarButtonItem!
-    @IBAction func favoriteButtonAction(_: UIBarButtonItem) {
-        Log.debug("Favorite button pressed...")
-        if let image = generatedImage {
-            ImageDatabase.standard.toggleImageFavorite(generatedImage: image) { [self] image in
-                generatedImage = image
-                loadImage()
-            }
-        }
-    }
-
-    @IBAction func trashButtonAction(_: UIBarButtonItem) {
-        Log.debug("Trash button pressed...")
-        guard let generatedImage = generatedImage else { return }
-
-        ImageDatabase.standard.deleteImage(generatedImage) { generatedImage in
-            if generatedImage == nil {
-                NotificationCenter.default.post(name: .deletedGeneratedImage, object: nil)
-                self.navigationController?.popViewController(animated: true)
-            }
-        }
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        loadImage()
-
         menuButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: nil)
         navigationItem.rightBarButtonItem = menuButton
-
-        menuButton.menu = UIMenu(children: [
-            UIAction(title: "Foo", state: .off, handler: { _ in
-                Log.debug("foo")
-            }),
-        ])
 
         let font = UIFont.monospacedSystemFont(ofSize: 12.0, weight: .regular)
         promptLabel.font = font
 
         navigationItem.title = "Image Detail"
+
+        loadImage()
     }
 
     func loadImage() {
@@ -84,9 +46,57 @@ class ImageDetailViewController: UIViewController {
                 let jsonData = Data(fullRequest.utf8)
                 promptLabel.text = jsonData.printJson()
             }
-            favoriteButton.image = UIImage(systemName: imageObject.isFavorite ? "heart.fill" : "heart")
             dateLabel.text = imageObject.dateCreated?.formatted(date: .abbreviated, time: .shortened)
+
+            setupMenuItems()
         }
+    }
+
+
+    fileprivate func setupMenuItems() {
+        let favoriteMenuImage: UIImage? = generatedImage?.isFavorite ?? false ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
+
+        menuButton.menu = UIMenu(children: [
+            UIAction(title: "Favorite", image: favoriteMenuImage, state: .off, handler: { [self] _ in
+                Log.debug("Favorite button pressed...")
+                if let image = generatedImage {
+                    ImageDatabase.standard.toggleImageFavorite(generatedImage: image) { [self] image in
+                        generatedImage = image
+                        loadImage()
+                    }
+                }
+            }),
+            UIAction(title: "Load Settings", image: UIImage(systemName: "doc.on.doc"), state: .off, handler: { _ in
+                Log.debug(self.tabBarController?.viewControllers)
+                if let jsonString = self.generatedImage?.fullRequest, let jsonData = jsonString.data(using: .utf8), let settings = try? JSONDecoder().decode(
+                    GenerationInputStable.self,
+                    from: jsonData
+                ), let navigationController = self.tabBarController?.viewControllers?.first as? UINavigationController, let generateView = navigationController.topViewController as? GeneratorViewController {
+                    Log.info("Loading image settings into Create view...")
+                    generateView.loadSettingsIntoUI(settings: settings)
+                    self.tabBarController?.selectedIndex = 0
+                }
+            }),
+            UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up"), state: .off, handler: { [self] _ in
+                Log.debug("Share button pressed...")
+                if let currentImage = imageView.image?.pngData() {
+                    let ac = UIActivityViewController(activityItems: [currentImage, self], applicationActivities: nil)
+                    ac.popoverPresentationController?.sourceView = tabBarController?.view
+                    present(ac, animated: true)
+                }
+            }),
+            UIAction(title: "Delete", image: UIImage(systemName: "trash"), state: .off, handler: { [self] _ in
+                Log.debug("Trash button pressed...")
+                guard let generatedImage = generatedImage else { return }
+
+                ImageDatabase.standard.deleteImage(generatedImage) { generatedImage in
+                    if generatedImage == nil {
+                        NotificationCenter.default.post(name: .deletedGeneratedImage, object: nil)
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                }
+            }),
+        ])
     }
 
     /*

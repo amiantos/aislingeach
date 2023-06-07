@@ -1009,29 +1009,6 @@
                                 <viewLayoutGuide key="contentLayoutGuide" id="dQR-zu-X3I"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="f0t-e2-QsN"/>
                             </scrollView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2lH-zb-HL2">
-                                <rect key="frame" x="0.0" y="774" width="393" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <items>
-                                    <barButtonItem title="Share" image="square.and.arrow.up" catalog="system" id="jbP-CG-DKR">
-                                        <connections>
-                                            <action selector="shareButtonAction:" destination="ZN2-3F-QUS" id="9M8-sT-7Z1"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="L9g-4z-2TX"/>
-                                    <barButtonItem title="Favorite" image="heart" catalog="system" id="4m2-t2-mEc">
-                                        <connections>
-                                            <action selector="favoriteButtonAction:" destination="ZN2-3F-QUS" id="V6X-rR-1wp"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="usk-Bh-Ozb"/>
-                                    <barButtonItem title="Trash" image="trash" catalog="system" id="Meg-D1-XLf">
-                                        <connections>
-                                            <action selector="trashButtonAction:" destination="ZN2-3F-QUS" id="pJz-N1-DHm"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                            </toolbar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="E0x-oq-R0i"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1045,7 +1022,6 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="dateLabel" destination="rYy-08-cJl" id="1ca-BU-RSa"/>
-                        <outlet property="favoriteButton" destination="4m2-t2-mEc" id="nRd-XC-dEe"/>
                         <outlet property="imageHeightConstraint" destination="Rfj-Vl-fCC" id="d6y-j4-Wyw"/>
                         <outlet property="imageView" destination="k1K-sX-Xhj" id="gwD-w8-fb3"/>
                         <outlet property="promptLabel" destination="gPh-yg-gt2" id="i4L-Nd-cFI"/>
@@ -1534,7 +1510,6 @@
         <image name="rectangle.2.swap" catalog="system" width="128" height="102"/>
         <image name="rectangle.expand.vertical" catalog="system" width="128" height="122"/>
         <image name="slash.circle" catalog="system" width="128" height="123"/>
-        <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
         <image name="square.and.pencil" catalog="system" width="128" height="113"/>
         <image name="star" catalog="system" width="128" height="116"/>
         <image name="star.fill" catalog="system" width="128" height="116"/>

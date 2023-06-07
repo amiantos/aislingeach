@@ -255,6 +255,7 @@ class GeneratorViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerKeyboardNotifications()
+        updateSliderLabels()
     }
 
     override func viewWillLayoutSubviews() {
@@ -269,6 +270,7 @@ class GeneratorViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         generationSettingsUpdated()
+        updateSliderLabels() 
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {

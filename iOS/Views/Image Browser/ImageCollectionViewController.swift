@@ -157,7 +157,6 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "imageDetailViewController") as! ImageDetailViewController
         controller.generatedImage = object
-        controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
     }
 
