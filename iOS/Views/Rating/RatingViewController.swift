@@ -10,6 +10,7 @@ import UIKit
 
 class RatingViewController: UIViewController {
     var currentImageIdentifier: String?
+    var currentImageIdentifierAssociatedApiKey: String?
 
     @IBOutlet var startMessageView: UIStackView!
     @IBOutlet var tenStarsView: CosmosView!
@@ -138,6 +139,7 @@ extension RatingViewController {
 
     func setNewImageToRate(imageResponse: DatasetImagePopResponse) {
         currentImageIdentifier = imageResponse._id
+        currentImageIdentifierAssociatedApiKey = UserPreferences.standard.apiKey
         Log.info("\(String(describing: currentImageIdentifier)) - New image to rate received, downloading image...")
         if let urlString = imageResponse.url, let imageUrl = URL(string: urlString) {
             DispatchQueue.global().async {
@@ -172,15 +174,20 @@ extension RatingViewController {
         startLoadingSpinner()
         let postBody = RatePostInput(rating: rating, artifacts: artifacts)
         Log.info("\(currentImageIdentifier) - Submitting... Rating: \(rating), Artifacts: \(artifacts)")
-        RatingsV1API.postRate(body: postBody, apikey: UserPreferences.standard.apiKey, imageId: currentImageIdentifier) { data, error in
-            if let data = data {
-                Log.info("\(currentImageIdentifier) - Rating submitted successfully. \(String(describing: data.reward)) kudos rewarded.")
-                UserPreferences.standard.add(ratingKudos: data.reward ?? 0)
-                UserPreferences.standard.add(ratingImages: 1)
-                self.updateStatLabels()
-                self.grabImageToRate()
-            } else if let error = error {
-                self.setErrorState(message: "\(error)")
+        if UserPreferences.standard.apiKey != currentImageIdentifierAssociatedApiKey {
+            Log.info("User changed API key between image fetches... grabbing new image to rate.")
+            self.grabImageToRate()
+        } else {
+            RatingsV1API.postRate(body: postBody, apikey: UserPreferences.standard.apiKey, imageId: currentImageIdentifier) { data, error in
+                if let data = data {
+                    Log.info("\(currentImageIdentifier) - Rating submitted successfully. \(String(describing: data.reward)) kudos rewarded.")
+                    UserPreferences.standard.add(ratingKudos: data.reward ?? 0)
+                    UserPreferences.standard.add(ratingImages: 1)
+                    self.updateStatLabels()
+                    self.grabImageToRate()
+                } else if let error = error {
+                    self.setErrorState(message: "\(error)")
+                }
             }
         }
     }
