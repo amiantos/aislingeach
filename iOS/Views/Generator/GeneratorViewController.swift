@@ -532,17 +532,21 @@ extension GeneratorViewController {
 
     func startGenerationSpinner() {
         Log.info("New generation started...")
-        generationTitleLabel.text = ""
-        generationTimeLabel.text = "Falling asleep..."
+        generationTitleLabel.text = "Falling asleep..."
+        generationTimeLabel.text = ""
         generationEffectView.isHidden = false
         generationWarningImageView.isHidden = true
         generationSpinner.startAnimating()
+        generateButton.isEnabled = false
+        deleteButton.isEnabled = false
+        favoriteButton.isEnabled = false
     }
 
     func hideGenerationDisplay() {
         Log.info("Hiding generation progress display.")
         generationSpinner.stopAnimating()
         generationEffectView.isHidden = true
+        generateButton.isEnabled = true
     }
 
     func showGenerationError(message: String) {
@@ -551,6 +555,7 @@ extension GeneratorViewController {
         generationWarningImageView.isHidden = false
         generationTitleLabel.text = "Error!"
         generationTimeLabel.text = message
+        generateButton.isEnabled = true
     }
 
     @objc func checkCurrentGenerationStatus() {
@@ -562,14 +567,23 @@ extension GeneratorViewController {
                 if let done = data.done, done {
                     Log.info("\(generationIdentifier) - Done!")
                     self.getFinishedImageAndDisplay()
-                } else if let waitTime = data.waitTime {
+                } else if let waitTime = data.waitTime, let processing = data.processing {
                     if waitTime > 0 {
                         self.generationTitleLabel.text = "Dreaming..."
                         self.generationTimeLabel.text = "~\(waitTime) seconds"
+                    } else if processing > 0 {
+                        self.generationTitleLabel.text = "Waking..."
+                        self.generationTimeLabel.text = "Please wait..."
                     } else {
-                        self.generationTimeLabel.text = "Waking up..."
+                        self.generationTitleLabel.text = "Thinking..."
+                        self.generationTimeLabel.text = ""
                     }
-                    self.perform(#selector(self.checkCurrentGenerationStatus), with: nil, afterDelay: TimeInterval(1))
+
+                    // Setup timer to run again in 2 seconds
+                    self.generationPollingTimer = Timer(timeInterval: 2, target: self, selector: #selector(self.checkCurrentGenerationStatus), userInfo: nil, repeats: false)
+                    if let timer = self.generationPollingTimer {
+                        RunLoop.current.add(timer, forMode: .common)
+                    }
                 }
             }
         }
