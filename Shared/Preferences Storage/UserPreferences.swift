@@ -16,6 +16,10 @@ struct UserPreferences {
         static let apiKey = "apiKey"
         static let ratingKudos = "ratingKudos"
         static let ratingImages = "ratingImages"
+        static let slowWorkers = "slowWorkers"
+        static let trustedWorkers = "trustedWorkers"
+        static let debugMode = "debugMode"
+        static let recentSettings = "recentSettings"
     }
 
     static var standard: UserDefaults {
@@ -24,6 +28,10 @@ struct UserPreferences {
             Key.apiKey: "0000000000",
             Key.ratingKudos: 0,
             Key.ratingImages: 0,
+            Key.slowWorkers: true,
+            Key.trustedWorkers: true,
+            Key.debugMode: false,
+            Key.recentSettings: "{}",
         ])
 
         return database
@@ -54,6 +62,44 @@ extension UserDefaults {
     func add(ratingImages: Int) {
         set(self.ratingImages + ratingImages, for: UserPreferences.Key.ratingImages)
     }
+
+    func set(slowWorkers: Bool) {
+        set(slowWorkers, forKey: UserPreferences.Key.slowWorkers)
+    }
+
+    var slowWorkers: Bool {
+        return bool(forKey: UserPreferences.Key.slowWorkers)
+    }
+
+    func set(trustedWorkers: Bool) {
+        set(trustedWorkers, forKey: UserPreferences.Key.trustedWorkers)
+    }
+
+    var trustedWorkers: Bool {
+        return bool(forKey: UserPreferences.Key.trustedWorkers)
+    }
+
+    func set(debugMode: Bool) {
+        set(debugMode, forKey: UserPreferences.Key.debugMode)
+    }
+
+    var debugMode: Bool {
+        return bool(forKey: UserPreferences.Key.debugMode)
+    }
+
+    func set(recentSettings: GenerationInputStable) {
+        Log.debug("Setting: \(recentSettings.toJSONString())")
+        set(recentSettings.toJSONString(), forKey: UserPreferences.Key.recentSettings)
+    }
+
+    var recentSettings: GenerationInputStable? {
+        guard let string = string(forKey: UserPreferences.Key.recentSettings) else { return nil }
+        Log.debug("Fetching: \(string)")
+        return try? JSONDecoder().decode(
+            GenerationInputStable.self,
+            from: string.data(using: .utf8)!)
+    }
+
 }
 
 private extension UserDefaults {

@@ -29,6 +29,8 @@ class GeneratorViewController: UIViewController {
     }
 
     var kudosEstimateTimer: Timer?
+    var saveGenerationSettingsTimer: Timer?
+    var generationPollingTimer: Timer?
 
     // MARK: - IBOutlets
 
@@ -51,7 +53,7 @@ class GeneratorViewController: UIViewController {
     @IBOutlet weak var hiresFixToggleButton: UIButton!
     @IBOutlet weak var tilingToggleButton: UIButton!
     @IBAction func toggleButtonChanged(_ sender: UIButton) {
-        flagKudosEstimatorForUpdate()
+        generationSettingsUpdated()
     }
 
     @IBOutlet var deleteButton: UIButton!
@@ -85,7 +87,7 @@ class GeneratorViewController: UIViewController {
     @IBAction func stepsSliderChanged(_ sender: UISlider) {
         let intValue = Int(sender.value)
         stepsLabel.text = "\(intValue)"
-        flagKudosEstimatorForUpdate()
+        generationSettingsUpdated()
     }
 
     @IBOutlet weak var guidanceSlider: UISlider!
@@ -93,7 +95,7 @@ class GeneratorViewController: UIViewController {
     @IBAction func guidanceSliderChanged(_ sender: UISlider) {
         let intValue = Int(sender.value)
         guidanceLabel.text = "\(intValue)"
-        flagKudosEstimatorForUpdate()
+        generationSettingsUpdated()
     }
 
     @IBOutlet weak var clipSkipSlider: UISlider!
@@ -101,10 +103,8 @@ class GeneratorViewController: UIViewController {
     @IBAction func clipSkipSliderChanged(_ sender: UISlider) {
         let intValue = Int(sender.value)
         clipSkipLabel.text = "\(intValue)"
-        flagKudosEstimatorForUpdate()
+        generationSettingsUpdated()
     }
-
-
 
     @IBOutlet var widthSlider: UISlider!
     @IBOutlet var widthSliderSizeLabel: UILabel!
@@ -119,7 +119,7 @@ class GeneratorViewController: UIViewController {
                 heightSlider.value = newHeightValue
             }
         }
-        flagKudosEstimatorForUpdate()
+        generationSettingsUpdated()
         updateSliderLabels()
     }
 
@@ -136,7 +136,7 @@ class GeneratorViewController: UIViewController {
                 widthSlider.value = newWidthValue
             }
         }
-        flagKudosEstimatorForUpdate()
+        generationSettingsUpdated()
         updateSliderLabels()
     }
 
@@ -170,7 +170,7 @@ class GeneratorViewController: UIViewController {
     @IBOutlet weak var generateButton: UIButton!
     @IBAction func generateButtonPressed(_: UIButton) {
         promptTextView.resignFirstResponder()
-        if let generationBody = getCurrentGenerationBody() {
+        if let generationBody = createGeneratonBodyForCurrentSettings() {
             startGenerationSpinner()
             HordeV2API.postImageAsyncGenerate(body: generationBody, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
                 if let data = data, let generationIdentifier = data._id {
@@ -198,25 +198,45 @@ class GeneratorViewController: UIViewController {
             faceFixerStrengthSlider.isEnabled = false
 
         }
-        flagKudosEstimatorForUpdate()
+        generationSettingsUpdated()
     }
     @IBOutlet weak var faceFixerStrengthSlider: UISlider!
     @IBOutlet weak var faceFixStrengthLabel: UILabel!
     @IBAction func faceFixStrengthSliderChanged(_ sender: UISlider) {
         faceFixStrengthLabel.text = "\(round(sender.value * 100) / 100.0)"
-        flagKudosEstimatorForUpdate()
+        generationSettingsUpdated()
     }
+
+    @IBOutlet weak var slowWorkersButton: UIButton!
+    @IBAction func slowWorkersButtonAction(_ sender: UIButton) {
+        UserPreferences.standard.set(slowWorkers: sender.isSelected)
+        generationSettingsUpdated()
+    }
+    @IBOutlet weak var trustedWorkersButton: UIButton!
+    @IBAction func trustedWorkersButtonAction(_ sender: UIButton) {
+        UserPreferences.standard.set(trustedWorkers: sender.isSelected)
+        generationSettingsUpdated()
+    }
+    @IBOutlet weak var debugModeButton: UIButton!
+    @IBAction func debugModeButtonAction(_ sender: UIButton) {
+        UserPreferences.standard.set(debugMode: sender.isSelected)
+        generationSettingsUpdated()
+    }
+
     // MARK: - View Setup
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(hordeClientAgent())
+
         navigationController?.navigationBar.prefersLargeTitles = true
         mainImageViewHeightConstraint.constant = view.frame.width
 
-        widthSlider.setValue(Float(8), animated: false)
-        heightSlider.setValue(Float(8), animated: false)
-        updateSliderLabels()
+        let recentSettings = UserPreferences.standard.recentSettings
+
+        let initialWidth = ((recentSettings?.params?.width) != nil) ? (recentSettings?.params?.width)!/64 : 8
+        let initialHeight = ((recentSettings?.params?.height) != nil) ? (recentSettings?.params?.height)!/64 : 8
+        widthSlider.setValue(Float(initialWidth), animated: false)
+        heightSlider.setValue(Float(initialHeight), animated: false)
 
         hideKeyboardWhenTappedAround()
 
@@ -234,8 +254,15 @@ class GeneratorViewController: UIViewController {
         let menuChildren: [UIAction] = {
             var actions: [UIAction] = []
             upscalerOptions.forEach { option in
-                actions.append(UIAction(title: option, state: .on, handler: { _ in
-                    self.flagKudosEstimatorForUpdate()
+                var state: UIMenuElement.State = .off
+                if let postProcessing = recentSettings?.params?.postProcessing {
+                    Log.debug(postProcessing)
+                    state = postProcessing.contains(where: { opt in
+                        opt == ModelGenerationInputStable.PostProcessing(rawValue: option)
+                    }) ? .on : .off
+                }
+                actions.append(UIAction(title: option, state: state, handler: { _ in
+                    self.generationSettingsUpdated()
                 }))
             }
             return actions
@@ -260,8 +287,9 @@ class GeneratorViewController: UIViewController {
         let samplerMenuChildren: [UIAction] = {
             var actions: [UIAction] = []
             samplerOptions.forEach { option in
-                actions.append(UIAction(title: option, state: .on, handler: { _ in
-                    self.flagKudosEstimatorForUpdate()
+                let state: UIMenuElement.State = recentSettings?.params?.samplerName?.rawValue == option ? .on : .off
+                actions.append(UIAction(title: option, state: state, handler: { _ in
+                    self.generationSettingsUpdated()
                 }))
             }
             return actions
@@ -270,23 +298,80 @@ class GeneratorViewController: UIViewController {
         samplerPickButton.showsMenuAsPrimaryAction = true
         samplerPickButton.changesSelectionAsPrimaryAction = true
 
-        flagKudosEstimatorForUpdate()
+        slowWorkersButton.isSelected = UserPreferences.standard.slowWorkers
+        trustedWorkersButton.isSelected = UserPreferences.standard.trustedWorkers
+        debugModeButton.isSelected = UserPreferences.standard.debugMode
+
+        modelPickButton.setTitle(recentSettings?.models?.first ?? "stable_diffusion", for: .normal)
+
+        if let recentGuidance = recentSettings?.params?.cfgScale {
+            let floatScale = Float(truncating: recentGuidance as NSNumber)
+            guidanceSlider.setValue(floatScale, animated: false)
+            guidanceLabel.text = "\(recentGuidance)"
+        }
+
+        if let recentSteps = recentSettings?.params?.steps {
+            let floatScale = Float(truncating: recentSteps as NSNumber)
+            stepsSlider.setValue(floatScale, animated: false)
+            stepsLabel.text = "\(recentSteps)"
+        }
+
+        if let recentClipSkip = recentSettings?.params?.clipSkip {
+            let floatScale = Float(truncating: recentClipSkip as NSNumber)
+            clipSkipSlider.setValue(floatScale, animated: false)
+            clipSkipLabel.text = "\(recentClipSkip)"
+        }
+
+        karrasToggleButton.isSelected = recentSettings?.params?.karras ?? true
+        hiresFixToggleButton.isSelected = recentSettings?.params?.hiresFix ?? true
+        tilingToggleButton.isSelected = recentSettings?.params?.tiling ?? false
+
+        if let postProcessing = recentSettings?.params?.postProcessing {
+            postProcessing.forEach { processor in
+                switch (processor) {
+                case .gfpgan:
+                    faceFixSegmentedControl.selectedSegmentIndex = 1
+                case .codeFormers:
+                    faceFixSegmentedControl.selectedSegmentIndex = 2
+                default:
+                    break
+                }
+            }
+        }
+
+        if faceFixSegmentedControl.selectedSegmentIndex != 0 {
+            faceFixerStrengthSlider.isEnabled = true
+            if let faceFixStrength = recentSettings?.params?.facefixerStrength {
+                let float = Float(truncating: faceFixStrength as NSNumber)
+                faceFixStrengthLabel.text = "\(faceFixStrength)"
+                faceFixerStrengthSlider.setValue(float, animated: false)
+            }
+        }
+
+        if let prompt = recentSettings?.prompt {
+            promptTextView.text = prompt
+        }
+
+        updateSliderLabels()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerKeyboardNotifications()
-        updateSliderLabels()
     }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        updateSliderLabels()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tearDownKeyboardNotifications()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        generationSettingsUpdated()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -299,28 +384,42 @@ class GeneratorViewController: UIViewController {
 // MARK: - Everything Else
 
 extension GeneratorViewController {
-    func flagKudosEstimatorForUpdate() {
-        guard getCurrentGenerationBody(dryRun: true) != nil else { return }
-        self.kudosEstimateTimer?.invalidate()
+    func generationSettingsUpdated() {
+        saveGenerationSettingsTimer?.invalidate()
+        saveGenerationSettingsTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { timer in
+            self.saveGenerationSettings()
+        })
+
+        kudosEstimateTimer?.invalidate()
         kudosEstimateTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { timer in
             self.fetchAndDisplayKudosEstimate()
+            timer.invalidate()
         })
 
     }
+
+    func saveGenerationSettings() {
+        guard let settings = createGeneratonBodyForCurrentSettings() else { return }
+        UserPreferences.standard.set(recentSettings: settings)
+    }
+
     func fetchAndDisplayKudosEstimate() {
-        guard let currentGen = getCurrentGenerationBody(dryRun: true) else { return }
-        DispatchQueue.main.async {
+        guard let currentGen = createGeneratonBodyForCurrentSettings(dryRun: true) else { return }
+        DispatchQueue.global().async {
             HordeV2API.postImageAsyncGenerate(body: currentGen, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
                 if let data = data, let kudosEstimate = data.kudos {
                     Log.debug(data)
-                    self.generateButton.configuration?.subtitle = "\(kudosEstimate) Kudos"
+                    DispatchQueue.main.async {
+                        self.generateButton.configuration?.subtitle = "\(kudosEstimate) Kudos"
+                    }
                 } else if let error = error {
                     Log.error(error)
                 }
             }
         }
     }
-    func getCurrentGenerationBody(dryRun: Bool = false) -> GenerationInputStable? {
+
+    func createGeneratonBodyForCurrentSettings(dryRun: Bool = false) -> GenerationInputStable? {
         guard let generationText = promptTextView.text, generationText != "" else { return nil }
         let currentDimensions = getCurrentWidthAndHeight()
         let samplerString = samplerPickButton.menu?.selectedElements[0].title ?? "k_euler_a"
@@ -365,10 +464,10 @@ extension GeneratorViewController {
         let input = GenerationInputStable(
             prompt: generationText,
             params: modelParams,
-            nsfw: false,
-            trustedWorkers: true,
-            slowWorkers: true,
-            censorNsfw: true,
+            nsfw: UserPreferences.standard.debugMode,
+            trustedWorkers: UserPreferences.standard.trustedWorkers,
+            slowWorkers: UserPreferences.standard.slowWorkers,
+            censorNsfw: !UserPreferences.standard.debugMode,
             workers: nil,
             workerBlacklist: nil,
             models: [modelPickButton.titleLabel?.text ?? "stable_diffusion"],
@@ -377,10 +476,9 @@ extension GeneratorViewController {
             sourceMask: nil,
             r2: true,
             shared: true,
-            replacementFilter: true,
+            replacementFilter: !UserPreferences.standard.debugMode,
             dryRun: dryRun
         )
-        Log.debug(input)
         return input
     }
 
@@ -454,7 +552,7 @@ extension GeneratorViewController {
         HordeV2API.getImageAsyncCheck(_id: generationIdentifier, clientAgent: hordeClientAgent()) { data, _ in
             if let data = data {
                 Log.debug("\(data)")
-                if let done = data.done, let restarted = data.restarted, done, restarted <= 0 {
+                if let done = data.done, done {
                     Log.info("\(generationIdentifier) - Done!")
                     self.getFinishedImageAndDisplay()
                 } else if let waitTime = data.waitTime {
@@ -515,12 +613,21 @@ extension GeneratorViewController {
                         }
                     }
                 } else {
-                    print("Not finished...?!")
+                    self.perform(#selector(self.checkCurrentGenerationStatus), with: nil, afterDelay: TimeInterval(1))
                 }
             }
         }
     }
 }
+
+// Let us know the prompt was changed
+
+extension GeneratorViewController: UITextViewDelegate {
+    func textViewDidEndEditing(_ textView: UITextView) {
+        generationSettingsUpdated()
+    }
+}
+
 
 // MARK: - Keyboard Stuff
 
@@ -567,6 +674,5 @@ extension GeneratorViewController {
 extension GeneratorViewController: ModelsTableViewControllerDelegate {
     func selectedModel(name: String) {
         modelPickButton.setTitle(name, for: .normal)
-        flagKudosEstimatorForUpdate()
     }
 }
