@@ -91,8 +91,7 @@ class ImageDetailViewController: UIViewController {
                 Log.debug("Hide button pressed...")
                 if let image = generatedImage {
                     ImageDatabase.standard.toggleImageHidden(generatedImage: image) { [self] image in
-                        generatedImage = image
-                        loadImage()
+                        self.navigationController?.popViewController(animated: true)
                     }
                 }
 
