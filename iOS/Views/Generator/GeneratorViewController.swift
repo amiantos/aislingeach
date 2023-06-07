@@ -270,7 +270,7 @@ class GeneratorViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         generationSettingsUpdated()
-        updateSliderLabels() 
+        updateSliderLabels()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {

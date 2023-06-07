@@ -52,7 +52,6 @@ class ImageDetailViewController: UIViewController {
         }
     }
 
-
     fileprivate func setupMenuItems() {
         let favoriteMenuImage: UIImage? = generatedImage?.isFavorite ?? false ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
 
