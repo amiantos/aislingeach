@@ -567,15 +567,21 @@ extension GeneratorViewController {
                 if let done = data.done, done {
                     Log.info("\(generationIdentifier) - Done!")
                     self.getFinishedImageAndDisplay()
-                } else if let waitTime = data.waitTime, let processing = data.processing {
-                    if waitTime > 0 {
+                } else if let waitTime = data.waitTime, let queuePosition = data.queuePosition, let processing = data.processing, let waiting = data.waiting {
+                    if queuePosition > 0 {
+                        self.generationTitleLabel.text = "Sleeping..."
+                        self.generationTimeLabel.text = "#\(queuePosition) waiting to dream"
+                    } else if waitTime > 0 {
                         self.generationTitleLabel.text = "Dreaming..."
                         self.generationTimeLabel.text = "~\(waitTime) seconds"
                     } else if processing > 0 {
                         self.generationTitleLabel.text = "Waking..."
                         self.generationTimeLabel.text = "Please wait..."
+                    } else if waiting > 0 {
+                        self.generationTimeLabel.text = "Sleeping..."
+                        self.generationTimeLabel.text = "Please wait..."
                     } else {
-                        self.generationTitleLabel.text = "Thinking..."
+                        self.generationTitleLabel.text = ""
                         self.generationTimeLabel.text = ""
                     }
 
