@@ -109,7 +109,7 @@ class ImageDatabase {
         mainManagedObjectContext.perform { [self] in
             do {
                 let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
-                fetchRequest.predicate = NSPredicate(format: "isFavorite = %d", false)
+                fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "isFavorite = %d", false), NSPredicate(format: "isHidden = %d", false)])
                 let images = try mainManagedObjectContext.fetch(fetchRequest) as [GeneratedImage]
                 for image in images {
                     // TODO: Should trash...

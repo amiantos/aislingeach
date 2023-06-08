@@ -198,7 +198,7 @@ extension ImageCollectionViewController {
                 }
             }),
             UIAction(title: "Prune Gallery", image: UIImage(systemName: "trash"), handler: { action in
-                let alert = UIAlertController(title: "Prune Image History", message: "This action will delete all images from your library that are not marked as a Favorite. Are you sure you want to continue?", preferredStyle: .alert)
+                let alert = UIAlertController(title: "Prune Image History", message: "This action will delete all images from your library that are not marked as a Favorite nor are Hidden. Are you sure you want to continue?", preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "OK", style: .destructive) { _ in
                     ImageDatabase.standard.pruneImages()
                 }
