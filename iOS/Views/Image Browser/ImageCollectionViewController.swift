@@ -17,6 +17,8 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
     var showHiddenItems: Bool = false
 
+    var viewFolder: String = "main"
+
     private let itemsPerRow: CGFloat = 3
     private let sectionInsets = UIEdgeInsets(
         top: 2,
@@ -27,8 +29,6 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
 
         navigationController?.navigationBar.prefersLargeTitles = true
 
@@ -36,18 +36,7 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         menuButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: nil)
         navigationItem.rightBarButtonItem = menuButton
 
-        let fetchRequest = NSFetchRequest<GeneratedImage>(entityName: "GeneratedImage")
-        // Configure the request's entity, and optionally its predicate
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
-        fetchRequest.predicate = NSPredicate(format: "isHidden = %d", showHiddenItems)
-        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: ImageDatabase.standard.mainManagedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-        resultsController = controller
-        controller.delegate = self
-        do {
-            try controller.performFetch()
-        } catch {
-            fatalError("Failed to fetch entities: \(error)")
-        }
+        setupDataSource()
 
         setupMenu()
     }
@@ -221,11 +210,35 @@ extension ImageCollectionViewController {
         ])
     }
 
+    func setupDataSource() {
+
+        let fetchRequest = NSFetchRequest<GeneratedImage>(entityName: "GeneratedImage")
+        // Configure the request's entity, and optionally its predicate
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
+
+        var title = "All Images"
+        var predicate = NSPredicate(format: "isHidden = %d", false)
+        if viewFolder == "hidden" {
+            title = "Hidden Images"
+            predicate = NSPredicate(format: "isHidden = %d", true)
+        }
+        navigationItem.title = title
+        fetchRequest.predicate = predicate
+
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: ImageDatabase.standard.mainManagedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        resultsController = controller
+        controller.delegate = self
+        do {
+            try controller.performFetch()
+        } catch {
+            fatalError("Failed to fetch entities: \(error)")
+        }
+    }
+
     func toggleHiddenItems() {
-        showHiddenItems = !showHiddenItems
-        resultsController?.fetchRequest.predicate =  NSPredicate(format: "isHidden = %d", showHiddenItems)
-        try? resultsController?.performFetch()
-        collectionView.reloadData()
-        setupMenu()
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "imageGalleryView") as! ImageCollectionViewController
+        controller.viewFolder = "hidden"
+        navigationController?.pushViewController(controller, animated: true)
     }
 }

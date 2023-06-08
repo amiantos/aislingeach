@@ -847,7 +847,7 @@
         <!--Image Gallery-->
         <scene sceneID="rLQ-aY-VfC">
             <objects>
-                <collectionViewController id="Gxv-NW-hB9" customClass="ImageCollectionViewController" customModule="Aislingeach" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="imageGalleryView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Gxv-NW-hB9" customClass="ImageCollectionViewController" customModule="Aislingeach" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentInsetAdjustmentBehavior="scrollableAxes" dataMode="prototypes" id="HWf-Bz-fhe">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
