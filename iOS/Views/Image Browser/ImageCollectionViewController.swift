@@ -14,6 +14,7 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
     var resultsController: NSFetchedResultsController<GeneratedImage>?
 
     var menuButton: UIBarButtonItem = .init()
+    var editButton: UIBarButtonItem = UIBarButtonItem()
 
     var showHiddenItems: Bool = false
 
@@ -36,11 +37,41 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
         // setup menu
         menuButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: nil)
-        navigationItem.rightBarButtonItem = menuButton
+        editButton = UIBarButtonItem(title: "Select", style: .plain, target: self, action: #selector(toggleEditing))
+
+        if viewFolder == "main" {
+            navigationItem.rightBarButtonItems = [editButton, menuButton]
+        } else {
+            navigationItem.rightBarButtonItem = editButton
+        }
+
+        collectionView.allowsSelection = true
+        collectionView.allowsMultipleSelection = false
+        collectionView.allowsMultipleSelectionDuringEditing = true
+        setEditing(false, animated: false)
 
         setupDataSource()
 
         setupMenu()
+    }
+
+    @objc func toggleEditing() {
+        setEditing(!isEditing, animated: true)
+    }
+
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        if isEditing != editing {
+            super.setEditing(editing, animated: animated)
+            collectionView.isEditing = editing
+
+            if !editing {
+                // Clear selection if leaving edit mode.
+                collectionView.indexPathsForSelectedItems?.forEach({ (indexPath) in
+                    collectionView.deselectItem(at: indexPath, animated: animated)
+                })
+            }
+            setupMenu()
+        }
     }
 
     func collectionView(
@@ -140,7 +171,7 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
     // MARK: UICollectionViewDelegate
 
     override func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if !multiSelectMode {
+        if !isEditing {
             guard let object = resultsController?.object(at: indexPath) else {
                 fatalError("Attempt to configure cell without a managed object")
             }
@@ -150,6 +181,22 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
             controller.generatedImage = object
             navigationController?.pushViewController(controller, animated: true)
         }
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+
+    override func collectionView(_ collectionView: UICollectionView, didBeginMultipleSelectionInteractionAt indexPath: IndexPath) {
+        // Replace the Select button with Done, and put the
+        // collection view into editing mode.
+        setEditing(true, animated: true)
+    }
+
+
+    override func collectionViewDidEndMultipleSelectionInteraction(_ collectionView: UICollectionView) {
+        print("\(#function)")
     }
 
     /*
@@ -184,14 +231,12 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
 extension ImageCollectionViewController {
     func setupMenu() {
+
+        editButton.title = isEditing ? "Done" : "Select"
+
         var menuItems: [UIMenuElement] = []
 
-        menuItems.append(UIAction(title: "Toggle Selection Mode", image: UIImage(systemName: "selection.pin.in.out"), handler: { action in
-            self.toggleSelectionMode()
-        }))
-
-
-        if viewFolder == "main" && !multiSelectMode {
+        if viewFolder == "main" && !isEditing {
             let hiddenMenuItemTitle = showHiddenItems ? "Hide Hidden" : "Show Hidden"
             let hiddenMenuItemImage = showHiddenItems ? UIImage(systemName: "eye") : UIImage(systemName: "eye.slash")
             menuItems.append(UIAction(title: hiddenMenuItemTitle, image: hiddenMenuItemImage, handler: { action in
@@ -208,19 +253,9 @@ extension ImageCollectionViewController {
                     self.toggleHiddenItems()
                 }
             }))
-            menuItems.append(UIAction(title: "Prune Gallery", image: UIImage(systemName: "trash"), handler: { action in
-                let alert = UIAlertController(title: "Prune Image History", message: "This action will delete all images from your library that are not marked as a Favorite nor are Hidden. Are you sure you want to continue?", preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "OK", style: .destructive) { _ in
-                    ImageDatabase.standard.pruneImages()
-                }
-                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-                alert.addAction(okAction)
-                alert.addAction(cancelAction)
-                self.present(alert, animated: true)
-            }))
         }
 
-        if multiSelectMode {
+        if isEditing {
             let editActions = UIMenu(title: "", options: .displayInline, children: [
                 UIAction(title: "Favorite", image: UIImage(systemName: "star"), state: .off, handler: { [self] _ in
                     favoriteSelectedImages()
