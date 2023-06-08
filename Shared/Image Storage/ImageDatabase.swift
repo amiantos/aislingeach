@@ -98,11 +98,78 @@ class ImageDatabase {
         }
     }
 
+    func hideImages(_ generatedImages: [GeneratedImage], completion: @escaping ([GeneratedImage]?) -> Void) {
+        mainManagedObjectContext.perform {
+            do {
+                for image in generatedImages {
+                    image.isHidden = true
+                }
+                try self.mainManagedObjectContext.save()
+                self.saveContext()
+                completion(generatedImages)
+            } catch {
+                completion(nil)
+            }
+        }
+    }
+
+    func unHideImages(_ generatedImages: [GeneratedImage], completion: @escaping ([GeneratedImage]?) -> Void) {
+        mainManagedObjectContext.perform {
+            do {
+                for image in generatedImages {
+                    image.isHidden = false
+                }
+                try self.mainManagedObjectContext.save()
+                self.saveContext()
+                completion(generatedImages)
+            } catch {
+                completion(nil)
+            }
+        }
+    }
+
+    func favoriteImages(_ generatedImages: [GeneratedImage], completion: @escaping ([GeneratedImage]?) -> Void) {
+        mainManagedObjectContext.perform {
+            do {
+                for image in generatedImages {
+                    image.isFavorite = true
+                }
+                try self.mainManagedObjectContext.save()
+                self.saveContext()
+                completion(generatedImages)
+            } catch {
+                completion(nil)
+            }
+        }
+    }
+
+    func unFavoriteImages(_ generatedImages: [GeneratedImage], completion: @escaping ([GeneratedImage]?) -> Void) {
+        mainManagedObjectContext.perform {
+            do {
+                for image in generatedImages {
+                    image.isFavorite = false
+                }
+                try self.mainManagedObjectContext.save()
+                self.saveContext()
+                completion(generatedImages)
+            } catch {
+                completion(nil)
+            }
+        }
+    }
+
     func deleteImage(_ generatedImage: GeneratedImage, completion: @escaping (GeneratedImage?) -> Void) {
         // TODO: Should trash...
         mainManagedObjectContext.delete(generatedImage)
         saveContext()
         completion(nil)
+    }
+
+    func deleteImages(_ generatedImages: [GeneratedImage]) {
+        for image in generatedImages {
+            mainManagedObjectContext.delete(image)
+        }
+        saveContext()
     }
 
     func pruneImages() {

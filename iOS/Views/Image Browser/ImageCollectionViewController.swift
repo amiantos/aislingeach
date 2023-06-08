@@ -19,6 +19,8 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
     var viewFolder: String = "main"
 
+    var multiSelectMode: Bool = false
+
     private let itemsPerRow: CGFloat = 3
     private let sectionInsets = UIEdgeInsets(
         top: 2,
@@ -138,14 +140,16 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
     // MARK: UICollectionViewDelegate
 
     override func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let object = resultsController?.object(at: indexPath) else {
-            fatalError("Attempt to configure cell without a managed object")
-        }
+        if !multiSelectMode {
+            guard let object = resultsController?.object(at: indexPath) else {
+                fatalError("Attempt to configure cell without a managed object")
+            }
 
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "imageDetailViewController") as! ImageDetailViewController
-        controller.generatedImage = object
-        navigationController?.pushViewController(controller, animated: true)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let controller = storyboard.instantiateViewController(withIdentifier: "imageDetailViewController") as! ImageDetailViewController
+            controller.generatedImage = object
+            navigationController?.pushViewController(controller, animated: true)
+        }
     }
 
     /*
@@ -180,10 +184,17 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
 extension ImageCollectionViewController {
     func setupMenu() {
-        let hiddenMenuItemTitle = showHiddenItems ? "Hide Hidden" : "Show Hidden"
-        let hiddenMenuItemImage = showHiddenItems ? UIImage(systemName: "eye") : UIImage(systemName: "eye.slash")
-        menuButton.menu = UIMenu(children:[
-            UIAction(title: hiddenMenuItemTitle, image: hiddenMenuItemImage, handler: { action in
+        var menuItems: [UIMenuElement] = []
+
+        menuItems.append(UIAction(title: "Toggle Selection Mode", image: UIImage(systemName: "selection.pin.in.out"), handler: { action in
+            self.toggleSelectionMode()
+        }))
+
+
+        if viewFolder == "main" && !multiSelectMode {
+            let hiddenMenuItemTitle = showHiddenItems ? "Hide Hidden" : "Show Hidden"
+            let hiddenMenuItemImage = showHiddenItems ? UIImage(systemName: "eye") : UIImage(systemName: "eye.slash")
+            menuItems.append(UIAction(title: hiddenMenuItemTitle, image: hiddenMenuItemImage, handler: { action in
                 if self.showHiddenItems == false {
                     let alert = UIAlertController(title: "Show Hidden Items", message: "Are you... sure you want to do this?", preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "OK", style: .destructive) { _ in
@@ -196,8 +207,8 @@ extension ImageCollectionViewController {
                 } else {
                     self.toggleHiddenItems()
                 }
-            }),
-            UIAction(title: "Prune Gallery", image: UIImage(systemName: "trash"), handler: { action in
+            }))
+            menuItems.append(UIAction(title: "Prune Gallery", image: UIImage(systemName: "trash"), handler: { action in
                 let alert = UIAlertController(title: "Prune Image History", message: "This action will delete all images from your library that are not marked as a Favorite nor are Hidden. Are you sure you want to continue?", preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "OK", style: .destructive) { _ in
                     ImageDatabase.standard.pruneImages()
@@ -206,12 +217,31 @@ extension ImageCollectionViewController {
                 alert.addAction(okAction)
                 alert.addAction(cancelAction)
                 self.present(alert, animated: true)
-            }),
-        ])
+            }))
+        }
+
+        if multiSelectMode {
+            let editActions = UIMenu(title: "", options: .displayInline, children: [
+                UIAction(title: "Favorite", image: UIImage(systemName: "star"), state: .off, handler: { [self] _ in
+                    favoriteSelectedImages()
+                }),
+//                UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up"), state: .off, handler: { [self] _ in
+//                    Log.debug("Share button pressed...")
+//                }),
+                UIAction(title: "Hide", image: UIImage(systemName: "eye.slash"), state: .off, handler: { [self] _ in
+                    hideSelectedImages()
+                }),
+                UIAction(title: "Delete", image: UIImage(systemName: "trash"), state: .off, handler: { [self] _ in
+                    deleteSelectedImages()
+                })
+            ])
+            menuItems.append(editActions)
+        }
+
+        menuButton.menu = UIMenu(children: menuItems)
     }
 
     func setupDataSource() {
-
         let fetchRequest = NSFetchRequest<GeneratedImage>(entityName: "GeneratedImage")
         // Configure the request's entity, and optionally its predicate
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
@@ -240,5 +270,85 @@ extension ImageCollectionViewController {
         let controller = storyboard.instantiateViewController(withIdentifier: "imageGalleryView") as! ImageCollectionViewController
         controller.viewFolder = "hidden"
         navigationController?.pushViewController(controller, animated: true)
+    }
+
+    func deleteSelectedImages() {
+        if let selectedCells = collectionView.indexPathsForSelectedItems {
+            var images: [GeneratedImage] = []
+            selectedCells.forEach { indexPath in
+                guard let object = resultsController?.object(at: indexPath) else {
+                    fatalError("Attempt to configure cell without a managed object")
+                }
+                images.append(object)
+            }
+            ImageDatabase.standard.deleteImages(images)
+            toggleSelectionMode()
+        }
+    }
+
+    func hideSelectedImages() {
+        if let selectedCells = collectionView.indexPathsForSelectedItems {
+            var images: [GeneratedImage] = []
+            selectedCells.forEach { indexPath in
+                guard let object = resultsController?.object(at: indexPath) else {
+                    fatalError("Attempt to configure cell without a managed object")
+                }
+                images.append(object)
+            }
+            // Check hidden status for all items
+            var allShowing = true
+            for image in images {
+                if image.isHidden {
+                    allShowing = false
+                    break
+                }
+            }
+            if allShowing {
+                ImageDatabase.standard.hideImages(images) { _ in
+                    self.toggleSelectionMode()
+                }
+            } else {
+                ImageDatabase.standard.unHideImages(images) { _ in
+                    self.toggleSelectionMode()
+                }
+            }
+        }
+    }
+
+    func favoriteSelectedImages() {
+        if let selectedCells = collectionView.indexPathsForSelectedItems {
+            var images: [GeneratedImage] = []
+            selectedCells.forEach { indexPath in
+                guard let object = resultsController?.object(at: indexPath) else {
+                    fatalError("Attempt to configure cell without a managed object")
+                }
+                images.append(object)
+            }
+            // Check hidden status for all items
+            var allFavorites = true
+            for image in images {
+                if !image.isFavorite {
+                    allFavorites = false
+                    break
+                }
+            }
+            if allFavorites {
+                ImageDatabase.standard.unFavoriteImages(images) { _ in
+                    self.toggleSelectionMode()
+                }
+            } else {
+                ImageDatabase.standard.favoriteImages(images) { _ in
+                    self.toggleSelectionMode()
+                }
+            }
+        }
+    }
+
+    func toggleSelectionMode() {
+        multiSelectMode = !multiSelectMode
+        collectionView.allowsSelection = false
+        collectionView.allowsSelection = true
+        collectionView.allowsMultipleSelection = multiSelectMode
+        setupMenu()
     }
 }

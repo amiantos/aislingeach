@@ -874,20 +874,28 @@
                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <imageReference key="image" image="heart.fill" catalog="system" symbolScale="small"/>
                                         </imageView>
+                                        <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OBI-wX-Ct7">
+                                            <rect key="frame" x="168.33333333333334" y="3.6666666666666661" width="25.666666666666657" height="25.666666666666671"/>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <imageReference key="image" image="checkmark.circle.fill" catalog="system" symbolScale="large"/>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="OBI-wX-Ct7" secondAttribute="trailing" constant="6" id="1jm-gk-yJd"/>
                                         <constraint firstItem="ZFa-5I-Gjg" firstAttribute="top" secondItem="7M1-mI-nII" secondAttribute="top" id="6iW-qC-NRv"/>
                                         <constraint firstAttribute="bottom" secondItem="ZFa-5I-Gjg" secondAttribute="bottom" id="7NU-LS-QxV"/>
                                         <constraint firstItem="ZFa-5I-Gjg" firstAttribute="leading" secondItem="7M1-mI-nII" secondAttribute="leading" id="Iht-vL-Xzm"/>
                                         <constraint firstItem="9ct-16-O1j" firstAttribute="leading" secondItem="7M1-mI-nII" secondAttribute="leading" constant="6" id="OVK-05-yQ0"/>
                                         <constraint firstAttribute="trailing" secondItem="ZFa-5I-Gjg" secondAttribute="trailing" id="TmQ-KX-nQP"/>
                                         <constraint firstAttribute="bottom" secondItem="9ct-16-O1j" secondAttribute="bottom" constant="6" id="mqe-hS-qX0"/>
+                                        <constraint firstItem="OBI-wX-Ct7" firstAttribute="top" secondItem="7M1-mI-nII" secondAttribute="top" constant="6" id="z8W-18-F0D"/>
                                     </constraints>
                                 </collectionViewCellContentView>
                                 <size key="customSize" width="200" height="200"/>
                                 <connections>
                                     <outlet property="favoriteIcon" destination="9ct-16-O1j" id="tGw-eQ-yYd"/>
                                     <outlet property="imageView" destination="ZFa-5I-Gjg" id="QgG-Cp-9nr"/>
+                                    <outlet property="slectionIcon" destination="OBI-wX-Ct7" id="2hc-rP-pa6"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -1504,6 +1512,7 @@
         <image name="aspectratio" catalog="system" width="128" height="93"/>
         <image name="brain" catalog="system" width="128" height="107"/>
         <image name="brain.head.profile" catalog="system" width="120" height="128"/>
+        <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="eyedropper.halffull" catalog="system" width="128" height="118"/>
         <image name="heart" catalog="system" width="128" height="107"/>
         <image name="heart.fill" catalog="system" width="128" height="107"/>
