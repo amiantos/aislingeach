@@ -14,7 +14,7 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
     var resultsController: NSFetchedResultsController<GeneratedImage>?
 
     var menuButton: UIBarButtonItem = .init()
-    var editButton: UIBarButtonItem = UIBarButtonItem()
+    var editButton: UIBarButtonItem = .init()
 
     var showHiddenItems: Bool = false
 
@@ -23,7 +23,7 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
     var multiSelectMode: Bool = false
 
     @IBOutlet var editToolbar: UIToolbar!
-    
+
     private let itemsPerRow: CGFloat = 3
     private let sectionInsets = UIEdgeInsets(
         top: 2,
@@ -68,9 +68,9 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
             if !editing {
                 // Clear selection if leaving edit mode.
-                collectionView.indexPathsForSelectedItems?.forEach({ (indexPath) in
+                collectionView.indexPathsForSelectedItems?.forEach { indexPath in
                     collectionView.deselectItem(at: indexPath, animated: animated)
-                })
+                }
             }
             setupMenu()
         }
@@ -185,19 +185,17 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         }
     }
 
-    override func collectionView(_ collectionView: UICollectionView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
+    override func collectionView(_: UICollectionView, shouldBeginMultipleSelectionInteractionAt _: IndexPath) -> Bool {
         return true
     }
 
-
-    override func collectionView(_ collectionView: UICollectionView, didBeginMultipleSelectionInteractionAt indexPath: IndexPath) {
+    override func collectionView(_: UICollectionView, didBeginMultipleSelectionInteractionAt _: IndexPath) {
         // Replace the Select button with Done, and put the
         // collection view into editing mode.
         setEditing(true, animated: true)
     }
 
-
-    override func collectionViewDidEndMultipleSelectionInteraction(_ collectionView: UICollectionView) {
+    override func collectionViewDidEndMultipleSelectionInteraction(_: UICollectionView) {
         print("\(#function)")
     }
 
@@ -233,15 +231,14 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
 extension ImageCollectionViewController {
     func setupMenu() {
-
         editButton.title = isEditing ? "Done" : "Select"
 
         var menuItems: [UIMenuElement] = []
 
-        if viewFolder == "main" && !isEditing {
+        if viewFolder == "main", !isEditing {
             let hiddenMenuItemTitle = showHiddenItems ? "Hide Hidden" : "Show Hidden"
             let hiddenMenuItemImage = showHiddenItems ? UIImage(systemName: "eye") : UIImage(systemName: "eye.slash")
-            menuItems.append(UIAction(title: hiddenMenuItemTitle, image: hiddenMenuItemImage, handler: { action in
+            menuItems.append(UIAction(title: hiddenMenuItemTitle, image: hiddenMenuItemImage, handler: { _ in
                 if self.showHiddenItems == false {
                     let alert = UIAlertController(title: "Show Hidden Items", message: "Are you... sure you want to do this?", preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "OK", style: .destructive) { _ in
@@ -270,7 +267,7 @@ extension ImageCollectionViewController {
                 }),
                 UIAction(title: "Delete", image: UIImage(systemName: "trash"), state: .off, handler: { [self] _ in
                     deleteSelectedImages()
-                })
+                }),
             ])
             menuItems.append(editActions)
         }

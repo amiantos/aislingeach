@@ -10,7 +10,7 @@ import UIKit
 class ImageCollectionViewCell: UICollectionViewCell {
     @IBOutlet var favoriteIcon: UIImageView!
     @IBOutlet var imageView: UIImageView!
-    @IBOutlet weak var slectionIcon: UIImageView!
+    @IBOutlet var slectionIcon: UIImageView!
 
     var generatedImage: GeneratedImage?
 
@@ -38,24 +38,23 @@ class ImageCollectionViewCell: UICollectionViewCell {
     }
 
     override var isSelected: Bool {
-            didSet {
-                if self.isSelected {
-                    setSelected()
-                }
-                else {
-                    setUnselected()
-                }
+        didSet {
+            if isSelected {
+                setSelected()
+            } else {
+                setUnselected()
             }
         }
+    }
 
-        func setSelected(){
-            self.slectionIcon.isHidden = false
-            self.layer.borderWidth = 2
-            self.layer.borderColor = UIColor.white.cgColor
-        }
+    func setSelected() {
+        slectionIcon.isHidden = false
+        layer.borderWidth = 2
+        layer.borderColor = UIColor.white.cgColor
+    }
 
-        func setUnselected(){
-            self.slectionIcon.isHidden = true
-            self.layer.borderWidth = 0
-        }
+    func setUnselected() {
+        slectionIcon.isHidden = true
+        layer.borderWidth = 0
+    }
 }

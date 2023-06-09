@@ -176,7 +176,7 @@ extension RatingViewController {
         Log.info("\(currentImageIdentifier) - Submitting... Rating: \(rating), Artifacts: \(artifacts)")
         if UserPreferences.standard.apiKey != currentImageIdentifierAssociatedApiKey {
             Log.info("User changed API key between image fetches... grabbing new image to rate.")
-            self.grabImageToRate()
+            grabImageToRate()
         } else {
             RatingsV1API.postRate(body: postBody, apikey: UserPreferences.standard.apiKey, imageId: currentImageIdentifier) { data, error in
                 if let data = data {

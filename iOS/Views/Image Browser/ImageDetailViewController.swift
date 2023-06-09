@@ -90,7 +90,7 @@ class ImageDetailViewController: UIViewController {
             UIAction(title: hideMenuTitle, image: hideMenuImage, state: .off, handler: { [self] _ in
                 Log.debug("Hide button pressed...")
                 if let image = generatedImage {
-                    ImageDatabase.standard.toggleImageHidden(generatedImage: image) { [self] image in
+                    ImageDatabase.standard.toggleImageHidden(generatedImage: image) { [self] _ in
                         self.navigationController?.popViewController(animated: true)
                     }
                 }
