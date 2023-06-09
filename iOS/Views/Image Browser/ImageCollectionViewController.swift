@@ -22,8 +22,6 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
     var multiSelectMode: Bool = false
 
-    @IBOutlet var editToolbar: UIToolbar!
-
     private let itemsPerRow: CGFloat = 3
     private let sectionInsets = UIEdgeInsets(
         top: 2,
@@ -51,6 +49,7 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         collectionView.allowsMultipleSelection = false
         collectionView.allowsMultipleSelectionDuringEditing = true
         setEditing(false, animated: false)
+        menuButton.isEnabled = false
 
         setupDataSource()
 
@@ -173,7 +172,9 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
     // MARK: UICollectionViewDelegate
 
     override func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if !isEditing {
+        if isEditing {
+            menuButton.isEnabled = isEditing
+        } else {
             guard let object = resultsController?.object(at: indexPath) else {
                 fatalError("Attempt to configure cell without a managed object")
             }
@@ -182,6 +183,12 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
             let controller = storyboard.instantiateViewController(withIdentifier: "imageDetailViewController") as! ImageDetailViewController
             controller.generatedImage = object
             navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if let items = collectionView.indexPathsForSelectedItems, items.isEmpty {
+            menuButton.isEnabled = false
         }
     }
 
