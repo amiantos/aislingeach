@@ -51,7 +51,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
         func setSelected(){
             self.slectionIcon.isHidden = false
             self.layer.borderWidth = 2
-            self.layer.borderColor = UIColor.systemFill.cgColor
+            self.layer.borderColor = UIColor.white.cgColor
         }
 
         func setUnselected(){

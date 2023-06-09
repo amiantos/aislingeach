@@ -22,6 +22,8 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
     var multiSelectMode: Bool = false
 
+    @IBOutlet var editToolbar: UIToolbar!
+    
     private let itemsPerRow: CGFloat = 3
     private let sectionInsets = UIEdgeInsets(
         top: 2,
@@ -40,7 +42,7 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         editButton = UIBarButtonItem(title: "Select", style: .plain, target: self, action: #selector(toggleEditing))
 
         if viewFolder == "main" {
-            navigationItem.rightBarButtonItems = [editButton, menuButton]
+            navigationItem.rightBarButtonItems = [menuButton, editButton]
         } else {
             navigationItem.rightBarButtonItem = editButton
         }
