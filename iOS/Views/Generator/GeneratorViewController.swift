@@ -452,6 +452,8 @@ extension GeneratorViewController {
         hiresFixToggleButton.isSelected = settings?.params?.hiresFix ?? true
         tilingToggleButton.isSelected = settings?.params?.tiling ?? false
 
+        gfpganToggleButton.isSelected = false
+        codeFormersToggleButton.isSelected = false
         if let postProcessing = settings?.params?.postProcessing {
             postProcessing.forEach { processor in
                 switch processor {
@@ -467,11 +469,11 @@ extension GeneratorViewController {
 
         if gfpganToggleButton.isSelected || codeFormersToggleButton.isSelected {
             faceFixerStrengthSlider.isEnabled = true
-            if let faceFixStrength = settings?.params?.facefixerStrength {
-                let float = Float(truncating: faceFixStrength as NSNumber)
-                faceFixStrengthLabel.text = "\(faceFixStrength)"
-                faceFixerStrengthSlider.setValue(float, animated: false)
-            }
+            let faceFixStrength = settings?.params?.facefixerStrength ?? 0.75
+            let float = Float(truncating: faceFixStrength as NSNumber)
+            faceFixStrengthLabel.text = "\(faceFixStrength)"
+            faceFixerStrengthSlider.setValue(float, animated: false)
+
         }
         promptTextView.text = settings?.prompt ?? "temple in ruins, forest, stairs, columns, cinematic, detailed, atmospheric, epic, concept art, Matte painting, background, mist, photo-realistic, concept art, volumetric light, cinematic epic + rule of thirds octane render, 8k, corona render, movie concept art, octane render, cinematic, trending on artstation, movie concept art, cinematic composition, ultra-detailed, realistic, hyper-realistic, volumetric lighting, 8k"
 
