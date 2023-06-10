@@ -5,6 +5,7 @@
         <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="dateTrashed" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="fullRequest" optional="YES" attributeType="String"/>
+        <attribute name="fullResponse" optional="YES" attributeType="String"/>
         <attribute name="image" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" preserveAfterDeletion="YES"/>
         <attribute name="isHidden" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" preserveAfterDeletion="YES"/>

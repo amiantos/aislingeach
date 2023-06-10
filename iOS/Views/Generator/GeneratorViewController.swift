@@ -285,7 +285,7 @@ class GeneratorViewController: UIViewController {
         debugModeButton.isSelected = UserPreferences.standard.debugMode
         shareButton.isSelected = UserPreferences.standard.shareWithLaion
 
-        loadSettingsIntoUI(settings: recentSettings)
+        loadSettingsIntoUI(settings: recentSettings, seed: nil)
 
         updateSliderLabels()
 
@@ -368,7 +368,7 @@ extension GeneratorViewController: GenerationTrackerDelegate {
 // MARK: - Everything Else
 
 extension GeneratorViewController {
-    func loadSettingsIntoUI(settings: GenerationInputStable?) {
+    func loadSettingsIntoUI(settings: GenerationInputStable?, seed: String?) {
         let initialWidth = ((settings?.params?.width) != nil) ? (settings?.params?.width)! / 64 : 8
         let initialHeight = ((settings?.params?.height) != nil) ? (settings?.params?.height)! / 64 : 8
         widthSlider.setValue(Float(initialWidth), animated: false)
@@ -474,6 +474,11 @@ extension GeneratorViewController {
             }
         }
         promptTextView.text = settings?.prompt ?? "temple in ruins, forest, stairs, columns, cinematic, detailed, atmospheric, epic, concept art, Matte painting, background, mist, photo-realistic, concept art, volumetric light, cinematic epic + rule of thirds octane render, 8k, corona render, movie concept art, octane render, cinematic, trending on artstation, movie concept art, cinematic composition, ultra-detailed, realistic, hyper-realistic, volumetric lighting, 8k"
+
+        if let seed = seed {
+            seedTextField.text = seed
+            randomSeedButton.isSelected = false
+        }
     }
 
     func generationSettingsUpdated() {

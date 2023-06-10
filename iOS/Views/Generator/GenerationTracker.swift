@@ -81,6 +81,7 @@ class GenerationTracker {
                     if let generations = data.generations, !generations.isEmpty
                     {
                         generations.forEach { generation in
+                            Log.debug("\(generation)")
                             if generation.censored ?? false {
                                 self.delegate?.showErrorStatus(title: "Code 42", message: "Unable to generate this image.\nTry again with a different prompt?")
                             } else if let urlString = generation.img,
@@ -89,8 +90,7 @@ class GenerationTracker {
                                 DispatchQueue.global().async {
                                     if let data = try? Data(contentsOf: imageUrl) {
                                         DispatchQueue.main.async {
-                                            body.params?.seed = generation.seed!
-                                            ImageDatabase.standard.saveImage(id: generation._id!, image: data, body: body, completion: { generatedImage in
+                                            ImageDatabase.standard.saveImage(id: generation._id!, image: data, request: body, response: generation, completion: { generatedImage in
                                                 if let image = generatedImage {
                                                     Log.info("\(identifier) - Saved Image ID \(image.uuid!)")
                                                     self.delegate?.displayCompletedGeneration(generatedImage: image)

@@ -53,15 +53,18 @@ class ImageDatabase {
 
     // MARK: - Images
 
-    func saveImage(id: String, image: Data, body: GenerationInputStable, completion: @escaping (GeneratedImage?) -> Void) {
+    func saveImage(id: String, image: Data, request: GenerationInputStable, response: GenerationStable, completion: @escaping (GeneratedImage?) -> Void) {
         mainManagedObjectContext.perform {
             do {
                 let generatedImage = GeneratedImage(context: self.mainManagedObjectContext)
                 generatedImage.image = image
                 generatedImage.uuid = UUID(uuidString: id)!
                 generatedImage.dateCreated = Date()
-                generatedImage.fullRequest = body.toJSONString()
-                generatedImage.promptSimple = body.prompt
+                generatedImage.fullRequest = request.toJSONString()
+                generatedImage.promptSimple = request.prompt
+                var prunedResponse = response
+                prunedResponse.img = nil
+                generatedImage.fullResponse = prunedResponse.toJSONString()
                 generatedImage.backend = "horde"
                 try self.mainManagedObjectContext.save()
                 self.saveContext()

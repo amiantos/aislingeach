@@ -13,6 +13,7 @@ class ImageDetailViewController: UIViewController {
 
     @IBOutlet var imageHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var requestDetailsView: UITextView!
+    @IBOutlet weak var responseDetailsView: UITextView!
 
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var imageView: UIImageView!
@@ -27,6 +28,7 @@ class ImageDetailViewController: UIViewController {
 
         let font = UIFont.monospacedSystemFont(ofSize: 12.0, weight: .regular)
         requestDetailsView.font = font
+        responseDetailsView.font = font
 
         navigationItem.title = "Image Detail"
 
@@ -46,6 +48,13 @@ class ImageDetailViewController: UIViewController {
             if let fullRequest = imageObject.fullRequest {
                 let jsonData = Data(fullRequest.utf8)
                 requestDetailsView.text = jsonData.printJson()
+            }
+
+            if let fullResponse = imageObject.fullResponse {
+                let jsonData = Data(fullResponse.utf8)
+                responseDetailsView.text = jsonData.printJson()
+            } else {
+                responseDetailsView.text = "This generation is from an earlier version of Aislingeach and does not have the response details recorded."
             }
             dateLabel.text = imageObject.dateCreated?.formatted(date: .abbreviated, time: .shortened)
 
@@ -71,14 +80,16 @@ class ImageDetailViewController: UIViewController {
             }),
             UIAction(title: "Load Settings", image: UIImage(systemName: "arrow.counterclockwise"), state: .off, handler: { _ in
                 Log.debug(self.tabBarController?.viewControllers)
-                if let jsonString = self.generatedImage?.fullRequest, let jsonData = jsonString.data(using: .utf8), let settings = try? JSONDecoder().decode(
-                    GenerationInputStable.self,
-                    from: jsonData
-                ), let navigationController = self.tabBarController?.viewControllers?.first as? UINavigationController, let generateView = navigationController.topViewController as? GeneratorViewController {
-                    Log.info("Loading image settings into Create view...")
-                    generateView.loadSettingsIntoUI(settings: settings)
-                    self.tabBarController?.selectedIndex = 0
+                let alert = UIAlertController(title: "Include Seed?", message: "Do you want to include the seed for this image?", preferredStyle: .alert)
+                let noAction = UIAlertAction(title: "No", style: .default) { _ in
+                    self.loadSettings(includeSeed: false)
                 }
+                let yesAction = UIAlertAction(title: "Yes", style: .destructive)  { _ in
+                    self.loadSettings(includeSeed: true)
+                }
+                alert.addAction(yesAction)
+                alert.addAction(noAction)
+                self.present(alert, animated: true)
             }),
             UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up"), state: .off, handler: { [self] _ in
                 Log.debug("Share button pressed...")
@@ -108,6 +119,29 @@ class ImageDetailViewController: UIViewController {
                 }
             }),
         ])
+    }
+
+    func loadSettings(includeSeed: Bool) {
+        if let jsonString = self.generatedImage?.fullRequest,
+           let jsonData = jsonString.data(using: .utf8),
+           let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData),
+           let navigationController = self.tabBarController?.viewControllers?.first as? UINavigationController,
+           let generateView = navigationController.topViewController as? GeneratorViewController {
+            Log.info("Loading image settings into Create view...")
+            var seed: String? = nil
+            if includeSeed {
+                if let customSeed = settings.params?.seed {
+                    seed = customSeed
+                } else if let resJsonString = self.generatedImage?.fullResponse,
+                          let resJsonData = resJsonString.data(using: .utf8),
+                          let response = try? JSONDecoder().decode(GenerationStable.self, from: resJsonData),
+                          let generatedSeed = response.seed {
+                    seed = generatedSeed
+                }
+            }
+            generateView.loadSettingsIntoUI(settings: settings, seed: seed)
+            self.tabBarController?.selectedIndex = 0
+        }
     }
 
     /*
