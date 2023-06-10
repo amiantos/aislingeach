@@ -39,11 +39,7 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         menuButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: nil)
         editButton = UIBarButtonItem(title: "Select", style: .plain, target: self, action: #selector(toggleEditing))
 
-        if viewFolder == "main" {
-            navigationItem.rightBarButtonItems = [menuButton, editButton]
-        } else {
-            navigationItem.rightBarButtonItem = editButton
-        }
+        navigationItem.rightBarButtonItems = [menuButton, editButton]
 
         collectionView.allowsSelection = true
         collectionView.allowsMultipleSelection = false
@@ -155,7 +151,6 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
             fatalError("No sections in fetchedResultsController")
         }
         let sectionInfo = sections[section]
-        print(sectionInfo.numberOfObjects)
         return sectionInfo.numberOfObjects
     }
 
@@ -183,11 +178,18 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
             let controller = storyboard.instantiateViewController(withIdentifier: "imageDetailViewController") as! ImageDetailViewController
             controller.generatedImage = object
             navigationController?.pushViewController(controller, animated: true)
+
+            guard let cell = collectionView.cellForItem(at: indexPath) else { fatalError("No cell found, weird!") }
+            cell.isSelected = false
         }
     }
 
-    override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt _: IndexPath) {
         if let items = collectionView.indexPathsForSelectedItems, items.isEmpty {
+            menuButton.isEnabled = false
+        }
+
+        if collectionView.indexPathsForSelectedItems == nil {
             menuButton.isEnabled = false
         }
     }
@@ -202,9 +204,9 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         setEditing(true, animated: true)
     }
 
-    override func collectionViewDidEndMultipleSelectionInteraction(_: UICollectionView) {
-        print("\(#function)")
-    }
+//    override func collectionViewDidEndMultipleSelectionInteraction(_: UICollectionView) {
+//        print("\(#function)")
+//    }
 
     /*
      // Uncomment this method to specify if the specified item should be highlighted during tracking
@@ -280,6 +282,8 @@ extension ImageCollectionViewController {
         }
 
         menuButton.menu = UIMenu(children: menuItems)
+
+        if !isEditing { menuButton.isEnabled = false }
     }
 
     func setupDataSource() {
@@ -323,7 +327,7 @@ extension ImageCollectionViewController {
                 images.append(object)
             }
             ImageDatabase.standard.deleteImages(images)
-            toggleSelectionMode()
+            self.toggleEditing()
         }
     }
 
@@ -346,11 +350,11 @@ extension ImageCollectionViewController {
             }
             if allShowing {
                 ImageDatabase.standard.hideImages(images) { _ in
-                    self.toggleSelectionMode()
+                    self.toggleEditing()
                 }
             } else {
                 ImageDatabase.standard.unHideImages(images) { _ in
-                    self.toggleSelectionMode()
+                    self.toggleEditing()
                 }
             }
         }
@@ -375,11 +379,11 @@ extension ImageCollectionViewController {
             }
             if allFavorites {
                 ImageDatabase.standard.unFavoriteImages(images) { _ in
-                    self.toggleSelectionMode()
+                    self.toggleEditing()
                 }
             } else {
                 ImageDatabase.standard.favoriteImages(images) { _ in
-                    self.toggleSelectionMode()
+                    self.toggleEditing()
                 }
             }
         }

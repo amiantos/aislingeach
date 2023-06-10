@@ -12,7 +12,8 @@ class ImageDetailViewController: UIViewController {
     var generatedImage: GeneratedImage?
 
     @IBOutlet var imageHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var promptLabel: UILabel!
+    @IBOutlet weak var requestDetailsView: UITextView!
+
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var imageView: UIImageView!
 
@@ -25,7 +26,7 @@ class ImageDetailViewController: UIViewController {
         navigationItem.rightBarButtonItem = menuButton
 
         let font = UIFont.monospacedSystemFont(ofSize: 12.0, weight: .regular)
-        promptLabel.font = font
+        requestDetailsView.font = font
 
         navigationItem.title = "Image Detail"
 
@@ -44,7 +45,7 @@ class ImageDetailViewController: UIViewController {
             imageView.image = image
             if let fullRequest = imageObject.fullRequest {
                 let jsonData = Data(fullRequest.utf8)
-                promptLabel.text = jsonData.printJson()
+                requestDetailsView.text = jsonData.printJson()
             }
             dateLabel.text = imageObject.dateCreated?.formatted(date: .abbreviated, time: .shortened)
 
@@ -102,7 +103,6 @@ class ImageDetailViewController: UIViewController {
 
                 ImageDatabase.standard.deleteImage(generatedImage) { generatedImage in
                     if generatedImage == nil {
-                        NotificationCenter.default.post(name: .deletedGeneratedImage, object: nil)
                         self.navigationController?.popViewController(animated: true)
                     }
                 }

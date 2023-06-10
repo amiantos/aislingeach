@@ -10,8 +10,8 @@ import UIKit
 class GeneratorViewController: UIViewController {
     // MARK: - Variables
 
-    var currentGenerationIdentifier: String?
-    var currentGenerationBody: GenerationInputStable?
+    let generationTracker: GenerationTracker = .init()
+
     var currentRatioLock: Int?
 
     var lastGeneratedImage: GeneratedImage? {
@@ -165,23 +165,18 @@ class GeneratorViewController: UIViewController {
         Log.info("Ratio locked to: \(String(describing: currentRatioLock))")
     }
 
+    @IBOutlet weak var imageQuantitySlider: UISlider!
+    @IBOutlet weak var imageQuantitySliderLabel: UILabel!
+    @IBAction func imageQuantitySliderChanged(_ sender: UISlider) {
+        imageQuantitySliderLabel.text = "\(Int(sender.value))"
+        generationSettingsUpdated()
+    }
+
     @IBOutlet var generateButton: UIButton!
     @IBAction func generateButtonPressed(_: UIButton) {
         promptTextView.resignFirstResponder()
         if let generationBody = createGeneratonBodyForCurrentSettings() {
-            startGenerationSpinner()
-            HordeV2API.postImageAsyncGenerate(body: generationBody, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
-                if let data = data, let generationIdentifier = data._id {
-                    Log.debug("\(data)")
-                    self.setNewGenerationRequest(generationIdentifier: generationIdentifier, generationBody: generationBody)
-                } else if let error = error {
-                    if error.code == 401 {
-                        self.showGenerationError(message: "401: Invalid API Key?")
-                    } else {
-                        self.showGenerationError(message: error.localizedDescription)
-                    }
-                }
-            }
+            generationTracker.createNewGenerationRequest(body: generationBody)
         }
     }
 
@@ -217,11 +212,45 @@ class GeneratorViewController: UIViewController {
         generationSettingsUpdated()
     }
 
+    @IBOutlet weak var shareButton: UIButton!
+    @IBAction func shareButtonAction(_ sender: UIButton) {
+        UserPreferences.standard.set(shareWithLaion: sender.isSelected)
+        generationSettingsUpdated()
+    }
+
     @IBOutlet var debugModeButton: UIButton!
     @IBAction func debugModeButtonAction(_ sender: UIButton) {
         UserPreferences.standard.set(debugMode: sender.isSelected)
         generationSettingsUpdated()
     }
+
+    @IBOutlet weak var seedTextField: UITextField!
+    @IBOutlet weak var randomSeedButton: UIButton!
+    @IBAction func randomSeedButtonAction(_ sender: UIButton) {
+        if sender.isSelected {
+            seedTextField.text = nil
+        }
+    }
+    @IBAction func seedTextFieldEditingDidBegin(_ sender: UITextField) {
+        randomSeedButton.isSelected = false
+    }
+
+    @IBAction func seedTextFieldEditingDidEnd(_ sender: UITextField) {
+        if !sender.hasText {
+            randomSeedButton.isSelected = true
+        }
+    }
+    @IBOutlet weak var repeatSeedButton: UIButton!
+    @IBAction func repeatSeedButtonAction(_ sender: UIButton) {
+        guard let image = lastGeneratedImage, let jsonString = image.fullRequest, let jsonData = jsonString.data(using: .utf8), let settings = try? JSONDecoder().decode(
+            GenerationInputStable.self,
+            from: jsonData
+        ) else { return }
+        seedTextField.text = settings.params?.seed
+        randomSeedButton.isSelected = false
+        generationSettingsUpdated()
+    }
+
 
     // MARK: - View Setup
 
@@ -246,10 +275,13 @@ class GeneratorViewController: UIViewController {
         slowWorkersButton.isSelected = UserPreferences.standard.slowWorkers
         trustedWorkersButton.isSelected = UserPreferences.standard.trustedWorkers
         debugModeButton.isSelected = UserPreferences.standard.debugMode
+        shareButton.isSelected = UserPreferences.standard.shareWithLaion
 
         loadSettingsIntoUI(settings: recentSettings)
 
         updateSliderLabels()
+
+        generationTracker.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -269,6 +301,7 @@ class GeneratorViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        checkIfCurrentGenerationWasDeleted()
         generationSettingsUpdated()
         updateSliderLabels()
     }
@@ -276,6 +309,50 @@ class GeneratorViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         if segue.identifier == "openModelsViewSegue", let destinationView = segue.destination as? ModelsTableViewController {
             destinationView.delegate = self
+        }
+    }
+}
+
+// MARK: - Generator Tracker Delegate
+
+extension GeneratorViewController: GenerationTrackerDelegate {
+    func updateProcessingStatus(title: String, message: String) {
+        generationTitleLabel.text = title
+        generationTimeLabel.text = message
+        generationEffectView.isHidden = false
+        generationWarningImageView.isHidden = true
+        generationSpinner.startAnimating()
+        generateButton.isEnabled = false
+        deleteButton.isEnabled = false
+        favoriteButton.isEnabled = false
+    }
+
+    func showErrorStatus(title: String, message: String) {
+        generationSpinner.stopAnimating()
+        generationWarningImageView.isHidden = false
+        generationTitleLabel.text = title
+        generationTimeLabel.text = message
+        generateButton.isEnabled = true
+    }
+
+    func displayCompletedGeneration(generatedImage: GeneratedImage) {
+        if let data = generatedImage.image, let image = UIImage(data: data) {
+            DispatchQueue.main.async { [self] in
+                let imageWidth = image.size.width
+                let imageHeight = image.size.height
+                let viewWidth = view.frame.size.width
+
+                let ratio = viewWidth / imageWidth
+                let scaledHeight = imageHeight * ratio
+                mainImageViewHeightConstraint.constant = scaledHeight
+                UIView.animate(withDuration: 0.3) {
+                    self.view.layoutIfNeeded()
+                    self.mainImageView.image = image
+                    self.hideGenerationDisplay()
+                    self.lastGeneratedImage = generatedImage
+                    self.updateImageActionButtons()
+                }
+            }
         }
     }
 }
@@ -448,10 +525,14 @@ extension GeneratorViewController {
             postprocessing = nil
         }
 
+        var seed: String?  = seedTextField.text ?? ""
+        if let seedCheck = seed, seedCheck.isEmpty { seed = nil }
+
         let modelParams = ModelGenerationInputStable(
             samplerName: samplerName,
             cfgScale: Decimal(Int(guidanceSlider.value)),
             denoisingStrength: 0.75,
+            seed: seed,
             height: 64 * currentDimensions.1,
             width: 64 * currentDimensions.0,
             seedVariation: nil,
@@ -466,7 +547,7 @@ extension GeneratorViewController {
             facefixerStrength: Decimal(round(Double(faceFixerStrengthSlider.value) * 100.0) / 100.0),
             loras: nil,
             steps: Int(stepsSlider.value),
-            n: 1
+            n: Int(imageQuantitySlider.value)
         )
         let input = GenerationInputStable(
             prompt: generationText,
@@ -482,7 +563,7 @@ extension GeneratorViewController {
             sourceProcessing: nil,
             sourceMask: nil,
             r2: true,
-            shared: true,
+            shared: UserPreferences.standard.shareWithLaion,
             replacementFilter: !UserPreferences.standard.debugMode,
             dryRun: dryRun
         )
@@ -498,6 +579,7 @@ extension GeneratorViewController {
             if generatedImage.managedObjectContext == nil {
                 lastGeneratedImage = nil
                 mainImageView.image = nil
+                repeatSeedButton.isEnabled = false
             }
         }
     }
@@ -509,6 +591,7 @@ extension GeneratorViewController {
             favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
         }
         favoriteButton.setPreferredSymbolConfiguration(.init(scale: .default), forImageIn: .normal)
+        repeatSeedButton.isEnabled = true
     }
 
     func updateSliderLabels() {
@@ -519,27 +602,8 @@ extension GeneratorViewController {
         let gcd = gcdBinaryRecursiveStein(currentDimensions.0, currentDimensions.1)
         aspectRatioButton.titleLabel?.text = "\(currentDimensions.0 / gcd):\(currentDimensions.1 / gcd)"
         aspectRatioButton.sizeToFit()
-    }
 
-    func setNewGenerationRequest(generationIdentifier: String, generationBody: GenerationInputStable) {
-        Log.info("\(generationIdentifier) - New request received...")
-        favoriteButton.isEnabled = false
-        deleteButton.isEnabled = false
-        currentGenerationIdentifier = generationIdentifier
-        currentGenerationBody = generationBody
-        checkCurrentGenerationStatus()
-    }
-
-    func startGenerationSpinner() {
-        Log.info("New generation started...")
-        generationTitleLabel.text = "Falling asleep..."
-        generationTimeLabel.text = ""
-        generationEffectView.isHidden = false
-        generationWarningImageView.isHidden = true
-        generationSpinner.startAnimating()
-        generateButton.isEnabled = false
-        deleteButton.isEnabled = false
-        favoriteButton.isEnabled = false
+        imageQuantitySliderLabel.text = "\(Int(imageQuantitySlider.value))"
     }
 
     func hideGenerationDisplay() {
@@ -547,103 +611,6 @@ extension GeneratorViewController {
         generationSpinner.stopAnimating()
         generationEffectView.isHidden = true
         generateButton.isEnabled = true
-    }
-
-    func showGenerationError(message: String) {
-        Log.info("Showing error...")
-        generationSpinner.stopAnimating()
-        generationWarningImageView.isHidden = false
-        generationTitleLabel.text = "Error!"
-        generationTimeLabel.text = message
-        generateButton.isEnabled = true
-    }
-
-    @objc func checkCurrentGenerationStatus() {
-        guard let generationIdentifier = currentGenerationIdentifier else { return }
-        Log.info("\(generationIdentifier) - Checking request status...")
-        HordeV2API.getImageAsyncCheck(_id: generationIdentifier, clientAgent: hordeClientAgent()) { data, _ in
-            if let data = data {
-                Log.debug("\(data)")
-                if let done = data.done, done {
-                    Log.info("\(generationIdentifier) - Done!")
-                    self.getFinishedImageAndDisplay()
-                } else if let waitTime = data.waitTime, let queuePosition = data.queuePosition, let processing = data.processing, let waiting = data.waiting {
-                    if queuePosition > 0 {
-                        self.generationTitleLabel.text = "Sleeping..."
-                        self.generationTimeLabel.text = "#\(queuePosition) waiting to dream"
-                    } else if waitTime > 0 {
-                        self.generationTitleLabel.text = "Dreaming..."
-                        self.generationTimeLabel.text = "~\(waitTime) seconds"
-                    } else if processing > 0 {
-                        self.generationTitleLabel.text = "Waking..."
-                        self.generationTimeLabel.text = "Please wait..."
-                    } else if waiting > 0 {
-                        self.generationTimeLabel.text = "Sleeping..."
-                        self.generationTimeLabel.text = "Please wait..."
-                    } else {
-                        self.generationTitleLabel.text = ""
-                        self.generationTimeLabel.text = ""
-                    }
-
-                    // Setup timer to run again in 2 seconds
-                    self.generationPollingTimer = Timer(timeInterval: 2, target: self, selector: #selector(self.checkCurrentGenerationStatus), userInfo: nil, repeats: false)
-                    if let timer = self.generationPollingTimer {
-                        RunLoop.current.add(timer, forMode: .common)
-                    }
-                }
-            }
-        }
-    }
-
-    func getFinishedImageAndDisplay() {
-        guard let generationIdentifier = currentGenerationIdentifier else { return }
-        guard var generationBody = currentGenerationBody else { return }
-        Log.info("\(generationIdentifier) - Fetching finished generation...")
-        HordeV2API.getImageAsyncStatus(_id: generationIdentifier, clientAgent: hordeClientAgent()) { [self] data, _ in
-            if let data = data {
-                Log.debug("\(data)")
-                if data.finished == 1 {
-                    if let generations = data.generations,
-                       let generation = generations.first
-                    {
-                        if generation.censored ?? false {
-                            showGenerationError(message: "Unable to generate this image.\nTry again with a different prompt?\n(Code 42)")
-                        } else if let urlString = generation.img,
-                                  let imageUrl = URL(string: urlString)
-                        {
-                            DispatchQueue.global().async {
-                                if let data = try? Data(contentsOf: imageUrl), let image = UIImage(data: data) {
-                                    DispatchQueue.main.async { [self] in
-                                        let imageWidth = image.size.width
-                                        let imageHeight = image.size.height
-                                        let viewWidth = view.frame.size.width
-
-                                        let ratio = viewWidth / imageWidth
-                                        let scaledHeight = imageHeight * ratio
-                                        mainImageViewHeightConstraint.constant = scaledHeight
-                                        UIView.animate(withDuration: 0.3) {
-                                            self.view.layoutIfNeeded()
-                                            self.mainImageView.image = image
-                                            self.hideGenerationDisplay()
-                                        }
-                                        if !(generation.censored ?? false) {
-                                            generationBody.params?.seed = generation.seed!
-                                            ImageDatabase.standard.saveImage(id: generationIdentifier, image: data, body: generationBody, completion: { generatedImage in
-                                                guard let generatedImage = generatedImage else { return }
-                                                self.lastGeneratedImage = generatedImage
-                                                self.updateImageActionButtons()
-                                            })
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    self.perform(#selector(self.checkCurrentGenerationStatus), with: nil, afterDelay: TimeInterval(1))
-                }
-            }
-        }
     }
 }
 
@@ -671,13 +638,11 @@ extension GeneratorViewController {
         scrollView.contentInset.bottom = bottomInset
         scrollView.verticalScrollIndicatorInsets.bottom = bottomInset
         scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + bottomInset), animated: true)
-        print("Shown")
     }
 
     @objc func keyboardWillHide(notification _: NSNotification) {
         scrollView.contentInset = .zero
         scrollView.scrollIndicatorInsets = .zero
-        print("Hidden")
     }
 
     func registerKeyboardNotifications() {

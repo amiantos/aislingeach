@@ -18,6 +18,7 @@ struct UserPreferences {
         static let ratingImages = "ratingImages"
         static let slowWorkers = "slowWorkers"
         static let trustedWorkers = "trustedWorkers"
+        static let shareWithLaion = "shareWithLaion"
         static let debugMode = "debugMode"
         static let recentSettings = "recentSettings"
     }
@@ -31,6 +32,7 @@ struct UserPreferences {
             Key.slowWorkers: true,
             Key.trustedWorkers: true,
             Key.debugMode: false,
+            Key.shareWithLaion: true,
             Key.recentSettings: "{}",
         ])
 
@@ -85,6 +87,14 @@ extension UserDefaults {
 
     var debugMode: Bool {
         return bool(forKey: UserPreferences.Key.debugMode)
+    }
+
+    func set(shareWithLaion: Bool) {
+        set(shareWithLaion, forKey: UserPreferences.Key.shareWithLaion)
+    }
+
+    var shareWithLaion: Bool {
+        return bool(forKey: UserPreferences.Key.shareWithLaion)
     }
 
     func set(recentSettings: GenerationInputStable) {

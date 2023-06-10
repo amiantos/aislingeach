@@ -11,6 +11,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
     @IBOutlet var favoriteIcon: UIImageView!
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var slectionIcon: UIImageView!
+    @IBOutlet weak var selectionTint: UIView!
 
     var generatedImage: GeneratedImage?
 
@@ -49,12 +50,12 @@ class ImageCollectionViewCell: UICollectionViewCell {
 
     func setSelected() {
         slectionIcon.isHidden = false
-        layer.borderWidth = 2
-        layer.borderColor = UIColor.white.cgColor
+        selectionTint.isHidden = false
+        slectionIcon.image = UIImage(systemName: "checkmark.circle.fill")?.stroked(with: .white)
     }
 
     func setUnselected() {
         slectionIcon.isHidden = true
-        layer.borderWidth = 0
+        selectionTint.isHidden = true
     }
 }

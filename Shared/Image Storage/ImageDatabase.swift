@@ -162,6 +162,7 @@ class ImageDatabase {
         // TODO: Should trash...
         mainManagedObjectContext.delete(generatedImage)
         saveContext()
+        NotificationCenter.default.post(name: .deletedGeneratedImage, object: nil)
         completion(nil)
     }
 
@@ -170,6 +171,7 @@ class ImageDatabase {
             mainManagedObjectContext.delete(image)
         }
         saveContext()
+        NotificationCenter.default.post(name: .deletedGeneratedImage, object: nil)
     }
 
     func pruneImages() {
