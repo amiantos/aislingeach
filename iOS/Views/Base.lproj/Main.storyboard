@@ -24,7 +24,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="2716"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tmL-hs-eTv" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="2300.3333333333335"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="2372.3333333333335"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Etn-79-wRh" userLabel="Image Container">
                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="393"/>
@@ -100,7 +100,7 @@
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Hhc-TQ-Ydf">
-                                                <rect key="frame" x="20" y="410.99999999999989" width="353" height="1869.333333333333"/>
+                                                <rect key="frame" x="20" y="410.99999999999989" width="353" height="1941.333333333333"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="UQV-CE-OTY">
                                                         <rect key="frame" x="0.0" y="0.0" width="353" height="54.666666666666664"/>
@@ -623,7 +623,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="0On-hK-qIc">
-                                                        <rect key="frame" x="0.0" y="1428.3333333333333" width="353" height="183.33333333333326"/>
+                                                        <rect key="frame" x="0.0" y="1428.3333333333333" width="353" height="255.33333333333326"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Face Fix" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ar1-p9-Z25">
                                                                 <rect key="frame" x="0.0" y="0.0" width="353" height="14.333333333333334"/>
@@ -632,36 +632,46 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="44Q-qr-dhs" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="20.333333333333485" width="353" height="163"/>
+                                                                <rect key="frame" x="0.0" y="20.333333333333485" width="353" height="235"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="4z0-kl-0FQ">
-                                                                        <rect key="frame" x="20" y="20" width="313" height="123"/>
+                                                                        <rect key="frame" x="20" y="20" width="313" height="195"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ATg-YR-rW1">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="313" height="123"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="313" height="195"/>
                                                                                 <subviews>
-                                                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="cdf-9j-Vea">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="313" height="82"/>
-                                                                                        <segments>
-                                                                                            <segment title="Disabled"/>
-                                                                                            <segment title="GFPGAN"/>
-                                                                                            <segment title="CodeFormers"/>
-                                                                                        </segments>
-                                                                                        <connections>
-                                                                                            <action selector="faceFixSegmentedControl:" destination="BYZ-38-t0r" eventType="valueChanged" id="zr6-uU-Cby"/>
-                                                                                        </connections>
-                                                                                    </segmentedControl>
+                                                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="MVy-I4-oJC">
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="313" height="153"/>
+                                                                                        <subviews>
+                                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="paO-Js-dFx">
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="150.66666666666666" height="153"/>
+                                                                                                <state key="normal" title="Button"/>
+                                                                                                <buttonConfiguration key="configuration" style="tinted" title="GFPGAN"/>
+                                                                                                <connections>
+                                                                                                    <action selector="gfpganToggleButonChanged:" destination="BYZ-38-t0r" eventType="touchUpInside" id="osl-SP-UTb"/>
+                                                                                                </connections>
+                                                                                            </button>
+                                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Hi-8w-T6F">
+                                                                                                <rect key="frame" x="162.66666666666663" y="0.0" width="150.33333333333337" height="153"/>
+                                                                                                <state key="normal" title="Button"/>
+                                                                                                <buttonConfiguration key="configuration" style="tinted" title="CodeFormers"/>
+                                                                                                <connections>
+                                                                                                    <action selector="codeFormersToggleButtonChanged:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uv8-Mo-1WI"/>
+                                                                                                </connections>
+                                                                                            </button>
+                                                                                        </subviews>
+                                                                                    </stackView>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Xag-9p-sBf">
-                                                                                        <rect key="frame" x="0.0" y="93" width="313" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="165" width="313" height="30"/>
                                                                                         <subviews>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Strength" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NQb-Im-Aqd">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="55" height="30"/>
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="51" height="30"/>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                                 <color key="textColor" systemColor="tertiaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
                                                                                             <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.75" minValue="0.050000000000000003" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Y93-XZ-MTJ">
-                                                                                                <rect key="frame" x="65" y="0.0" width="204" height="31"/>
+                                                                                                <rect key="frame" x="61" y="0.0" width="208" height="31"/>
                                                                                                 <connections>
                                                                                                     <action selector="faceFixStrengthSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="7Ck-Dl-Akm"/>
                                                                                                 </connections>
@@ -706,7 +716,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="Va7-gF-ECh">
-                                                        <rect key="frame" x="0.0" y="1635.6666666666667" width="353" height="233.66666666666674"/>
+                                                        <rect key="frame" x="0.0" y="1707.6666666666665" width="353" height="233.66666666666674"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Horde Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPM-x8-bnh" userLabel="Horde Settings">
                                                                 <rect key="frame" x="0.0" y="0.0" width="353" height="14.333333333333334"/>
@@ -715,7 +725,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9KT-bl-W4d" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="20.333333333333258" width="353" height="213.33333333333334"/>
+                                                                <rect key="frame" x="0.0" y="20.333333333333485" width="353" height="213.33333333333334"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="p7f-Ir-UDc">
                                                                         <rect key="frame" x="20" y="20" width="313" height="173.33333333333334"/>
@@ -810,9 +820,9 @@
                         <outlet property="aspectRatioButton" destination="PCG-9z-aHr" id="vqF-2k-WRP"/>
                         <outlet property="clipSkipLabel" destination="rGd-ff-yP6" id="oDX-Nu-Ffk"/>
                         <outlet property="clipSkipSlider" destination="HZK-9c-0rL" id="VRF-yo-DC8"/>
+                        <outlet property="codeFormersToggleButton" destination="4Hi-8w-T6F" id="RpO-e3-pft"/>
                         <outlet property="debugModeButton" destination="dTB-XX-NCX" id="kAk-4Q-uEx"/>
                         <outlet property="deleteButton" destination="i2Y-S0-KAc" id="csO-In-czv"/>
-                        <outlet property="faceFixSegmentedControl" destination="cdf-9j-Vea" id="O0T-dk-b03"/>
                         <outlet property="faceFixStrengthLabel" destination="K8Q-E3-Zwh" id="REr-d8-Nze"/>
                         <outlet property="faceFixerStrengthSlider" destination="Y93-XZ-MTJ" id="LUC-oB-a8h"/>
                         <outlet property="favoriteButton" destination="H9J-bu-f6G" id="5ed-MQ-3YT"/>
@@ -822,6 +832,7 @@
                         <outlet property="generationTimeLabel" destination="Cph-Nd-XXB" id="AcX-Uj-OGs"/>
                         <outlet property="generationTitleLabel" destination="yHa-V3-3ni" id="Wr1-or-1ww"/>
                         <outlet property="generationWarningImageView" destination="nea-i4-Sh9" id="WiK-50-Mql"/>
+                        <outlet property="gfpganToggleButton" destination="paO-Js-dFx" id="KD6-vd-RDP"/>
                         <outlet property="guidanceLabel" destination="ZdW-f2-woy" id="Xx3-Vp-ANj"/>
                         <outlet property="guidanceSlider" destination="1ak-6U-Nj3" id="Zfq-54-3UH"/>
                         <outlet property="heightSlider" destination="37z-oU-lmB" id="lqx-Ai-fi6"/>

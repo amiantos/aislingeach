@@ -180,18 +180,26 @@ class GeneratorViewController: UIViewController {
         }
     }
 
-    @IBOutlet var faceFixSegmentedControl: UISegmentedControl!
-    @IBAction func faceFixSegmentedControl(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
-        case 1:
+    @IBOutlet weak var gfpganToggleButton: UIButton!
+    @IBAction func gfpganToggleButonChanged(_ sender: UIButton) {
+        if sender.isSelected {
             faceFixerStrengthSlider.isEnabled = true
-        case 2:
-            faceFixerStrengthSlider.isEnabled = true
-        default:
+        } else if !codeFormersToggleButton.isSelected {
             faceFixerStrengthSlider.isEnabled = false
         }
         generationSettingsUpdated()
     }
+
+    @IBOutlet weak var codeFormersToggleButton: UIButton!
+    @IBAction func codeFormersToggleButtonChanged(_ sender: UIButton) {
+        if sender.isSelected {
+            faceFixerStrengthSlider.isEnabled = true
+        } else if !gfpganToggleButton.isSelected {
+            faceFixerStrengthSlider.isEnabled = false
+        }
+        generationSettingsUpdated()
+    }
+
 
     @IBOutlet var faceFixerStrengthSlider: UISlider!
     @IBOutlet var faceFixStrengthLabel: UILabel!
@@ -448,16 +456,16 @@ extension GeneratorViewController {
             postProcessing.forEach { processor in
                 switch processor {
                 case .gfpgan:
-                    faceFixSegmentedControl.selectedSegmentIndex = 1
+                    gfpganToggleButton.isSelected = true
                 case .codeFormers:
-                    faceFixSegmentedControl.selectedSegmentIndex = 2
+                    codeFormersToggleButton.isSelected = true
                 default:
                     break
                 }
             }
         }
 
-        if faceFixSegmentedControl.selectedSegmentIndex != 0 {
+        if gfpganToggleButton.isSelected || codeFormersToggleButton.isSelected {
             faceFixerStrengthSlider.isEnabled = true
             if let faceFixStrength = settings?.params?.facefixerStrength {
                 let float = Float(truncating: faceFixStrength as NSNumber)
@@ -515,9 +523,10 @@ extension GeneratorViewController {
             postprocessing?.append(upscaler)
         }
 
-        if faceFixSegmentedControl.selectedSegmentIndex == 1 {
+        if gfpganToggleButton.isSelected {
             postprocessing?.append(.gfpgan)
-        } else if faceFixSegmentedControl.selectedSegmentIndex == 2 {
+        }
+        if codeFormersToggleButton.isSelected {
             postprocessing?.append(.codeFormers)
         }
 
