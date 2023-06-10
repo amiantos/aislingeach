@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 class SettingsTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet var apiKeyTextField: UITextField!
@@ -30,17 +31,21 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
         if cell.reuseIdentifier == "hiddenContentCell" {
-            let alert = UIAlertController(title: "Show Hidden Items", message: "Are you... sure you want to do this?", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .destructive) { _ in
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let controller = storyboard.instantiateViewController(withIdentifier: "imageGalleryView") as! ImageCollectionViewController
-                controller.viewFolder = "hidden"
-                self.navigationController?.pushViewController(controller, animated: true)
+            let context = LAContext()
+            let reason = "Get access to Hidden Content"
+            context.evaluatePolicy(
+                .deviceOwnerAuthentication,
+                localizedReason: reason
+            ) { success, error in
+                if success {
+                    DispatchQueue.main.async {
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let controller = storyboard.instantiateViewController(withIdentifier: "imageGalleryView") as! ImageCollectionViewController
+                        controller.viewFolder = "hidden"
+                        self.navigationController?.pushViewController(controller, animated: true)
+                    }
+                }
             }
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-            alert.addAction(okAction)
-            alert.addAction(cancelAction)
-            self.present(alert, animated: true)
         }
     }
 }
