@@ -64,7 +64,11 @@ class GenerationTracker {
                     self.requestIsProcessing = false
                 }
             } else if let error = error {
-                self.delegate?.showErrorStatus(title: "Error", message: error.localizedDescription)
+                if error.code == 0 {
+                    self.delegate?.showErrorStatus(title: "Connection Error", message: "Connection timed out...\nRetrying...")
+                } else {
+                    self.delegate?.showErrorStatus(title: "Error", message: error.localizedDescription)
+                }
                 self.requestIsProcessing = false
             }
         }
@@ -117,7 +121,11 @@ class GenerationTracker {
                 }
             } else if let error = error {
                 Log.error("\(identifier) - Encountered error trying to fetch image: \(error)")
-                self.delegate?.showErrorStatus(title: "Error", message: error.localizedDescription)
+                if error.code == 0 {
+                    self.delegate?.showErrorStatus(title: "Connection Error", message: "Connection timed out...\nRetrying...")
+                } else {
+                    self.delegate?.showErrorStatus(title: "Error", message: error.localizedDescription)
+                }
                 self.requestIsProcessing = false
             }
         }
