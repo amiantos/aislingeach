@@ -75,7 +75,7 @@ class GenerationTracker {
     }
 
     func saveFinishedGeneration() {
-        guard let identifier = currentGenerationRequestIdentifier, var body = currentGenerationBody else { return }
+        guard let identifier = currentGenerationRequestIdentifier, let body = currentGenerationBody else { return }
 
         Log.info("\(identifier) - Fetching finished generation...")
         HordeV2API.getImageAsyncStatus(_id: identifier, clientAgent: hordeClientAgent()) { [self] data, error in

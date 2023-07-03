@@ -17,6 +17,8 @@
 		441EB3772A21DC1E00E449BE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 441EB3752A21DC1E00E449BE /* Main.storyboard */; };
 		441EB3792A21DC1F00E449BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 441EB3782A21DC1F00E449BE /* Assets.xcassets */; };
 		441EB37C2A21DC1F00E449BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 441EB37A2A21DC1F00E449BE /* LaunchScreen.storyboard */; };
+		446643C22A53637D0047F26B /* ImageDetailCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446643C12A53637D0047F26B /* ImageDetailCollectionViewController.swift */; };
+		446643C42A5367610047F26B /* ImageDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446643C32A5367610047F26B /* ImageDetailCollectionViewCell.swift */; };
 		447362DC2A2D49CE00823D0C /* ModelsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447362DB2A2D49CE00823D0C /* ModelsTableViewController.swift */; };
 		447362DE2A2D6AA900823D0C /* ModelsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447362DD2A2D6AA900823D0C /* ModelsCache.swift */; };
 		4485C63F2A2A9E7F0040D864 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4485C63E2A2A9E7F0040D864 /* ImageCache.swift */; };
@@ -160,6 +162,8 @@
 		441EB3782A21DC1F00E449BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		441EB37B2A21DC1F00E449BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		441EB37D2A21DC1F00E449BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		446643C12A53637D0047F26B /* ImageDetailCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailCollectionViewController.swift; sourceTree = "<group>"; };
+		446643C32A5367610047F26B /* ImageDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		447362DB2A2D49CE00823D0C /* ModelsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsTableViewController.swift; sourceTree = "<group>"; };
 		447362DD2A2D6AA900823D0C /* ModelsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsCache.swift; sourceTree = "<group>"; };
 		4485C63E2A2A9E7F0040D864 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
@@ -529,6 +533,8 @@
 				44C6B6D62A233BFB00C2F013 /* ImageCollectionViewCell.swift */,
 				44142AB82A23FD6A0096FFBA /* ImageDetailViewController.swift */,
 				4485C63E2A2A9E7F0040D864 /* ImageCache.swift */,
+				446643C12A53637D0047F26B /* ImageDetailCollectionViewController.swift */,
+				446643C32A5367610047F26B /* ImageDetailCollectionViewCell.swift */,
 			);
 			path = "Image Browser";
 			sourceTree = "<group>";
@@ -702,6 +708,7 @@
 				44C6B6602A228D8200C2F013 /* SubmitInput.swift in Sources */,
 				44F2AA752A26B81200FB8E93 /* RatingSetBody.swift in Sources */,
 				44C6B6472A228D8200C2F013 /* ModelGenerationInputStable.swift in Sources */,
+				446643C22A53637D0047F26B /* ImageDetailCollectionViewController.swift in Sources */,
 				44C6B6412A228D8200C2F013 /* NoValidRequestFoundStable.swift in Sources */,
 				44F2AA6D2A26B81200FB8E93 /* DatasetImagePopResponse.swift in Sources */,
 				44C6B63E2A228D8200C2F013 /* PutNewFilter.swift in Sources */,
@@ -759,6 +766,7 @@
 				44C6B6382A228D8200C2F013 /* UserKudosDetails.swift in Sources */,
 				44C6B65B2A228D8200C2F013 /* RequestStatusKobold.swift in Sources */,
 				44C6B64E2A228D8200C2F013 /* PopInput.swift in Sources */,
+				446643C42A5367610047F26B /* ImageDetailCollectionViewCell.swift in Sources */,
 				44F2AA792A26B81200FB8E93 /* RatingsAlamofireImplementations.swift in Sources */,
 				44C6B6772A228D8200C2F013 /* GenerationPayload.swift in Sources */,
 				44C6B62D2A228D8200C2F013 /* DeletedWorker.swift in Sources */,

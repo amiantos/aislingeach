@@ -50,6 +50,13 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         setupDataSource()
 
         setupMenu()
+
+        navigationController?.setToolbarHidden(true, animated: false)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.setToolbarHidden(true, animated: false)
     }
 
     @objc func toggleEditing() {
@@ -71,33 +78,18 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         }
     }
 
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout _: UICollectionViewLayout,
-        sizeForItemAt _: IndexPath
-    ) -> CGSize {
-        // 2
+    func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt _: IndexPath) -> CGSize {
         let paddingSpace = (sectionInsets.left + collectionView.contentInset.left) * (itemsPerRow + 1)
         let availableWidth = view.frame.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
         return CGSize(width: widthPerItem, height: widthPerItem)
     }
 
-    // 3
-    func collectionView(
-        _: UICollectionView,
-        layout _: UICollectionViewLayout,
-        insetForSectionAt _: Int
-    ) -> UIEdgeInsets {
+    func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, insetForSectionAt _: Int) -> UIEdgeInsets {
         return sectionInsets
     }
 
-    // 4
-    func collectionView(
-        _: UICollectionView,
-        layout _: UICollectionViewLayout,
-        minimumLineSpacingForSectionAt _: Int
-    ) -> CGFloat {
+    func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, minimumLineSpacingForSectionAt _: Int) -> CGFloat {
         return sectionInsets.left
     }
 
@@ -175,8 +167,8 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
             }
 
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let controller = storyboard.instantiateViewController(withIdentifier: "imageDetailViewController") as! ImageDetailViewController
-            controller.generatedImage = object
+            let controller = storyboard.instantiateViewController(withIdentifier: "imageDetailCollectionView") as! ImageDetailCollectionViewController
+            controller.startingIndexPath = indexPath
             navigationController?.pushViewController(controller, animated: true)
 
             guard let cell = collectionView.cellForItem(at: indexPath) else { fatalError("No cell found, weird!") }
