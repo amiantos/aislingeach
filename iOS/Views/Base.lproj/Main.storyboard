@@ -1030,27 +1030,36 @@
                                     <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="O3v-fJ-DhC">
+                                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" contentInsetAdjustmentBehavior="never" translatesAutoresizingMaskIntoConstraints="NO" id="KSB-cU-8gL">
                                             <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="POOOP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="unT-L8-gRn">
-                                            <rect key="frame" x="34.666666666666657" y="53.666666666666657" width="59" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O3v-fJ-DhC">
+                                                    <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="O3v-fJ-DhC" firstAttribute="leading" secondItem="KSB-cU-8gL" secondAttribute="leading" id="8e7-zv-7T4"/>
+                                                <constraint firstAttribute="bottom" secondItem="O3v-fJ-DhC" secondAttribute="bottom" id="PZT-h1-3EU"/>
+                                                <constraint firstAttribute="trailing" secondItem="O3v-fJ-DhC" secondAttribute="trailing" id="TQe-b5-3Eg"/>
+                                                <constraint firstItem="O3v-fJ-DhC" firstAttribute="top" secondItem="KSB-cU-8gL" secondAttribute="top" id="Wfv-QW-y2S"/>
+                                            </constraints>
+                                            <viewLayoutGuide key="contentLayoutGuide" id="AT0-AA-Wwg"/>
+                                            <viewLayoutGuide key="frameLayoutGuide" id="Tpr-Ea-oHE"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="ST3-J1-kJW" id="aeO-Qm-xRb"/>
+                                            </connections>
+                                        </scrollView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="unT-L8-gRn" firstAttribute="centerX" secondItem="hW3-Ic-bcu" secondAttribute="centerX" id="Mqo-fc-0tP"/>
-                                        <constraint firstAttribute="trailing" secondItem="O3v-fJ-DhC" secondAttribute="trailing" id="NeJ-O0-5XF"/>
-                                        <constraint firstItem="unT-L8-gRn" firstAttribute="centerY" secondItem="hW3-Ic-bcu" secondAttribute="centerY" id="Wbu-vT-Jhw"/>
-                                        <constraint firstAttribute="bottom" secondItem="O3v-fJ-DhC" secondAttribute="bottom" id="a5c-ey-30p"/>
-                                        <constraint firstItem="O3v-fJ-DhC" firstAttribute="leading" secondItem="hW3-Ic-bcu" secondAttribute="leading" id="bXV-gB-rVR"/>
-                                        <constraint firstItem="O3v-fJ-DhC" firstAttribute="top" secondItem="hW3-Ic-bcu" secondAttribute="top" id="v5q-Vd-6hY"/>
+                                        <constraint firstAttribute="bottom" secondItem="KSB-cU-8gL" secondAttribute="bottom" id="0bp-FA-p0F"/>
+                                        <constraint firstAttribute="trailing" secondItem="KSB-cU-8gL" secondAttribute="trailing" id="4XT-Vq-aeY"/>
+                                        <constraint firstItem="KSB-cU-8gL" firstAttribute="top" secondItem="hW3-Ic-bcu" secondAttribute="top" id="iK0-X6-Rpb"/>
+                                        <constraint firstItem="KSB-cU-8gL" firstAttribute="leading" secondItem="hW3-Ic-bcu" secondAttribute="leading" id="qoN-I5-aeX"/>
                                     </constraints>
                                 </collectionViewCellContentView>
                                 <connections>
                                     <outlet property="imageView" destination="O3v-fJ-DhC" id="4ZL-y4-Pif"/>
+                                    <outlet property="scrollView" destination="KSB-cU-8gL" id="C4k-Ay-3Ua"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>

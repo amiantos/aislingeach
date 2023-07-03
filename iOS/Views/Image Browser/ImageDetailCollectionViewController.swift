@@ -66,7 +66,7 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
 
     func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt _: IndexPath) -> CGSize {
         Log.debug("Got size request?")
-        return CGSize(width: view.frame.width, height: view.frame.height)
+        return CGSize(width: view.frame.width, height: view.safeAreaLayoutGuide.layoutFrame.height)
     }
 
     func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, insetForSectionAt _: Int) -> UIEdgeInsets {
