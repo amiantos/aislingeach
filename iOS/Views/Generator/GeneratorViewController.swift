@@ -477,6 +477,8 @@ extension GeneratorViewController {
         }
         promptTextView.text = settings?.prompt ?? "temple in ruins, forest, stairs, columns, cinematic, detailed, atmospheric, epic, concept art, Matte painting, background, mist, photo-realistic, concept art, volumetric light, cinematic epic + rule of thirds octane render, 8k, corona render, movie concept art, octane render, cinematic, trending on artstation, movie concept art, cinematic composition, ultra-detailed, realistic, hyper-realistic, volumetric lighting, 8k"
 
+        imageQuantitySlider.setValue(1.0, animated: false)
+
         if let seed = seed {
             seedTextField.text = seed
             randomSeedButton.isSelected = false

@@ -22,6 +22,9 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
     var multiSelectMode: Bool = false
 
+    var imageDetailNavigationController: UINavigationController?
+    var imageDetailViewController: ImageDetailCollectionViewController?
+
     private let itemsPerRow: CGFloat = 3
     private let sectionInsets = UIEdgeInsets(
         top: 2,
@@ -50,6 +53,13 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         setupDataSource()
 
         setupMenu()
+
+        navigationController?.setToolbarHidden(true, animated: false)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.setToolbarHidden(true, animated: false)
     }
 
     @objc func toggleEditing() {
@@ -71,33 +81,18 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         }
     }
 
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout _: UICollectionViewLayout,
-        sizeForItemAt _: IndexPath
-    ) -> CGSize {
-        // 2
+    func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt _: IndexPath) -> CGSize {
         let paddingSpace = (sectionInsets.left + collectionView.contentInset.left) * (itemsPerRow + 1)
         let availableWidth = view.frame.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
         return CGSize(width: widthPerItem, height: widthPerItem)
     }
 
-    // 3
-    func collectionView(
-        _: UICollectionView,
-        layout _: UICollectionViewLayout,
-        insetForSectionAt _: Int
-    ) -> UIEdgeInsets {
+    func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, insetForSectionAt _: Int) -> UIEdgeInsets {
         return sectionInsets
     }
 
-    // 4
-    func collectionView(
-        _: UICollectionView,
-        layout _: UICollectionViewLayout,
-        minimumLineSpacingForSectionAt _: Int
-    ) -> CGFloat {
+    func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, minimumLineSpacingForSectionAt _: Int) -> CGFloat {
         return sectionInsets.left
     }
 
@@ -170,17 +165,21 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         if isEditing {
             menuButton.isEnabled = isEditing
         } else {
-            guard let object = resultsController?.object(at: indexPath) else {
-                fatalError("Attempt to configure cell without a managed object")
+            guard let cell = collectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell else { fatalError("No cell found, weird!") }
+            cell.setUnselected()
+
+            if imageDetailViewController == nil {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                imageDetailNavigationController = storyboard.instantiateViewController(withIdentifier: "navControllerImageDetail") as? UINavigationController
+                imageDetailViewController = imageDetailNavigationController?.topViewController as? ImageDetailCollectionViewController
+                imageDetailViewController?.predicate = resultsController?.fetchRequest.predicate
             }
 
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let controller = storyboard.instantiateViewController(withIdentifier: "imageDetailViewController") as! ImageDetailViewController
-            controller.generatedImage = object
-            navigationController?.pushViewController(controller, animated: true)
-
-            guard let cell = collectionView.cellForItem(at: indexPath) else { fatalError("No cell found, weird!") }
-            cell.isSelected = false
+            if let nav = imageDetailNavigationController, let controller = imageDetailViewController {
+                controller.startingIndexPath = indexPath
+                nav.modalPresentationStyle = .overFullScreen
+                self.present(nav, animated: true)
+            }
         }
     }
 
@@ -303,6 +302,7 @@ extension ImageCollectionViewController {
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: ImageDatabase.standard.mainManagedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         resultsController = controller
         controller.delegate = self
+
         do {
             try controller.performFetch()
         } catch {
