@@ -8,7 +8,11 @@
 import CoreData
 import UIKit
 
-class ImageDetailCollectionViewController: UICollectionViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout {
+class ImageDetailCollectionViewController: UICollectionViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout, ImageDetailCollectionViewCellDelegate {
+    func dismissView() {
+        self.dismiss(animated: true)
+    }
+
 
     var resultsController: NSFetchedResultsController<GeneratedImage>?
 
@@ -42,6 +46,12 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         toolbarItems = [delete, spacer, hide, spacer, share, spacer, favorite]
 
         navigationController?.setToolbarHidden(false, animated: true)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .done, target: self, action: #selector(cancelAction))
+        
+    }
+
+    @objc func cancelAction() {
+        dismiss(animated: true)
     }
 
     /*
@@ -99,6 +109,7 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageDetailCollectionCell", for: indexPath) as! ImageDetailCollectionViewCell
+        cell.delegate = self
         guard let object = resultsController?.object(at: indexPath) else {
             fatalError("Attempt to configure cell without a managed object")
         }

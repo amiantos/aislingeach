@@ -7,10 +7,16 @@
 
 import UIKit
 
+protocol ImageDetailCollectionViewCellDelegate {
+    func dismissView()
+}
+
 class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
+
+    var delegate: ImageDetailCollectionViewCellDelegate?
 
     var generatedImage: GeneratedImage?
 
@@ -39,6 +45,10 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
         let doubleTapGesture = UITapGestureRecognizer(target: self, action:#selector(self.doubleTapAction))
         doubleTapGesture.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTapGesture)
+
+        let downSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(self.downSwipeAction))
+        downSwipeGesture.direction = UISwipeGestureRecognizer.Direction.down
+        scrollView.addGestureRecognizer(downSwipeGesture)
     }
 
     @objc func doubleTapAction(gesture: UITapGestureRecognizer) {
@@ -49,6 +59,12 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
             } else {
                 scrollView.setZoomScale(1.0, animated: true)
             }
+        }
+    }
+
+    @objc func downSwipeAction(gesture: UITapGestureRecognizer) {
+        if gesture.state == UIGestureRecognizer.State.ended {
+            delegate?.dismissView()
         }
     }
 

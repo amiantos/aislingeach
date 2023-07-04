@@ -390,6 +390,16 @@
 			path = "APIs (swagger-codegen)";
 			sourceTree = "<group>";
 		};
+		446643C72A53F81B0047F26B /* Detail View */ = {
+			isa = PBXGroup;
+			children = (
+				44142AB82A23FD6A0096FFBA /* ImageDetailViewController.swift */,
+				446643C12A53637D0047F26B /* ImageDetailCollectionViewController.swift */,
+				446643C32A5367610047F26B /* ImageDetailCollectionViewCell.swift */,
+			);
+			path = "Detail View";
+			sourceTree = "<group>";
+		};
 		44C6B5C32A228D8200C2F013 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -531,10 +541,8 @@
 			children = (
 				44C6B6D42A233B0F00C2F013 /* ImageCollectionViewController.swift */,
 				44C6B6D62A233BFB00C2F013 /* ImageCollectionViewCell.swift */,
-				44142AB82A23FD6A0096FFBA /* ImageDetailViewController.swift */,
+				446643C72A53F81B0047F26B /* Detail View */,
 				4485C63E2A2A9E7F0040D864 /* ImageCache.swift */,
-				446643C12A53637D0047F26B /* ImageDetailCollectionViewController.swift */,
-				446643C32A5367610047F26B /* ImageDetailCollectionViewCell.swift */,
 			);
 			path = "Image Browser";
 			sourceTree = "<group>";

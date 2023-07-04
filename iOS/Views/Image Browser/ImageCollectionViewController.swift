@@ -22,6 +22,9 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
 
     var multiSelectMode: Bool = false
 
+    var imageDetailNavigationController: UINavigationController?
+    var imageDetailViewController: ImageDetailCollectionViewController?
+
     private let itemsPerRow: CGFloat = 3
     private let sectionInsets = UIEdgeInsets(
         top: 2,
@@ -162,17 +165,20 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         if isEditing {
             menuButton.isEnabled = isEditing
         } else {
-            guard let object = resultsController?.object(at: indexPath) else {
-                fatalError("Attempt to configure cell without a managed object")
+            guard let cell = collectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell else { fatalError("No cell found, weird!") }
+            cell.setUnselected()
+
+            if imageDetailViewController == nil {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                imageDetailNavigationController = storyboard.instantiateViewController(withIdentifier: "navControllerImageDetail") as? UINavigationController
+                imageDetailViewController = imageDetailNavigationController?.topViewController as? ImageDetailCollectionViewController
             }
 
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let controller = storyboard.instantiateViewController(withIdentifier: "imageDetailCollectionView") as! ImageDetailCollectionViewController
-            controller.startingIndexPath = indexPath
-            navigationController?.pushViewController(controller, animated: true)
-
-            guard let cell = collectionView.cellForItem(at: indexPath) else { fatalError("No cell found, weird!") }
-            cell.isSelected = false
+            if let nav = imageDetailNavigationController, let controller = imageDetailViewController {
+                controller.startingIndexPath = indexPath
+                nav.modalPresentationStyle = .overFullScreen
+                tabBarController?.present(nav, animated: true)
+            }
         }
     }
 

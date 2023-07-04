@@ -9,6 +9,7 @@ import LinkPresentation
 import UIKit
 
 class ImageDetailViewController: UIViewController {
+
     var generatedImage: GeneratedImage?
 
     @IBOutlet var imageHeightConstraint: NSLayoutConstraint!
