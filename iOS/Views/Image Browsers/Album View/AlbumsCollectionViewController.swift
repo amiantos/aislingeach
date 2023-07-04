@@ -24,9 +24,6 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     var presetAlbums: [AlbumStruct] = [
         AlbumStruct(prompt: "All Images", count: "200 Images", predicate: NSPredicate(format: "isHidden = %d", false), title: "All Images", protected: false),
         AlbumStruct(prompt: "Favorites", count: "200 Images", predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "isFavorite = %d", true), NSPredicate(format: "isHidden = %d", false)]), title: "Favorites", protected: false),
-        AlbumStruct(prompt: "Hidden Images", count: "200 Images", predicate: NSPredicate(format: "isHidden = %d", true), title: "Hidden Images", protected: true),
-        AlbumStruct(prompt: "Hidden Favorites", count: "200 Images", predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "isFavorite = %d", true), NSPredicate(format: "isHidden = %d", true)]), title: "Hidden Favorites", protected: true),
-
     ]
 
     override func viewDidLoad() {
@@ -75,6 +72,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
                     )
                 }
             }
+            presetAlbums.append(contentsOf: [AlbumStruct(prompt: "Hidden Images", count: "200 Images", predicate: NSPredicate(format: "isHidden = %d", true), title: "Hidden Images", protected: true), AlbumStruct(prompt: "Hidden Favorites", count: "200 Images", predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "isFavorite = %d", true), NSPredicate(format: "isHidden = %d", true)]), title: "Hidden Favorites", protected: true)])
         } catch {
             print("Error fetching grouped and counted records: \(error.localizedDescription)")
         }
