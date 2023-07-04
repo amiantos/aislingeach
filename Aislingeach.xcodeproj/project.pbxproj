@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		44142AB92A23FD6A0096FFBA /* ImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44142AB82A23FD6A0096FFBA /* ImageDetailViewController.swift */; };
 		44142AC42A242B4E0096FFBA /* .swift-version in Resources */ = {isa = PBXBuildFile; fileRef = 44142AC22A242B4E0096FFBA /* .swift-version */; };
 		44142AC52A242B4E0096FFBA /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = 44142AC32A242B4E0096FFBA /* .swiftformat */; };
 		44142ACA2A25D0380096FFBA /* Cosmos in Frameworks */ = {isa = PBXBuildFile; productRef = 44142AC92A25D0380096FFBA /* Cosmos */; };
@@ -151,7 +150,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		44142AB82A23FD6A0096FFBA /* ImageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailViewController.swift; sourceTree = "<group>"; };
 		44142AC22A242B4E0096FFBA /* .swift-version */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
 		44142AC32A242B4E0096FFBA /* .swiftformat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .swiftformat; sourceTree = "<group>"; };
 		441EB36C2A21DC1E00E449BE /* Aislingeach.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aislingeach.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -393,7 +391,6 @@
 		446643C72A53F81B0047F26B /* Detail View */ = {
 			isa = PBXGroup;
 			children = (
-				44142AB82A23FD6A0096FFBA /* ImageDetailViewController.swift */,
 				446643C12A53637D0047F26B /* ImageDetailCollectionViewController.swift */,
 				446643C32A5367610047F26B /* ImageDetailCollectionViewCell.swift */,
 			);
@@ -747,7 +744,6 @@
 				44F2AA6E2A26B81200FB8E93 /* RequestAccepted.swift in Sources */,
 				44C6B6732A228D8200C2F013 /* RequestStatusCheck.swift in Sources */,
 				44C6B68A2A228D8200C2F013 /* JSONEncodingHelper.swift in Sources */,
-				44142AB92A23FD6A0096FFBA /* ImageDetailViewController.swift in Sources */,
 				44F2AA742A26B81200FB8E93 /* ModifyUserIdBody.swift in Sources */,
 				44C6B68C2A228D8200C2F013 /* HordeAlamofireImplementations.swift in Sources */,
 				44C6B6522A228D8200C2F013 /* UserThingRecords.swift in Sources */,
