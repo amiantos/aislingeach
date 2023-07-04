@@ -54,20 +54,26 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
 
     func setScale() {
         if imageView.intrinsicContentSize.width != 0 {
-            let scale = scrollView.bounds.width / imageView.intrinsicContentSize.width
+            let scaleWidth = scrollView.bounds.width / imageView.intrinsicContentSize.width
+            let scaleHeight = scrollView.safeAreaLayoutGuide.layoutFrame.height / imageView.intrinsicContentSize.height
+            let scale = min(scaleWidth, scaleHeight)
+
             Log.debug("Scale: \(scale)")
             scrollView.minimumZoomScale = scale
             scrollView.zoomScale = scale
             defaultScale = scale
 
-            Log.debug("Image size: \(imageView.intrinsicContentSize.width) x \(imageView.intrinsicContentSize.height)")
-            Log.debug("\(imageView.intrinsicContentSize.height*scale) - \(scrollView.safeAreaLayoutGuide.layoutFrame.height)")
-
             let scaledHeight = imageView.intrinsicContentSize.height * scale
+            let scaledWidth = imageView.intrinsicContentSize.width * scale
+            var offsetY = 0.0
+            var offsetX = 0.0
             if scaledHeight < scrollView.safeAreaLayoutGuide.layoutFrame.height {
-                let offsetY = max((scrollView.safeAreaLayoutGuide.layoutFrame.height - scaledHeight) * 0.5, 0)
-                scrollView.contentInset = UIEdgeInsets(top: offsetY, left: 0, bottom: 0, right: 0)
+                offsetY = max((scrollView.safeAreaLayoutGuide.layoutFrame.height - scaledHeight) * 0.5, 0)
             }
+            if scaledWidth < scrollView.safeAreaLayoutGuide.layoutFrame.width {
+                offsetX = max((scrollView.safeAreaLayoutGuide.layoutFrame.width - scaledWidth) * 0.5, 0)
+            }
+            scrollView.contentInset = UIEdgeInsets(top: offsetY, left: offsetX, bottom: offsetY, right: offsetX)
         }
     }
 
