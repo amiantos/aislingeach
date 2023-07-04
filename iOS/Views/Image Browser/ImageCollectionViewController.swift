@@ -178,7 +178,7 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
             if let nav = imageDetailNavigationController, let controller = imageDetailViewController {
                 controller.startingIndexPath = indexPath
                 nav.modalPresentationStyle = .overFullScreen
-                tabBarController?.present(nav, animated: true)
+                self.present(nav, animated: true)
             }
         }
     }

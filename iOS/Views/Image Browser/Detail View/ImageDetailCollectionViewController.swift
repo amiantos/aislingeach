@@ -37,10 +37,11 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
 
         let favorite = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action:  #selector(favoriteImage))
         let delete = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(deleteImage))
+        let load = UIBarButtonItem(image: UIImage(systemName: "arrow.counterclockwise"), style: .plain, target: self, action: #selector(reuseSettings))
         let hide = UIBarButtonItem(image: UIImage(systemName: "eye.slash"), style: .plain, target: self, action: #selector(hideImage))
         let share = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(shareSheet))
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
-        toolbarItems = [delete, spacer, hide, spacer, share, spacer, favorite]
+        toolbarItems = [delete, spacer, load, spacer, hide, spacer, share, spacer, favorite]
 
         navigationController?.setToolbarHidden(false, animated: true)
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .done, target: self, action: #selector(cancelAction))
@@ -77,13 +78,22 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         }
     }
 
-    @objc func loadSettings() {
-
+    @objc func reuseSettings() {
+        let alert = UIAlertController(title: "Include Seed?", message: "Do you want to include the seed for this image?", preferredStyle: .alert)
+        let noAction = UIAlertAction(title: "No", style: .default) { _ in
+            self.loadSettings(includeSeed: false)
+        }
+        let yesAction = UIAlertAction(title: "Yes", style: .destructive)  { _ in
+            self.loadSettings(includeSeed: true)
+        }
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+        self.present(alert, animated: true)
     }
 
     @objc func shareSheet() {
-        if let indexPath = collectionView.indexPathsForVisibleItems.first, let image = resultsController?.object(at: indexPath) as? GeneratedImage {
-            let ac = UIActivityViewController(activityItems: [image.image, self], applicationActivities: nil)
+        if let indexPath = collectionView.indexPathsForVisibleItems.first, let cell = collectionView.cellForItem(at: indexPath) as? ImageDetailCollectionViewCell {
+            let ac = UIActivityViewController(activityItems: [cell.imageView.image?.pngData(), self], applicationActivities: nil)
             ac.popoverPresentationController?.sourceView = navigationController?.toolbar
             present(ac, animated: true)
         }
@@ -104,6 +114,34 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
                     //
                 }
             }
+        }
+    }
+
+    func loadSettings(includeSeed: Bool) {
+        Log.debug(presentingViewController)
+        if let indexPath = collectionView.indexPathsForVisibleItems.first,
+           let image = resultsController?.object(at: indexPath) as? GeneratedImage,
+           let jsonString = image.fullRequest,
+           let jsonData = jsonString.data(using: .utf8),
+           let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData),
+           let tabBarController = presentingViewController as? UITabBarController,
+           let navigationController = tabBarController.viewControllers?.first as? UINavigationController,
+           let generateView = navigationController.topViewController as? GeneratorViewController {
+            Log.info("Loading image settings into Create view...")
+            var seed: String? = nil
+            if includeSeed {
+                if let customSeed = settings.params?.seed {
+                    seed = customSeed
+                } else if let resJsonString = image.fullResponse,
+                          let resJsonData = resJsonString.data(using: .utf8),
+                          let response = try? JSONDecoder().decode(GenerationStable.self, from: resJsonData),
+                          let generatedSeed = response.seed {
+                    seed = generatedSeed
+                }
+            }
+            generateView.loadSettingsIntoUI(settings: settings, seed: seed)
+            self.dismissView()
+            tabBarController.selectedIndex = 0
         }
     }
 

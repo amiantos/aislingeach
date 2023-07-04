@@ -108,5 +108,7 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
         super.prepareForReuse()
         Log.debug("Unloading image")
         imageView.image = nil
+        scrollView.contentInset = .zero
+        scrollView.contentOffset = .zero
     }
 }
