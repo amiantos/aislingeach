@@ -11,12 +11,15 @@ import UIKit
 
 class ImageDetailCollectionViewController: UICollectionViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout, ImageDetailCollectionViewCellDelegate {
 
-
     var resultsController: NSFetchedResultsController<GeneratedImage>?
-
     var predicate: NSPredicate?
-
     var startingIndexPath: IndexPath?
+
+    var favoriteButton: UIBarButtonItem?
+    var deleteButton: UIBarButtonItem?
+    var loadButton: UIBarButtonItem?
+    var hideButton: UIBarButtonItem?
+    var shareButton: UIBarButtonItem?
 
     @IBOutlet weak var imageView: UIImageView!
     override func viewDidLoad() {
@@ -36,13 +39,13 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
             collectionView.scrollToItem(at: startingIndexPath, at: .centeredHorizontally, animated: false)
         }
 
-        let favorite = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action:  #selector(favoriteImage))
-        let delete = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(deleteImage))
-        let load = UIBarButtonItem(image: UIImage(systemName: "arrow.counterclockwise"), style: .plain, target: self, action: #selector(reuseSettings))
-        let hide = UIBarButtonItem(image: UIImage(systemName: "eye.slash"), style: .plain, target: self, action: #selector(hideImage))
-        let share = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(shareSheet))
+        favoriteButton = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action:  #selector(favoriteImage))
+        deleteButton = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(deleteImage))
+        loadButton = UIBarButtonItem(image: UIImage(systemName: "arrow.counterclockwise"), style: .plain, target: self, action: #selector(reuseSettings))
+        hideButton = UIBarButtonItem(image: UIImage(systemName: "eye.slash"), style: .plain, target: self, action: #selector(hideImage))
+        shareButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(shareSheet))
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
-        toolbarItems = [delete, spacer, load, spacer, hide, spacer, share, spacer, favorite]
+        toolbarItems = [deleteButton!, spacer, loadButton!, spacer, shareButton!, spacer, hideButton!, spacer, favoriteButton!]
 
         navigationController?.setToolbarHidden(false, animated: true)
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .done, target: self, action: #selector(cancelAction))
@@ -70,11 +73,21 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         dismiss(animated: true)
     }
 
+    func setupToolbarItems(image: GeneratedImage) {
+        let favoriteMenuImage: UIImage? = image.isFavorite ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
+        let hideMenuImage: UIImage? = image.isHidden ? UIImage(systemName: "eye.slash.fill") : UIImage(systemName: "eye.slash")
+
+        favoriteButton?.image = favoriteMenuImage
+        hideButton?.image = hideMenuImage
+    }
+
     @objc func favoriteImage() {
         Log.debug("Favorite button pressed...")
         if let indexPath = collectionView.indexPathsForVisibleItems.first, let image = resultsController?.object(at: indexPath) as? GeneratedImage {
             ImageDatabase.standard.toggleImageFavorite(generatedImage: image) { [self] image in
-                // TODO: Update icon...
+                if let image = image {
+                    self.setupToolbarItems(image: image)
+                }
             }
         }
     }
@@ -87,14 +100,16 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         let yesAction = UIAlertAction(title: "Yes", style: .destructive)  { _ in
             self.loadSettings(includeSeed: true)
         }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         alert.addAction(yesAction)
         alert.addAction(noAction)
+        alert.addAction(cancelAction)
         self.present(alert, animated: true)
     }
 
     @objc func shareSheet() {
-        if let indexPath = collectionView.indexPathsForVisibleItems.first, let cell = collectionView.cellForItem(at: indexPath) as? ImageDetailCollectionViewCell {
-            let ac = UIActivityViewController(activityItems: [cell.imageView.image?.pngData(), self], applicationActivities: nil)
+        if let indexPath = collectionView.indexPathsForVisibleItems.first, let cell = collectionView.cellForItem(at: indexPath) as? ImageDetailCollectionViewCell, let image = cell.imageView.image {
+            let ac = UIActivityViewController(activityItems: [image.pngData() as Any, self], applicationActivities: nil)
             ac.popoverPresentationController?.sourceView = navigationController?.toolbar
             present(ac, animated: true)
         }
@@ -102,8 +117,10 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
 
     @objc func hideImage() {
         if let indexPath = collectionView.indexPathsForVisibleItems.first, let image = resultsController?.object(at: indexPath) as? GeneratedImage {
-            ImageDatabase.standard.toggleImageHidden(generatedImage: image) { [self] _ in
-//                self.navigationController?.popViewController(animated: true)
+            ImageDatabase.standard.toggleImageHidden(generatedImage: image) { [self] image in
+                if let image = image {
+                    self.setupToolbarItems(image: image)
+                }
             }
         }
     }
@@ -112,7 +129,7 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         if let indexPath = collectionView.indexPathsForVisibleItems.first, let image = resultsController?.object(at: indexPath) as? GeneratedImage {
             ImageDatabase.standard.deleteImage(image) { generatedImage in
                 if generatedImage == nil {
-                    //
+                    Log.debug("Image successfully deleted.")
                 }
             }
         }
@@ -186,8 +203,9 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
     }
 
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let cell = cell as? ImageDetailCollectionViewCell else { return }
-        navigationItem.title = cell.generatedImage?.uuid?.uuidString
+        guard let cell = cell as? ImageDetailCollectionViewCell, let image = cell.generatedImage else { return }
+        navigationItem.title = image.promptSimple
+        setupToolbarItems(image: image)
     }
 
     override func collectionView(_: UICollectionView, numberOfItemsInSection section: Int) -> Int {
