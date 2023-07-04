@@ -5,6 +5,7 @@
 //  Created by Brad Root on 7/3/23.
 //
 
+import LinkPresentation
 import CoreData
 import UIKit
 
@@ -294,5 +295,26 @@ extension ImageDetailCollectionViewController {
         } catch {
             fatalError("Failed to fetch entities: \(error)")
         }
+    }
+}
+
+
+extension ImageDetailCollectionViewController: UIActivityItemSource {
+    func activityViewControllerPlaceholderItem(_: UIActivityViewController) -> Any {
+        return ""
+    }
+
+    func activityViewController(_: UIActivityViewController, itemForActivityType _: UIActivity.ActivityType?) -> Any? {
+        return nil
+    }
+
+    func activityViewControllerLinkMetadata(_: UIActivityViewController) -> LPLinkMetadata? {
+        guard let indexPath = collectionView.indexPathsForVisibleItems.first, let cell = collectionView.cellForItem(at: indexPath) as? ImageDetailCollectionViewCell, let image = cell.imageView.image else { return nil }
+
+        let imageProvider = NSItemProvider(object: image)
+        let metadata = LPLinkMetadata()
+        metadata.imageProvider = imageProvider
+        metadata.title = "Share generation"
+        return metadata
     }
 }
