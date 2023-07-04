@@ -539,9 +539,9 @@
 		44C6B6D32A233AF500C2F013 /* Image Browser */ = {
 			isa = PBXGroup;
 			children = (
+				446643C72A53F81B0047F26B /* Detail View */,
 				44C6B6D42A233B0F00C2F013 /* ImageCollectionViewController.swift */,
 				44C6B6D62A233BFB00C2F013 /* ImageCollectionViewCell.swift */,
-				446643C72A53F81B0047F26B /* Detail View */,
 				4485C63E2A2A9E7F0040D864 /* ImageCache.swift */,
 			);
 			path = "Image Browser";

@@ -172,6 +172,7 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 imageDetailNavigationController = storyboard.instantiateViewController(withIdentifier: "navControllerImageDetail") as? UINavigationController
                 imageDetailViewController = imageDetailNavigationController?.topViewController as? ImageDetailCollectionViewController
+                imageDetailViewController?.predicate = resultsController?.fetchRequest.predicate
             }
 
             if let nav = imageDetailNavigationController, let controller = imageDetailViewController {
@@ -301,6 +302,7 @@ extension ImageCollectionViewController {
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: ImageDatabase.standard.mainManagedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         resultsController = controller
         controller.delegate = self
+
         do {
             try controller.performFetch()
         } catch {

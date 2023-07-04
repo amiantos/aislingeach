@@ -13,7 +13,7 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
 
     var resultsController: NSFetchedResultsController<GeneratedImage>?
 
-    var viewFolder: String = "main"
+    var predicate: NSPredicate?
 
     var startingIndexPath: IndexPath?
 
@@ -246,14 +246,7 @@ extension ImageDetailCollectionViewController {
         // Configure the request's entity, and optionally its predicate
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
 
-        var title = "All Images"
-        var predicate = NSPredicate(format: "isHidden = %d", false)
-        if viewFolder == "hidden" {
-            title = "Hidden Images"
-            predicate = NSPredicate(format: "isHidden = %d", true)
-        }
-        navigationItem.title = title
-        fetchRequest.predicate = predicate
+        fetchRequest.predicate = self.predicate
 
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: ImageDatabase.standard.mainManagedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         resultsController = controller
