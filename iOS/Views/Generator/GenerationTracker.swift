@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol GenerationTrackerDelegate {
     func updateProcessingStatus(title: String, message: String)
@@ -20,7 +21,15 @@ class GenerationTracker {
     var currentGenerationRequestIdentifier: String?
     var currentGenerationBody: GenerationInputStable?
 
-    var requestIsProcessing: Bool = false
+    var requestIsProcessing: Bool = false {
+        didSet {
+            if requestIsProcessing {
+                UIApplication.shared.isIdleTimerDisabled = true
+            } else {
+                UIApplication.shared.isIdleTimerDisabled = false
+            }
+        }
+    }
 
     init() {
         Log.debug("GenerationTracker Activated")
