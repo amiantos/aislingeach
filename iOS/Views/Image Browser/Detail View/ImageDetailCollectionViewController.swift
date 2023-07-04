@@ -91,16 +91,18 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
 
     @objc func hideImage() {
         if let indexPath = collectionView.indexPathsForVisibleItems.first, let image = resultsController?.object(at: indexPath) as? GeneratedImage {
-            ImageDatabase.standard.toggleImageFavorite(generatedImage: image) { [self] image in
-                // TODO: Update icon...
+            ImageDatabase.standard.toggleImageHidden(generatedImage: image) { [self] _ in
+//                self.navigationController?.popViewController(animated: true)
             }
         }
     }
 
     @objc func deleteImage() {
         if let indexPath = collectionView.indexPathsForVisibleItems.first, let image = resultsController?.object(at: indexPath) as? GeneratedImage {
-            ImageDatabase.standard.toggleImageFavorite(generatedImage: image) { [self] image in
-                // TODO: Update icon...
+            ImageDatabase.standard.deleteImage(image) { generatedImage in
+                if generatedImage == nil {
+                    //
+                }
             }
         }
     }
