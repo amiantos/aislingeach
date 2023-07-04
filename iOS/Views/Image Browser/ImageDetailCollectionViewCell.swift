@@ -63,23 +63,31 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
             scrollView.zoomScale = scale
             defaultScale = scale
 
-            let scaledHeight = imageView.intrinsicContentSize.height * scale
-            let scaledWidth = imageView.intrinsicContentSize.width * scale
-            var offsetY = 0.0
-            var offsetX = 0.0
-            if scaledHeight < scrollView.safeAreaLayoutGuide.layoutFrame.height {
-                offsetY = max((scrollView.safeAreaLayoutGuide.layoutFrame.height - scaledHeight) * 0.5, 0)
-            }
-            if scaledWidth < scrollView.safeAreaLayoutGuide.layoutFrame.width {
-                offsetX = max((scrollView.safeAreaLayoutGuide.layoutFrame.width - scaledWidth) * 0.5, 0)
-            }
-            scrollView.contentInset = UIEdgeInsets(top: offsetY, left: offsetX, bottom: offsetY, right: offsetX)
+            setContentOffset()
         }
     }
 
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-            return imageView
+    func setContentOffset() {
+        let scaledHeight = imageView.intrinsicContentSize.height * scrollView.zoomScale
+        let scaledWidth = imageView.intrinsicContentSize.width * scrollView.zoomScale
+        var offsetY = 0.0
+        var offsetX = 0.0
+        if scaledHeight < scrollView.safeAreaLayoutGuide.layoutFrame.height {
+            offsetY = max((scrollView.safeAreaLayoutGuide.layoutFrame.height - scaledHeight) * 0.5, 0)
         }
+        if scaledWidth < scrollView.safeAreaLayoutGuide.layoutFrame.width {
+            offsetX = max((scrollView.safeAreaLayoutGuide.layoutFrame.width - scaledWidth) * 0.5, 0)
+        }
+        scrollView.contentInset = UIEdgeInsets(top: offsetY, left: offsetX, bottom: offsetY, right: offsetX)
+    }
+
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return imageView
+    }
+
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        setContentOffset()
+    }
 
     override func prepareForReuse() {
         super.prepareForReuse()
