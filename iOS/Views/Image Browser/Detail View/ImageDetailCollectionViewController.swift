@@ -9,9 +9,6 @@ import CoreData
 import UIKit
 
 class ImageDetailCollectionViewController: UICollectionViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout, ImageDetailCollectionViewCellDelegate {
-    func dismissView() {
-        self.dismiss(animated: true)
-    }
 
 
     var resultsController: NSFetchedResultsController<GeneratedImage>?
@@ -38,10 +35,10 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
             collectionView.scrollToItem(at: startingIndexPath, at: .centeredHorizontally, animated: false)
         }
 
-        let favorite = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: nil)
-        let delete = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: nil)
-        let hide = UIBarButtonItem(image: UIImage(systemName: "eye.slash"), style: .plain, target: self, action: nil)
-        let share = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: nil)
+        let favorite = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action:  #selector(favoriteImage))
+        let delete = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(deleteImage))
+        let hide = UIBarButtonItem(image: UIImage(systemName: "eye.slash"), style: .plain, target: self, action: #selector(hideImage))
+        let share = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(shareSheet))
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         toolbarItems = [delete, spacer, hide, spacer, share, spacer, favorite]
 
@@ -50,8 +47,62 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         
     }
 
+    func jumpToIndexPath() {
+        if let startingIndexPath = startingIndexPath {
+            collectionView.isPagingEnabled = false
+            collectionView.scrollToItem(at: startingIndexPath, at: .centeredHorizontally, animated: false)
+            collectionView.isPagingEnabled = true
+        }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        jumpToIndexPath()
+    }
+
+    func dismissView() {
+        self.dismiss(animated: true)
+    }
+
     @objc func cancelAction() {
         dismiss(animated: true)
+    }
+
+    @objc func favoriteImage() {
+        Log.debug("Favorite button pressed...")
+        if let indexPath = collectionView.indexPathsForVisibleItems.first, let image = resultsController?.object(at: indexPath) as? GeneratedImage {
+            ImageDatabase.standard.toggleImageFavorite(generatedImage: image) { [self] image in
+                // TODO: Update icon...
+            }
+        }
+    }
+
+    @objc func loadSettings() {
+
+    }
+
+    @objc func shareSheet() {
+        if let indexPath = collectionView.indexPathsForVisibleItems.first, let image = resultsController?.object(at: indexPath) as? GeneratedImage {
+            let ac = UIActivityViewController(activityItems: [image.image, self], applicationActivities: nil)
+            ac.popoverPresentationController?.sourceView = navigationController?.toolbar
+            present(ac, animated: true)
+        }
+    }
+
+    @objc func hideImage() {
+        if let indexPath = collectionView.indexPathsForVisibleItems.first, let image = resultsController?.object(at: indexPath) as? GeneratedImage {
+            ImageDatabase.standard.toggleImageFavorite(generatedImage: image) { [self] image in
+                // TODO: Update icon...
+            }
+        }
+    }
+
+    @objc func deleteImage() {
+        if let indexPath = collectionView.indexPathsForVisibleItems.first, let image = resultsController?.object(at: indexPath) as? GeneratedImage {
+            ImageDatabase.standard.toggleImageFavorite(generatedImage: image) { [self] image in
+                // TODO: Update icon...
+            }
+        }
     }
 
     /*
@@ -75,7 +126,6 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
     )
 
     func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt _: IndexPath) -> CGSize {
-        Log.debug("Got size request?")
         return CGSize(width: view.frame.width, height: view.safeAreaLayoutGuide.layoutFrame.height)
     }
 
