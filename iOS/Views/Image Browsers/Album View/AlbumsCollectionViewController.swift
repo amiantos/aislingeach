@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import LocalAuthentication
+import CoreData
 
 private let reuseIdentifier = "albumCell"
 
@@ -14,13 +16,17 @@ struct AlbumStruct {
     var count: String
     var predicate: NSPredicate
     var title: String
+    var protected: Bool
 }
 
 class AlbumsCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
-    let presetAlbums: [AlbumStruct] = [
-        AlbumStruct(prompt: "All Images", count: "200 Images", predicate: NSPredicate(format: "isHidden = %d", false), title: "All Images"),
-        AlbumStruct(prompt: "Favorites", count: "200 Images", predicate: NSPredicate(format: "isFavorite = %d", true), title: "Favorites"),
+    var presetAlbums: [AlbumStruct] = [
+        AlbumStruct(prompt: "All Images", count: "200 Images", predicate: NSPredicate(format: "isHidden = %d", false), title: "All Images", protected: false),
+        AlbumStruct(prompt: "Favorites", count: "200 Images", predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "isFavorite = %d", true), NSPredicate(format: "isHidden = %d", false)]), title: "Favorites", protected: false),
+        AlbumStruct(prompt: "Hidden Images", count: "200 Images", predicate: NSPredicate(format: "isHidden = %d", true), title: "Hidden Images", protected: true),
+        AlbumStruct(prompt: "Hidden Favorites", count: "200 Images", predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "isFavorite = %d", true), NSPredicate(format: "isHidden = %d", true)]), title: "Hidden Favorites", protected: true),
+
     ]
 
     override func viewDidLoad() {
@@ -30,6 +36,50 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
         // self.clearsSelectionOnViewWillAppear = false
 
         // Do any additional setup after loading the view.
+        let fetchRequest = NSFetchRequest<NSDictionary>(entityName: "GeneratedImage")
+        let keypathExp = NSExpression(forKeyPath: "promptSimple")
+        let expression = NSExpression(forFunction: "count:", arguments: [keypathExp])
+
+        let expression2 = NSExpression(forFunction: "max:", arguments: [NSExpression(forKeyPath: "dateCreated")])
+
+        let maxDate = NSExpressionDescription()
+        maxDate.expression = expression2
+        maxDate.name = "date"
+        maxDate.expressionResultType = .dateAttributeType
+
+        let countDesc = NSExpressionDescription()
+        countDesc.expression = expression
+        countDesc.name = "count"
+        countDesc.expressionResultType = .integer64AttributeType
+
+        fetchRequest.predicate = NSPredicate(format: "isHidden = %d", false)
+        fetchRequest.returnsObjectsAsFaults = false
+        fetchRequest.propertiesToGroupBy = ["promptSimple"]
+        fetchRequest.propertiesToFetch = ["promptSimple", countDesc, maxDate]
+        fetchRequest.resultType = .dictionaryResultType
+
+        do {
+            let results = try ImageDatabase.standard.mainManagedObjectContext.fetch(fetchRequest) as? [AnyObject]
+
+            let sortedResults = (results as! NSArray).sortedArray(using: [NSSortDescriptor(key: "date", ascending: false)]) as! [[String:AnyObject]]
+            for data in sortedResults {
+                if let prompt = data["promptSimple"] as? String, let count = data["count"] as? Int {
+                    presetAlbums.append(
+                        AlbumStruct(
+                            prompt: prompt,
+                            count: "\(count) Images",
+                            predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "promptSimple = %@", prompt), NSPredicate(format: "isHidden = %d", false)]),
+                            title: prompt,
+                            protected: false
+                        )
+                    )
+                }
+            }
+        } catch {
+            print("Error fetching grouped and counted records: \(error.localizedDescription)")
+        }
+
+
     }
 
     /*
@@ -67,8 +117,24 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "imageGalleryView") as! ThumbnailBrowserViewController
         let data = presetAlbums[indexPath.row]
-        controller.setup(title: data.title, predicate: data.predicate)
-        navigationController?.pushViewController(controller, animated: true)
+        if data.protected {
+            let context = LAContext()
+            let reason = "Get access to Hidden Content"
+            context.evaluatePolicy(
+                .deviceOwnerAuthentication,
+                localizedReason: reason
+            ) { success, error in
+                if success {
+                    DispatchQueue.main.async {
+                        controller.setup(title: data.title, predicate: data.predicate)
+                        self.navigationController?.pushViewController(controller, animated: true)
+                    }
+                }
+            }
+        } else {
+            controller.setup(title: data.title, predicate: data.predicate)
+            navigationController?.pushViewController(controller, animated: true)
+        }
     }
 
     // MARK: UICollectionViewDelegateFlowLayout
