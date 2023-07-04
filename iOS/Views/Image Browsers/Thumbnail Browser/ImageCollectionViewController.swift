@@ -1,5 +1,5 @@
 //
-//  ImageCollectionViewController.swift
+//  ThumbnailBrowserViewController.swift
 //  Aislingeach
 //
 //  Created by Brad Root on 5/28/23.
@@ -10,16 +10,15 @@ import UIKit
 
 private let reuseIdentifier = "imageCell"
 
-class ImageCollectionViewController: UICollectionViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout {
+class ThumbnailBrowserViewController: UICollectionViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout {
     var resultsController: NSFetchedResultsController<GeneratedImage>?
 
     var menuButton: UIBarButtonItem = .init()
     var editButton: UIBarButtonItem = .init()
 
+    var viewPredicate: NSPredicate?
+
     var showHiddenItems: Bool = false
-
-    var viewFolder: String = "main"
-
     var multiSelectMode: Bool = false
 
     var imageDetailNavigationController: UINavigationController?
@@ -49,12 +48,15 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         collectionView.allowsMultipleSelectionDuringEditing = true
         setEditing(false, animated: false)
         menuButton.isEnabled = false
+        navigationController?.setToolbarHidden(true, animated: false)
+    }
+
+    func setup(title: String, predicate: NSPredicate) {
+        viewPredicate = predicate
+        navigationItem.title = title
 
         setupDataSource()
-
         setupMenu()
-
-        navigationController?.setToolbarHidden(true, animated: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -237,30 +239,11 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
      */
 }
 
-extension ImageCollectionViewController {
+extension ThumbnailBrowserViewController {
     func setupMenu() {
         editButton.title = isEditing ? "Done" : "Select"
 
         var menuItems: [UIMenuElement] = []
-
-        if viewFolder == "main", !isEditing {
-            let hiddenMenuItemTitle = showHiddenItems ? "Hide Hidden" : "Show Hidden"
-            let hiddenMenuItemImage = showHiddenItems ? UIImage(systemName: "eye") : UIImage(systemName: "eye.slash")
-            menuItems.append(UIAction(title: hiddenMenuItemTitle, image: hiddenMenuItemImage, handler: { _ in
-                if self.showHiddenItems == false {
-                    let alert = UIAlertController(title: "Show Hidden Items", message: "Are you... sure you want to do this?", preferredStyle: .alert)
-                    let okAction = UIAlertAction(title: "OK", style: .destructive) { _ in
-                        self.toggleHiddenItems()
-                    }
-                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-                    alert.addAction(okAction)
-                    alert.addAction(cancelAction)
-                    self.present(alert, animated: true)
-                } else {
-                    self.toggleHiddenItems()
-                }
-            }))
-        }
 
         if isEditing {
             let editActions = UIMenu(title: "", options: .displayInline, children: [
@@ -290,14 +273,7 @@ extension ImageCollectionViewController {
         // Configure the request's entity, and optionally its predicate
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
 
-        var title = "All Images"
-        var predicate = NSPredicate(format: "isHidden = %d", false)
-        if viewFolder == "hidden" {
-            title = "Hidden Images"
-            predicate = NSPredicate(format: "isHidden = %d", true)
-        }
-        navigationItem.title = title
-        fetchRequest.predicate = predicate
+        fetchRequest.predicate = viewPredicate
 
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: ImageDatabase.standard.mainManagedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         resultsController = controller
@@ -308,13 +284,6 @@ extension ImageCollectionViewController {
         } catch {
             fatalError("Failed to fetch entities: \(error)")
         }
-    }
-
-    func toggleHiddenItems() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "imageGalleryView") as! ImageCollectionViewController
-        controller.viewFolder = "hidden"
-        navigationController?.pushViewController(controller, animated: true)
     }
 
     func deleteSelectedImages() {
