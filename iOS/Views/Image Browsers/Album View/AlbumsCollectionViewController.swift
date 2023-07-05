@@ -21,10 +21,9 @@ struct AlbumStruct {
 
 class AlbumsCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
-    var presetAlbums: [AlbumStruct] = [
-        AlbumStruct(prompt: "All Images", count: "200 Images", predicate: NSPredicate(format: "isHidden = %d", false), title: "All Images", protected: false),
-        AlbumStruct(prompt: "Favorites", count: "200 Images", predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "isFavorite = %d", true), NSPredicate(format: "isHidden = %d", false)]), title: "Favorites", protected: false),
-    ]
+    var showHidden: Bool = false
+
+    var presetAlbums: [AlbumStruct] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,31 +31,35 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
+        if showHidden {
+            navigationItem.title = "Hidden Gallery"
+        }
+
+        presetAlbums = [
+            AlbumStruct(prompt: "All Images", count: "200 Images", predicate: NSPredicate(format: "isHidden = %d", showHidden), title: "All Images", protected: false),
+            AlbumStruct(prompt: "Favorites", count: "200 Images", predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "isFavorite = %d", true), NSPredicate(format: "isHidden = %d", showHidden)]), title: "Favorites", protected: false)
+        ]
+
         // Do any additional setup after loading the view.
-        ImageDatabase.standard.getPopularPromptKeywords(hidden: false) { [self] keywords in
+        ImageDatabase.standard.getPopularPromptKeywords(hidden: showHidden) { [self] keywords in
             let sortedResults = keywords.sorted { lhs, rhs in
                 if lhs.value == rhs.value {
-                    if let key1 = lhs.key as? String, let key2 = rhs.key as? String{
-                        return key1.lowercased() < key2.lowercased()
-                    }
+                    return lhs.key.lowercased() < rhs.key.lowercased()
                 }
                 return lhs.value > rhs.value
             }
 
             for data in sortedResults {
-                if let prompt = data.key as? String, let count = data.value as? Int {
-                    presetAlbums.append(
-                        AlbumStruct(
-                            prompt: prompt,
-                            count: "\(count) Images",
-                            predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "promptSimple CONTAINS %@", prompt), NSPredicate(format: "isHidden = %d", false)]),
-                            title: prompt,
-                            protected: false
-                        )
+                presetAlbums.append(
+                    AlbumStruct(
+                        prompt: data.key,
+                        count: "\(data.value) Images",
+                        predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "promptSimple CONTAINS %@", data.key), NSPredicate(format: "isHidden = %d", showHidden)]),
+                        title: data.key,
+                        protected: false
                     )
-                }
+                )
             }
-            presetAlbums.append(contentsOf: [AlbumStruct(prompt: "Hidden Images", count: "200 Images", predicate: NSPredicate(format: "isHidden = %d", true), title: "Hidden Images", protected: true), AlbumStruct(prompt: "Hidden Favorites", count: "200 Images", predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "isFavorite = %d", true), NSPredicate(format: "isHidden = %d", true)]), title: "Hidden Favorites", protected: true)])
             collectionView.reloadData()
         }
     }

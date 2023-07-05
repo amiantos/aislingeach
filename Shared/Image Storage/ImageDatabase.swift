@@ -210,11 +210,14 @@ class ImageDatabase {
                             prompt.removeSubrange(dotRange.lowerBound..<prompt.endIndex)
                         }
                         for keyword in prompt.components(separatedBy: ", ") {
-                            if var data = keywords[keyword] {
+                            Log.debug("Keyword: \(keyword)")
+                            var cleanedKeyword = keyword.replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "")
+                            cleanedKeyword = cleanedKeyword.replacing(/:(\d+(?:\.\d+)?)+/, with: "")
+                            if var data = keywords[cleanedKeyword] {
                                 data += 1
-                                keywords[keyword] = data
+                                keywords[cleanedKeyword] = data
                             } else {
-                                keywords[keyword] = 1
+                                keywords[cleanedKeyword] = 1
                             }
                         }
                     }

@@ -1503,7 +1503,7 @@
         <!--Gallery-->
         <scene sceneID="Bda-sA-bA8">
             <objects>
-                <collectionViewController id="wV3-Ix-qjo" customClass="AlbumsCollectionViewController" customModule="Aislingeach" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="albumGalleryView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="wV3-Ix-qjo" customClass="AlbumsCollectionViewController" customModule="Aislingeach" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentInsetAdjustmentBehavior="scrollableAxes" dataMode="prototypes" id="jp8-3A-fsj">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
