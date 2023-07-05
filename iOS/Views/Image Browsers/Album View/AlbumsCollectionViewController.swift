@@ -33,39 +33,23 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
         // self.clearsSelectionOnViewWillAppear = false
 
         // Do any additional setup after loading the view.
-        let fetchRequest = NSFetchRequest<NSDictionary>(entityName: "GeneratedImage")
-        let keypathExp = NSExpression(forKeyPath: "promptSimple")
-        let expression = NSExpression(forFunction: "count:", arguments: [keypathExp])
+        ImageDatabase.standard.getPopularPromptKeywords(hidden: false) { [self] keywords in
+            let sortedResults = keywords.sorted { lhs, rhs in
+                if lhs.value == rhs.value {
+                    if let key1 = lhs.key as? String, let key2 = rhs.key as? String{
+                        return key1.lowercased() < key2.lowercased()
+                    }
+                }
+                return lhs.value > rhs.value
+            }
 
-        let expression2 = NSExpression(forFunction: "max:", arguments: [NSExpression(forKeyPath: "dateCreated")])
-
-        let maxDate = NSExpressionDescription()
-        maxDate.expression = expression2
-        maxDate.name = "date"
-        maxDate.expressionResultType = .dateAttributeType
-
-        let countDesc = NSExpressionDescription()
-        countDesc.expression = expression
-        countDesc.name = "count"
-        countDesc.expressionResultType = .integer64AttributeType
-
-        fetchRequest.predicate = NSPredicate(format: "isHidden = %d", false)
-        fetchRequest.returnsObjectsAsFaults = false
-        fetchRequest.propertiesToGroupBy = ["promptSimple"]
-        fetchRequest.propertiesToFetch = ["promptSimple", countDesc, maxDate]
-        fetchRequest.resultType = .dictionaryResultType
-
-        do {
-            let results = try ImageDatabase.standard.mainManagedObjectContext.fetch(fetchRequest) as? [AnyObject]
-
-            let sortedResults = (results as! NSArray).sortedArray(using: [NSSortDescriptor(key: "date", ascending: false)]) as! [[String:AnyObject]]
             for data in sortedResults {
-                if let prompt = data["promptSimple"] as? String, let count = data["count"] as? Int {
+                if let prompt = data.key as? String, let count = data.value as? Int {
                     presetAlbums.append(
                         AlbumStruct(
                             prompt: prompt,
                             count: "\(count) Images",
-                            predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "promptSimple = %@", prompt), NSPredicate(format: "isHidden = %d", false)]),
+                            predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "promptSimple CONTAINS %@", prompt), NSPredicate(format: "isHidden = %d", false)]),
                             title: prompt,
                             protected: false
                         )
@@ -73,11 +57,8 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
                 }
             }
             presetAlbums.append(contentsOf: [AlbumStruct(prompt: "Hidden Images", count: "200 Images", predicate: NSPredicate(format: "isHidden = %d", true), title: "Hidden Images", protected: true), AlbumStruct(prompt: "Hidden Favorites", count: "200 Images", predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "isFavorite = %d", true), NSPredicate(format: "isHidden = %d", true)]), title: "Hidden Favorites", protected: true)])
-        } catch {
-            print("Error fetching grouped and counted records: \(error.localizedDescription)")
+            collectionView.reloadData()
         }
-
-
     }
 
     /*

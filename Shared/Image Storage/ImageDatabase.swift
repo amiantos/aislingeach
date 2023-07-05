@@ -194,6 +194,40 @@ class ImageDatabase {
         }
     }
 
+    func getPopularPromptKeywords(hidden: Bool, completion: @escaping ([String: Int]) -> Void) {
+        mainManagedObjectContext.perform { [self] in
+            do {
+                let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
+                fetchRequest.predicate = NSPredicate(format: "isHidden = %d", hidden)
+                fetchRequest.propertiesToFetch = ["promptSimple"]
+                fetchRequest.resultType = .dictionaryResultType
+                let prompts = try mainManagedObjectContext.fetch(fetchRequest) as [AnyObject]
+
+                var keywords: [String: Int] = [:]
+                for obj in prompts {
+                    if var prompt = obj["promptSimple"] as? String {
+                        if let dotRange = prompt.range(of: " ### ") {
+                            prompt.removeSubrange(dotRange.lowerBound..<prompt.endIndex)
+                        }
+                        for keyword in prompt.components(separatedBy: ", ") {
+                            if var data = keywords[keyword] {
+                                data += 1
+                                keywords[keyword] = data
+                            } else {
+                                keywords[keyword] = 1
+                            }
+                        }
+                    }
+                }
+
+                completion(keywords)
+
+            } catch {
+                completion([:])
+            }
+        }
+    }
+
 //    func createGame(from gameStruct: GameStruct, completion: @escaping (Game?) -> Void) {
 //        mainManagedObjectContext.perform {
 //            do {
