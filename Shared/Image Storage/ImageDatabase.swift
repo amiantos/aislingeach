@@ -194,6 +194,27 @@ class ImageDatabase {
         }
     }
 
+    func getCountAndRecentImageForPredicate(predicate: NSPredicate, completion: @escaping ((Int, GeneratedImage?)) -> Void) {
+        mainManagedObjectContext.perform { [self] in
+            do {
+                let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
+                fetchRequest.predicate = predicate
+                fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
+                
+                let count = try mainManagedObjectContext.count(for: fetchRequest)
+                if count == 0 {
+                    completion((0, nil))
+                } else {
+                    fetchRequest.fetchLimit = 1
+                    let images = try mainManagedObjectContext.fetch(fetchRequest) as [GeneratedImage]
+                    completion((count, images[0]))
+                }
+            } catch {
+                completion((0, nil))
+            }
+        }
+    }
+
     func getPopularPromptKeywords(hidden: Bool, completion: @escaping ([String: Int]) -> Void) {
         mainManagedObjectContext.perform { [self] in
             do {

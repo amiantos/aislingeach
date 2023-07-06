@@ -14,8 +14,8 @@ class AlbumSimpleCollectionViewCell: UICollectionViewCell {
     var viewPredicate: NSPredicate?
     var viewTitle: String?
 
-    func setup(prompt: String, count: String, predicate: NSPredicate, title: String) {
-        promptLabel.text = prompt
+    func setup(count: String, predicate: NSPredicate, title: String) {
+        promptLabel.text = title
         countLabel.text = count
         self.viewPredicate = predicate
         self.viewTitle = title
