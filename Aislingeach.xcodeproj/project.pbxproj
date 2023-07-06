@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4401A7522A54C42D00C875E4 /* AlbumsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4401A7512A54C42D00C875E4 /* AlbumsCollectionViewController.swift */; };
 		4401A7542A54C44000C875E4 /* AlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4401A7532A54C44000C875E4 /* AlbumCollectionViewCell.swift */; };
+		4401A7562A56505400C875E4 /* AlbumSimpleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4401A7552A56505400C875E4 /* AlbumSimpleCollectionViewCell.swift */; };
+		4401A7582A5652DB00C875E4 /* AlbumSectionTitleCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4401A7572A5652DB00C875E4 /* AlbumSectionTitleCollectionReusableView.swift */; };
 		44142AC42A242B4E0096FFBA /* .swift-version in Resources */ = {isa = PBXBuildFile; fileRef = 44142AC22A242B4E0096FFBA /* .swift-version */; };
 		44142AC52A242B4E0096FFBA /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = 44142AC32A242B4E0096FFBA /* .swiftformat */; };
 		44142ACA2A25D0380096FFBA /* Cosmos in Frameworks */ = {isa = PBXBuildFile; productRef = 44142AC92A25D0380096FFBA /* Cosmos */; };
@@ -154,6 +156,8 @@
 /* Begin PBXFileReference section */
 		4401A7512A54C42D00C875E4 /* AlbumsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsCollectionViewController.swift; sourceTree = "<group>"; };
 		4401A7532A54C44000C875E4 /* AlbumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCollectionViewCell.swift; sourceTree = "<group>"; };
+		4401A7552A56505400C875E4 /* AlbumSimpleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumSimpleCollectionViewCell.swift; sourceTree = "<group>"; };
+		4401A7572A5652DB00C875E4 /* AlbumSectionTitleCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumSectionTitleCollectionReusableView.swift; sourceTree = "<group>"; };
 		44142AC22A242B4E0096FFBA /* .swift-version */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
 		44142AC32A242B4E0096FFBA /* .swiftformat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .swiftformat; sourceTree = "<group>"; };
 		441EB36C2A21DC1E00E449BE /* Aislingeach.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aislingeach.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -415,6 +419,8 @@
 			children = (
 				4401A7512A54C42D00C875E4 /* AlbumsCollectionViewController.swift */,
 				4401A7532A54C44000C875E4 /* AlbumCollectionViewCell.swift */,
+				4401A7552A56505400C875E4 /* AlbumSimpleCollectionViewCell.swift */,
+				4401A7572A5652DB00C875E4 /* AlbumSectionTitleCollectionReusableView.swift */,
 			);
 			path = "Album View";
 			sourceTree = "<group>";
@@ -748,6 +754,7 @@
 				441EB3742A21DC1E00E449BE /* GeneratorViewController.swift in Sources */,
 				44C6B62E2A228D8200C2F013 /* TxtModelStats.swift in Sources */,
 				44C6B6452A228D8200C2F013 /* ContributionsDetails.swift in Sources */,
+				4401A7562A56505400C875E4 /* AlbumSimpleCollectionViewCell.swift in Sources */,
 				44C6B6822A228D8200C2F013 /* AestheticsPayload.swift in Sources */,
 				44C6B6792A228D8200C2F013 /* StatsImgTotals.swift in Sources */,
 				44C6B6712A228D8200C2F013 /* SubmitInputStable.swift in Sources */,
@@ -792,6 +799,7 @@
 				44C6B67C2A228D8200C2F013 /* InterrogationStatus.swift in Sources */,
 				44C6B6382A228D8200C2F013 /* UserKudosDetails.swift in Sources */,
 				44C6B65B2A228D8200C2F013 /* RequestStatusKobold.swift in Sources */,
+				4401A7582A5652DB00C875E4 /* AlbumSectionTitleCollectionReusableView.swift in Sources */,
 				44C6B64E2A228D8200C2F013 /* PopInput.swift in Sources */,
 				446643C42A5367610047F26B /* ImageDetailCollectionViewCell.swift in Sources */,
 				44F2AA792A26B81200FB8E93 /* RatingsAlamofireImplementations.swift in Sources */,
