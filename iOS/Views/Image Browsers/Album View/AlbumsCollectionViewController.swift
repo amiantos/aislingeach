@@ -54,7 +54,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
                 promptAlbums.append(
                     AlbumStruct(
                         prompt: data.key,
-                        count: "\(data.value) Images",
+                        count: "\(data.value.formatted())",
                         predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "promptSimple CONTAINS %@", data.key), NSPredicate(format: "isHidden = %d", showHidden)]),
                         title: data.key,
                         protected: false
@@ -168,10 +168,10 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     // MARK: UICollectionViewDelegateFlowLayout
 
     private let sectionInsets = UIEdgeInsets(
-        top: 8,
-        left: 8,
-        bottom: 8,
-        right: 8
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0
     )
 
     func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -186,7 +186,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
             let cell = self.collectionView(collectionView, cellForItemAt: indexPath)
 
             // Use this view to calculate the optimal size based on the collection view's width
-            return cell.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width - ((sectionInsets.left + collectionView.contentInset.left)*2), height: UIView.layoutFittingExpandedSize.height),
+            return cell.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width, height: UIView.layoutFittingExpandedSize.height),
                                                 withHorizontalFittingPriority: .required, // Width is fixed
                                                 verticalFittingPriority: .fittingSizeLevel) // Height can be as large as needed
         }
