@@ -31,6 +31,10 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     var presetAlbums: [AlbumStruct] = []
     var promptAlbums: [AlbumStruct] = []
 
+    @IBAction func refreshButtonAction(_ sender: UIBarButtonItem) {
+        loadDataSource()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -41,6 +45,14 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
             navigationItem.title = "Hidden Gallery"
         }
 
+        loadDataSource()
+    }
+
+
+    fileprivate func loadDataSource() {
+        presetAlbums = []
+        promptAlbums = []
+        
         ImageDatabase.standard.getCountAndRecentImageForPredicate(predicate: NSPredicate(format: "isHidden = %d", showHidden)) { result in
             self.presetAlbums.append(AlbumStruct(count: "\((result.0 ).formatted())", predicate: NSPredicate(format: "isHidden = %d", self.showHidden), title: "Recents", image: result.1))
         }
@@ -71,16 +83,6 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
             collectionView.reloadData()
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     // MARK: UICollectionViewDataSource
 
@@ -119,7 +121,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
         if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "albumSectionTitle", for: indexPath) as? AlbumSectionTitleCollectionReusableView {
             switch (indexPath.section) {
             case 1:
-                sectionHeader.sectionLabel.text = "Prompt Keywords"
+                sectionHeader.sectionLabel.text = promptAlbums.count > 0 ? "Prompt Keywords" : ""
             default:
                 sectionHeader.sectionLabel.text = "Section \(indexPath.section)"
             }
