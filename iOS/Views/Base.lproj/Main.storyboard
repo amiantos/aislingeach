@@ -1568,52 +1568,44 @@
                                 </connections>
                             </collectionViewCell>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="simpleAlbumCell" id="FId-Lw-hln" customClass="AlbumSimpleCollectionViewCell" customModule="Aislingeach" customModuleProvider="target">
-                                <rect key="frame" x="93" y="246" width="207" height="60"/>
+                                <rect key="frame" x="103.66666666666667" y="246" width="186" height="186"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="0GK-5t-VGX">
-                                    <rect key="frame" x="0.0" y="0.0" width="207" height="60"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="186" height="186"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aVU-hU-ym7">
-                                            <rect key="frame" x="0.0" y="0.0" width="207" height="60"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="186" height="186"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="752" text="340,000 Images" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gn0-gK-SNR">
-                                                    <rect key="frame" x="76.666666666666686" y="20" width="92.333333333333314" height="20"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="yn2-HE-f5S"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="chevron.right" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Gs9-Lj-31P">
-                                                    <rect key="frame" x="177" y="23.666666666666664" width="10" height="13.333333333333336"/>
-                                                    <color key="tintColor" name="AccentColor"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="10" id="H2h-5i-kIv"/>
-                                                        <constraint firstAttribute="height" constant="20" id="e1c-4j-3A2"/>
-                                                    </constraints>
-                                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small" weight="regular"/>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="temple in ruins" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j0U-OH-0hg">
-                                                    <rect key="frame" x="19.999999999999996" y="20" width="48.666666666666657" height="20"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="tiB-md-cBA">
+                                                    <rect key="frame" x="16" y="16" width="154" height="154"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="751" text="temple in ruins" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j0U-OH-0hg">
+                                                            <rect key="frame" x="0.0" y="0.0" width="36" height="154"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="340,000 Images" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gn0-gK-SNR">
+                                                            <rect key="frame" x="43.999999999999993" y="0.0" width="92.333333333333314" height="154"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" image="chevron.right" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Gs9-Lj-31P">
+                                                            <rect key="frame" x="144.33333333333334" y="3.6666666666666714" width="9.6666666666666572" height="147.33333333333331"/>
+                                                            <color key="tintColor" systemColor="labelColor"/>
+                                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small" weight="regular"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                             <constraints>
-                                                <constraint firstItem="Gs9-Lj-31P" firstAttribute="top" secondItem="aVU-hU-ym7" secondAttribute="top" constant="20" symbolic="YES" id="2zV-XI-s6o"/>
-                                                <constraint firstAttribute="bottom" secondItem="j0U-OH-0hg" secondAttribute="bottom" constant="20" symbolic="YES" id="5HV-nm-bR0"/>
-                                                <constraint firstAttribute="bottom" secondItem="Gs9-Lj-31P" secondAttribute="bottom" constant="20" symbolic="YES" id="9Mk-ql-oLc"/>
-                                                <constraint firstAttribute="bottom" secondItem="Gn0-gK-SNR" secondAttribute="bottom" constant="20" symbolic="YES" id="9uS-Ga-8X7"/>
-                                                <constraint firstItem="Gn0-gK-SNR" firstAttribute="top" secondItem="aVU-hU-ym7" secondAttribute="top" constant="20" symbolic="YES" id="B5o-D8-d20"/>
-                                                <constraint firstItem="Gs9-Lj-31P" firstAttribute="leading" secondItem="Gn0-gK-SNR" secondAttribute="trailing" constant="8" symbolic="YES" id="Phg-8k-gFe"/>
-                                                <constraint firstItem="Gn0-gK-SNR" firstAttribute="leading" secondItem="j0U-OH-0hg" secondAttribute="trailing" constant="8" symbolic="YES" id="b0m-lo-GiT"/>
-                                                <constraint firstItem="j0U-OH-0hg" firstAttribute="leading" secondItem="aVU-hU-ym7" secondAttribute="leading" constant="20" symbolic="YES" id="nbU-IC-pKb"/>
-                                                <constraint firstItem="j0U-OH-0hg" firstAttribute="top" secondItem="aVU-hU-ym7" secondAttribute="top" constant="20" symbolic="YES" id="qFI-PA-Zis"/>
-                                                <constraint firstAttribute="trailing" secondItem="Gs9-Lj-31P" secondAttribute="trailing" constant="20" symbolic="YES" id="shK-11-1F0"/>
+                                                <constraint firstAttribute="trailing" secondItem="tiB-md-cBA" secondAttribute="trailing" constant="16" id="9Ny-B1-Bbs"/>
+                                                <constraint firstAttribute="bottom" secondItem="tiB-md-cBA" secondAttribute="bottom" constant="16" id="GCQ-Hg-qOU"/>
+                                                <constraint firstItem="tiB-md-cBA" firstAttribute="top" secondItem="aVU-hU-ym7" secondAttribute="top" constant="16" id="Ile-eK-oh7"/>
+                                                <constraint firstItem="tiB-md-cBA" firstAttribute="leading" secondItem="aVU-hU-ym7" secondAttribute="leading" constant="16" id="TgL-ly-Ufc"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -1624,7 +1616,6 @@
                                         <constraint firstAttribute="trailing" secondItem="aVU-hU-ym7" secondAttribute="trailing" id="uFn-HS-cz6"/>
                                     </constraints>
                                 </collectionViewCellContentView>
-                                <size key="customSize" width="207" height="60"/>
                                 <connections>
                                     <outlet property="cellBackgroundView" destination="aVU-hU-ym7" id="wPD-IG-NCZ"/>
                                     <outlet property="countLabel" destination="Gn0-gK-SNR" id="hmj-dw-onX"/>
@@ -1637,17 +1628,17 @@
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K07-9P-okT">
-                                    <rect key="frame" x="20" y="20" width="353" height="20"/>
+                                    <rect key="frame" x="16" y="16" width="361" height="28"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="K07-9P-okT" secondAttribute="trailing" constant="20" symbolic="YES" id="4IK-sR-VHv"/>
-                                <constraint firstItem="K07-9P-okT" firstAttribute="leading" secondItem="dEO-ZY-cwE" secondAttribute="leading" constant="20" symbolic="YES" id="Lfr-e5-Cew"/>
-                                <constraint firstItem="K07-9P-okT" firstAttribute="top" secondItem="dEO-ZY-cwE" secondAttribute="top" constant="20" symbolic="YES" id="YxN-64-BYj"/>
-                                <constraint firstAttribute="bottom" secondItem="K07-9P-okT" secondAttribute="bottom" constant="20" symbolic="YES" id="qGr-9L-Xyj"/>
+                                <constraint firstAttribute="trailing" secondItem="K07-9P-okT" secondAttribute="trailing" constant="16" id="4IK-sR-VHv"/>
+                                <constraint firstItem="K07-9P-okT" firstAttribute="leading" secondItem="dEO-ZY-cwE" secondAttribute="leading" constant="16" id="Lfr-e5-Cew"/>
+                                <constraint firstItem="K07-9P-okT" firstAttribute="top" secondItem="dEO-ZY-cwE" secondAttribute="top" constant="16" id="YxN-64-BYj"/>
+                                <constraint firstAttribute="bottom" secondItem="K07-9P-okT" secondAttribute="bottom" constant="16" id="qGr-9L-Xyj"/>
                             </constraints>
                             <connections>
                                 <outlet property="sectionLabel" destination="K07-9P-okT" id="8WK-pr-hii"/>
