@@ -374,7 +374,8 @@ extension GeneratorViewController {
         widthSlider.setValue(Float(initialWidth), animated: false)
         heightSlider.setValue(Float(initialHeight), animated: false)
 
-        modelPickButton.setTitle(settings?.models?.first ?? "stable_diffusion", for: .normal)
+        let selectedModel = settings?.models?.first ?? "stable_diffusion"
+        modelPickButton.setTitle(selectedModel, for: .normal)
 
         // setup button?
         let upscalerOptions: [String] = [
@@ -478,6 +479,9 @@ extension GeneratorViewController {
         promptTextView.text = settings?.prompt ?? "temple in ruins, forest, stairs, columns, cinematic, detailed, atmospheric, epic, concept art, Matte painting, background, mist, photo-realistic, concept art, volumetric light, cinematic epic + rule of thirds octane render, 8k, corona render, movie concept art, octane render, cinematic, trending on artstation, movie concept art, cinematic composition, ultra-detailed, realistic, hyper-realistic, volumetric lighting, 8k"
 
         imageQuantitySlider.setValue(1.0, animated: false)
+        if selectedModel == "SDXL_beta::stability.ai#6901" {
+            imageQuantitySlider.setValue(2.0, animated: false)
+        }
 
         if let seed = seed {
             seedTextField.text = seed
@@ -683,5 +687,15 @@ extension GeneratorViewController {
 extension GeneratorViewController: ModelsTableViewControllerDelegate {
     func selectedModel(name: String) {
         modelPickButton.setTitle(name, for: .normal)
+        if name == "SDXL_beta::stability.ai#6901" {
+            imageQuantitySlider.setValue(2, animated: true)
+            imageQuantitySlider.isEnabled = false
+            if widthSlider.value < 16 && heightSlider.value < 16{
+                widthSlider.setValue(16, animated: true)
+                heightSlider.setValue(16, animated: true)
+            }
+        } else {
+            imageQuantitySlider.isEnabled = true
+        }
     }
 }
