@@ -118,9 +118,9 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
     @objc func hideImage() {
         if let indexPath = collectionView.indexPathsForVisibleItems.first, let image = resultsController?.object(at: indexPath) as? GeneratedImage {
             ImageDatabase.standard.toggleImageHidden(generatedImage: image) { [self] image in
-                if let image = image {
-                    self.setupToolbarItems(image: image)
-                }
+//                if let image = image {
+//                    self.setupToolbarItems(image: image)
+//                }
             }
         }
     }

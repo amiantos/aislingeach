@@ -194,6 +194,64 @@ class ImageDatabase {
         }
     }
 
+    func getCountAndRecentImageForPredicate(predicate: NSPredicate, completion: @escaping ((Int, GeneratedImage?)) -> Void) {
+        mainManagedObjectContext.perform { [self] in
+            do {
+                let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
+                fetchRequest.predicate = predicate
+                fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
+                
+                let count = try mainManagedObjectContext.count(for: fetchRequest)
+                if count == 0 {
+                    completion((0, nil))
+                } else {
+                    fetchRequest.fetchLimit = 1
+                    let images = try mainManagedObjectContext.fetch(fetchRequest) as [GeneratedImage]
+                    completion((count, images[0]))
+                }
+            } catch {
+                completion((0, nil))
+            }
+        }
+    }
+
+    func getPopularPromptKeywords(hidden: Bool, completion: @escaping ([String: Int]) -> Void) {
+        mainManagedObjectContext.perform { [self] in
+            do {
+                let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
+                fetchRequest.predicate = NSPredicate(format: "isHidden = %d", hidden)
+                fetchRequest.propertiesToFetch = ["promptSimple"]
+                fetchRequest.resultType = .dictionaryResultType
+                let prompts = try mainManagedObjectContext.fetch(fetchRequest) as [AnyObject]
+
+                var keywords: [String: Int] = [:]
+                for obj in prompts {
+                    if var prompt = obj["promptSimple"] as? String {
+                        if let dotRange = prompt.range(of: " ### ") {
+                            prompt.removeSubrange(dotRange.lowerBound..<prompt.endIndex)
+                        }
+                        for keyword in prompt.components(separatedBy: ", ") {
+                            Log.debug("Keyword: \(keyword)")
+                            var cleanedKeyword = keyword.replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "")
+                            cleanedKeyword = cleanedKeyword.replacing(/:(\d+(?:\.\d+)?)+/, with: "")
+                            if var data = keywords[cleanedKeyword] {
+                                data += 1
+                                keywords[cleanedKeyword] = data
+                            } else {
+                                keywords[cleanedKeyword] = 1
+                            }
+                        }
+                    }
+                }
+
+                completion(keywords)
+
+            } catch {
+                completion([:])
+            }
+        }
+    }
+
 //    func createGame(from gameStruct: GameStruct, completion: @escaping (Game?) -> Void) {
 //        mainManagedObjectContext.perform {
 //            do {

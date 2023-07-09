@@ -40,8 +40,8 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate {
                 if success {
                     DispatchQueue.main.async {
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                        let controller = storyboard.instantiateViewController(withIdentifier: "imageGalleryView") as! ImageCollectionViewController
-                        controller.viewFolder = "hidden"
+                        let controller = storyboard.instantiateViewController(withIdentifier: "albumGalleryView") as! AlbumsCollectionViewController
+                        controller.showHidden = true
                         self.navigationController?.pushViewController(controller, animated: true)
                     }
                 }

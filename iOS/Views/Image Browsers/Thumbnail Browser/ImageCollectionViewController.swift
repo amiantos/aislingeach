@@ -1,5 +1,5 @@
 //
-//  ImageCollectionViewController.swift
+//  ThumbnailBrowserViewController.swift
 //  Aislingeach
 //
 //  Created by Brad Root on 5/28/23.
@@ -10,16 +10,15 @@ import UIKit
 
 private let reuseIdentifier = "imageCell"
 
-class ImageCollectionViewController: UICollectionViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout {
+class ThumbnailBrowserViewController: UICollectionViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout {
     var resultsController: NSFetchedResultsController<GeneratedImage>?
 
     var menuButton: UIBarButtonItem = .init()
     var editButton: UIBarButtonItem = .init()
 
+    var viewPredicate: NSPredicate?
+
     var showHiddenItems: Bool = false
-
-    var viewFolder: String = "main"
-
     var multiSelectMode: Bool = false
 
     var imageDetailNavigationController: UINavigationController?
@@ -49,12 +48,14 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         collectionView.allowsMultipleSelectionDuringEditing = true
         setEditing(false, animated: false)
         menuButton.isEnabled = false
-
-        setupDataSource()
-
-        setupMenu()
-
         navigationController?.setToolbarHidden(true, animated: false)
+    }
+
+    func setup(title: String, predicate: NSPredicate) {
+        viewPredicate = predicate
+        navigationItem.title = title
+        setupDataSource()
+        setupMenu()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -203,64 +204,13 @@ class ImageCollectionViewController: UICollectionViewController, NSFetchedResult
         setEditing(true, animated: true)
     }
 
-//    override func collectionViewDidEndMultipleSelectionInteraction(_: UICollectionView) {
-//        print("\(#function)")
-//    }
-
-    /*
-     // Uncomment this method to specify if the specified item should be highlighted during tracking
-     override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-         return true
-     }
-     */
-
-    /*
-     // Uncomment this method to specify if the specified item should be selected
-     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-         return true
-     }
-     */
-
-    /*
-     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-     override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-         return false
-     }
-
-     override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-         return false
-     }
-
-     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-
-     }
-     */
 }
 
-extension ImageCollectionViewController {
+extension ThumbnailBrowserViewController {
     func setupMenu() {
         editButton.title = isEditing ? "Done" : "Select"
 
         var menuItems: [UIMenuElement] = []
-
-        if viewFolder == "main", !isEditing {
-            let hiddenMenuItemTitle = showHiddenItems ? "Hide Hidden" : "Show Hidden"
-            let hiddenMenuItemImage = showHiddenItems ? UIImage(systemName: "eye") : UIImage(systemName: "eye.slash")
-            menuItems.append(UIAction(title: hiddenMenuItemTitle, image: hiddenMenuItemImage, handler: { _ in
-                if self.showHiddenItems == false {
-                    let alert = UIAlertController(title: "Show Hidden Items", message: "Are you... sure you want to do this?", preferredStyle: .alert)
-                    let okAction = UIAlertAction(title: "OK", style: .destructive) { _ in
-                        self.toggleHiddenItems()
-                    }
-                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-                    alert.addAction(okAction)
-                    alert.addAction(cancelAction)
-                    self.present(alert, animated: true)
-                } else {
-                    self.toggleHiddenItems()
-                }
-            }))
-        }
 
         if isEditing {
             let editActions = UIMenu(title: "", options: .displayInline, children: [
@@ -290,14 +240,7 @@ extension ImageCollectionViewController {
         // Configure the request's entity, and optionally its predicate
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
 
-        var title = "All Images"
-        var predicate = NSPredicate(format: "isHidden = %d", false)
-        if viewFolder == "hidden" {
-            title = "Hidden Images"
-            predicate = NSPredicate(format: "isHidden = %d", true)
-        }
-        navigationItem.title = title
-        fetchRequest.predicate = predicate
+        fetchRequest.predicate = viewPredicate
 
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: ImageDatabase.standard.mainManagedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         resultsController = controller
@@ -308,13 +251,6 @@ extension ImageCollectionViewController {
         } catch {
             fatalError("Failed to fetch entities: \(error)")
         }
-    }
-
-    func toggleHiddenItems() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "imageGalleryView") as! ImageCollectionViewController
-        controller.viewFolder = "hidden"
-        navigationController?.pushViewController(controller, animated: true)
     }
 
     func deleteSelectedImages() {
