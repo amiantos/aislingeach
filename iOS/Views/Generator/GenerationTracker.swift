@@ -154,11 +154,15 @@ class GenerationTracker {
                 Log.debug("\(data)")
                 self.setNewGenerationRequest(generationIdentifier: generationIdentifier, body: body)
             } else if let error = error {
-                Log.debug("Error: \(error)")
+                Log.debug("Error: \(error.localizedDescription)")
                 if error.code == 401 {
-                    self.delegate?.showErrorStatus(title: "401 Error", message: "Invalid API key")
+                    self.delegate?.showErrorStatus(title: "Unauthorized", message: "Invalid API key")
                 } else if error.code == 500 {
-                    self.delegate?.showErrorStatus(title: "500 Error", message: "Could not connect to server")
+                    self.delegate?.showErrorStatus(title: "Server Error", message: "Could not connect to server, try again?")
+                } else if error.code == 403 && body.models!.contains("SDXL_beta::stability.ai#6901") {
+                    self.delegate?.showErrorStatus(title: "Forbidden", message: "Anonymous users cannot use the SDXL beta.")
+                } else if error.code == 403 {
+                    self.delegate?.showErrorStatus(title: "Forbidden", message: "Generation request was rejected by the server.")
                 } else {
                     self.delegate?.showErrorStatus(title: "Error", message: error.localizedDescription)
                 }
