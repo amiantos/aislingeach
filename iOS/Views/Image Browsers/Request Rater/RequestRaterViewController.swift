@@ -100,6 +100,14 @@ class RequestRaterViewController: UIViewController {
             if let images = images, let image1 = images.first, let image2 = images.last {
                 self.image1 = image1
                 self.image2 = image2
+                if image1 == image2 || images.count > 2 {
+                    let alert = UIAlertController(title: "Error", message: "This batch seems faulty, we can't let you rate it, sorry!", preferredStyle: .alert)
+                    let alertAction = UIAlertAction(title: "Oh well", style: .default)  { _ in
+                        self.dismiss(animated: true)
+                    }
+                    alert.addAction(alertAction)
+                    self.present(alert, animated: true)
+                }
                 DispatchQueue.main.async { [self] in
 
                     if let cachedImage = ImageCache.standard.getImage(key: NSString(string: image1.uuid!.uuidString)) {
