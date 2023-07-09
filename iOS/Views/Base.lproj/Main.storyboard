@@ -665,13 +665,13 @@
                                                                                         <rect key="frame" x="0.0" y="165" width="313" height="30"/>
                                                                                         <subviews>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Strength" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NQb-Im-Aqd">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="27" height="30"/>
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="19" height="30"/>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                                 <color key="textColor" systemColor="tertiaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
                                                                                             <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.75" minValue="0.050000000000000003" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Y93-XZ-MTJ">
-                                                                                                <rect key="frame" x="37" y="0.0" width="232" height="31"/>
+                                                                                                <rect key="frame" x="29" y="0.0" width="240" height="31"/>
                                                                                                 <connections>
                                                                                                     <action selector="faceFixStrengthSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="7Ck-Dl-Akm"/>
                                                                                                 </connections>
@@ -1846,7 +1846,16 @@
                             <outlet property="delegate" destination="7sf-se-Bry" id="bfU-0v-Ktx"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="Nlk-LJ-p2W"/>
+                    <navigationItem key="navigationItem" id="Nlk-LJ-p2W">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="SDXL" id="Tyh-Wf-2Ss">
+                            <connections>
+                                <action selector="rateButtonAction:" destination="7sf-se-Bry" id="5RC-t6-Brs"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="rateButton" destination="Tyh-Wf-2Ss" id="fe3-mh-QYE"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hdf-du-GQJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

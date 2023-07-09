@@ -103,7 +103,7 @@ class GenerationTracker {
                                 DispatchQueue.global().async {
                                     if let data = try? Data(contentsOf: imageUrl) {
                                         DispatchQueue.main.async {
-                                            ImageDatabase.standard.saveImage(id: generation._id!, image: data, request: body, response: generation, completion: { generatedImage in
+                                            ImageDatabase.standard.saveImage(id: generation._id!, requestId: identifier, image: data, request: body, response: generation, completion: { generatedImage in
                                                 if let image = generatedImage {
                                                     Log.info("\(identifier) - Saved Image ID \(image.uuid!)")
                                                     self.delegate?.displayCompletedGeneration(generatedImage: image)

@@ -1945,6 +1945,8 @@ open class HordeV2API {
         ]
         let headerParameters = APIHelper.rejectNilHeaders(nillableHeaders)
 
+        Log.debug(url?.string)
+
         let requestBuilder: HordeRequestBuilder<GenerationSubmitted>.Type = HordeClientAPI.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "POST", URLString: url?.string ?? URLString, parameters: parameters, isBody: true, headers: headerParameters)

@@ -53,12 +53,13 @@ class ImageDatabase {
 
     // MARK: - Images
 
-    func saveImage(id: String, image: Data, request: GenerationInputStable, response: GenerationStable, completion: @escaping (GeneratedImage?) -> Void) {
+    func saveImage(id: String, requestId: String, image: Data, request: GenerationInputStable, response: GenerationStable, completion: @escaping (GeneratedImage?) -> Void) {
         mainManagedObjectContext.perform {
             do {
                 let generatedImage = GeneratedImage(context: self.mainManagedObjectContext)
                 generatedImage.image = image
                 generatedImage.uuid = UUID(uuidString: id)!
+                generatedImage.requestId = UUID(uuidString: requestId)!
                 generatedImage.dateCreated = Date()
                 generatedImage.fullRequest = request.toJSONString()
                 generatedImage.promptSimple = request.prompt
@@ -251,6 +252,32 @@ class ImageDatabase {
             }
         }
     }
+
+    func fetchImages(for requestId: UUID, completion: @escaping ([GeneratedImage]?) -> Void) {
+        mainManagedObjectContext.perform { [self] in
+            do {
+                let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
+                fetchRequest.predicate = NSPredicate(format: "requestId = %@", requestId as CVarArg)
+                let images = try mainManagedObjectContext.fetch(fetchRequest) as [GeneratedImage]
+                completion(images)
+            } catch {
+                completion(nil)
+            }
+        }
+    }
+
+//    func fetchGames(completion: @escaping ([Game]?) -> Void) {
+//        mainManagedObjectContext.perform {
+//            do {
+//                let fetchRequest: NSFetchRequest<Game> = Game.fetchRequest()
+//                fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true, selector: #selector(NSString.caseInsensitiveCompare))]
+//                let managedGames = try self.mainManagedObjectContext.fetch(fetchRequest) as [Game]
+//                completion(managedGames)
+//            } catch {
+//                completion(nil)
+//            }
+//        }
+//    }
 
 //    func createGame(from gameStruct: GameStruct, completion: @escaping (Game?) -> Void) {
 //        mainManagedObjectContext.perform {

@@ -11,6 +11,21 @@ import UIKit
 
 class ImageDetailCollectionViewController: UICollectionViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout, ImageDetailCollectionViewCellDelegate {
 
+    @IBOutlet weak var rateButton: UIBarButtonItem!
+
+    @IBAction func rateButtonAction(_ sender: UIBarButtonItem) {
+        if let indexPath = collectionView.indexPathsForVisibleItems.first,
+           let image = resultsController?.object(at: indexPath) as? GeneratedImage,
+           let jsonString = image.fullRequest,
+           let jsonData = jsonString.data(using: .utf8),
+           let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData),
+           let requestId = image.requestId,
+           settings.models!.contains("SDXL_beta::stability.ai#6901") {
+            let requestRatingView = RequestRaterViewController(for: requestId)
+            self.present(requestRatingView, animated: true)
+
+        }
+    }
     var resultsController: NSFetchedResultsController<GeneratedImage>?
     var predicate: NSPredicate?
     var startingIndexPath: IndexPath?
@@ -79,6 +94,17 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
 
         favoriteButton?.image = favoriteMenuImage
         hideButton?.image = hideMenuImage
+
+        if let jsonString = image.fullRequest,
+           let jsonData = jsonString.data(using: .utf8),
+           let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData),
+           settings.models!.contains("SDXL_beta::stability.ai#6901"),
+           image.requestId != nil {
+            rateButton.isEnabled = true
+            rateButton.title = "SDXL"
+        } else {
+            rateButton.isEnabled = false
+        }
     }
 
     @objc func favoriteImage() {
