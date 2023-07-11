@@ -10,31 +10,27 @@ import CoreData
 import UIKit
 
 class ImageDetailCollectionViewController: UICollectionViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout, ImageDetailCollectionViewCellDelegate {
-
-    @IBOutlet weak var rateButton: UIBarButtonItem!
-
-    @IBAction func rateButtonAction(_ sender: UIBarButtonItem) {
-        if let indexPath = collectionView.indexPathsForVisibleItems.first,
-           let image = resultsController?.object(at: indexPath) as? GeneratedImage,
-           let jsonString = image.fullRequest,
-           let jsonData = jsonString.data(using: .utf8),
-           let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData),
-           let requestId = image.requestId,
-           settings.models!.contains("SDXL_beta::stability.ai#6901") {
-            let requestRatingView = RequestRaterViewController(for: requestId)
-            self.present(requestRatingView, animated: true)
-
-        }
-    }
+  
     var resultsController: NSFetchedResultsController<GeneratedImage>?
     var predicate: NSPredicate?
     var startingIndexPath: IndexPath?
 
     var favoriteButton: UIBarButtonItem?
     var deleteButton: UIBarButtonItem?
-    var loadButton: UIBarButtonItem?
     var hideButton: UIBarButtonItem?
     var shareButton: UIBarButtonItem?
+    var infoButton: UIBarButtonItem?
+
+    var metaDataViewIsHidden: Bool = true {
+        didSet {
+            guard let infoButton = infoButton else { return }
+            if metaDataViewIsHidden {
+                infoButton.image = UIImage(systemName: "info.circle")
+            } else {
+                infoButton.image = UIImage(systemName: "info.circle.fill")
+            }
+        }
+    }
 
     @IBOutlet weak var imageView: UIImageView!
     override func viewDidLoad() {
@@ -56,15 +52,14 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
 
         favoriteButton = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action:  #selector(favoriteImage))
         deleteButton = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(deleteImage))
-        loadButton = UIBarButtonItem(image: UIImage(systemName: "arrow.counterclockwise"), style: .plain, target: self, action: #selector(reuseSettings))
         hideButton = UIBarButtonItem(image: UIImage(systemName: "eye.slash"), style: .plain, target: self, action: #selector(hideImage))
         shareButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(shareSheet))
+        infoButton = UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(pressedInfoButton))
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
-        toolbarItems = [deleteButton!, spacer, loadButton!, spacer, shareButton!, spacer, hideButton!, spacer, favoriteButton!]
+        toolbarItems = [shareButton!, spacer, favoriteButton!, spacer, infoButton!, spacer, hideButton!, spacer, deleteButton!]
 
         navigationController?.setToolbarHidden(false, animated: true)
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .done, target: self, action: #selector(cancelAction))
-        
     }
 
     func jumpToIndexPath() {
@@ -77,15 +72,34 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if metaDataViewIsHidden, let indexPath = collectionView.indexPathsForVisibleItems.first, let cell = collectionView.cellForItem(at: indexPath) as? ImageDetailCollectionViewCell {
+            cell.toggleMetadataView(isHidden: true, animated: false)
+        }
         jumpToIndexPath()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        metaDataViewIsHidden = true
+        super.viewWillDisappear(animated)
+    }
+
+    func showRatingView(for requestId: UUID) {
+        let requestRatingView = RequestRaterViewController(for: requestId)
+        self.present(requestRatingView, animated: true)
+    }
+
     func dismissView() {
+        metaDataViewIsHidden = true
         self.dismiss(animated: true)
     }
 
     @objc func cancelAction() {
         dismiss(animated: true)
+    }
+
+    func toggleMetadataView(isHidden: Bool) {
+        Log.debug("Setting metadata view to hidden: \(isHidden)")
+        metaDataViewIsHidden = isHidden
     }
 
     func setupToolbarItems(image: GeneratedImage) {
@@ -94,17 +108,6 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
 
         favoriteButton?.image = favoriteMenuImage
         hideButton?.image = hideMenuImage
-
-        if let jsonString = image.fullRequest,
-           let jsonData = jsonString.data(using: .utf8),
-           let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData),
-           settings.models!.contains("SDXL_beta::stability.ai#6901"),
-           image.requestId != nil {
-            rateButton.isEnabled = true
-            rateButton.title = "SDXL"
-        } else {
-            rateButton.isEnabled = false
-        }
     }
 
     @objc func favoriteImage() {
@@ -151,13 +154,34 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         }
     }
 
+    @objc func pressedInfoButton() {
+        if let indexPath = collectionView.indexPathsForVisibleItems.first, let cell = collectionView.cellForItem(at: indexPath) as? ImageDetailCollectionViewCell {
+            if metaDataViewIsHidden {
+                cell.toggleMetadataView(isHidden: false, animated: true)
+                metaDataViewIsHidden = false
+            } else {
+                cell.toggleMetadataView(isHidden: true, animated: true)
+                metaDataViewIsHidden = true
+            }
+        }
+    }
+
     @objc func deleteImage() {
-        if let indexPath = collectionView.indexPathsForVisibleItems.first, let image = resultsController?.object(at: indexPath) as? GeneratedImage {
-            ImageDatabase.standard.deleteImage(image) { generatedImage in
-                if generatedImage == nil {
-                    Log.debug("Image successfully deleted.")
+        if let indexPath = collectionView.indexPathsForVisibleItems.first,
+           let image = resultsController?.object(at: indexPath) as? GeneratedImage {
+
+            let alert = UIAlertController(title: "Confirm", message: "Do you sure you want to delete the image? This cannot be reverted.", preferredStyle: .alert)
+            let deleteAction = UIAlertAction(title: "Delete", style: .destructive)  { _ in
+                ImageDatabase.standard.deleteImage(image) { generatedImage in
+                    if generatedImage == nil {
+                        Log.debug("Image successfully deleted.")
+                    }
                 }
             }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            alert.addAction(deleteAction)
+            alert.addAction(cancelAction)
+            self.present(alert, animated: true)
         }
     }
 
@@ -232,6 +256,8 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         guard let cell = cell as? ImageDetailCollectionViewCell, let image = cell.generatedImage else { return }
         navigationItem.title = image.promptSimple
         setupToolbarItems(image: image)
+        Log.debug("Wiill display cell \(metaDataViewIsHidden)")
+        cell.toggleMetadataView(isHidden: metaDataViewIsHidden, animated: false)
     }
 
     override func collectionView(_: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -249,7 +275,8 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
             fatalError("Attempt to configure cell without a managed object")
         }
         // Configure the cell
-        cell.setup(object: object)
+        Log.debug("Configuring cell \(metaDataViewIsHidden)")
+        cell.setup(object: object, metaDataViewIsHidden: metaDataViewIsHidden)
         return cell
     }
 
