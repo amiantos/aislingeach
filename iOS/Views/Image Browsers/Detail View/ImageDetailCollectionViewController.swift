@@ -19,8 +19,18 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
     var deleteButton: UIBarButtonItem?
     var hideButton: UIBarButtonItem?
     var shareButton: UIBarButtonItem?
+    var infoButton: UIBarButtonItem?
 
-    var metaDataViewIsHidden: Bool = true
+    var metaDataViewIsHidden: Bool = true {
+        didSet {
+            guard let infoButton = infoButton else { return }
+            if metaDataViewIsHidden {
+                infoButton.image = UIImage(systemName: "info.circle")
+            } else {
+                infoButton.image = UIImage(systemName: "info.circle.fill")
+            }
+        }
+    }
 
     @IBOutlet weak var imageView: UIImageView!
     override func viewDidLoad() {
@@ -44,8 +54,9 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         deleteButton = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(deleteImage))
         hideButton = UIBarButtonItem(image: UIImage(systemName: "eye.slash"), style: .plain, target: self, action: #selector(hideImage))
         shareButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(shareSheet))
+        infoButton = UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(pressedInfoButton))
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
-        toolbarItems = [deleteButton!, spacer, hideButton!, spacer, favoriteButton!, spacer, shareButton!]
+        toolbarItems = [shareButton!, spacer, favoriteButton!, spacer, infoButton!, spacer, hideButton!, spacer, deleteButton!]
 
         navigationController?.setToolbarHidden(false, animated: true)
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .done, target: self, action: #selector(cancelAction))
@@ -62,7 +73,7 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if metaDataViewIsHidden, let indexPath = collectionView.indexPathsForVisibleItems.first, let cell = collectionView.cellForItem(at: indexPath) as? ImageDetailCollectionViewCell {
-            cell.toggleMetadataView(isHidden: true)
+            cell.toggleMetadataView(isHidden: true, animated: false)
         }
         jumpToIndexPath()
     }
@@ -139,6 +150,18 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
 //                if let image = image {
 //                    self.setupToolbarItems(image: image)
 //                }
+            }
+        }
+    }
+
+    @objc func pressedInfoButton() {
+        if let indexPath = collectionView.indexPathsForVisibleItems.first, let cell = collectionView.cellForItem(at: indexPath) as? ImageDetailCollectionViewCell {
+            if metaDataViewIsHidden {
+                cell.toggleMetadataView(isHidden: false, animated: true)
+                metaDataViewIsHidden = false
+            } else {
+                cell.toggleMetadataView(isHidden: true, animated: true)
+                metaDataViewIsHidden = true
             }
         }
     }
@@ -234,7 +257,7 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         navigationItem.title = image.promptSimple
         setupToolbarItems(image: image)
         Log.debug("Wiill display cell \(metaDataViewIsHidden)")
-        cell.toggleMetadataView(isHidden: metaDataViewIsHidden)
+        cell.toggleMetadataView(isHidden: metaDataViewIsHidden, animated: false)
     }
 
     override func collectionView(_: UICollectionView, numberOfItemsInSection section: Int) -> Int {

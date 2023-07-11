@@ -205,15 +205,21 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
         }
     }
 
-    func toggleMetadataView(isHidden: Bool) {
+    func toggleMetadataView(isHidden: Bool, animated: Bool) {
+        self.layoutIfNeeded()
         if isHidden {
-            metaDataView.layer.opacity = 0
             metaDataViewCenterYConstraint.constant = 50
         } else {
-            metaDataView.layer.opacity = 1
             metaDataViewCenterYConstraint.constant = 0
         }
-        self.layoutIfNeeded()
+        UIView.animate(withDuration: animated ? 0.3 : 0.0) { [self] in
+            if isHidden {
+                metaDataView.layer.opacity = 0
+            } else {
+                metaDataView.layer.opacity = 1
+            }
+            self.layoutIfNeeded()
+        }
     }
 
     @objc func downSwipeActionForMetadataView(gesture: UITapGestureRecognizer) {
