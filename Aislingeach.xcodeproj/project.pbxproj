@@ -25,6 +25,8 @@
 		447362DC2A2D49CE00823D0C /* ModelsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447362DB2A2D49CE00823D0C /* ModelsTableViewController.swift */; };
 		447362DE2A2D6AA900823D0C /* ModelsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447362DD2A2D6AA900823D0C /* ModelsCache.swift */; };
 		4485C63F2A2A9E7F0040D864 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4485C63E2A2A9E7F0040D864 /* ImageCache.swift */; };
+		449F967B2A5B4010001AAC82 /* RequestRaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449F96792A5B4010001AAC82 /* RequestRaterViewController.swift */; };
+		449F967C2A5B4010001AAC82 /* RequestRaterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 449F967A2A5B4010001AAC82 /* RequestRaterViewController.xib */; };
 		44C6B62B2A228D8200C2F013 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B5C22A228D8200C2F013 /* Configuration.swift */; };
 		44C6B62C2A228D8200C2F013 /* Newspiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B5C42A228D8200C2F013 /* Newspiece.swift */; };
 		44C6B62D2A228D8200C2F013 /* DeletedWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B5C52A228D8200C2F013 /* DeletedWorker.swift */; };
@@ -173,6 +175,8 @@
 		447362DB2A2D49CE00823D0C /* ModelsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsTableViewController.swift; sourceTree = "<group>"; };
 		447362DD2A2D6AA900823D0C /* ModelsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsCache.swift; sourceTree = "<group>"; };
 		4485C63E2A2A9E7F0040D864 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		449F96792A5B4010001AAC82 /* RequestRaterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestRaterViewController.swift; sourceTree = "<group>"; };
+		449F967A2A5B4010001AAC82 /* RequestRaterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RequestRaterViewController.xib; sourceTree = "<group>"; };
 		44C6B5C22A228D8200C2F013 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		44C6B5C42A228D8200C2F013 /* Newspiece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newspiece.swift; sourceTree = "<group>"; };
 		44C6B5C52A228D8200C2F013 /* DeletedWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletedWorker.swift; sourceTree = "<group>"; };
@@ -414,6 +418,15 @@
 			path = "Thumbnail Browser";
 			sourceTree = "<group>";
 		};
+		449F96782A5B3FF9001AAC82 /* Request Rater */ = {
+			isa = PBXGroup;
+			children = (
+				449F96792A5B4010001AAC82 /* RequestRaterViewController.swift */,
+				449F967A2A5B4010001AAC82 /* RequestRaterViewController.xib */,
+			);
+			path = "Request Rater";
+			sourceTree = "<group>";
+		};
 		44ADBFBE2A54C2FC00F667B8 /* Album View */ = {
 			isa = PBXGroup;
 			children = (
@@ -564,6 +577,7 @@
 		44C6B6D32A233AF500C2F013 /* Image Browsers */ = {
 			isa = PBXGroup;
 			children = (
+				449F96782A5B3FF9001AAC82 /* Request Rater */,
 				44ADBFBE2A54C2FC00F667B8 /* Album View */,
 				446643C72A53F81B0047F26B /* Detail View */,
 				446643C82A54C0200047F26B /* Thumbnail Browser */,
@@ -696,6 +710,7 @@
 				441EB37C2A21DC1F00E449BE /* LaunchScreen.storyboard in Resources */,
 				441EB3792A21DC1F00E449BE /* Assets.xcassets in Resources */,
 				441EB3772A21DC1E00E449BE /* Main.storyboard in Resources */,
+				449F967C2A5B4010001AAC82 /* RequestRaterViewController.xib in Resources */,
 				44C6B6A02A22B2F000C2F013 /* LICENSE in Resources */,
 				44142AC42A242B4E0096FFBA /* .swift-version in Resources */,
 			);
@@ -798,6 +813,7 @@
 				44F2AA772A26B81200FB8E93 /* RatingsAPIs.swift in Sources */,
 				44C6B67C2A228D8200C2F013 /* InterrogationStatus.swift in Sources */,
 				44C6B6382A228D8200C2F013 /* UserKudosDetails.swift in Sources */,
+				449F967B2A5B4010001AAC82 /* RequestRaterViewController.swift in Sources */,
 				44C6B65B2A228D8200C2F013 /* RequestStatusKobold.swift in Sources */,
 				4401A7582A5652DB00C875E4 /* AlbumSectionTitleCollectionReusableView.swift in Sources */,
 				44C6B64E2A228D8200C2F013 /* PopInput.swift in Sources */,
