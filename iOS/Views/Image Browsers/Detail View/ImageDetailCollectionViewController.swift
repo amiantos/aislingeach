@@ -170,7 +170,7 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         if let indexPath = collectionView.indexPathsForVisibleItems.first,
            let image = resultsController?.object(at: indexPath) as? GeneratedImage {
 
-            let alert = UIAlertController(title: "Confirm", message: "Do you sure you want to delete the image? This cannot be reverted.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Confirm", message: "Are you sure you want to delete this image? This cannot be reverted.", preferredStyle: .alert)
             let deleteAction = UIAlertAction(title: "Delete", style: .destructive)  { _ in
                 ImageDatabase.standard.deleteImage(image) { generatedImage in
                     if generatedImage == nil {
