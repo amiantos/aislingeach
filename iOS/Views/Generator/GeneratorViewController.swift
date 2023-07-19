@@ -272,7 +272,7 @@ class GeneratorViewController: UIViewController {
 
         hideKeyboardWhenTappedAround()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(checkIfCurrentGenerationWasDeleted), name: .deletedGeneratedImage, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(checkIfCurrentGenerationWasDeleted), name: .imageDatabaseUpdated, object: nil)
 
         upscalerPickButton.showsMenuAsPrimaryAction = true
         upscalerPickButton.changesSelectionAsPrimaryAction = true

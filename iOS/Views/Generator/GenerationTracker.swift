@@ -91,8 +91,12 @@ class GenerationTracker {
             if let data = data {
                 Log.debug("\(data)")
                 if data.done ?? false {
-                    if let generations = data.generations, !generations.isEmpty
-                    {
+                    self.currentGenerationBody = nil
+                    self.currentGenerationRequestIdentifier = nil
+                    self.requestIsProcessing = false
+
+                    if let generations = data.generations, !generations.isEmpty {
+                        var count = 0
                         generations.forEach { generation in
                             Log.debug("\(generation)")
                             if generation.censored ?? false {
@@ -107,9 +111,10 @@ class GenerationTracker {
                                                 if let image = generatedImage {
                                                     Log.info("\(identifier) - Saved Image ID \(image.uuid!)")
                                                     self.delegate?.displayCompletedGeneration(generatedImage: image)
-                                                    self.currentGenerationBody = nil
-                                                    self.currentGenerationRequestIdentifier = nil
-                                                    self.requestIsProcessing = false
+                                                    count += 1
+                                                    if count == generations.count {
+                                                        NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
+                                                    }
                                                 }
                                             })
                                         }
@@ -120,9 +125,6 @@ class GenerationTracker {
                     } else {
                         Log.error("No generations found within the request... this also shouldn't happen, probably.")
                         self.delegate?.showErrorStatus(title: "Error", message: "Task completed, but no generations were found. :(")
-                        self.currentGenerationBody = nil
-                        self.currentGenerationRequestIdentifier = nil
-                        self.requestIsProcessing = false
                     }
                 } else {
                     Log.error("Request was not marked as done yet... this shouldn't happen.")

@@ -28,6 +28,8 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
 
     var showHidden: Bool = false
 
+    var isLoading: Bool = false
+
     var presetAlbums: [AlbumStruct] = []
     var promptAlbums: [AlbumStruct] = []
 
@@ -45,11 +47,17 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
             navigationItem.title = "Hidden Gallery"
         }
 
+        NotificationCenter.default.addObserver(self, selector: #selector(loadDataSource), name: .imageDatabaseUpdated, object: nil)
+
         loadDataSource()
     }
 
 
-    fileprivate func loadDataSource() {
+    @objc fileprivate func loadDataSource() {
+        if isLoading { return }
+
+        isLoading = true
+
         presetAlbums = []
         promptAlbums = []
         
@@ -62,25 +70,30 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
         }
 
         // Do any additional setup after loading the view.
-        ImageDatabase.standard.getPopularPromptKeywords(hidden: showHidden) { [self] keywords in
-            let sortedResults = keywords.sorted { lhs, rhs in
-                if lhs.value == rhs.value {
-                    return lhs.key.lowercased() < rhs.key.lowercased()
+        DispatchQueue.global().async { [self] in
+            ImageDatabase.standard.getPopularPromptKeywords(hidden: showHidden) { [self] keywords in
+                let sortedResults = keywords.sorted { lhs, rhs in
+                    if lhs.value == rhs.value {
+                        return lhs.key.lowercased() < rhs.key.lowercased()
+                    }
+                    return lhs.value > rhs.value
                 }
-                return lhs.value > rhs.value
-            }
 
-            for data in sortedResults {
-                promptAlbums.append(
-                    AlbumStruct(
-                        count: "\(data.value.formatted())",
-                        predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "promptSimple CONTAINS %@", data.key), NSPredicate(format: "isHidden = %d", showHidden)]),
-                        title: data.key,
-                        image: nil
+                for data in sortedResults {
+                    promptAlbums.append(
+                        AlbumStruct(
+                            count: "\(data.value.formatted())",
+                            predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "promptSimple CONTAINS %@", data.key), NSPredicate(format: "isHidden = %d", showHidden)]),
+                            title: data.key,
+                            image: nil
+                        )
                     )
-                )
+                }
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    self.isLoading = false
+                }
             }
-            collectionView.reloadData()
         }
     }
 
@@ -119,6 +132,9 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
 
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "albumSectionTitle", for: indexPath) as? AlbumSectionTitleCollectionReusableView {
+            if indexPath.section == 0 {
+                return UICollectionReusableView()
+            }
             switch (indexPath.section) {
             case 1:
                 sectionHeader.sectionLabel.text = promptAlbums.count > 0 ? "Prompt Keywords" : ""
