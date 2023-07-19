@@ -1703,13 +1703,7 @@
                             <outlet property="delegate" destination="wV3-Ix-qjo" id="wye-rW-T2a"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Gallery" largeTitleDisplayMode="always" id="rcT-Kh-TEJ">
-                        <barButtonItem key="rightBarButtonItem" title="Refresh" image="arrow.clockwise" catalog="system" id="aqe-0m-Pex">
-                            <connections>
-                                <action selector="refreshButtonAction:" destination="wV3-Ix-qjo" id="Gkh-gn-LUy"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Gallery" largeTitleDisplayMode="always" id="rcT-Kh-TEJ"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7ir-OT-JZ9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

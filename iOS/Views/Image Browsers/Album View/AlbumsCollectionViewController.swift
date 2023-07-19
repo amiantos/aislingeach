@@ -33,10 +33,6 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     var presetAlbums: [AlbumStruct] = []
     var promptAlbums: [AlbumStruct] = []
 
-    @IBAction func refreshButtonAction(_ sender: UIBarButtonItem) {
-        loadDataSource()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
