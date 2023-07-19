@@ -214,12 +214,12 @@ extension ThumbnailBrowserViewController {
 
         if isEditing {
             let editActions = UIMenu(title: "", options: .displayInline, children: [
+                UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up"), state: .off, handler: { [self] _ in
+                    shareSelectedImages()
+                }),
                 UIAction(title: "Favorite", image: UIImage(systemName: "star"), state: .off, handler: { [self] _ in
                     favoriteSelectedImages()
                 }),
-//                UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up"), state: .off, handler: { [self] _ in
-//                    Log.debug("Share button pressed...")
-//                }),
                 UIAction(title: "Hide", image: UIImage(systemName: "eye.slash"), state: .off, handler: { [self] _ in
                     hideSelectedImages()
                 }),
@@ -325,6 +325,36 @@ extension ThumbnailBrowserViewController {
         }
     }
 
+    func shareSelectedImages() {
+
+        if let selectedCells = collectionView.indexPathsForSelectedItems {
+            var images: [ItemDetailSource] = []
+
+            selectedCells.forEach { indexPath in
+                guard let object = resultsController?.object(at: indexPath) else {
+                    fatalError("Attempt to share a cell without a managed object")
+                }
+                var image: UIImage?
+                if let cachedImage = ImageCache.standard.getImage(key: NSString(string: "\(object.id)")) {
+                    image = cachedImage
+                } else if let freshImage = UIImage(data: object.image!) {
+                    image = freshImage
+                }
+
+                if let image = image,
+                    let imageData = image.pngData(),
+                    let pngImage = UIImage(data: imageData ) {
+                    let prompt = object.promptSimple ?? object.id.debugDescription
+                    images.append(ItemDetailSource(name: "\(prompt)", image: pngImage))
+                }
+            }
+
+            let ac = UIActivityViewController(activityItems: images, applicationActivities: nil)
+            ac.popoverPresentationController?.sourceView = navigationController?.toolbar
+            present(ac, animated: true)
+        }
+    }
+
     func toggleSelectionMode() {
         multiSelectMode = !multiSelectMode
         collectionView.allowsSelection = false
@@ -332,4 +362,6 @@ extension ThumbnailBrowserViewController {
         collectionView.allowsMultipleSelection = multiSelectMode
         setupMenu()
     }
+
+    
 }
