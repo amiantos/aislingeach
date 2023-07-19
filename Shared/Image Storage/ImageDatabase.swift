@@ -82,6 +82,7 @@ class ImageDatabase {
                 generatedImage.isFavorite = !generatedImage.isFavorite
                 try self.mainManagedObjectContext.save()
                 self.saveContext()
+                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImage)
             } catch {
                 completion(nil)
@@ -95,6 +96,7 @@ class ImageDatabase {
                 generatedImage.isHidden = !generatedImage.isHidden
                 try self.mainManagedObjectContext.save()
                 self.saveContext()
+                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImage)
             } catch {
                 completion(nil)
@@ -110,6 +112,7 @@ class ImageDatabase {
                 }
                 try self.mainManagedObjectContext.save()
                 self.saveContext()
+                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImages)
             } catch {
                 completion(nil)
@@ -125,6 +128,7 @@ class ImageDatabase {
                 }
                 try self.mainManagedObjectContext.save()
                 self.saveContext()
+                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImages)
             } catch {
                 completion(nil)
@@ -140,6 +144,7 @@ class ImageDatabase {
                 }
                 try self.mainManagedObjectContext.save()
                 self.saveContext()
+                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImages)
             } catch {
                 completion(nil)
@@ -155,6 +160,7 @@ class ImageDatabase {
                 }
                 try self.mainManagedObjectContext.save()
                 self.saveContext()
+                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImages)
             } catch {
                 completion(nil)
@@ -166,7 +172,7 @@ class ImageDatabase {
         // TODO: Should trash...
         mainManagedObjectContext.delete(generatedImage)
         saveContext()
-        NotificationCenter.default.post(name: .deletedGeneratedImage, object: nil)
+        NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
         completion(nil)
     }
 
@@ -175,7 +181,7 @@ class ImageDatabase {
             mainManagedObjectContext.delete(image)
         }
         saveContext()
-        NotificationCenter.default.post(name: .deletedGeneratedImage, object: nil)
+        NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
     }
 
     func pruneImages() {
@@ -189,6 +195,7 @@ class ImageDatabase {
                     mainManagedObjectContext.delete(image)
                 }
                 saveContext()
+                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
             } catch {
                 Log.debug("Uh oh...")
             }
@@ -232,7 +239,6 @@ class ImageDatabase {
                             prompt.removeSubrange(dotRange.lowerBound..<prompt.endIndex)
                         }
                         for keyword in prompt.components(separatedBy: ", ") {
-                            Log.debug("Keyword: \(keyword)")
                             var cleanedKeyword = keyword.replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "")
                             cleanedKeyword = cleanedKeyword.replacing(/:(\d+(?:\.\d+)?)+/, with: "")
                             if var data = keywords[cleanedKeyword] {

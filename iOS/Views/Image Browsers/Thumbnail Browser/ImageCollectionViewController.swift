@@ -262,8 +262,17 @@ extension ThumbnailBrowserViewController {
                 }
                 images.append(object)
             }
-            ImageDatabase.standard.deleteImages(images)
-            self.toggleEditing()
+            if images.count > 0 {
+                let alert = UIAlertController(title: "Confirm", message: "Are you sure you want to delete these \(images.count) images? This cannot be reverted.", preferredStyle: .alert)
+                let deleteAction = UIAlertAction(title: "Delete", style: .destructive)  { _ in
+                    ImageDatabase.standard.deleteImages(images)
+                    self.toggleEditing()
+                }
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+                alert.addAction(deleteAction)
+                alert.addAction(cancelAction)
+                self.present(alert, animated: true)
+            }
         }
     }
 

@@ -108,6 +108,7 @@ extension Data {
 
 extension Notification.Name {
     static let deletedGeneratedImage = Notification.Name("deletedGeneratedImage")
+    static let imageDatabaseUpdated = Notification.Name("imageDatabaseUpdated")
 }
 
 class UIRoundedCornerView: UIView {
