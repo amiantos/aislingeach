@@ -22,6 +22,8 @@
 		441EB37C2A21DC1F00E449BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 441EB37A2A21DC1F00E449BE /* LaunchScreen.storyboard */; };
 		446643C22A53637D0047F26B /* ImageDetailCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446643C12A53637D0047F26B /* ImageDetailCollectionViewController.swift */; };
 		446643C42A5367610047F26B /* ImageDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446643C32A5367610047F26B /* ImageDetailCollectionViewCell.swift */; };
+		446E609E2A6898770073D545 /* RequestsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446E609D2A6898770073D545 /* RequestsTableViewController.swift */; };
+		446E60A02A6898930073D545 /* RequestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446E609F2A6898930073D545 /* RequestsTableViewCell.swift */; };
 		446FE7692A67A3F2003203A5 /* ImageDetailSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446FE7682A67A3F2003203A5 /* ImageDetailSource.swift */; };
 		447362DC2A2D49CE00823D0C /* ModelsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447362DB2A2D49CE00823D0C /* ModelsTableViewController.swift */; };
 		447362DE2A2D6AA900823D0C /* ModelsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447362DD2A2D6AA900823D0C /* ModelsCache.swift */; };
@@ -173,6 +175,8 @@
 		441EB37D2A21DC1F00E449BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		446643C12A53637D0047F26B /* ImageDetailCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailCollectionViewController.swift; sourceTree = "<group>"; };
 		446643C32A5367610047F26B /* ImageDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailCollectionViewCell.swift; sourceTree = "<group>"; };
+		446E609D2A6898770073D545 /* RequestsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestsTableViewController.swift; sourceTree = "<group>"; };
+		446E609F2A6898930073D545 /* RequestsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestsTableViewCell.swift; sourceTree = "<group>"; };
 		446FE7682A67A3F2003203A5 /* ImageDetailSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailSource.swift; sourceTree = "<group>"; };
 		447362DB2A2D49CE00823D0C /* ModelsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsTableViewController.swift; sourceTree = "<group>"; };
 		447362DD2A2D6AA900823D0C /* ModelsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsCache.swift; sourceTree = "<group>"; };
@@ -421,6 +425,15 @@
 			path = "Thumbnail Browser";
 			sourceTree = "<group>";
 		};
+		446E609C2A68980C0073D545 /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				446E609D2A6898770073D545 /* RequestsTableViewController.swift */,
+				446E609F2A6898930073D545 /* RequestsTableViewCell.swift */,
+			);
+			path = Requests;
+			sourceTree = "<group>";
+		};
 		449F96782A5B3FF9001AAC82 /* Request Rater */ = {
 			isa = PBXGroup;
 			children = (
@@ -561,6 +574,7 @@
 		44C6B69D2A22B10500C2F013 /* Generator */ = {
 			isa = PBXGroup;
 			children = (
+				446E609C2A68980C0073D545 /* Requests */,
 				44D13DE52A330714004648CD /* GenerationTracker.swift */,
 				441EB3732A21DC1E00E449BE /* GeneratorViewController.swift */,
 				447362DB2A2D49CE00823D0C /* ModelsTableViewController.swift */,
@@ -739,6 +753,7 @@
 				44C6B6782A228D8200C2F013 /* TeamDetails.swift in Sources */,
 				44C6B6302A228D8200C2F013 /* GenerationInputKobold.swift in Sources */,
 				44F2AA712A26B81200FB8E93 /* TeamsGetResponse.swift in Sources */,
+				446E60A02A6898930073D545 /* RequestsTableViewCell.swift in Sources */,
 				44C6B6802A228D8200C2F013 /* StatusModesBody.swift in Sources */,
 				44C6B6642A228D8200C2F013 /* ModifyUserInput.swift in Sources */,
 				44C6B64A2A228D8200C2F013 /* UsageDetails.swift in Sources */,
@@ -801,6 +816,7 @@
 				44C6B64D2A228D8200C2F013 /* ModelPayloadRootStable.swift in Sources */,
 				44C6B6592A228D8200C2F013 /* KudosAwardBody.swift in Sources */,
 				44C6B6322A228D8200C2F013 /* DeleteTimeoutIPInput.swift in Sources */,
+				446E609E2A6898770073D545 /* RequestsTableViewController.swift in Sources */,
 				44C6B6AB2A2333D500C2F013 /* ImageModel.xcdatamodeld in Sources */,
 				44C6B6482A228D8200C2F013 /* ModifyTeam.swift in Sources */,
 				44C6B62C2A228D8200C2F013 /* Newspiece.swift in Sources */,

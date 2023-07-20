@@ -154,6 +154,9 @@ class GenerationTracker {
         HordeV2API.postImageAsyncGenerate(body: body, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
             if let data = data, let generationIdentifier = data._id {
                 Log.debug("\(data)")
+                ImageDatabase.standard.saveRequest(id: UUID(uuidString: generationIdentifier)!, request: body) { request in
+                    Log.debug("Request saved successfully.")
+                }
                 self.setNewGenerationRequest(generationIdentifier: generationIdentifier, body: body)
             } else if let error = error {
                 Log.debug("Error: \(error.localizedDescription)")

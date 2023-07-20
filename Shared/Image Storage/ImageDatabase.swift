@@ -13,6 +13,7 @@ class ImageDatabase {
     static let standard: ImageDatabase = .init()
 
     var mainManagedObjectContext: NSManagedObjectContext
+    var privateManagedObjectContext: NSManagedObjectContext
     var persistentContainer: NSPersistentContainer
 
     init() {
@@ -26,6 +27,7 @@ class ImageDatabase {
             return container
         }()
         mainManagedObjectContext = persistentContainer.viewContext
+        privateManagedObjectContext = persistentContainer.newBackgroundContext()
     }
 
     deinit {
@@ -203,18 +205,18 @@ class ImageDatabase {
     }
 
     func getCountAndRecentImageForPredicate(predicate: NSPredicate, completion: @escaping ((Int, GeneratedImage?)) -> Void) {
-        mainManagedObjectContext.perform { [self] in
+        privateManagedObjectContext.perform { [self] in
             do {
                 let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
                 fetchRequest.predicate = predicate
                 fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
                 
-                let count = try mainManagedObjectContext.count(for: fetchRequest)
+                let count = try privateManagedObjectContext.count(for: fetchRequest)
                 if count == 0 {
                     completion((0, nil))
                 } else {
                     fetchRequest.fetchLimit = 1
-                    let images = try mainManagedObjectContext.fetch(fetchRequest) as [GeneratedImage]
+                    let images = try privateManagedObjectContext.fetch(fetchRequest) as [GeneratedImage]
                     completion((count, images[0]))
                 }
             } catch {
@@ -224,13 +226,13 @@ class ImageDatabase {
     }
 
     func getPopularPromptKeywords(hidden: Bool, completion: @escaping ([String: Int]) -> Void) {
-        mainManagedObjectContext.perform { [self] in
+        privateManagedObjectContext.perform { [self] in
             do {
                 let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
                 fetchRequest.predicate = NSPredicate(format: "isHidden = %d", hidden)
                 fetchRequest.propertiesToFetch = ["promptSimple"]
                 fetchRequest.resultType = .dictionaryResultType
-                let prompts = try mainManagedObjectContext.fetch(fetchRequest) as [AnyObject]
+                let prompts = try privateManagedObjectContext.fetch(fetchRequest) as [AnyObject]
 
                 var keywords: [String: Int] = [:]
                 for obj in prompts {
@@ -270,6 +272,34 @@ class ImageDatabase {
                 completion(nil)
             }
         }
+    }
+
+    // MARK: - Requests
+
+    func saveRequest(id: UUID, request: GenerationInputStable, completion: @escaping (HordeRequest?) -> Void) {
+        mainManagedObjectContext.perform {
+            do {
+                let hordeRequest = HordeRequest(context: self.mainManagedObjectContext)
+                hordeRequest.uuid = UUID()
+                hordeRequest.prompt = request.prompt
+                hordeRequest.dateCreated = Date()
+                hordeRequest.fullRequest = request.toJSONString()
+                hordeRequest.n = Int16(request.params?.n ?? 0)
+                hordeRequest.message = "Waiting..."
+                hordeRequest.status = "active"
+                try self.mainManagedObjectContext.save()
+                self.saveContext()
+                completion(hordeRequest)
+            } catch {
+                completion(nil)
+            }
+        }
+    }
+
+    func deleteRequest(_ hordeRequest: HordeRequest, completion: @escaping (HordeRequest?) -> Void) {
+        mainManagedObjectContext.delete(hordeRequest)
+        saveContext()
+        completion(nil)
     }
 
 //    func fetchGames(completion: @escaping ([Game]?) -> Void) {
