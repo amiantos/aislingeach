@@ -222,19 +222,15 @@ class GenerationTracker {
         func createNewGenerationRequest(body: GenerationInputStable) {
             Log.info("Submitting a new generation request...")
 
-            delegate?.updateProcessingStatus(title: "Falling asleep...", message: "")
-
-            if requestIsProcessing || currentGenerationRequestIdentifier != nil {
-                delegate?.showErrorStatus(title: "Error", message: "A curent request is currently processing. Please wait until it is finished.")
-            }
+            delegate?.updateProcessingStatus(title: "Submitting your request...", message: "")
 
             HordeV2API.postImageAsyncGenerate(body: body, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
                 if let data = data, let generationIdentifier = data._id {
                     Log.debug("\(data)")
                     ImageDatabase.standard.saveRequest(id: UUID(uuidString: generationIdentifier)!, request: body) { request in
-                        Log.debug("Request saved successfully.")
+                        Log.debug("\(generationIdentifier) - Request saved successfully.")
                     }
-                    self.setNewGenerationRequest(generationIdentifier: generationIdentifier, body: body)
+                    self.delegate?.updateProcessingStatus(title: "Request submitted!", message: "Please wait...")
                 } else if let error = error {
                     Log.debug("Error: \(error.localizedDescription)")
                     if error.code == 401 {
