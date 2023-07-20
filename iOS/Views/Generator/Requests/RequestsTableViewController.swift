@@ -124,6 +124,16 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
     }
     */
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let request = resultsController?.object(at: indexPath) else { fatalError("Attempt to delete a row without an object") }
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "imageGalleryView") as! ThumbnailBrowserViewController
+        controller.setup(title: request.prompt ?? request.uuid?.uuidString ?? "", predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "requestId = %@", request.uuid! as CVarArg), NSPredicate(format: "isHidden = %d", false)]))
+        navigationController?.pushViewController(controller, animated: true)
+        
+    }
+
 
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
