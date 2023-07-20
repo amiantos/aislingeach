@@ -24,12 +24,26 @@ class RequestsTableViewCell: UITableViewCell {
     func setup(request: HordeRequest) {
         promptLabel.text = request.prompt
         imageCountLabel.text = "\(request.n) Images"
-        messageLabel.text = "Waiting..."
+        messageLabel.text = request.message
         dateLabel.text = request.dateCreated?.formatted()
         if request.status == "active" {
             activityIndicator.startAnimating()
         } else {
             activityIndicator.stopAnimating()
+            ImageDatabase.standard.fetchFirstImage(requestId: request.uuid!) { image in
+                DispatchQueue.main.async { [self] in
+                    guard let generatedImage = image else { return }
+                    if let cachedImage = ImageCache.standard.getImage(key: NSString(string: generatedImage.uuid!.uuidString)) {
+                        Log.debug("Reloading cached UIImage...")
+                        imagePreviewView.image = cachedImage
+                    } else {
+                        if let image = UIImage(data: generatedImage.image!) {
+                            imagePreviewView.image = image
+                            ImageCache.standard.cacheImage(image: image, key: NSString(string: generatedImage.uuid!.uuidString))
+                        }
+                    }
+                }
+            }
         }
     }
 

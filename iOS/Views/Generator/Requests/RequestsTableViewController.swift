@@ -85,15 +85,15 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
         switch type {
         case .insert:
             ops.append(BlockOperation(block: { [weak self] in
-                self?.tableView.insertRows(at: [newIndexPath!], with: .fade)
+                self?.tableView.insertRows(at: [newIndexPath!], with: .automatic)
             }))
         case .delete:
             ops.append(BlockOperation(block: { [weak self] in
-                self?.tableView.deleteRows(at: [indexPath!], with: .fade)
+                self?.tableView.deleteRows(at: [indexPath!], with: .automatic)
             }))
         case .update:
             ops.append(BlockOperation(block: { [weak self] in
-                self?.tableView.reloadRows(at: [indexPath!], with: .fade)
+                self?.tableView.reloadRows(at: [indexPath!], with: .none)
             }))
         case .move:
             ops.append(BlockOperation(block: { [weak self] in

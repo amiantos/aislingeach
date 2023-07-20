@@ -893,7 +893,7 @@
                                             <rect key="frame" x="20" y="16" width="91" height="91"/>
                                             <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                         </view>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mn7-cx-58J">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mn7-cx-58J">
                                             <rect key="frame" x="20" y="16" width="91" height="91"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="Mn7-cx-58J" secondAttribute="height" multiplier="1:1" id="pPc-p8-HLV"/>

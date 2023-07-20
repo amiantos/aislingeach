@@ -47,6 +47,15 @@ class ImageDatabase {
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
+
+        if privateManagedObjectContext.hasChanges {
+            do {
+                try privateManagedObjectContext.save()
+            } catch {
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+        }
     }
 
     func delete(_ object: NSManagedObject) {
@@ -55,7 +64,7 @@ class ImageDatabase {
 
     // MARK: - Images
 
-    func saveImage(id: String, requestId: String, image: Data, request: GenerationInputStable, response: GenerationStable, completion: @escaping (GeneratedImage?) -> Void) {
+    func saveImage(id: String, requestId: String, image: Data, request: HordeRequest, response: GenerationStable, completion: @escaping (GeneratedImage?) -> Void) {
         mainManagedObjectContext.perform {
             do {
                 let generatedImage = GeneratedImage(context: self.mainManagedObjectContext)
@@ -63,14 +72,13 @@ class ImageDatabase {
                 generatedImage.uuid = UUID(uuidString: id)!
                 generatedImage.requestId = UUID(uuidString: requestId)!
                 generatedImage.dateCreated = Date()
-                generatedImage.fullRequest = request.toJSONString()
+                generatedImage.fullRequest = request.fullRequest
                 generatedImage.promptSimple = request.prompt
                 var prunedResponse = response
                 prunedResponse.img = nil
                 generatedImage.fullResponse = prunedResponse.toJSONString()
                 generatedImage.backend = "horde"
                 try self.mainManagedObjectContext.save()
-                self.saveContext()
                 completion(generatedImage)
             } catch {
                 completion(nil)
@@ -78,12 +86,39 @@ class ImageDatabase {
         }
     }
 
+    func fetchFirstImage(requestId: UUID, completion: @escaping (GeneratedImage?) -> Void) {
+        mainManagedObjectContext.perform {
+            do {
+                let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
+                fetchRequest.predicate = NSPredicate(format: "requestId == %@", requestId as CVarArg)
+                if let image = try? self.mainManagedObjectContext.fetch(fetchRequest).first {
+                    completion(image)
+                } else {
+                    completion(nil)
+                }
+            }
+        }
+    }
+
+    //    func fetchPage(by uuid: String, completion: @escaping (Page?) -> Void) {
+    //        mainManagedObjectContext.perform {
+    //            do {
+    //                let fetchRequest: NSFetchRequest<Page> = Page.fetchRequest()
+    //                fetchRequest.predicate = NSPredicate(format: "uuid == %@", uuid)
+    //                if let page = try? self.mainManagedObjectContext.fetch(fetchRequest).first {
+    //                    completion(page)
+    //                } else {
+    //                    completion(nil)
+    //                }
+    //            }
+    //        }
+    //    }
+
     func toggleImageFavorite(generatedImage: GeneratedImage, completion: @escaping (GeneratedImage?) -> Void) {
         mainManagedObjectContext.perform {
             do {
                 generatedImage.isFavorite = !generatedImage.isFavorite
                 try self.mainManagedObjectContext.save()
-                self.saveContext()
                 NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImage)
             } catch {
@@ -97,7 +132,6 @@ class ImageDatabase {
             do {
                 generatedImage.isHidden = !generatedImage.isHidden
                 try self.mainManagedObjectContext.save()
-                self.saveContext()
                 NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImage)
             } catch {
@@ -113,7 +147,6 @@ class ImageDatabase {
                     image.isHidden = true
                 }
                 try self.mainManagedObjectContext.save()
-                self.saveContext()
                 NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImages)
             } catch {
@@ -129,7 +162,6 @@ class ImageDatabase {
                     image.isHidden = false
                 }
                 try self.mainManagedObjectContext.save()
-                self.saveContext()
                 NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImages)
             } catch {
@@ -145,7 +177,6 @@ class ImageDatabase {
                     image.isFavorite = true
                 }
                 try self.mainManagedObjectContext.save()
-                self.saveContext()
                 NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImages)
             } catch {
@@ -161,7 +192,6 @@ class ImageDatabase {
                     image.isFavorite = false
                 }
                 try self.mainManagedObjectContext.save()
-                self.saveContext()
                 NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImages)
             } catch {
@@ -196,7 +226,7 @@ class ImageDatabase {
                     // TODO: Should trash...
                     mainManagedObjectContext.delete(image)
                 }
-                saveContext()
+                try mainManagedObjectContext.save()
                 NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
             } catch {
                 Log.debug("Uh oh...")
@@ -280,7 +310,7 @@ class ImageDatabase {
         mainManagedObjectContext.perform {
             do {
                 let hordeRequest = HordeRequest(context: self.mainManagedObjectContext)
-                hordeRequest.uuid = UUID()
+                hordeRequest.uuid = id
                 hordeRequest.prompt = request.prompt
                 hordeRequest.dateCreated = Date()
                 hordeRequest.fullRequest = request.toJSONString()
@@ -288,7 +318,6 @@ class ImageDatabase {
                 hordeRequest.message = "Waiting..."
                 hordeRequest.status = "active"
                 try self.mainManagedObjectContext.save()
-                self.saveContext()
                 completion(hordeRequest)
             } catch {
                 completion(nil)
@@ -301,6 +330,68 @@ class ImageDatabase {
         saveContext()
         completion(nil)
     }
+
+    func fetchPendingRequests(completion: @escaping ([HordeRequest]?) -> Void) {
+        mainManagedObjectContext.perform { [self] in
+            do {
+                let fetchRequest: NSFetchRequest<HordeRequest> = HordeRequest.fetchRequest()
+                fetchRequest.predicate = NSPredicate(format: "status = %@", "active")
+                fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: true)]
+                let requests = try mainManagedObjectContext.fetch(fetchRequest) as [HordeRequest]
+                completion(requests)
+            } catch {
+                completion(nil)
+            }
+        }
+    }
+
+    func updatePendingRequest(request: HordeRequest, check: RequestStatusCheck, completion: @escaping (HordeRequest?) -> Void) {
+        mainManagedObjectContext.perform {
+            do {
+                if let waitTime = check.waitTime,
+                   let queuePosition = check.queuePosition,
+                   let processing = check.processing,
+                   let waiting = check.waiting,
+                   let finished = check.finished {
+                    if queuePosition > 0 && waitTime > 0 {
+                        request.message = "#\(queuePosition) waiting to dream (\(waitTime)s)"
+                    } else if queuePosition > 0 {
+                        request.message = "#\(queuePosition) waiting to dream"
+                    } else {
+                        request.message = "\(waiting) waiting, \(processing) processing, \(finished) finished"
+                    }
+                    try self.mainManagedObjectContext.save()
+                }
+                completion(request)
+            } catch {
+                completion(nil)
+            }
+        }
+    }
+
+    func updatePendingRequestErrorState(request: HordeRequest, message: String, completion: @escaping (HordeRequest?) -> Void) {
+        mainManagedObjectContext.perform {
+            do {
+                request.message = message
+                request.status = "error"
+                try self.mainManagedObjectContext.save()
+                completion(request)
+            } catch {
+                completion(nil)
+            }
+        }
+    }
+
+    func updatePendingRequestFinishedState(request: HordeRequest, status:  RequestStatusStable) {
+        request.message = "Finished"
+        if let kudosCost = (status.kudos as? NSDecimalNumber)?.intValue {
+            request.totalKudosCost = Int16(kudosCost)
+            request.message = "Finished! Total cost: \(kudosCost)"
+        }
+        request.status = "finished"
+        saveContext()
+    }
+
 
 //    func fetchGames(completion: @escaping ([Game]?) -> Void) {
 //        mainManagedObjectContext.perform {
