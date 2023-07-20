@@ -330,7 +330,7 @@ extension GeneratorViewController: GenerationTrackerDelegate {
         generationEffectView.isHidden = false
         generationWarningImageView.isHidden = true
         generationSpinner.startAnimating()
-        generateButton.isEnabled = false
+//        generateButton.isEnabled = false
         deleteButton.isEnabled = false
         favoriteButton.isEnabled = false
     }
