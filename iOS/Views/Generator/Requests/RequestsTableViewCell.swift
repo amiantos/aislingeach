@@ -15,7 +15,7 @@ class RequestsTableViewCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var imageCountLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -30,18 +30,24 @@ class RequestsTableViewCell: UITableViewCell {
             activityIndicator.startAnimating()
         } else {
             activityIndicator.stopAnimating()
-            ImageDatabase.standard.fetchFirstImage(requestId: request.uuid!) { image in
-                DispatchQueue.main.async { [self] in
+            if let requestId = request.uuid {
+                ImageDatabase.standard.fetchFirstImage(requestId: requestId) { image in
                     guard let generatedImage = image else { return }
-                    if let cachedImage = ImageCache.standard.getImage(key: NSString(string: generatedImage.uuid!.uuidString)) {
-                        Log.debug("Reloading cached UIImage...")
-                        imagePreviewView.image = cachedImage
-                    } else {
-                        if let image = UIImage(data: generatedImage.image!) {
-                            imagePreviewView.image = image
-                            ImageCache.standard.cacheImage(image: image, key: NSString(string: generatedImage.uuid!.uuidString))
-                        }
-                    }
+                    self.loadImage(generatedImage: generatedImage)
+                }
+            }
+        }
+    }
+
+    func loadImage(generatedImage: GeneratedImage) {
+        DispatchQueue.main.async { [self] in
+            if let cachedImage = ImageCache.standard.getImage(key: NSString(string: generatedImage.uuid!.uuidString)) {
+                Log.debug("Reloading cached UIImage...")
+                imagePreviewView.image = cachedImage
+            } else {
+                if let image = UIImage(data: generatedImage.image!) {
+                    imagePreviewView.image = image
+                    ImageCache.standard.cacheImage(image: image, key: NSString(string: generatedImage.uuid!.uuidString))
                 }
             }
         }
@@ -49,8 +55,13 @@ class RequestsTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        Log.debug("Unloading image")
+        imagePreviewView.image = nil
     }
 
 }
