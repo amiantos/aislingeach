@@ -12,10 +12,6 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
 
     var resultsController: NSFetchedResultsController<HordeRequest>?
 
-    @IBAction func buttonTest(_ sender: UIBarButtonItem) {
-
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 

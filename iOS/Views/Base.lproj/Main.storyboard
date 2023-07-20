@@ -977,13 +977,7 @@
                             <outlet property="delegate" destination="nxx-mA-pI9" id="9rE-5w-Gj0"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Requests" id="svT-vJ-9rv">
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="Rrc-uC-U8n">
-                            <connections>
-                                <action selector="buttonTest:" destination="nxx-mA-pI9" id="1fN-XQ-3ii"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Requests" id="svT-vJ-9rv"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4YE-z5-fbs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
