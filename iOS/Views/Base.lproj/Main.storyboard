@@ -17,11 +17,11 @@
             <objects>
                 <viewController title="Generate" id="BYZ-38-t0r" userLabel="Create" customClass="GeneratorViewController" customModule="Aislingeach" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kcy-FI-6QF">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="2716"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="2706"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2oe-09-Zu9">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="2716"/>
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="2706"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tmL-hs-eTv" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="2372.3333333333335"/>
@@ -665,13 +665,13 @@
                                                                                         <rect key="frame" x="0.0" y="165" width="313" height="30"/>
                                                                                         <subviews>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Strength" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NQb-Im-Aqd">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="39" height="30"/>
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="63" height="30"/>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                                 <color key="textColor" systemColor="tertiaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
                                                                                             <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.75" minValue="0.050000000000000003" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Y93-XZ-MTJ">
-                                                                                                <rect key="frame" x="49" y="0.0" width="220" height="31"/>
+                                                                                                <rect key="frame" x="73" y="0.0" width="196" height="31"/>
                                                                                                 <connections>
                                                                                                     <action selector="faceFixStrengthSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="7Ck-Dl-Akm"/>
                                                                                                 </connections>
@@ -814,13 +814,7 @@
                             <constraint firstAttribute="bottom" secondItem="2oe-09-Zu9" secondAttribute="bottom" id="pTh-Sk-DXc"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Create" id="pdJ-B0-C5E">
-                        <barButtonItem key="rightBarButtonItem" title="Requests" id="TJd-Wv-hdG">
-                            <connections>
-                                <segue destination="nxx-mA-pI9" kind="show" id="8eG-4U-R7z"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Create" id="pdJ-B0-C5E"/>
                     <size key="freeformSize" width="393" height="2716"/>
                     <connections>
                         <outlet property="aspectRatioButton" destination="PCG-9z-aHr" id="vqF-2k-WRP"/>
@@ -873,7 +867,7 @@
             </objects>
             <point key="canvasLocation" x="1959.5419847328244" y="-1986.267605633803"/>
         </scene>
-        <!--Requests-->
+        <!--Generation Requests-->
         <scene sceneID="ReN-WP-JUH">
             <objects>
                 <tableViewController id="nxx-mA-pI9" customClass="RequestsTableViewController" customModule="Aislingeach" customModuleProvider="target" sceneMemberID="viewController">
@@ -977,18 +971,25 @@
                             <outlet property="delegate" destination="nxx-mA-pI9" id="9rE-5w-Gj0"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Requests" id="svT-vJ-9rv"/>
+                    <navigationItem key="navigationItem" title="Generation Requests" id="svT-vJ-9rv">
+                        <barButtonItem key="rightBarButtonItem" title="New Request" style="plain" id="el9-gA-Xn5">
+                            <imageReference key="image" image="square.and.pencil" catalog="system" symbolScale="default"/>
+                            <connections>
+                                <segue destination="BYZ-38-t0r" kind="showDetail" id="9z2-ea-W26"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4YE-z5-fbs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3063.3587786259541" y="-2916.1971830985917"/>
+            <point key="canvasLocation" x="1286" y="-2427"/>
         </scene>
         <!--Models-->
         <scene sceneID="qlb-L0-g63">
             <objects>
                 <tableViewController id="Edb-XO-4VS" customClass="ModelsTableViewController" customModule="Aislingeach" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="U5o-jP-O7X">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
@@ -1036,13 +1037,13 @@
                         <imageReference key="image" image="brain.head.profile" catalog="system" symbolScale="default"/>
                     </tabBarItem>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="y3t-qW-2dl">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="y3t-qW-2dl">
+                        <rect key="frame" x="0.0" y="59" width="393" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="aTC-mg-lqC"/>
+                        <segue destination="nxx-mA-pI9" kind="relationship" relationship="rootViewController" id="0F7-VQ-z8j"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VdJ-Iu-CyH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
