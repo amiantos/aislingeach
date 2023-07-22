@@ -10,21 +10,9 @@ import UIKit
 class GeneratorViewController: UIViewController {
     // MARK: - Variables
 
-    let generationTracker: GenerationTracker = .init()
+    
 
     var currentRatioLock: Int?
-
-    var lastGeneratedImage: GeneratedImage? {
-        didSet {
-            if lastGeneratedImage != nil {
-                favoriteButton.isEnabled = true
-                deleteButton.isEnabled = true
-            } else {
-                favoriteButton.isEnabled = false
-                deleteButton.isEnabled = false
-            }
-        }
-    }
 
     var kudosEstimateTimer: Timer?
     var saveGenerationSettingsTimer: Timer?
@@ -33,15 +21,6 @@ class GeneratorViewController: UIViewController {
     // MARK: - IBOutlets
 
     @IBOutlet var scrollView: UIScrollView!
-
-    @IBOutlet var generationEffectView: UIVisualEffectView!
-    @IBOutlet var generationSpinner: UIActivityIndicatorView!
-
-    @IBOutlet var generationWarningImageView: UIImageView!
-    @IBOutlet var generationTitleLabel: UILabel!
-    @IBOutlet var generationTimeLabel: UILabel!
-    @IBOutlet var mainImageView: UIImageView!
-    @IBOutlet var mainImageViewHeightConstraint: NSLayoutConstraint!
 
     @IBOutlet var modelPickButton: UIButton!
     @IBOutlet var upscalerPickButton: UIButton!
@@ -52,30 +31,6 @@ class GeneratorViewController: UIViewController {
     @IBOutlet var tilingToggleButton: UIButton!
     @IBAction func toggleButtonChanged(_: UIButton) {
         generationSettingsUpdated()
-    }
-
-    @IBOutlet var deleteButton: UIButton!
-    @IBAction func deleteButtonAction(_: UIButton) {
-        if let generatedImage = lastGeneratedImage {
-            ImageDatabase.standard.deleteImage(generatedImage) { [self] image in
-                if image == nil {
-                    lastGeneratedImage = nil
-                    mainImageView.image = nil
-                }
-            }
-        }
-    }
-
-    @IBOutlet var favoriteButton: UIButton!
-    @IBAction func favoriteButtonAction(_: UIButton) {
-        if let generatedImage = lastGeneratedImage {
-            ImageDatabase.standard.toggleImageFavorite(generatedImage: generatedImage) { gImage in
-                if let gImage = gImage {
-                    self.lastGeneratedImage = gImage
-                    self.updateImageActionButtons()
-                }
-            }
-        }
     }
 
     @IBOutlet var promptTextView: UITextView!
@@ -176,7 +131,8 @@ class GeneratorViewController: UIViewController {
     @IBAction func generateButtonPressed(_: UIButton) {
         promptTextView.resignFirstResponder()
         if let generationBody = createGeneratonBodyForCurrentSettings() {
-            generationTracker.createNewGenerationRequest(body: generationBody)
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.generationTracker.createNewGenerationRequest(body: generationBody)
         }
     }
 
@@ -250,13 +206,14 @@ class GeneratorViewController: UIViewController {
     }
     @IBOutlet weak var repeatSeedButton: UIButton!
     @IBAction func repeatSeedButtonAction(_ sender: UIButton) {
-        guard let image = lastGeneratedImage, let jsonString = image.fullRequest, let jsonData = jsonString.data(using: .utf8), let settings = try? JSONDecoder().decode(
-            GenerationInputStable.self,
-            from: jsonData
-        ) else { return }
-        seedTextField.text = settings.params?.seed
-        randomSeedButton.isSelected = false
-        generationSettingsUpdated()
+        Log.error("Hit not implemeented button")
+//        guard let image = lastGeneratedImage, let jsonString = image.fullRequest, let jsonData = jsonString.data(using: .utf8), let settings = try? JSONDecoder().decode(
+//            GenerationInputStable.self,
+//            from: jsonData
+//        ) else { return }
+//        seedTextField.text = settings.params?.seed
+//        randomSeedButton.isSelected = false
+//        generationSettingsUpdated()
     }
 
 
@@ -266,13 +223,10 @@ class GeneratorViewController: UIViewController {
         super.viewDidLoad()
 
         navigationController?.navigationBar.prefersLargeTitles = true
-        mainImageViewHeightConstraint.constant = view.frame.width
 
         let recentSettings = UserPreferences.standard.recentSettings
 
         hideKeyboardWhenTappedAround()
-
-        NotificationCenter.default.addObserver(self, selector: #selector(checkIfCurrentGenerationWasDeleted), name: .imageDatabaseUpdated, object: nil)
 
         upscalerPickButton.showsMenuAsPrimaryAction = true
         upscalerPickButton.changesSelectionAsPrimaryAction = true
@@ -288,8 +242,6 @@ class GeneratorViewController: UIViewController {
         loadSettingsIntoUI(settings: recentSettings, seed: nil)
 
         updateSliderLabels()
-
-        generationTracker.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -309,58 +261,12 @@ class GeneratorViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        checkIfCurrentGenerationWasDeleted()
         generationSettingsUpdated()
-        updateSliderLabels()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         if segue.identifier == "openModelsViewSegue", let destinationView = segue.destination as? ModelsTableViewController {
             destinationView.delegate = self
-        }
-    }
-}
-
-// MARK: - Generator Tracker Delegate
-
-extension GeneratorViewController: GenerationTrackerDelegate {
-    func updateProcessingStatus(title: String, message: String) {
-        generationTitleLabel.text = title
-        generationTimeLabel.text = message
-        generationEffectView.isHidden = false
-        generationWarningImageView.isHidden = true
-        generationSpinner.startAnimating()
-//        generateButton.isEnabled = false
-        deleteButton.isEnabled = false
-        favoriteButton.isEnabled = false
-    }
-
-    func showErrorStatus(title: String, message: String) {
-        generationSpinner.stopAnimating()
-        generationWarningImageView.isHidden = false
-        generationTitleLabel.text = title
-        generationTimeLabel.text = message
-        generateButton.isEnabled = true
-    }
-
-    func displayCompletedGeneration(generatedImage: GeneratedImage) {
-        if let data = generatedImage.image, let image = UIImage(data: data) {
-            DispatchQueue.main.async { [self] in
-                let imageWidth = image.size.width
-                let imageHeight = image.size.height
-                let viewWidth = view.frame.size.width
-
-                let ratio = viewWidth / imageWidth
-                let scaledHeight = imageHeight * ratio
-                mainImageViewHeightConstraint.constant = scaledHeight
-                UIView.animate(withDuration: 0.3) {
-                    self.view.layoutIfNeeded()
-                    self.mainImageView.image = image
-                    self.hideGenerationDisplay()
-                    self.lastGeneratedImage = generatedImage
-                    self.updateImageActionButtons()
-                }
-            }
         }
     }
 }
@@ -596,26 +502,6 @@ extension GeneratorViewController {
         return (Int(widthSlider.value), Int(heightSlider.value))
     }
 
-    @objc func checkIfCurrentGenerationWasDeleted() {
-        if let generatedImage = lastGeneratedImage {
-            if generatedImage.managedObjectContext == nil {
-                lastGeneratedImage = nil
-                mainImageView.image = nil
-                repeatSeedButton.isEnabled = false
-            }
-        }
-    }
-
-    func updateImageActionButtons() {
-        if let lastGeneratedImage = lastGeneratedImage, lastGeneratedImage.isFavorite {
-            favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        } else {
-            favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
-        }
-        favoriteButton.setPreferredSymbolConfiguration(.init(scale: .default), forImageIn: .normal)
-        repeatSeedButton.isEnabled = true
-    }
-
     func updateSliderLabels() {
         let currentDimensions = getCurrentWidthAndHeight()
         widthSliderSizeLabel.text = "\(currentDimensions.0 * 64)"
@@ -626,13 +512,6 @@ extension GeneratorViewController {
         aspectRatioButton.sizeToFit()
 
         imageQuantitySliderLabel.text = "\(Int(imageQuantitySlider.value))"
-    }
-
-    func hideGenerationDisplay() {
-        Log.info("Hiding generation progress display.")
-        generationSpinner.stopAnimating()
-        generationEffectView.isHidden = true
-        generateButton.isEnabled = true
     }
 }
 

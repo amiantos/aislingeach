@@ -10,6 +10,15 @@ import UIKit
 
 class RequestsTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
 
+    @IBOutlet var headerView: UIView!
+    @IBOutlet weak var createNewRequestButton: UIButton!
+    @IBAction func createNewRequestButtonAction(_ sender: UIButton) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "generatorViewController") as! GeneratorViewController
+        controller.modalPresentationStyle = .formSheet
+        self.present(controller, animated: true)
+    }
+
     var resultsController: NSFetchedResultsController<HordeRequest>?
 
     override func viewDidLoad() {
@@ -22,6 +31,8 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
 
         setupDataSource()
+        tableView.tableHeaderView = headerView
+        
     }
 
     private func setupDataSource() {

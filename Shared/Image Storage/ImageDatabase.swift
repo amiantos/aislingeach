@@ -353,13 +353,9 @@ class ImageDatabase {
                    let processing = check.processing,
                    let waiting = check.waiting,
                    let finished = check.finished {
-                    if queuePosition > 0 && waitTime > 0 {
-                        request.message = "#\(queuePosition) waiting to dream (\(waitTime)s)"
-                    } else if queuePosition > 0 {
-                        request.message = "#\(queuePosition) waiting to dream"
-                    } else {
-                        request.message = "\(waiting) waiting, \(processing) processing, \(finished) finished"
-                    }
+                    request.waitTime = Int16(waitTime)
+                    request.queuePosition = Int16(queuePosition)
+                    request.message = "\(waiting) waiting, \(processing) processing, \(finished) finished"
                     try self.mainManagedObjectContext.save()
                 }
                 completion(request)

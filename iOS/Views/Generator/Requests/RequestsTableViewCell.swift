@@ -15,6 +15,8 @@ class RequestsTableViewCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var imageCountLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var queuePositionLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -26,6 +28,16 @@ class RequestsTableViewCell: UITableViewCell {
         imageCountLabel.text = "\(request.n) Images"
         messageLabel.text = request.message
         dateLabel.text = request.dateCreated?.formatted()
+        if request.waitTime > 0 {
+            timeLabel.text = "\(request.waitTime)s"
+        } else {
+            timeLabel.text = ""
+        }
+        if request.queuePosition > 0 {
+            queuePositionLabel.text = "#\(request.queuePosition) waiting"
+        } else {
+            queuePositionLabel.text = ""
+        }
         if request.status == "active" {
             activityIndicator.startAnimating()
         } else {
