@@ -340,7 +340,7 @@ class ImageDatabase {
                     let fetchRequest1: NSFetchRequest<HordeRequest> = HordeRequest.fetchRequest()
                     fetchRequest1.predicate = NSPredicate(format: "status = %@", "active")
                     fetchRequest1.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: true)]
-                    let requests = try self.fetch(fetchRequest1) as [HordeRequest]
+                    let requests = try mainManagedObjectContext.fetch(fetchRequest1) as [HordeRequest]
                     continuation.resume(returning: requests)
                 } catch {
                     continuation.resume(returning: nil)
@@ -349,23 +349,25 @@ class ImageDatabase {
         }
     }
 
-    func updatePendingRequest(request: HordeRequest, check: RequestStatusCheck, completion: @escaping (HordeRequest?) -> Void) {
-        mainManagedObjectContext.perform {
-            do {
-                if let waitTime = check.waitTime,
-                   let queuePosition = check.queuePosition,
-                   let processing = check.processing,
-                   let waiting = check.waiting,
-                   let finished = check.finished
-                {
-                    request.waitTime = Int16(waitTime)
-                    request.queuePosition = Int16(queuePosition)
-                    request.message = "\(waiting) waiting, \(processing) processing, \(finished) finished"
-                    try self.mainManagedObjectContext.save()
+    func updatePendingRequest(request: HordeRequest, check: RequestStatusCheck) async -> HordeRequest? {
+        return await withCheckedContinuation { continuation in
+            mainManagedObjectContext.perform { [self] in
+                do {
+                    if let waitTime = check.waitTime,
+                       let queuePosition = check.queuePosition,
+                       let processing = check.processing,
+                       let waiting = check.waiting,
+                       let finished = check.finished
+                    {
+                        request.waitTime = Int16(waitTime)
+                        request.queuePosition = Int16(queuePosition)
+                        request.message = "\(waiting) waiting, \(processing) processing, \(finished) finished"
+                        try mainManagedObjectContext.save()
+                    }
+                    continuation.resume(returning: request)
+                } catch {
+                    continuation.resume(returning: nil)
                 }
-                completion(request)
-            } catch {
-                completion(nil)
             }
         }
     }

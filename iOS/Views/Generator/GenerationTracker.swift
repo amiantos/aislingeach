@@ -11,6 +11,7 @@ import UIKit
 enum TrackerException: Error {
     case NoGenerationsFound
     case ImageSaveFailure
+    case FailureToUpdatePendingRequest
 }
 
 protocol GenerationTrackerDelegate {
@@ -52,44 +53,34 @@ class GenerationTracker {
     @objc func checkForPendingGeneration() {
         Task {
             Log.debug("Checking for a pending generation...")
-            let requests = await ImageDatabase.standard.fetchPendingRequests()
+            let requests = await ImageDatabase.standard.fetchPendingRequests() ?? []
             for request in requests {
-
-            }
-
-        }
-
-
-
-        ImageDatabase.standard.fetchPendingRequests { requests in
-            requests?.forEach { request in
                 guard let requestId = request.uuid?.uuidString.lowercased() else { return }
                 Log.debug("\(requestId) - Checking request status")
-                HordeV2API.getImageAsyncCheck(_id: requestId) { data, error in
-                    if let data = data {
-                        Log.debug("Data: \(data)")
-                        if let done = data.done, done {
-                            Log.debug("\(requestId) - Horde says done!")
-                            self.saveFinishedGenerations(request: request)
-                        } else {
-                            ImageDatabase.standard.updatePendingRequest(request: request, check: data) { updatedRequest in
-                                if updatedRequest == nil {
-                                    fatalError("Unable to update pending request, this should not happen!")
-                                }
+
+                do {
+                    let data = try await HordeV2API.getImageAsyncCheck(_id: requestId, clientAgent: hordeClientAgent())
+                    Log.debug("\(data)")
+
+                    if data.done ?? false {
+                        Log.debug("\(requestId) - Horde says done!")
+                        await self.saveFinishedGenerations(request: request)
+                    } else {
+                        guard await ImageDatabase.standard.updatePendingRequest(request: request, check: data) != nil else {
+                            throw TrackerException.FailureToUpdatePendingRequest
+                        }
+                    }
+                } catch {
+                    if error.code == 0 {
+                        // Just retry, do nothing
+                    } else if error.code == 404 {
+                        ImageDatabase.standard.updatePendingRequestErrorState(request: request, message: "This request can no longer be found.") { updatedRequest in
+                            if updatedRequest == nil {
+                                fatalError("Unable to update pending request, this should not happen!")
                             }
                         }
-                    } else if let error = error {
-                        if error.code == 0 {
-                            // Just retry, do nothing
-                        } else if error.code == 404 {
-                            ImageDatabase.standard.updatePendingRequestErrorState(request: request, message: "This request can no longer be found.") { updatedRequest in
-                                if updatedRequest == nil {
-                                    fatalError("Unable to update pending request, this should not happen!")
-                                }
-                            }
-                        } else {
-                            Log.error("Polling error: \(error.code) : \(error.localizedDescription)")
-                        }
+                    } else {
+                        Log.error("Polling error: \(error.code) : \(error.localizedDescription)")
                     }
                 }
             }
