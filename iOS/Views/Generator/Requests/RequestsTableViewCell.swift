@@ -33,7 +33,7 @@ class RequestsTableViewCell: UITableViewCell {
             timeLabel.text = ""
         }
         if request.queuePosition > 0 {
-            queuePositionLabel.text = "#\(request.queuePosition) waiting"
+            queuePositionLabel.text = "#\(request.queuePosition) in queue"
         } else {
             queuePositionLabel.text = ""
         }

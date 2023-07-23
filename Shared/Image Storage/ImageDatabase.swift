@@ -357,11 +357,13 @@ class ImageDatabase {
                        let queuePosition = check.queuePosition,
                        let processing = check.processing,
                        let waiting = check.waiting,
-                       let finished = check.finished
+                       let finished = check.finished,
+                       let done = check.done
                     {
                         request.waitTime = Int16(waitTime)
                         request.queuePosition = Int16(queuePosition)
                         request.message = "\(waiting) waiting, \(processing) processing, \(finished) finished"
+                        request.status = done ? "done" : "active"
                         try mainManagedObjectContext.save()
                     }
                     continuation.resume(returning: request)
@@ -372,17 +374,19 @@ class ImageDatabase {
         }
     }
 
-    func updatePendingRequestErrorState(request: HordeRequest, message: String, completion: @escaping (HordeRequest?) -> Void) {
-        mainManagedObjectContext.perform {
-            do {
-                request.message = message
-                request.status = "error"
-                request.waitTime = 0
-                request.queuePosition = 0
-                try self.mainManagedObjectContext.save()
-                completion(request)
-            } catch {
-                completion(nil)
+    func updatePendingRequestErrorState(request: HordeRequest, message: String) async -> HordeRequest? {
+        return await withCheckedContinuation { continuation in
+            mainManagedObjectContext.perform {
+                do {
+                    request.message = message
+                    request.status = "error"
+                    request.waitTime = 0
+                    request.queuePosition = 0
+                    try self.mainManagedObjectContext.save()
+                    continuation.resume(returning: request)
+                } catch {
+                    continuation.resume(returning: nil)
+                }
             }
         }
     }

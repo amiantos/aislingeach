@@ -12,6 +12,7 @@ enum TrackerException: Error {
     case NoGenerationsFound
     case ImageSaveFailure
     case FailureToUpdatePendingRequest
+    case RequestNotDone
 }
 
 protocol GenerationTrackerDelegate {
@@ -62,22 +63,23 @@ class GenerationTracker {
                     let data = try await HordeV2API.getImageAsyncCheck(_id: requestId, clientAgent: hordeClientAgent())
                     Log.debug("\(data)")
 
-                    if data.done ?? false {
-                        Log.debug("\(requestId) - Horde says done!")
-                        await self.saveFinishedGenerations(request: request)
-                    } else {
-                        guard await ImageDatabase.standard.updatePendingRequest(request: request, check: data) != nil else {
-                            throw TrackerException.FailureToUpdatePendingRequest
-                        }
+                    guard await ImageDatabase.standard.updatePendingRequest(
+                        request: request,
+                        check: data
+                    ) != nil else {
+                        throw TrackerException.FailureToUpdatePendingRequest
                     }
+
+                    guard data.done ?? false else { return }
+                    Log.debug("\(requestId) - Horde says done!")
+                    await self.saveFinishedGenerations(request: request)
                 } catch {
-                    if error.code == 0 {
-                        // Just retry, do nothing
-                    } else if error.code == 404 {
-                        ImageDatabase.standard.updatePendingRequestErrorState(request: request, message: "This request can no longer be found.") { updatedRequest in
-                            if updatedRequest == nil {
-                                fatalError("Unable to update pending request, this should not happen!")
-                            }
+                    if error.code == 404 {
+                        guard await ImageDatabase.standard.updatePendingRequestErrorState(
+                            request: request,
+                            message: "This request can no longer be found."
+                        ) != nil else {
+                            fatalError("Unable to update pending request, this should not happen!")
                         }
                     } else {
                         Log.error("Polling error: \(error.code) : \(error.localizedDescription)")
