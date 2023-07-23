@@ -141,7 +141,11 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
         if editingStyle == .delete {
             guard let request = resultsController?.object(at: indexPath) else { fatalError("Attempt to delete a row without an object") }
 
-            if request.status != "finished" {
+            if request.status == "error" {
+                ImageDatabase.standard.deleteRequest(request, pruneImages: false) { request in
+                    if request != nil { fatalError("Deleting request did not work?") }
+                }
+            } else if request.status != "finished" {
                 let alert = UIAlertController(title: "Delete Refused", message: "This request is still processing, you can't delete it yet, sorry.", preferredStyle: .alert)
                 let cancelAction = UIAlertAction(title: "Oh... weird, okay", style: .cancel)
                 alert.addAction(cancelAction)

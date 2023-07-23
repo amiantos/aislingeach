@@ -380,23 +380,27 @@ class ImageDatabase {
         return await withCheckedContinuation { continuation in
             mainManagedObjectContext.perform { [self] in
                 do {
-                    if let waitTime = check.waitTime,
-                       let queuePosition = check.queuePosition,
-                       let processing = check.processing,
-                       let waiting = check.waiting,
-                       let finished = check.finished,
-                       let done = check.done
-                    {
-                        request.waitTime = Int16(waitTime)
-                        request.queuePosition = Int16(queuePosition)
-                        request.status = done ? "done" : "active"
-                        request.message = "\(waiting) waiting, \(processing) processing, \(finished) finished"
-                        if request.status == "done" {
-                            request.message = "Downloading \(finished) images..."
+                    if request.status != "active" {
+                        continuation.resume(returning: request)
+                    } else {
+                        if let waitTime = check.waitTime,
+                           let queuePosition = check.queuePosition,
+                           let processing = check.processing,
+                           let waiting = check.waiting,
+                           let finished = check.finished,
+                           let done = check.done
+                        {
+                            request.waitTime = Int16(waitTime)
+                            request.queuePosition = Int16(queuePosition)
+                            request.status = done ? "done" : "active"
+                            request.message = "\(waiting) waiting, \(processing) processing, \(finished) finished"
+                            if request.status == "done" {
+                                request.message = "Downloading \(finished) images..."
+                            }
+                            try mainManagedObjectContext.save()
                         }
-                        try mainManagedObjectContext.save()
+                        continuation.resume(returning: request)
                     }
-                    continuation.resume(returning: request)
                 } catch {
                     continuation.resume(returning: nil)
                 }

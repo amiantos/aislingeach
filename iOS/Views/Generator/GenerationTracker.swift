@@ -70,7 +70,7 @@ class GenerationTracker {
                         throw TrackerException.FailureToUpdatePendingRequest
                     }
 
-                    guard data.done ?? false else { return }
+                    guard data.done ?? false else { continue }
                     Log.debug("\(requestId) - Horde says done!")
                     await self.saveFinishedGenerations(request: request)
                 } catch {
