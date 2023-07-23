@@ -68,6 +68,13 @@ class ImageDatabase {
         return await withCheckedContinuation { continuation in
             mainManagedObjectContext.perform {
                 do {
+                    let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
+                    fetchRequest.predicate = NSPredicate(format: "uuid == %@", UUID(uuidString: id)! as CVarArg)
+                    if let image = try? self.mainManagedObjectContext.fetch(fetchRequest).first {
+                        Log.debug("Image already found in database, not re-saving.")
+                        continuation.resume(returning: image)
+                    }
+
                     let generatedImage = GeneratedImage(context: self.mainManagedObjectContext)
                     generatedImage.image = image
                     generatedImage.uuid = UUID(uuidString: id)!
