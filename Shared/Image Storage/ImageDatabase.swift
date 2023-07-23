@@ -370,6 +370,8 @@ class ImageDatabase {
             do {
                 request.message = message
                 request.status = "error"
+                request.waitTime = 0
+                request.queuePosition = 0
                 try self.mainManagedObjectContext.save()
                 completion(request)
             } catch {
