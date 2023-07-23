@@ -128,65 +128,6 @@ class GenerationTracker {
         }
     }
 
-    //    func saveFinishedGeneration() {
-    //        guard let identifier = currentGenerationRequestIdentifier, let body = currentGenerationBody else { return }
-    //
-    //        Log.info("\(identifier) - Fetching finished generation...")
-    //        HordeV2API.getImageAsyncStatus(_id: identifier, clientAgent: hordeClientAgent()) { [self] data, error in
-    //            if let data = data {
-    //                Log.debug("\(data)")
-    //                if data.done ?? false {
-    //                    self.currentGenerationBody = nil
-    //                    self.currentGenerationRequestIdentifier = nil
-    //                    self.requestIsProcessing = false
-    //
-    //                    if let generations = data.generations, !generations.isEmpty {
-    //                        var count = 0
-    //                        generations.forEach { generation in
-    //                            Log.debug("\(generation)")
-    //                            if generation.censored ?? false {
-    //                                self.delegate?.showErrorStatus(title: "Code 42", message: "Unable to generate this image.\nTry again with a different prompt?")
-    //                            } else if let urlString = generation.img,
-    //                                      let imageUrl = URL(string: urlString)
-    //                            {
-    //                                DispatchQueue.global().async {
-    //                                    if let data = try? Data(contentsOf: imageUrl) {
-    //                                        DispatchQueue.main.async {
-    //                                            ImageDatabase.standard.saveImage(id: generation._id!, requestId: identifier, image: data, request: body, response: generation, completion: { generatedImage in
-    //                                                if let image = generatedImage {
-    //                                                    Log.info("\(identifier) - Saved Image ID \(image.uuid!)")
-    //                                                    self.delegate?.displayCompletedGeneration(generatedImage: image)
-    //                                                    count += 1
-    //                                                    if count == generations.count {
-    //                                                        NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
-    //                                                    }
-    //                                                }
-    //                                            })
-    //                                        }
-    //                                    }
-    //                                }
-    //                            }
-    //                        }
-    //                    } else {
-    //                        Log.error("No generations found within the request... this also shouldn't happen, probably.")
-    //                        self.delegate?.showErrorStatus(title: "Error", message: "Task completed, but no generations were found. :(")
-    //                    }
-    //                } else {
-    //                    Log.error("Request was not marked as done yet... this shouldn't happen.")
-    //                    self.requestIsProcessing = false
-    //                }
-    //            } else if let error = error {
-    //                Log.error("\(identifier) - Encountered error trying to fetch image: \(error)")
-    //                if error.code == 0 {
-    //                    self.delegate?.showErrorStatus(title: "Connection Error", message: "Connection timed out...\nRetrying...")
-    //                } else {
-    //                    self.delegate?.showErrorStatus(title: "Error", message: error.localizedDescription)
-    //                }
-    //                self.requestIsProcessing = false
-    //            }
-    //        }
-    //    }
-
     func createNewGenerationRequest(body: GenerationInputStable) {
         Log.info("Submitting a new generation request...")
 
