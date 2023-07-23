@@ -191,10 +191,9 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
            let image = resultsController?.object(at: indexPath) as? GeneratedImage,
            let jsonString = image.fullRequest,
            let jsonData = jsonString.data(using: .utf8),
-           let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData),
-           let tabBarController = presentingViewController as? UITabBarController,
-           let navigationController = tabBarController.viewControllers?.first as? UINavigationController,
-           let generateView = navigationController.topViewController as? GeneratorViewController {
+           let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData) {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let generateView = storyboard.instantiateViewController(withIdentifier: "generatorViewController") as! GeneratorViewController
             Log.info("Loading image settings into Create view...")
             var seed: String? = nil
             if includeSeed {
@@ -207,9 +206,9 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
                     seed = generatedSeed
                 }
             }
+            generateView.modalPresentationStyle = .formSheet
+            self.present(generateView, animated: true)
             generateView.loadSettingsIntoUI(settings: settings, seed: seed)
-            self.dismissView()
-            tabBarController.selectedIndex = 0
         }
     }
 

@@ -387,6 +387,8 @@ extension GeneratorViewController {
         imageQuantitySlider.setValue(1.0, animated: false)
         if selectedModel == "SDXL_beta::stability.ai#6901" {
             imageQuantitySlider.setValue(2.0, animated: false)
+        } else {
+            imageQuantitySlider.setValue(Float(settings?.params?.n ?? 1), animated: false)
         }
 
         if let seed = seed {
