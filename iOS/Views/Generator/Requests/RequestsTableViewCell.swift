@@ -37,9 +37,7 @@ class RequestsTableViewCell: UITableViewCell {
         } else {
             queuePositionLabel.text = ""
         }
-        if request.status == "active" {
-            activityIndicator.startAnimating()
-        } else {
+        if request.status == "finished"  {
             activityIndicator.stopAnimating()
             if let requestId = request.uuid {
                 ImageDatabase.standard.fetchFirstImage(requestId: requestId) { image in
@@ -47,6 +45,8 @@ class RequestsTableViewCell: UITableViewCell {
                     self.loadImage(generatedImage: generatedImage)
                 }
             }
+        } else if !activityIndicator.isAnimating {
+            activityIndicator.startAnimating()
         }
     }
 

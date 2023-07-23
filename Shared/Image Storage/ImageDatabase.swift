@@ -362,8 +362,11 @@ class ImageDatabase {
                     {
                         request.waitTime = Int16(waitTime)
                         request.queuePosition = Int16(queuePosition)
-                        request.message = "\(waiting) waiting, \(processing) processing, \(finished) finished"
                         request.status = done ? "done" : "active"
+                        request.message = "\(waiting) waiting, \(processing) processing, \(finished) finished"
+                        if request.status == "done" {
+                            request.message = "Finished! Downloading images..."
+                        }
                         try mainManagedObjectContext.save()
                     }
                     continuation.resume(returning: request)
