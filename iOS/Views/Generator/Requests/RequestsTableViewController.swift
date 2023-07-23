@@ -141,21 +141,28 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
         if editingStyle == .delete {
             guard let request = resultsController?.object(at: indexPath) else { fatalError("Attempt to delete a row without an object") }
 
-            if request.status == "active" {
-                let alert = UIAlertController(title: "Confirm", message: "This request is still processing, are you sure you want to delete it?", preferredStyle: .alert)
-                let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
-                    ImageDatabase.standard.deleteRequest(request) { request in
+            if request.status != "finished" {
+                let alert = UIAlertController(title: "Delete Refused", message: "This request is still processing, you can't delete it yet, sorry.", preferredStyle: .alert)
+                let cancelAction = UIAlertAction(title: "Oh... weird, okay", style: .cancel)
+                alert.addAction(cancelAction)
+                present(alert, animated: true)
+            } else {
+                let alert = UIAlertController(title: "Delete Request", message: "Would you like to prune the unmarked images from this request?", preferredStyle: .alert)
+                let deleteImagesAction = UIAlertAction(title: "Prune images", style: .destructive)  { _ in
+                    ImageDatabase.standard.deleteRequest(request, pruneImages: true) { request in
+                        if request != nil { fatalError("Deleting request did not work?") }
+                    }
+                }
+                let deleteRequestAction = UIAlertAction(title: "Keep all images", style: .default)  { _ in
+                    ImageDatabase.standard.deleteRequest(request, pruneImages: false) { request in
                         if request != nil { fatalError("Deleting request did not work?") }
                     }
                 }
                 let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-                alert.addAction(deleteAction)
+                alert.addAction(deleteImagesAction)
+                alert.addAction(deleteRequestAction)
                 alert.addAction(cancelAction)
                 present(alert, animated: true)
-            } else {
-                ImageDatabase.standard.deleteRequest(request) { request in
-                    if request != nil { fatalError("Deleting request did not work?") }
-                }
             }
         }
     }

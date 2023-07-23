@@ -334,10 +334,30 @@ class ImageDatabase {
         }
     }
 
-    func deleteRequest(_ hordeRequest: HordeRequest, completion: @escaping (HordeRequest?) -> Void) {
-        mainManagedObjectContext.delete(hordeRequest)
-        saveContext()
-        completion(nil)
+    func deleteRequest(_ hordeRequest: HordeRequest, pruneImages: Bool, completion: @escaping (HordeRequest?) -> Void) {
+        mainManagedObjectContext.perform {  [self] in
+            do {
+                if pruneImages {
+                    let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
+                    fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                        NSPredicate(format: "isFavorite = %d", false),
+                        NSPredicate(format: "isHidden = %d", false),
+                        NSPredicate(format: "requestId = %@", hordeRequest.uuid! as CVarArg)
+                    ])
+                    let images = try mainManagedObjectContext.fetch(fetchRequest) as [GeneratedImage]
+                    for image in images {
+                        // TODO: Should trash...
+                        mainManagedObjectContext.delete(image)
+                    }
+                }
+                mainManagedObjectContext.delete(hordeRequest)
+                try mainManagedObjectContext.save()
+                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
+                completion(nil)
+            } catch {
+                completion(nil)
+            }
+        }
     }
 
     func fetchPendingRequests() async -> [HordeRequest]? {
