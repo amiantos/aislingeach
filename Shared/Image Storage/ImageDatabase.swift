@@ -372,7 +372,7 @@ class ImageDatabase {
                         request.status = done ? "done" : "active"
                         request.message = "\(waiting) waiting, \(processing) processing, \(finished) finished"
                         if request.status == "done" {
-                            request.message = "Finished! Downloading images..."
+                            request.message = "Downloading \(finished) images..."
                         }
                         try mainManagedObjectContext.save()
                     }
@@ -405,7 +405,7 @@ class ImageDatabase {
         request.message = "Finished"
         if let kudosCost = (status.kudos as? NSDecimalNumber)?.intValue {
             request.totalKudosCost = Int16(kudosCost)
-            request.message = "Finished! Total cost: \(kudosCost)"
+            request.message = "Finished! Total kudos used: \(kudosCost)"
         }
         request.status = "finished"
         saveContext()
