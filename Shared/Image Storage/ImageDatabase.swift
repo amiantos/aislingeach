@@ -64,24 +64,26 @@ class ImageDatabase {
 
     // MARK: - Images
 
-    func saveImage(id: String, requestId: String, image: Data, request: HordeRequest, response: GenerationStable, completion: @escaping (GeneratedImage?) -> Void) {
-        mainManagedObjectContext.perform {
-            do {
-                let generatedImage = GeneratedImage(context: self.mainManagedObjectContext)
-                generatedImage.image = image
-                generatedImage.uuid = UUID(uuidString: id)!
-                generatedImage.requestId = UUID(uuidString: requestId)!
-                generatedImage.dateCreated = Date()
-                generatedImage.fullRequest = request.fullRequest
-                generatedImage.promptSimple = request.prompt
-                var prunedResponse = response
-                prunedResponse.img = nil
-                generatedImage.fullResponse = prunedResponse.toJSONString()
-                generatedImage.backend = "horde"
-                try self.mainManagedObjectContext.save()
-                completion(generatedImage)
-            } catch {
-                completion(nil)
+    func saveImage(id: String, requestId: String, image: Data, request: HordeRequest, response: GenerationStable) async -> GeneratedImage? {
+        return await withCheckedContinuation { continuation in
+            mainManagedObjectContext.perform {
+                do {
+                    let generatedImage = GeneratedImage(context: self.mainManagedObjectContext)
+                    generatedImage.image = image
+                    generatedImage.uuid = UUID(uuidString: id)!
+                    generatedImage.requestId = UUID(uuidString: requestId)!
+                    generatedImage.dateCreated = Date()
+                    generatedImage.fullRequest = request.fullRequest
+                    generatedImage.promptSimple = request.prompt
+                    var prunedResponse = response
+                    prunedResponse.img = nil
+                    generatedImage.fullResponse = prunedResponse.toJSONString()
+                    generatedImage.backend = "horde"
+                    try self.mainManagedObjectContext.save()
+                    continuation.resume(returning: generatedImage)
+                } catch {
+                    continuation.resume(returning: nil)
+                }
             }
         }
     }
@@ -240,7 +242,7 @@ class ImageDatabase {
                 let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
                 fetchRequest.predicate = predicate
                 fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
-                
+
                 let count = try privateManagedObjectContext.count(for: fetchRequest)
                 if count == 0 {
                     completion((0, nil))
@@ -268,7 +270,7 @@ class ImageDatabase {
                 for obj in prompts {
                     if var prompt = obj["promptSimple"] as? String {
                         if let dotRange = prompt.range(of: " ### ") {
-                            prompt.removeSubrange(dotRange.lowerBound..<prompt.endIndex)
+                            prompt.removeSubrange(dotRange.lowerBound ..< prompt.endIndex)
                         }
                         for keyword in prompt.components(separatedBy: ", ") {
                             var cleanedKeyword = keyword.replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "")
@@ -331,16 +333,18 @@ class ImageDatabase {
         completion(nil)
     }
 
-    func fetchPendingRequests(completion: @escaping ([HordeRequest]?) -> Void) {
-        mainManagedObjectContext.perform { [self] in
-            do {
-                let fetchRequest: NSFetchRequest<HordeRequest> = HordeRequest.fetchRequest()
-                fetchRequest.predicate = NSPredicate(format: "status = %@", "active")
-                fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: true)]
-                let requests = try mainManagedObjectContext.fetch(fetchRequest) as [HordeRequest]
-                completion(requests)
-            } catch {
-                completion(nil)
+    func fetchPendingRequests() async -> [HordeRequest]? {
+        return await withCheckedContinuation { continuation in
+            mainManagedObjectContext.perform { [self] in
+                do {
+                    let fetchRequest1: NSFetchRequest<HordeRequest> = HordeRequest.fetchRequest()
+                    fetchRequest1.predicate = NSPredicate(format: "status = %@", "active")
+                    fetchRequest1.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: true)]
+                    let requests = try self.fetch(fetchRequest1) as [HordeRequest]
+                    continuation.resume(returning: requests)
+                } catch {
+                    continuation.resume(returning: nil)
+                }
             }
         }
     }
@@ -352,7 +356,8 @@ class ImageDatabase {
                    let queuePosition = check.queuePosition,
                    let processing = check.processing,
                    let waiting = check.waiting,
-                   let finished = check.finished {
+                   let finished = check.finished
+                {
                     request.waitTime = Int16(waitTime)
                     request.queuePosition = Int16(queuePosition)
                     request.message = "\(waiting) waiting, \(processing) processing, \(finished) finished"
@@ -380,7 +385,7 @@ class ImageDatabase {
         }
     }
 
-    func updatePendingRequestFinishedState(request: HordeRequest, status:  RequestStatusStable) {
+    func updatePendingRequestFinishedState(request: HordeRequest, status: RequestStatusStable) {
         request.message = "Finished"
         if let kudosCost = (status.kudos as? NSDecimalNumber)?.intValue {
             request.totalKudosCost = Int16(kudosCost)
@@ -389,7 +394,6 @@ class ImageDatabase {
         request.status = "finished"
         saveContext()
     }
-
 
 //    func fetchGames(completion: @escaping ([Game]?) -> Void) {
 //        mainManagedObjectContext.perform {

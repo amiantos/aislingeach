@@ -10,8 +10,6 @@ import UIKit
 class GeneratorViewController: UIViewController {
     // MARK: - Variables
 
-    
-
     var currentRatioLock: Int?
 
     var kudosEstimateTimer: Timer?
@@ -120,8 +118,8 @@ class GeneratorViewController: UIViewController {
         Log.info("Ratio locked to: \(String(describing: currentRatioLock))")
     }
 
-    @IBOutlet weak var imageQuantitySlider: UISlider!
-    @IBOutlet weak var imageQuantitySliderLabel: UILabel!
+    @IBOutlet var imageQuantitySlider: UISlider!
+    @IBOutlet var imageQuantitySliderLabel: UILabel!
     @IBAction func imageQuantitySliderChanged(_ sender: UISlider) {
         imageQuantitySliderLabel.text = "\(Int(sender.value))"
         generationSettingsUpdated()
@@ -136,7 +134,7 @@ class GeneratorViewController: UIViewController {
         }
     }
 
-    @IBOutlet weak var gfpganToggleButton: UIButton!
+    @IBOutlet var gfpganToggleButton: UIButton!
     @IBAction func gfpganToggleButonChanged(_ sender: UIButton) {
         if sender.isSelected {
             faceFixerStrengthSlider.isEnabled = true
@@ -146,7 +144,7 @@ class GeneratorViewController: UIViewController {
         generationSettingsUpdated()
     }
 
-    @IBOutlet weak var codeFormersToggleButton: UIButton!
+    @IBOutlet var codeFormersToggleButton: UIButton!
     @IBAction func codeFormersToggleButtonChanged(_ sender: UIButton) {
         if sender.isSelected {
             faceFixerStrengthSlider.isEnabled = true
@@ -155,7 +153,6 @@ class GeneratorViewController: UIViewController {
         }
         generationSettingsUpdated()
     }
-
 
     @IBOutlet var faceFixerStrengthSlider: UISlider!
     @IBOutlet var faceFixStrengthLabel: UILabel!
@@ -176,7 +173,7 @@ class GeneratorViewController: UIViewController {
         generationSettingsUpdated()
     }
 
-    @IBOutlet weak var shareButton: UIButton!
+    @IBOutlet var shareButton: UIButton!
     @IBAction func shareButtonAction(_ sender: UIButton) {
         UserPreferences.standard.set(shareWithLaion: sender.isSelected)
         generationSettingsUpdated()
@@ -188,14 +185,15 @@ class GeneratorViewController: UIViewController {
         generationSettingsUpdated()
     }
 
-    @IBOutlet weak var seedTextField: UITextField!
-    @IBOutlet weak var randomSeedButton: UIButton!
+    @IBOutlet var seedTextField: UITextField!
+    @IBOutlet var randomSeedButton: UIButton!
     @IBAction func randomSeedButtonAction(_ sender: UIButton) {
         if sender.isSelected {
             seedTextField.text = nil
         }
     }
-    @IBAction func seedTextFieldEditingDidBegin(_ sender: UITextField) {
+
+    @IBAction func seedTextFieldEditingDidBegin(_: UITextField) {
         randomSeedButton.isSelected = false
     }
 
@@ -204,8 +202,9 @@ class GeneratorViewController: UIViewController {
             randomSeedButton.isSelected = true
         }
     }
-    @IBOutlet weak var repeatSeedButton: UIButton!
-    @IBAction func repeatSeedButtonAction(_ sender: UIButton) {
+
+    @IBOutlet var repeatSeedButton: UIButton!
+    @IBAction func repeatSeedButtonAction(_: UIButton) {
         Log.error("Hit not implemeented button")
 //        guard let image = lastGeneratedImage, let jsonString = image.fullRequest, let jsonData = jsonString.data(using: .utf8), let settings = try? JSONDecoder().decode(
 //            GenerationInputStable.self,
@@ -215,7 +214,6 @@ class GeneratorViewController: UIViewController {
 //        randomSeedButton.isSelected = false
 //        generationSettingsUpdated()
     }
-
 
     // MARK: - View Setup
 
@@ -380,7 +378,6 @@ extension GeneratorViewController {
             let float = Float(truncating: faceFixStrength as NSNumber)
             faceFixStrengthLabel.text = "\(faceFixStrength)"
             faceFixerStrengthSlider.setValue(float, animated: false)
-
         }
         promptTextView.text = settings?.prompt ?? "temple in ruins, forest, stairs, columns, cinematic, detailed, atmospheric, epic, concept art, Matte painting, background, mist, photo-realistic, concept art, volumetric light, cinematic epic + rule of thirds octane render, 8k, corona render, movie concept art, octane render, cinematic, trending on artstation, movie concept art, cinematic composition, ultra-detailed, realistic, hyper-realistic, volumetric lighting, 8k"
 
@@ -455,7 +452,7 @@ extension GeneratorViewController {
             postprocessing = nil
         }
 
-        var seed: String?  = seedTextField.text ?? ""
+        var seed: String? = seedTextField.text ?? ""
         if let seedCheck = seed, seedCheck.isEmpty { seed = nil }
 
         let modelParams = ModelGenerationInputStable(
@@ -571,7 +568,7 @@ extension GeneratorViewController: ModelsTableViewControllerDelegate {
         if name == "SDXL_beta::stability.ai#6901" {
             imageQuantitySlider.setValue(2, animated: true)
             imageQuantitySlider.isEnabled = false
-            if widthSlider.value < 16 && heightSlider.value < 16{
+            if widthSlider.value < 16 && heightSlider.value < 16 {
                 widthSlider.setValue(16, animated: true)
                 heightSlider.setValue(16, animated: true)
             }

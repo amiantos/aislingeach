@@ -179,7 +179,7 @@ class ThumbnailBrowserViewController: UICollectionViewController, NSFetchedResul
             if let nav = imageDetailNavigationController, let controller = imageDetailViewController {
                 controller.startingIndexPath = indexPath
                 nav.modalPresentationStyle = .overFullScreen
-                self.present(nav, animated: true)
+                present(nav, animated: true)
             }
         }
     }
@@ -203,7 +203,6 @@ class ThumbnailBrowserViewController: UICollectionViewController, NSFetchedResul
         // collection view into editing mode.
         setEditing(true, animated: true)
     }
-
 }
 
 extension ThumbnailBrowserViewController {
@@ -264,14 +263,14 @@ extension ThumbnailBrowserViewController {
             }
             if images.count > 0 {
                 let alert = UIAlertController(title: "Confirm", message: "Are you sure you want to delete these \(images.count) images? This cannot be reverted.", preferredStyle: .alert)
-                let deleteAction = UIAlertAction(title: "Delete", style: .destructive)  { _ in
+                let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
                     ImageDatabase.standard.deleteImages(images)
                     self.toggleEditing()
                 }
                 let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
                 alert.addAction(deleteAction)
                 alert.addAction(cancelAction)
-                self.present(alert, animated: true)
+                present(alert, animated: true)
             }
         }
     }
@@ -335,7 +334,6 @@ extension ThumbnailBrowserViewController {
     }
 
     func shareSelectedImages() {
-
         if let selectedCells = collectionView.indexPathsForSelectedItems {
             var images: [ItemDetailSource] = []
 
@@ -351,8 +349,9 @@ extension ThumbnailBrowserViewController {
                 }
 
                 if let image = image,
-                    let imageData = image.pngData(),
-                    let pngImage = UIImage(data: imageData ) {
+                   let imageData = image.pngData(),
+                   let pngImage = UIImage(data: imageData)
+                {
                     let prompt = object.promptSimple ?? object.id.debugDescription
                     images.append(ItemDetailSource(name: "\(prompt)", image: pngImage))
                 }
@@ -371,6 +370,4 @@ extension ThumbnailBrowserViewController {
         collectionView.allowsMultipleSelection = multiSelectMode
         setupMenu()
     }
-
-    
 }

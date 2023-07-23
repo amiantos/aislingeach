@@ -133,15 +133,14 @@ class UIRoundedCornerView: UIView {
 }
 
 public extension UIImage {
-
     /**
-    Returns the flat colorized version of the image, or self when something was wrong
+     Returns the flat colorized version of the image, or self when something was wrong
 
-    - Parameters:
-        - color: The colors to user. By defaut, uses the ``UIColor.white`
+     - Parameters:
+         - color: The colors to user. By defaut, uses the ``UIColor.white`
 
-    - Returns: the flat colorized version of the image, or the self if something was wrong
-    */
+     - Returns: the flat colorized version of the image, or the self if something was wrong
+     */
     func colorized(with color: UIColor = .white) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(size, false, scale)
 
@@ -150,7 +149,6 @@ public extension UIImage {
         }
 
         guard let context = UIGraphicsGetCurrentContext(), let cgImage = cgImage else { return self }
-
 
         let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
 
@@ -166,18 +164,17 @@ public extension UIImage {
     }
 
     /**
-    Returns the stroked version of the fransparent image with the given stroke color and the thickness.
+     Returns the stroked version of the fransparent image with the given stroke color and the thickness.
 
-    - Parameters:
-        - color: The colors to user. By defaut, uses the ``UIColor.white`
-        - thickness: the thickness of the border. Default to `2`
-        - quality: The number of degrees (out of 360): the smaller the best, but the slower. Defaults to `10`.
+     - Parameters:
+         - color: The colors to user. By defaut, uses the ``UIColor.white`
+         - thickness: the thickness of the border. Default to `2`
+         - quality: The number of degrees (out of 360): the smaller the best, but the slower. Defaults to `10`.
 
-    - Returns: the stroked version of the image, or self if something was wrong
-    */
+     - Returns: the stroked version of the image, or self if something was wrong
+     */
 
     func stroked(with color: UIColor = .white, thickness: CGFloat = 2, quality: CGFloat = 10) -> UIImage {
-
         guard let cgImage = cgImage else { return self }
 
         // Colorize the stroke image to reflect border color
@@ -191,7 +188,6 @@ public extension UIImage {
         let oldRect = CGRect(x: thickness, y: thickness, width: size.width, height: size.height).integral
         let newSize = CGSize(width: size.width + 2 * thickness, height: size.height + 2 * thickness)
         let translationVector = CGPoint(x: thickness, y: 0)
-
 
         UIGraphicsBeginImageContextWithOptions(newSize, false, scale)
 
@@ -224,17 +220,16 @@ public extension UIImage {
     }
 }
 
-
 extension CGPoint {
     /**
-    Rotates the point from the center `origin` by `byDegrees` degrees along the Z axis.
+     Rotates the point from the center `origin` by `byDegrees` degrees along the Z axis.
 
-    - Parameters:
-        - origin: The center of he rotation;
-        - byDegrees: Amount of degrees to rotate around the Z axis.
+     - Parameters:
+         - origin: The center of he rotation;
+         - byDegrees: Amount of degrees to rotate around the Z axis.
 
-    - Returns: The rotated point.
-    */
+     - Returns: The rotated point.
+     */
     func rotated(around origin: CGPoint, byDegrees: CGFloat) -> CGPoint {
         let dx = x - origin.x
         let dy = y - origin.y

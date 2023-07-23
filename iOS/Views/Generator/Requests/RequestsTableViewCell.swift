@@ -8,15 +8,14 @@
 import UIKit
 
 class RequestsTableViewCell: UITableViewCell {
-
-    @IBOutlet weak var imagePreviewView: UIImageView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var promptLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var imageCountLabel: UILabel!
-    @IBOutlet weak var messageLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var queuePositionLabel: UILabel!
+    @IBOutlet var imagePreviewView: UIImageView!
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet var promptLabel: UILabel!
+    @IBOutlet var dateLabel: UILabel!
+    @IBOutlet var imageCountLabel: UILabel!
+    @IBOutlet var messageLabel: UILabel!
+    @IBOutlet var timeLabel: UILabel!
+    @IBOutlet var queuePositionLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -75,5 +74,4 @@ class RequestsTableViewCell: UITableViewCell {
         Log.debug("Unloading image")
         imagePreviewView.image = nil
     }
-
 }

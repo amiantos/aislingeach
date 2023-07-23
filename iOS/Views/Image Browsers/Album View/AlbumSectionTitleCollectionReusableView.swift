@@ -8,6 +8,5 @@
 import UIKit
 
 class AlbumSectionTitleCollectionReusableView: UICollectionReusableView {
-        
-    @IBOutlet weak var sectionLabel: UILabel!
+    @IBOutlet var sectionLabel: UILabel!
 }

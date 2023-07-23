@@ -75,7 +75,7 @@ class ModelsTableViewController: UITableViewController {
         let activeModel = activeModels[indexPath.row]
         if let name = activeModel.name {
             delegate?.selectedModel(name: name)
-            self.dismiss(animated: true)
+            dismiss(animated: true)
         }
     }
 

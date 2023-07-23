@@ -11,7 +11,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
     @IBOutlet var favoriteIcon: UIImageView!
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var slectionIcon: UIImageView!
-    @IBOutlet weak var selectionTint: UIView!
+    @IBOutlet var selectionTint: UIView!
 
     var generatedImage: GeneratedImage?
 

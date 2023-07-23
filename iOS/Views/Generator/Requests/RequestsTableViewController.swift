@@ -9,14 +9,13 @@ import CoreData
 import UIKit
 
 class RequestsTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
-
     @IBOutlet var headerView: UIView!
-    @IBOutlet weak var createNewRequestButton: UIButton!
-    @IBAction func createNewRequestButtonAction(_ sender: UIButton) {
+    @IBOutlet var createNewRequestButton: UIButton!
+    @IBAction func createNewRequestButtonAction(_: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "generatorViewController") as! GeneratorViewController
         controller.modalPresentationStyle = .formSheet
-        self.present(controller, animated: true)
+        present(controller, animated: true)
     }
 
     var resultsController: NSFetchedResultsController<HordeRequest>?
@@ -32,7 +31,6 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
 
         setupDataSource()
         tableView.tableHeaderView = headerView
-        
     }
 
     private func setupDataSource() {
@@ -53,21 +51,20 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in _: UITableView) -> Int {
         if let frc = resultsController {
             return frc.sections!.count
         }
         return 0
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sections = resultsController?.sections else {
             fatalError("No sections in fetchedResultsController")
         }
         let sectionInfo = sections[section]
         return sectionInfo.numberOfObjects
     }
-
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "requestCell", for: indexPath) as! RequestsTableViewCell
@@ -80,7 +77,7 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    override func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
         return 124
     }
 
@@ -122,34 +119,31 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
         ops.removeAll()
     }
 
-
     /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
+     // Override to support conditional editing of the table view.
+     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+         // Return false if you do not want the specified item to be editable.
+         return true
+     }
+     */
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let request = resultsController?.object(at: indexPath) else { fatalError("Attempt to delete a row without an object") }
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "imageGalleryView") as! ThumbnailBrowserViewController
         controller.setup(title: request.prompt ?? request.uuid?.uuidString ?? "", predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "requestId = %@", request.uuid! as CVarArg), NSPredicate(format: "isHidden = %d", false)]))
         navigationController?.pushViewController(controller, animated: true)
-        
     }
 
-
     // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             guard let request = resultsController?.object(at: indexPath) else { fatalError("Attempt to delete a row without an object") }
 
             if request.status == "active" {
                 let alert = UIAlertController(title: "Confirm", message: "This request is still processing, are you sure you want to delete it?", preferredStyle: .alert)
-                let deleteAction = UIAlertAction(title: "Delete", style: .destructive)  { _ in
+                let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
                     ImageDatabase.standard.deleteRequest(request) { request in
                         if request != nil { fatalError("Deleting request did not work?") }
                     }
@@ -157,41 +151,37 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
                 let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
                 alert.addAction(deleteAction)
                 alert.addAction(cancelAction)
-                self.present(alert, animated: true)
+                present(alert, animated: true)
             } else {
                 ImageDatabase.standard.deleteRequest(request) { request in
                     if request != nil { fatalError("Deleting request did not work?") }
                 }
             }
-
         }
     }
 
+    /*
+     // Override to support rearranging the table view.
+     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+
+     }
+     */
 
     /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
+     // Override to support conditional rearranging of the table view.
+     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+         // Return false if you do not want the item to be re-orderable.
+         return true
+     }
+     */
 
     /*
-    // MARK: - Navigation
+     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+         // Get the new view controller using segue.destination.
+         // Pass the selected object to the new view controller.
+     }
+     */
 }
-
