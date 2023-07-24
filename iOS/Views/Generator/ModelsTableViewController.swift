@@ -75,7 +75,7 @@ class ModelsTableViewController: UITableViewController {
         let activeModel = activeModels[indexPath.row]
         if let name = activeModel.name {
             delegate?.selectedModel(name: name)
-            dismiss(animated: true)
+            navigationController?.popViewController(animated: true)
         }
     }
 

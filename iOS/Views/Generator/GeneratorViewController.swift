@@ -16,7 +16,12 @@ class GeneratorViewController: UIViewController {
     var saveGenerationSettingsTimer: Timer?
     var generationPollingTimer: Timer?
 
+    var settingsToLoad: (GenerationInputStable?, String?)?
+
     // MARK: - IBOutlets
+    @IBAction func doneButtonAction(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true)
+    }
 
     @IBOutlet var scrollView: UIScrollView!
 
@@ -133,6 +138,7 @@ class GeneratorViewController: UIViewController {
             appDelegate.generationTracker.createNewGenerationRequest(body: generationBody)
         }
     }
+    @IBOutlet weak var generateButtonLabel: UILabel!
 
     @IBOutlet var gfpganToggleButton: UIButton!
     @IBAction func gfpganToggleButonChanged(_ sender: UIButton) {
@@ -237,7 +243,12 @@ class GeneratorViewController: UIViewController {
         debugModeButton.isSelected = UserPreferences.standard.debugMode
         shareButton.isSelected = UserPreferences.standard.shareWithLaion
 
-        loadSettingsIntoUI(settings: recentSettings, seed: nil)
+        if let settingsToLoad = settingsToLoad, let settings = settingsToLoad.0 {
+            loadSettingsIntoUI(settings: settings, seed: settingsToLoad.1)
+            self.settingsToLoad = nil
+        } else {
+            loadSettingsIntoUI(settings: recentSettings, seed: nil)
+        }
 
         updateSliderLabels()
     }
@@ -402,6 +413,7 @@ extension GeneratorViewController {
         })
 
         kudosEstimateTimer?.invalidate()
+        generateButtonLabel.text = "Updating Kudos Estimate..."
         kudosEstimateTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { timer in
             self.fetchAndDisplayKudosEstimate()
             timer.invalidate()
@@ -420,7 +432,7 @@ extension GeneratorViewController {
                 if let data = data, let kudosEstimate = data.kudos {
                     Log.debug(data)
                     DispatchQueue.main.async {
-                        self.generateButton.configuration?.subtitle = "\(kudosEstimate) Kudos"
+                        self.generateButtonLabel.text = "Estimated Kudos Cost: ~\(kudosEstimate) total, ~\(kudosEstimate/(currentGen.params?.n ?? 1) ) per image"
                     }
                 } else if let error = error {
                     Log.error(error)

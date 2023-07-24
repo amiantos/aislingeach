@@ -193,7 +193,7 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
            let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData)
         {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let generateView = storyboard.instantiateViewController(withIdentifier: "generatorViewController") as! GeneratorViewController
+            let generateViewNavController = storyboard.instantiateViewController(withIdentifier: "generatorViewController") as! UINavigationController
             Log.info("Loading image settings into Create view...")
             var seed: String? = nil
             if includeSeed {
@@ -207,9 +207,12 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
                     seed = generatedSeed
                 }
             }
-            generateView.modalPresentationStyle = .formSheet
-            present(generateView, animated: true)
-            generateView.loadSettingsIntoUI(settings: settings, seed: seed)
+            generateViewNavController.modalPresentationStyle = .formSheet
+            generateViewNavController.isModalInPresentation = true
+            present(generateViewNavController, animated: true)
+            if let generateView = generateViewNavController.topViewController as? GeneratorViewController {
+                generateView.settingsToLoad = (settings, seed)
+            }
         }
     }
 

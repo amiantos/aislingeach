@@ -13,8 +13,9 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
     @IBOutlet var createNewRequestButton: UIButton!
     @IBAction func createNewRequestButtonAction(_: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "generatorViewController") as! GeneratorViewController
-        controller.modalPresentationStyle = .formSheet
+        let controller = storyboard.instantiateViewController(withIdentifier: "generatorViewController") as! UINavigationController
+        controller.modalPresentationStyle = .pageSheet
+        controller.isModalInPresentation = true
         present(controller, animated: true)
     }
 
@@ -141,7 +142,7 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
         if editingStyle == .delete {
             guard let request = resultsController?.object(at: indexPath) else { fatalError("Attempt to delete a row without an object") }
 
-            if request.status == "error" {
+            if request.status == "error" || request.status == "done" {
                 ImageDatabase.standard.deleteRequest(request, pruneImages: false) { request in
                     if request != nil { fatalError("Deleting request did not work?") }
                 }
