@@ -255,14 +255,19 @@ extension ThumbnailBrowserViewController {
     func deleteSelectedImages() {
         if let selectedCells = collectionView.indexPathsForSelectedItems {
             var images: [GeneratedImage] = []
+            var favoriteImages: [GeneratedImage] = []
             selectedCells.forEach { indexPath in
                 guard let object = resultsController?.object(at: indexPath) else {
                     fatalError("Attempt to configure cell without a managed object")
                 }
-                images.append(object)
+                if object.isFavorite {
+                    favoriteImages.append(object)
+                } else {
+                    images.append(object)
+                }
             }
             if images.count > 0 {
-                let alert = UIAlertController(title: "Confirm", message: "Are you sure you want to delete these \(images.count) images? This cannot be reverted.", preferredStyle: .alert)
+                let alert = UIAlertController(title: "Confirm", message: "Are you sure you want to delete these \(images.count) images? This cannot be reverted. Note: \(favoriteImages.count) favorited images also selected will not be deleted.", preferredStyle: .alert)
                 let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
                     ImageDatabase.standard.deleteImages(images)
                     self.toggleEditing()

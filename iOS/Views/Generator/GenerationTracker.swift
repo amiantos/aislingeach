@@ -135,7 +135,7 @@ class GenerationTracker {
     func createNewGenerationRequest(body: GenerationInputStable) {
         Log.info("Submitting a new generation request...")
 
-        delegate?.showUpdate(type: .update, message: "Submitting your request...")
+        delegate?.showUpdate(type: .update, message: "Sending your dream...")
 
         HordeV2API.postImageAsyncGenerate(body: body, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
             if let data = data, let generationIdentifier = data._id {
@@ -143,7 +143,7 @@ class GenerationTracker {
                 ImageDatabase.standard.saveRequest(id: UUID(uuidString: generationIdentifier)!, request: body) { _ in
                     Log.debug("\(generationIdentifier) - Request saved successfully.")
                 }
-                self.delegate?.showUpdate(type: .success, message: "Request submitted successfully!")
+                self.delegate?.showUpdate(type: .success, message: "Dream was sent successfully!")
             } else if let error = error {
                 Log.debug("Error: \(error.localizedDescription)")
                 if error.code == 401 {

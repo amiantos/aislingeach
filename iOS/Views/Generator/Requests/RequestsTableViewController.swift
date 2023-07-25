@@ -10,10 +10,28 @@ import UIKit
 
 class RequestsTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     @IBOutlet var headerView: UIView!
+    @IBOutlet var footerView: UIView!
+    @IBOutlet var introductionView: UIView!
     @IBOutlet var createNewRequestButton: UIButton!
     @IBAction func createNewRequestButtonAction(_: UIButton) {
         present(appDelegate.generationTracker.createViewNavigationController, animated: true)
     }
+    @IBOutlet weak var clearRequestHistoryButton: UIButton!
+    @IBAction func clearRequestHistoryButtonAction(_ sender: UIButton) {
+        let alert = UIAlertController(title: "Clear Dreams", message: "This will clear your dream history, and optionally you may \"prune\" any images you have not hidden or favorited from those dreams.", preferredStyle: .alert)
+        let deleteImagesAction = UIAlertAction(title: "Prune images", style: .destructive) { _ in
+            ImageDatabase.standard.deleteRequests(pruneImages: true)
+        }
+        let deleteRequestAction = UIAlertAction(title: "Keep all images", style: .default) { _ in
+            ImageDatabase.standard.deleteRequests(pruneImages: false)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(deleteImagesAction)
+        alert.addAction(deleteRequestAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
+    }
+
 
     var resultsController: NSFetchedResultsController<HordeRequest>?
 
@@ -28,6 +46,14 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
 
         setupDataSource()
         tableView.tableHeaderView = headerView
+        tableView.tableFooterView = nil
+        if let count = resultsController?.fetchedObjects?.count {
+            if count > 1 {
+                tableView.tableFooterView = footerView
+            } else if count == 0 {
+                tableView.tableFooterView = introductionView
+            }
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -119,6 +145,15 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
         tableView.performBatchUpdates({ () in
             for op: BlockOperation in self.ops { op.start() }
         }, completion: { _ in self.ops.removeAll() })
+
+        tableView.tableFooterView = nil
+        if let count = resultsController?.fetchedObjects?.count {
+            if count > 1 {
+                tableView.tableFooterView = footerView
+            } else if count == 0 {
+                tableView.tableFooterView = introductionView
+            }
+        }
     }
 
     deinit {
@@ -135,7 +170,7 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
      */
 
     override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let request = resultsController?.object(at: indexPath) else { fatalError("Attempt to delete a row without an object") }
+        guard let request = resultsController?.object(at: indexPath) else { fatalError("Attempt to select a row without an object") }
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "imageGalleryView") as! ThumbnailBrowserViewController
@@ -153,12 +188,12 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
                     if request != nil { fatalError("Deleting request did not work?") }
                 }
             } else if request.status != "finished" {
-                let alert = UIAlertController(title: "Delete Refused", message: "This request is still processing, you can't delete it yet, sorry.", preferredStyle: .alert)
+                let alert = UIAlertController(title: "Delete Refused", message: "This sleeper is still dreaming, you can't delete it yet, sorry.", preferredStyle: .alert)
                 let cancelAction = UIAlertAction(title: "Oh... weird, okay", style: .cancel)
                 alert.addAction(cancelAction)
                 present(alert, animated: true)
             } else {
-                let alert = UIAlertController(title: "Delete Request", message: "Would you like to prune the unmarked images from this request?", preferredStyle: .alert)
+                let alert = UIAlertController(title: "Delete Dream", message: "This will clear this dream from your history, optionally you may \"prune\" any images you have not hidden or favorited from this dream.", preferredStyle: .alert)
                 let deleteImagesAction = UIAlertAction(title: "Prune images", style: .destructive) { _ in
                     ImageDatabase.standard.deleteRequest(request, pruneImages: true) { request in
                         if request != nil { fatalError("Deleting request did not work?") }

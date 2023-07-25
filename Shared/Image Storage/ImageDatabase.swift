@@ -109,20 +109,6 @@ class ImageDatabase {
         }
     }
 
-    //    func fetchPage(by uuid: String, completion: @escaping (Page?) -> Void) {
-    //        mainManagedObjectContext.perform {
-    //            do {
-    //                let fetchRequest: NSFetchRequest<Page> = Page.fetchRequest()
-    //                fetchRequest.predicate = NSPredicate(format: "uuid == %@", uuid)
-    //                if let page = try? self.mainManagedObjectContext.fetch(fetchRequest).first {
-    //                    completion(page)
-    //                } else {
-    //                    completion(nil)
-    //                }
-    //            }
-    //        }
-    //    }
-
     func toggleImageFavorite(generatedImage: GeneratedImage, completion: @escaping (GeneratedImage?) -> Void) {
         mainManagedObjectContext.perform {
             do {
@@ -218,30 +204,30 @@ class ImageDatabase {
     }
 
     func deleteImages(_ generatedImages: [GeneratedImage]) {
-        for image in generatedImages {
+        for image in generatedImages where !image.isFavorite {
             mainManagedObjectContext.delete(image)
         }
         saveContext()
         NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
     }
 
-    func pruneImages() {
-        mainManagedObjectContext.perform { [self] in
-            do {
-                let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
-                fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "isFavorite = %d", false), NSPredicate(format: "isHidden = %d", false)])
-                let images = try mainManagedObjectContext.fetch(fetchRequest) as [GeneratedImage]
-                for image in images {
-                    // TODO: Should trash...
-                    mainManagedObjectContext.delete(image)
-                }
-                try mainManagedObjectContext.save()
-                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
-            } catch {
-                Log.debug("Uh oh...")
-            }
-        }
-    }
+//    func pruneImages() {
+//        mainManagedObjectContext.perform { [self] in
+//            do {
+//                let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
+//                fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "isFavorite = %d", false), NSPredicate(format: "isHidden = %d", false)])
+//                let images = try mainManagedObjectContext.fetch(fetchRequest) as [GeneratedImage]
+//                for image in images {
+//                    // TODO: Should trash...
+//                    mainManagedObjectContext.delete(image)
+//                }
+//                try mainManagedObjectContext.save()
+//                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
+//            } catch {
+//                Log.debug("Uh oh...")
+//            }
+//        }
+//    }
 
     func getCountAndRecentImageForPredicate(predicate: NSPredicate, completion: @escaping ((Int, GeneratedImage?)) -> Void) {
         privateManagedObjectContext.perform { [self] in
@@ -324,7 +310,7 @@ class ImageDatabase {
                 hordeRequest.dateCreated = Date()
                 hordeRequest.fullRequest = request.toJSONString()
                 hordeRequest.n = Int16(request.params?.n ?? 0)
-                hordeRequest.message = "Waiting..."
+                hordeRequest.message = "Falling asleep..."
                 hordeRequest.status = "active"
                 try self.mainManagedObjectContext.save()
                 completion(hordeRequest)
@@ -356,6 +342,36 @@ class ImageDatabase {
                 completion(nil)
             } catch {
                 completion(nil)
+            }
+        }
+    }
+
+    func deleteRequests(pruneImages: Bool) {
+        mainManagedObjectContext.perform { [self] in
+            do {
+                let requestsFetchRequest: NSFetchRequest<HordeRequest> = HordeRequest.fetchRequest()
+                requestsFetchRequest.predicate = NSPredicate(format: "status = %@", "finished")
+                requestsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
+                let requests = try mainManagedObjectContext.fetch(requestsFetchRequest) as [HordeRequest]
+                for request in requests {
+                    if pruneImages {
+                        let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
+                        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                            NSPredicate(format: "isFavorite = %d", false),
+                            NSPredicate(format: "isHidden = %d", false),
+                            NSPredicate(format: "requestId = %@", request.uuid! as CVarArg),
+                        ])
+                        let images = try mainManagedObjectContext.fetch(fetchRequest) as [GeneratedImage]
+                        for image in images {
+                            mainManagedObjectContext.delete(image)
+                        }
+                    }
+                    mainManagedObjectContext.delete(request)
+                }
+                try mainManagedObjectContext.save()
+                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
+            } catch {
+                Log.error("Encountered error trying to batch delete requests: \(error.localizedDescription)")
             }
         }
     }
@@ -393,9 +409,9 @@ class ImageDatabase {
                             request.waitTime = Int16(waitTime)
                             request.queuePosition = Int16(queuePosition)
                             request.status = done ? "done" : "active"
-                            request.message = "\(waiting) waiting, \(processing) processing, \(finished) finished"
+                            request.message = "\(waiting) sleeping, \(processing) dreaming, \(finished) waking"
                             if request.status == "done" {
-                                request.message = "Downloading \(finished) images..."
+                                request.message = "Deciphering \(finished) images..."
                             }
                             try mainManagedObjectContext.save()
                         }
