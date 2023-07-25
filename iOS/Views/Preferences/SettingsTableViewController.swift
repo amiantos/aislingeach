@@ -5,8 +5,8 @@
 //  Created by Brad Root on 5/27/23.
 //
 
-import UIKit
 import LocalAuthentication
+import UIKit
 
 class SettingsTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet var apiKeyTextField: UITextField!
@@ -36,7 +36,7 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate {
             context.evaluatePolicy(
                 .deviceOwnerAuthentication,
                 localizedReason: reason
-            ) { success, error in
+            ) { success, _ in
                 if success {
                     DispatchQueue.main.async {
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)

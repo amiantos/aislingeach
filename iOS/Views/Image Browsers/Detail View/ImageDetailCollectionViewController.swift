@@ -5,12 +5,11 @@
 //  Created by Brad Root on 7/3/23.
 //
 
-import LinkPresentation
 import CoreData
+import LinkPresentation
 import UIKit
 
 class ImageDetailCollectionViewController: UICollectionViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout, ImageDetailCollectionViewCellDelegate {
-  
     var resultsController: NSFetchedResultsController<GeneratedImage>?
     var predicate: NSPredicate?
     var startingIndexPath: IndexPath?
@@ -32,7 +31,7 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         }
     }
 
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet var imageView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -50,7 +49,7 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
             collectionView.scrollToItem(at: startingIndexPath, at: .centeredHorizontally, animated: false)
         }
 
-        favoriteButton = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action:  #selector(favoriteImage))
+        favoriteButton = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(favoriteImage))
         deleteButton = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(deleteImage))
         hideButton = UIBarButtonItem(image: UIImage(systemName: "eye.slash"), style: .plain, target: self, action: #selector(hideImage))
         shareButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(shareSheet))
@@ -85,12 +84,12 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
 
     func showRatingView(for requestId: UUID) {
         let requestRatingView = RequestRaterViewController(for: requestId)
-        self.present(requestRatingView, animated: true)
+        present(requestRatingView, animated: true)
     }
 
     func dismissView() {
         metaDataViewIsHidden = true
-        self.dismiss(animated: true)
+        dismiss(animated: true)
     }
 
     @objc func cancelAction() {
@@ -126,14 +125,14 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         let noAction = UIAlertAction(title: "No", style: .default) { _ in
             self.loadSettings(includeSeed: false)
         }
-        let yesAction = UIAlertAction(title: "Yes", style: .destructive)  { _ in
+        let yesAction = UIAlertAction(title: "Yes", style: .destructive) { _ in
             self.loadSettings(includeSeed: true)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         alert.addAction(yesAction)
         alert.addAction(noAction)
         alert.addAction(cancelAction)
-        self.present(alert, animated: true)
+        present(alert, animated: true)
     }
 
     @objc func shareSheet() {
@@ -146,7 +145,7 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
 
     @objc func hideImage() {
         if let indexPath = collectionView.indexPathsForVisibleItems.first, let image = resultsController?.object(at: indexPath) as? GeneratedImage {
-            ImageDatabase.standard.toggleImageHidden(generatedImage: image) { [self] image in
+            ImageDatabase.standard.toggleImageHidden(generatedImage: image) { [self] _ in
 //                if let image = image {
 //                    self.setupToolbarItems(image: image)
 //                }
@@ -168,10 +167,10 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
 
     @objc func deleteImage() {
         if let indexPath = collectionView.indexPathsForVisibleItems.first,
-           let image = resultsController?.object(at: indexPath) as? GeneratedImage {
-
+           let image = resultsController?.object(at: indexPath) as? GeneratedImage
+        {
             let alert = UIAlertController(title: "Confirm", message: "Are you sure you want to delete this image? This cannot be reverted.", preferredStyle: .alert)
-            let deleteAction = UIAlertAction(title: "Delete", style: .destructive)  { _ in
+            let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
                 ImageDatabase.standard.deleteImage(image) { generatedImage in
                     if generatedImage == nil {
                         Log.debug("Image successfully deleted.")
@@ -181,7 +180,7 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
             alert.addAction(deleteAction)
             alert.addAction(cancelAction)
-            self.present(alert, animated: true)
+            present(alert, animated: true)
         }
     }
 
@@ -191,10 +190,8 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
            let image = resultsController?.object(at: indexPath) as? GeneratedImage,
            let jsonString = image.fullRequest,
            let jsonData = jsonString.data(using: .utf8),
-           let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData),
-           let tabBarController = presentingViewController as? UITabBarController,
-           let navigationController = tabBarController.viewControllers?.first as? UINavigationController,
-           let generateView = navigationController.topViewController as? GeneratorViewController {
+           let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData)
+        {
             Log.info("Loading image settings into Create view...")
             var seed: String? = nil
             if includeSeed {
@@ -203,25 +200,27 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
                 } else if let resJsonString = image.fullResponse,
                           let resJsonData = resJsonString.data(using: .utf8),
                           let response = try? JSONDecoder().decode(GenerationStable.self, from: resJsonData),
-                          let generatedSeed = response.seed {
+                          let generatedSeed = response.seed
+                {
                     seed = generatedSeed
                 }
             }
-            generateView.loadSettingsIntoUI(settings: settings, seed: seed)
-            self.dismissView()
-            tabBarController.selectedIndex = 0
+            present(appDelegate.generationTracker.createViewNavigationController, animated: true)
+            if let generateView = appDelegate.generationTracker.createViewNavigationController.topViewController as? GeneratorViewController {
+                generateView.loadSettingsIntoUI(settings: settings, seed: seed)
+            }
         }
     }
 
     /*
-    // MARK: - Navigation
+     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+         // Get the new view controller using [segue destinationViewController].
+         // Pass the selected object to the new view controller.
+     }
+     */
 
     // MARK: UICollectionViewDataSource
 
@@ -233,7 +232,7 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         right: 0
     )
 
-    func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt _: IndexPath) -> CGSize {
+    func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt _: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: view.safeAreaLayoutGuide.layoutFrame.height)
     }
 
@@ -252,7 +251,7 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         return 0
     }
 
-    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    override func collectionView(_: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt _: IndexPath) {
         guard let cell = cell as? ImageDetailCollectionViewCell, let image = cell.generatedImage else { return }
         navigationItem.title = image.promptSimple
         setupToolbarItems(image: image)
@@ -319,35 +318,33 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
     // MARK: UICollectionViewDelegate
 
     /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
+     // Uncomment this method to specify if the specified item should be highlighted during tracking
+     override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
+         return true
+     }
+     */
 
     /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
+     // Uncomment this method to specify if the specified item should be selected
+     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+         return true
+     }
+     */
 
     /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
+     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
+     override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
+         return false
+     }
 
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
+     override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+         return false
+     }
 
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
-    
+     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
 
+     }
+     */
 }
 
 extension ImageDetailCollectionViewController {
@@ -356,7 +353,7 @@ extension ImageDetailCollectionViewController {
         // Configure the request's entity, and optionally its predicate
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
 
-        fetchRequest.predicate = self.predicate
+        fetchRequest.predicate = predicate
 
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: ImageDatabase.standard.mainManagedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         resultsController = controller
@@ -368,7 +365,6 @@ extension ImageDetailCollectionViewController {
         }
     }
 }
-
 
 extension ImageDetailCollectionViewController: UIActivityItemSource {
     func activityViewControllerPlaceholderItem(_: UIActivityViewController) -> Any {

@@ -8,19 +8,18 @@
 import UIKit
 
 class RequestRaterViewController: UIViewController {
-
     private var requestId: UUID
 
     private var image1: GeneratedImage?
     private var image2: GeneratedImage?
 
-    @IBOutlet weak var imageView1: UIImageView!
-    @IBOutlet weak var imageView2: UIImageView!
+    @IBOutlet var imageView1: UIImageView!
+    @IBOutlet var imageView2: UIImageView!
 
-    @IBOutlet weak var checkButton1: UIButton!
-    @IBOutlet weak var checkButton2: UIButton!
+    @IBOutlet var checkButton1: UIButton!
+    @IBOutlet var checkButton2: UIButton!
 
-    @IBOutlet weak var submitButton: UIButton!
+    @IBOutlet var submitButton: UIButton!
 
     @IBAction func checkButtonAction(_ sender: UIButton) {
         Log.debug("Button hit: \(sender.tag)")
@@ -37,19 +36,19 @@ class RequestRaterViewController: UIViewController {
         }
     }
 
-    @IBAction func tapGestureRecognizer1(_ sender: UITapGestureRecognizer) {
+    @IBAction func tapGestureRecognizer1(_: UITapGestureRecognizer) {
         checkButton1.isSelected = true
         checkButton2.isSelected = false
         submitButton.isEnabled = true
     }
 
-    @IBAction func tapGestureRecognizer2(_ sender: UITapGestureRecognizer) {
+    @IBAction func tapGestureRecognizer2(_: UITapGestureRecognizer) {
         checkButton1.isSelected = false
         checkButton2.isSelected = true
         submitButton.isEnabled = true
     }
 
-    @IBAction func submitButtonAction(_ sender: UIButton) {
+    @IBAction func submitButtonAction(_: UIButton) {
         Log.debug("Hit submit button")
         var selectedImageUUID = image1?.uuid
         if checkButton2.isSelected {
@@ -61,17 +60,17 @@ class RequestRaterViewController: UIViewController {
         submitButton.isEnabled = false
         Log.debug("Selected image UUID \(selectedImageUUID.uuidString) to submit...")
 
-        HordeV2API.postAesthetics(body: AestheticsPayload(best: selectedImageUUID.uuidString.lowercased()), _id: requestId.uuidString.lowercased(), clientAgent: hordeClientAgent()) { data, error in
+        HordeV2API.postAesthetics(body: AestheticsPayload(best: selectedImageUUID.uuidString.lowercased()), _id: requestId.uuidString.lowercased(), clientAgent: hordeClientAgent()) { data, _ in
             if let data = data, let reward = data.reward {
                 let alert = UIAlertController(title: "Success!", message: "You received \(reward) kudos.", preferredStyle: .alert)
-                let alertAction = UIAlertAction(title: "Groovy", style: .default)  { _ in
+                let alertAction = UIAlertAction(title: "Groovy", style: .default) { _ in
                     self.dismiss(animated: true)
                 }
                 alert.addAction(alertAction)
                 self.present(alert, animated: true)
             } else {
                 let alert = UIAlertController(title: "Error", message: "This batch is no longer eligible to be rated, either because you rated it already, or waited too long to rate it.", preferredStyle: .alert)
-                let alertAction = UIAlertAction(title: "Oh well", style: .default)  { _ in
+                let alertAction = UIAlertAction(title: "Oh well", style: .default) { _ in
                     self.dismiss(animated: true)
                 }
                 alert.addAction(alertAction)
@@ -79,7 +78,6 @@ class RequestRaterViewController: UIViewController {
             }
         }
     }
-
 
     init(for requestId: UUID) {
         self.requestId = requestId
@@ -102,7 +100,7 @@ class RequestRaterViewController: UIViewController {
                 self.image2 = image2
                 if image1 == image2 || images.count > 2 {
                     let alert = UIAlertController(title: "Error", message: "This batch seems faulty, we can't let you rate it, sorry!", preferredStyle: .alert)
-                    let alertAction = UIAlertAction(title: "Oh well", style: .default)  { _ in
+                    let alertAction = UIAlertAction(title: "Oh well", style: .default) { _ in
                         self.dismiss(animated: true)
                     }
                     alert.addAction(alertAction)
@@ -132,18 +130,15 @@ class RequestRaterViewController: UIViewController {
                 }
             }
         }
-
     }
-
 
     /*
-    // MARK: - Navigation
+     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+         // Get the new view controller using segue.destination.
+         // Pass the selected object to the new view controller.
+     }
+     */
 }

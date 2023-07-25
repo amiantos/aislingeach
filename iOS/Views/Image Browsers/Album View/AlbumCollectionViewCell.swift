@@ -8,12 +8,12 @@
 import UIKit
 
 class AlbumCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var promptLabel: UILabel!
-    @IBOutlet weak var imageCountLabel: UILabel!
-    
-    @IBOutlet weak var favoriteIcon: UIImageView!
-    @IBOutlet weak var cellBackgroundView: UIView!
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet var promptLabel: UILabel!
+    @IBOutlet var imageCountLabel: UILabel!
+
+    @IBOutlet var favoriteIcon: UIImageView!
+    @IBOutlet var cellBackgroundView: UIView!
+    @IBOutlet var imageView: UIImageView!
 
     var viewPredicate: NSPredicate?
     var viewTitle: String?
@@ -22,8 +22,8 @@ class AlbumCollectionViewCell: UICollectionViewCell {
         cellBackgroundView.layer.cornerRadius = 8
         promptLabel.text = title
         imageCountLabel.text = count
-        self.viewPredicate = predicate
-        self.viewTitle = title
+        viewPredicate = predicate
+        viewTitle = title
         if title == "Favorites" {
             favoriteIcon.isHidden = false
         }
@@ -41,5 +41,4 @@ class AlbumCollectionViewCell: UICollectionViewCell {
             }
         }
     }
-    
 }
