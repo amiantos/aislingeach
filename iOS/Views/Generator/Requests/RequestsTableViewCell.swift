@@ -37,7 +37,7 @@ class RequestsTableViewCell: UITableViewCell {
         } else {
             queuePositionLabel.text = ""
         }
-        if request.status == "finished"  {
+        if request.status == "finished" {
             activityIndicator.stopAnimating()
             if let requestId = request.uuid {
                 ImageDatabase.standard.fetchFirstImage(requestId: requestId) { image in

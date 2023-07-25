@@ -21,6 +21,7 @@ struct UserPreferences {
         static let shareWithLaion = "shareWithLaion"
         static let debugMode = "debugMode"
         static let recentSettings = "recentSettings"
+        static let autoCloseCreatePanel = "autoCloseCreatePanel"
     }
 
     static var standard: UserDefaults {
@@ -34,6 +35,7 @@ struct UserPreferences {
             Key.debugMode: false,
             Key.shareWithLaion: true,
             Key.recentSettings: "{}",
+            Key.autoCloseCreatePanel: true,
         ])
 
         return database
@@ -95,6 +97,14 @@ extension UserDefaults {
 
     var shareWithLaion: Bool {
         return bool(forKey: UserPreferences.Key.shareWithLaion)
+    }
+
+    func set(autoCloseCreatePanel: Bool) {
+        set(autoCloseCreatePanel, forKey: UserPreferences.Key.autoCloseCreatePanel)
+    }
+
+    var autoCloseCreatePanel: Bool {
+        return bool(forKey: UserPreferences.Key.autoCloseCreatePanel)
     }
 
     func set(recentSettings: GenerationInputStable) {

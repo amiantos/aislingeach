@@ -335,14 +335,14 @@ class ImageDatabase {
     }
 
     func deleteRequest(_ hordeRequest: HordeRequest, pruneImages: Bool, completion: @escaping (HordeRequest?) -> Void) {
-        mainManagedObjectContext.perform {  [self] in
+        mainManagedObjectContext.perform { [self] in
             do {
                 if pruneImages {
                     let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
                     fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
                         NSPredicate(format: "isFavorite = %d", false),
                         NSPredicate(format: "isHidden = %d", false),
-                        NSPredicate(format: "requestId = %@", hordeRequest.uuid! as CVarArg)
+                        NSPredicate(format: "requestId = %@", hordeRequest.uuid! as CVarArg),
                     ])
                     let images = try mainManagedObjectContext.fetch(fetchRequest) as [GeneratedImage]
                     for image in images {

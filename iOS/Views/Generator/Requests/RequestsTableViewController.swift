@@ -12,11 +12,7 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
     @IBOutlet var headerView: UIView!
     @IBOutlet var createNewRequestButton: UIButton!
     @IBAction func createNewRequestButtonAction(_: UIButton) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "generatorViewController") as! UINavigationController
-        controller.modalPresentationStyle = .pageSheet
-        controller.isModalInPresentation = true
-        present(controller, animated: true)
+        present(appDelegate.generationTracker.createViewNavigationController, animated: true)
     }
 
     var resultsController: NSFetchedResultsController<HordeRequest>?
@@ -32,6 +28,16 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
 
         setupDataSource()
         tableView.tableHeaderView = headerView
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIApplication.shared.isIdleTimerDisabled = true
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        UIApplication.shared.isIdleTimerDisabled = false
+        super.viewWillDisappear(animated)
     }
 
     private func setupDataSource() {
@@ -153,12 +159,12 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
                 present(alert, animated: true)
             } else {
                 let alert = UIAlertController(title: "Delete Request", message: "Would you like to prune the unmarked images from this request?", preferredStyle: .alert)
-                let deleteImagesAction = UIAlertAction(title: "Prune images", style: .destructive)  { _ in
+                let deleteImagesAction = UIAlertAction(title: "Prune images", style: .destructive) { _ in
                     ImageDatabase.standard.deleteRequest(request, pruneImages: true) { request in
                         if request != nil { fatalError("Deleting request did not work?") }
                     }
                 }
-                let deleteRequestAction = UIAlertAction(title: "Keep all images", style: .default)  { _ in
+                let deleteRequestAction = UIAlertAction(title: "Keep all images", style: .default) { _ in
                     ImageDatabase.standard.deleteRequest(request, pruneImages: false) { request in
                         if request != nil { fatalError("Deleting request did not work?") }
                     }

@@ -15,10 +15,14 @@ enum TrackerException: Error {
     case RequestNotDone
 }
 
+enum UpdateType {
+    case update
+    case error
+    case success
+}
+
 protocol GenerationTrackerDelegate {
-    func updateProcessingStatus(title: String, message: String)
-    func showErrorStatus(title: String, message: String)
-    func displayCompletedGeneration(generatedImage: GeneratedImage)
+    func showUpdate(type: UpdateType, message: String)
 }
 
 class GenerationTracker {
@@ -29,18 +33,18 @@ class GenerationTracker {
     var currentGenerationBody: GenerationInputStable?
     var generationsSaved: [String] = []
 
-    var requestIsProcessing: Bool = false {
-        didSet {
-            if requestIsProcessing {
-                UIApplication.shared.isIdleTimerDisabled = true
-            } else {
-                UIApplication.shared.isIdleTimerDisabled = false
-            }
-        }
-    }
+    var createViewNavigationController: UINavigationController
 
     init() {
-        Log.debug("GenerationTracker Activated")
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "generatorViewController") as! UINavigationController
+        controller.modalPresentationStyle = .pageSheet
+        controller.isModalInPresentation = true
+        createViewNavigationController = controller
+        if let generateView = controller.topViewController as? GeneratorViewController {
+            generateView.generationTracker = self
+        }
+        Log.info("GenerationTracker Activated")
         startPolling()
     }
 
@@ -131,7 +135,7 @@ class GenerationTracker {
     func createNewGenerationRequest(body: GenerationInputStable) {
         Log.info("Submitting a new generation request...")
 
-        delegate?.updateProcessingStatus(title: "Submitting your request...", message: "")
+        delegate?.showUpdate(type: .update, message: "Submitting your request...")
 
         HordeV2API.postImageAsyncGenerate(body: body, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
             if let data = data, let generationIdentifier = data._id {
@@ -139,29 +143,21 @@ class GenerationTracker {
                 ImageDatabase.standard.saveRequest(id: UUID(uuidString: generationIdentifier)!, request: body) { _ in
                     Log.debug("\(generationIdentifier) - Request saved successfully.")
                 }
-                self.delegate?.updateProcessingStatus(title: "Request submitted!", message: "Please wait...")
+                self.delegate?.showUpdate(type: .success, message: "Request submitted successfully!")
             } else if let error = error {
                 Log.debug("Error: \(error.localizedDescription)")
                 if error.code == 401 {
-                    self.delegate?.showErrorStatus(title: "Unauthorized", message: "Invalid API key")
+                    self.delegate?.showUpdate(type: .error, message: "401 - Invalid API key")
                 } else if error.code == 500 {
-                    self.delegate?.showErrorStatus(title: "Server Error", message: "Could not connect to server, try again?")
+                    self.delegate?.showUpdate(type: .error, message: "500 - Could not connect to server, try again?")
                 } else if error.code == 403, body.models!.contains("SDXL_beta::stability.ai#6901") {
-                    self.delegate?.showErrorStatus(title: "Forbidden", message: "Anonymous users cannot use the SDXL beta.")
+                    self.delegate?.showUpdate(type: .error, message: "403 - Anonymous users cannot use the SDXL beta.")
                 } else if error.code == 403 {
-                    self.delegate?.showErrorStatus(title: "Forbidden", message: "Generation request was rejected by the server.")
+                    self.delegate?.showUpdate(type: .error, message: "403 - Generation request was rejected by the server.")
                 } else {
-                    self.delegate?.showErrorStatus(title: "Error", message: error.localizedDescription)
+                    self.delegate?.showUpdate(type: .error, message: error.localizedDescription)
                 }
-                self.requestIsProcessing = false
             }
         }
-    }
-
-    func setNewGenerationRequest(generationIdentifier: String, body: GenerationInputStable) {
-        Log.info("\(generationIdentifier) - New request created...")
-        currentGenerationRequestIdentifier = generationIdentifier
-        currentGenerationBody = body
-        requestIsProcessing = false
     }
 }

@@ -16,11 +16,18 @@ class GeneratorViewController: UIViewController {
     var saveGenerationSettingsTimer: Timer?
     var generationPollingTimer: Timer?
 
-    var settingsToLoad: (GenerationInputStable?, String?)?
+    var firstLaunch: Bool = true
+
+    weak var generationTracker: GenerationTracker? {
+        didSet {
+            generationTracker?.delegate = self
+        }
+    }
 
     // MARK: - IBOutlets
-    @IBAction func doneButtonAction(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true)
+
+    @IBAction func doneButtonAction(_: UIBarButtonItem) {
+        dismiss(animated: true)
     }
 
     @IBOutlet var scrollView: UIScrollView!
@@ -36,6 +43,7 @@ class GeneratorViewController: UIViewController {
         generationSettingsUpdated()
     }
 
+    @IBOutlet var promptTextViewContainerView: UIView!
     @IBOutlet var promptTextView: UITextView!
 
     @IBOutlet var stepsSlider: UISlider!
@@ -134,11 +142,12 @@ class GeneratorViewController: UIViewController {
     @IBAction func generateButtonPressed(_: UIButton) {
         promptTextView.resignFirstResponder()
         if let generationBody = createGeneratonBodyForCurrentSettings() {
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.generationTracker.createNewGenerationRequest(body: generationBody)
+            generateButton.isEnabled = false
+            generationTracker?.createNewGenerationRequest(body: generationBody)
         }
     }
-    @IBOutlet weak var generateButtonLabel: UILabel!
+
+    @IBOutlet var generateButtonLabel: UILabel!
 
     @IBOutlet var gfpganToggleButton: UIButton!
     @IBAction func gfpganToggleButonChanged(_ sender: UIButton) {
@@ -209,16 +218,9 @@ class GeneratorViewController: UIViewController {
         }
     }
 
-    @IBOutlet var repeatSeedButton: UIButton!
-    @IBAction func repeatSeedButtonAction(_: UIButton) {
-        Log.error("Hit not implemeented button")
-//        guard let image = lastGeneratedImage, let jsonString = image.fullRequest, let jsonData = jsonString.data(using: .utf8), let settings = try? JSONDecoder().decode(
-//            GenerationInputStable.self,
-//            from: jsonData
-//        ) else { return }
-//        seedTextField.text = settings.params?.seed
-//        randomSeedButton.isSelected = false
-//        generationSettingsUpdated()
+    @IBOutlet var closeCreatePanelAutomaticallyButton: UIButton!
+    @IBAction func closeCreatePanelAutomaticallyButtonAction(_ sender: UIButton) {
+        UserPreferences.standard.set(autoCloseCreatePanel: sender.isSelected)
     }
 
     // MARK: - View Setup
@@ -242,35 +244,27 @@ class GeneratorViewController: UIViewController {
         trustedWorkersButton.isSelected = UserPreferences.standard.trustedWorkers
         debugModeButton.isSelected = UserPreferences.standard.debugMode
         shareButton.isSelected = UserPreferences.standard.shareWithLaion
+        closeCreatePanelAutomaticallyButton.isSelected = UserPreferences.standard.autoCloseCreatePanel
 
-        if let settingsToLoad = settingsToLoad, let settings = settingsToLoad.0 {
-            loadSettingsIntoUI(settings: settings, seed: settingsToLoad.1)
-            self.settingsToLoad = nil
-        } else {
-            loadSettingsIntoUI(settings: recentSettings, seed: nil)
-        }
+        loadSettingsIntoUI(settings: recentSettings, seed: nil)
 
-        updateSliderLabels()
+        promptTextView.layer.cornerRadius = 5
+        promptTextViewContainerView.layer.cornerRadius = 5
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        registerKeyboardNotifications()
         updateSliderLabels()
-    }
-
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        tearDownKeyboardNotifications()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        generationSettingsUpdated()
+        if firstLaunch {
+            generationSettingsUpdated()
+            firstLaunch = false
+        } else {
+            updateSliderLabels()
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
@@ -392,32 +386,36 @@ extension GeneratorViewController {
         }
         promptTextView.text = settings?.prompt ?? "temple in ruins, forest, stairs, columns, cinematic, detailed, atmospheric, epic, concept art, Matte painting, background, mist, photo-realistic, concept art, volumetric light, cinematic epic + rule of thirds octane render, 8k, corona render, movie concept art, octane render, cinematic, trending on artstation, movie concept art, cinematic composition, ultra-detailed, realistic, hyper-realistic, volumetric lighting, 8k"
 
-        imageQuantitySlider.setValue(1.0, animated: false)
         if selectedModel == "SDXL_beta::stability.ai#6901" {
             imageQuantitySlider.setValue(2.0, animated: false)
+        } else if let seed = seed {
+            seedTextField.text = seed
+            randomSeedButton.isSelected = false
+            imageQuantitySlider.setValue(1.0, animated: false)
         } else {
             imageQuantitySlider.setValue(Float(settings?.params?.n ?? 1), animated: false)
         }
 
-        if let seed = seed {
-            seedTextField.text = seed
-            randomSeedButton.isSelected = false
-        }
+        generationSettingsUpdated()
     }
 
-    func generationSettingsUpdated() {
+    func generationSettingsUpdated(customWait: TimeInterval = 1) {
         saveGenerationSettingsTimer?.invalidate()
-        saveGenerationSettingsTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { timer in
+        saveGenerationSettingsTimer = Timer.scheduledTimer(withTimeInterval: customWait, repeats: false, block: { timer in
             self.saveGenerationSettings()
             timer.invalidate()
         })
 
         kudosEstimateTimer?.invalidate()
-        generateButtonLabel.text = "Updating Kudos Estimate..."
-        kudosEstimateTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { timer in
+        if customWait == 1 {
+            generateButtonLabel.text = "Updating Kudos Estimate..."
+        }
+        kudosEstimateTimer = Timer.scheduledTimer(withTimeInterval: customWait, repeats: false, block: { timer in
             self.fetchAndDisplayKudosEstimate()
             timer.invalidate()
         })
+
+        updateSliderLabels()
     }
 
     func saveGenerationSettings() {
@@ -432,7 +430,7 @@ extension GeneratorViewController {
                 if let data = data, let kudosEstimate = data.kudos {
                     Log.debug(data)
                     DispatchQueue.main.async {
-                        self.generateButtonLabel.text = "Estimated Kudos Cost: ~\(kudosEstimate) total, ~\(kudosEstimate/(currentGen.params?.n ?? 1) ) per image"
+                        self.generateButtonLabel.text = "Estimated Kudos Cost: ~\(kudosEstimate) total, ~\(kudosEstimate / (currentGen.params?.n ?? 1)) per image"
                     }
                 } else if let error = error {
                     Log.error(error)
@@ -449,15 +447,16 @@ extension GeneratorViewController {
 
         var postprocessing: [ModelGenerationInputStable.PostProcessing]? = []
 
-        if let menuItem = upscalerPickButton.menu?.selectedElements.first, let upscaler = ModelGenerationInputStable.PostProcessing(rawValue: menuItem.title) {
-            postprocessing?.append(upscaler)
-        }
-
         if gfpganToggleButton.isSelected {
             postprocessing?.append(.gfpgan)
         }
+
         if codeFormersToggleButton.isSelected {
             postprocessing?.append(.codeFormers)
+        }
+
+        if let menuItem = upscalerPickButton.menu?.selectedElements.first, let upscaler = ModelGenerationInputStable.PostProcessing(rawValue: menuItem.title) {
+            postprocessing?.append(upscaler)
         }
 
         if let pp = postprocessing, pp.isEmpty {
@@ -534,45 +533,61 @@ extension GeneratorViewController: UITextViewDelegate {
     }
 }
 
-// MARK: - Keyboard Stuff
+// MARK: - Generation Tracker Delegate
 
-extension GeneratorViewController {
-    @objc func keyboardWillShow(notification: NSNotification) {
-        let userInfo: NSDictionary = notification.userInfo! as NSDictionary
-        let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
-
-        // TODO: This should check if the text entry point will be off screen when the keyboard appears and only scroll if needed
-
-        let tabbarHeight = tabBarController?.tabBar.frame.size.height ?? 0
-        let toolbarHeight = navigationController?.toolbar.frame.size.height ?? 0
-        let bottomInset = keyboardSize.height - tabbarHeight - toolbarHeight
-
-        scrollView.contentInset.bottom = bottomInset
-        scrollView.verticalScrollIndicatorInsets.bottom = bottomInset
-        scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + bottomInset), animated: true)
-    }
-
-    @objc func keyboardWillHide(notification _: NSNotification) {
-        scrollView.contentInset = .zero
-        scrollView.scrollIndicatorInsets = .zero
-    }
-
-    func registerKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillShow(notification:)),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillHide(notification:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
-    }
-
-    func tearDownKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+extension GeneratorViewController: GenerationTrackerDelegate {
+    func showUpdate(type: UpdateType, message: String) {
+        generateButtonLabel.text = message
+        if type == .success || type == .error {
+            generateButton.isEnabled = true
+            generationSettingsUpdated(customWait: 2)
+            if UserPreferences.standard.autoCloseCreatePanel {
+                navigationController?.dismiss(animated: true)
+            }
+        }
     }
 }
+
+// MARK: - Keyboard Stuff
+
+//
+// extension GeneratorViewController {
+//    @objc func keyboardWillShow(notification: NSNotification) {
+////        let userInfo: NSDictionary = notification.userInfo! as NSDictionary
+////        let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
+////
+////        // TODO: This should check if the text entry point will be off screen when the keyboard appears and only scroll if needed
+////
+////        let tabbarHeight = tabBarController?.tabBar.frame.size.height ?? 0
+////        let toolbarHeight = navigationController?.toolbar.frame.size.height ?? 0
+////        let bottomInset = keyboardSize.height - tabbarHeight - toolbarHeight
+////
+////        scrollView.contentInset.bottom = bottomInset
+////        scrollView.verticalScrollIndicatorInsets.bottom = bottomInset
+////        scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + bottomInset), animated: true)
+//    }
+//
+//    @objc func keyboardWillHide(notification _: NSNotification) {
+////        scrollView.contentInset = .zero
+////        scrollView.scrollIndicatorInsets = .zero
+//    }
+//
+//    func registerKeyboardNotifications() {
+//        NotificationCenter.default.addObserver(self,
+//                                               selector: #selector(keyboardWillShow(notification:)),
+//                                               name: UIResponder.keyboardWillShowNotification,
+//                                               object: nil)
+//        NotificationCenter.default.addObserver(self,
+//                                               selector: #selector(keyboardWillHide(notification:)),
+//                                               name: UIResponder.keyboardWillHideNotification,
+//                                               object: nil)
+//    }
+//
+//    func tearDownKeyboardNotifications() {
+//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+//    }
+// }
 
 extension GeneratorViewController: ModelsTableViewControllerDelegate {
     func selectedModel(name: String) {
@@ -587,5 +602,6 @@ extension GeneratorViewController: ModelsTableViewControllerDelegate {
         } else {
             imageQuantitySlider.isEnabled = true
         }
+        generationSettingsUpdated()
     }
 }
