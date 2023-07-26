@@ -27,14 +27,15 @@ class RequestsTableViewCell: UITableViewCell {
         imageCountLabel.text = "\(request.n) Images"
         messageLabel.text = request.message
         dateLabel.text = request.dateCreated?.formatted()
-        if request.waitTime > 0 {
+        if request.status != "finished" {
             timeLabel.text = "\(request.waitTime)s"
+            if request.queuePosition > 0 {
+                queuePositionLabel.text = "#\(request.queuePosition) in queue"
+            } else {
+                queuePositionLabel.text = "Active"
+            }
         } else {
             timeLabel.text = ""
-        }
-        if request.queuePosition > 0 {
-            queuePositionLabel.text = "#\(request.queuePosition) in queue"
-        } else {
             queuePositionLabel.text = ""
         }
         if request.status == "finished" {
