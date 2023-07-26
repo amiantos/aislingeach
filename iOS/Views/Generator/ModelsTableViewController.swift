@@ -11,8 +11,10 @@ protocol ModelsTableViewControllerDelegate {
     func selectedModel(name: String)
 }
 
-class ModelsTableViewController: UITableViewController {
+class ModelsTableViewController: UITableViewController, UISearchResultsUpdating {
+
     var activeModels: [ActiveModel] = []
+    var allModels: [ActiveModel] = []
     var delegate: ModelsTableViewControllerDelegate?
 
     override func viewDidLoad() {
@@ -21,7 +23,19 @@ class ModelsTableViewController: UITableViewController {
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(refreshModelList), for: .valueChanged)
 
+        let search = UISearchController(searchResultsController: nil)
+        search.searchResultsUpdater = self
+        search.obscuresBackgroundDuringPresentation = false
+        search.hidesNavigationBarDuringPresentation = false
+        search.searchBar.placeholder = "Search models by name"
+        navigationItem.searchController = search
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
         if let cache = ModelsCache.standard.get() {
+            allModels = cache
             activeModels = cache
             tableView.reloadData()
         } else {
@@ -30,7 +44,9 @@ class ModelsTableViewController: UITableViewController {
     }
 
     @objc func refreshModelList() {
+        navigationItem.searchController?.isActive = false
         tableView.refreshControl?.endRefreshing()
+        allModels = []
         activeModels = []
         tableView.reloadData()
         DispatchQueue.global(qos: .userInitiated).async {
@@ -39,15 +55,28 @@ class ModelsTableViewController: UITableViewController {
                     if var data = data {
                         data.sort { $0.count ?? 0 > $1.count ?? 0 }
                         ModelsCache.standard.cache(models: data)
+                        self.allModels = data
                         self.activeModels = data
                         self.tableView.reloadData()
                     } else if let error = error {
+                        self.allModels = []
                         self.activeModels = []
                         Log.error("Unable to load active models. \(error)")
                     }
                 }
             }
         }
+    }
+
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text else { return }
+        Log.debug("Searched for: \(text)")
+        if text.isEmpty {
+            activeModels = allModels
+        } else {
+            activeModels = allModels.filter({ $0.name!.lowercased().contains(text.lowercased()) })
+        }
+        tableView.reloadData()
     }
 
     // MARK: - Table view data source
