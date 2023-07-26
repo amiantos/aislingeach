@@ -441,13 +441,18 @@ class ImageDatabase {
         }
     }
 
-    func updatePendingRequestFinishedState(request: HordeRequest, status: RequestStatusStable) {
+    func updatePendingRequestFinishedState(request: HordeRequest, status: RequestStatusStable, images: [GeneratedImage]) {
         request.message = "Finished"
         if let kudosCost = (status.kudos as? NSDecimalNumber)?.intValue {
             request.totalKudosCost = Int16(kudosCost)
             request.message = "Finished! Total kudos used: \(kudosCost)"
         }
         request.status = "finished"
+
+        let mutableItems = request.images?.mutableCopy() as? NSMutableOrderedSet ?? []
+        mutableItems.addObjects(from: images)
+        request.images = mutableItems.copy() as? NSOrderedSet
+
         saveContext()
     }
 

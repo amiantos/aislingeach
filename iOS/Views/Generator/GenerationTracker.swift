@@ -106,6 +106,7 @@ class GenerationTracker {
             guard data.done ?? false, let generations = data.generations, !generations.isEmpty else {
                 throw TrackerException.NoGenerationsFound
             }
+            var images: [GeneratedImage] = []
             for (index, generation) in generations.enumerated() {
                 guard let urlString = generation.img,
                       let imageUrl = URL(string: urlString),
@@ -120,10 +121,11 @@ class GenerationTracker {
                 else {
                     throw TrackerException.ImageSaveFailure
                 }
+                images.append(generatedImage)
 
                 Log.info("\(requestId) - Saved Image ID \(generatedImage.uuid!)")
                 if index == generations.endIndex - 1 {
-                    ImageDatabase.standard.updatePendingRequestFinishedState(request: request, status: data)
+                    ImageDatabase.standard.updatePendingRequestFinishedState(request: request, status: data, images: images)
                 }
             }
         } catch {

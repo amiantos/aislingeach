@@ -39,11 +39,8 @@ class RequestsTableViewCell: UITableViewCell {
         }
         if request.status == "finished" {
             activityIndicator.stopAnimating()
-            if let requestId = request.uuid {
-                ImageDatabase.standard.fetchFirstImage(requestId: requestId) { image in
-                    guard let generatedImage = image else { return }
-                    self.loadImage(generatedImage: generatedImage)
-                }
+            if let images = request.images?.array as? [GeneratedImage], !images.isEmpty, let image = images.last {
+                self.loadImage(generatedImage: image)
             }
         } else if !activityIndicator.isAnimating {
             activityIndicator.startAnimating()
@@ -71,7 +68,8 @@ class RequestsTableViewCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        Log.debug("Unloading image")
         imagePreviewView.image = nil
+        queuePositionLabel.text = ""
+        timeLabel.text = ""
     }
 }
