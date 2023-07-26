@@ -64,27 +64,30 @@ class ImageDatabase {
 
     // MARK: - Images
 
-    func saveImage(id: String, requestId: String, image: Data, request: HordeRequest, response: GenerationStable) async -> GeneratedImage? {
+    func saveImage(id: UUID, requestId: UUID, image: Data, fullRequest: String, fullResponse: String) async -> GeneratedImage? {
         return await withCheckedContinuation { continuation in
             mainManagedObjectContext.perform {
                 do {
                     let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
-                    fetchRequest.predicate = NSPredicate(format: "uuid == %@", UUID(uuidString: id)! as CVarArg)
+                    fetchRequest.predicate = NSPredicate(format: "uuid == %@", id as CVarArg)
                     if let image = try? self.mainManagedObjectContext.fetch(fetchRequest).first {
                         Log.debug("Image already found in database, not re-saving.")
                         continuation.resume(returning: image)
+                        return
                     }
 
                     let generatedImage = GeneratedImage(context: self.mainManagedObjectContext)
                     generatedImage.image = image
-                    generatedImage.uuid = UUID(uuidString: id)!
-                    generatedImage.requestId = UUID(uuidString: requestId)!
+                    generatedImage.uuid = id
+                    generatedImage.requestId = requestId
                     generatedImage.dateCreated = Date()
-                    generatedImage.fullRequest = request.fullRequest
-                    generatedImage.promptSimple = request.prompt
-                    var prunedResponse = response
-                    prunedResponse.img = nil
-                    generatedImage.fullResponse = prunedResponse.toJSONString()
+                    generatedImage.fullRequest = fullRequest
+                    if let jsonString = generatedImage.fullRequest,
+                    let jsonData = jsonString.data(using: .utf8),
+                        let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData) {
+                        generatedImage.promptSimple = settings.prompt
+                        }
+                    generatedImage.fullResponse = fullResponse
                     generatedImage.backend = "horde"
                     try self.mainManagedObjectContext.save()
                     continuation.resume(returning: generatedImage)
@@ -299,6 +302,21 @@ class ImageDatabase {
         }
     }
 
+    func fetchImages(for requestId: UUID) async -> [GeneratedImage]? {
+        return await withCheckedContinuation { continuation in
+            mainManagedObjectContext.perform { [self] in
+                do {
+                    let fetchRequest1: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
+                    fetchRequest1.predicate = NSPredicate(format: "requestId = %@", requestId as CVarArg)
+                    let images = try mainManagedObjectContext.fetch(fetchRequest1) as [GeneratedImage]
+                    continuation.resume(returning: images)
+                } catch {
+                    continuation.resume(returning: nil)
+                }
+            }
+        }
+    }
+
     // MARK: - Requests
 
     func saveRequest(id: UUID, request: GenerationInputStable, completion: @escaping (HordeRequest?) -> Void) {
@@ -381,10 +399,39 @@ class ImageDatabase {
             mainManagedObjectContext.perform { [self] in
                 do {
                     let fetchRequest1: NSFetchRequest<HordeRequest> = HordeRequest.fetchRequest()
-                    fetchRequest1.predicate = NSPredicate(format: "status = %@", "active")
+                    fetchRequest1.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [NSPredicate(format: "status = %@", "active"), NSPredicate(format: "status = %@", "downloading")])
                     fetchRequest1.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: true)]
                     let requests = try mainManagedObjectContext.fetch(fetchRequest1) as [HordeRequest]
                     continuation.resume(returning: requests)
+                } catch {
+                    continuation.resume(returning: nil)
+                }
+            }
+        }
+    }
+
+    func fetchPendingDownloads() async -> [HordePendingDownload]? {
+        return await withCheckedContinuation { continuation in
+            mainManagedObjectContext.perform { [self] in
+                do {
+                    let fetchRequest1: NSFetchRequest<HordePendingDownload> = HordePendingDownload.fetchRequest()
+                    let downloads = try mainManagedObjectContext.fetch(fetchRequest1) as [HordePendingDownload]
+                    continuation.resume(returning: downloads)
+                } catch {
+                    continuation.resume(returning: nil)
+                }
+            }
+        }
+    }
+
+    func getPendingDownloads(for request: HordeRequest) async -> [HordePendingDownload]? {
+        return await withCheckedContinuation { continuation in
+            mainManagedObjectContext.perform { [self] in
+                do {
+                    let fetchRequest1: NSFetchRequest<HordePendingDownload> = HordePendingDownload.fetchRequest()
+                    fetchRequest1.predicate = NSPredicate(format: "requestId = %@", request.uuid! as CVarArg)
+                    let pendingDownloads = try mainManagedObjectContext.fetch(fetchRequest1) as [HordePendingDownload]
+                    continuation.resume(returning: pendingDownloads)
                 } catch {
                     continuation.resume(returning: nil)
                 }
@@ -408,9 +455,9 @@ class ImageDatabase {
                         {
                             request.waitTime = Int16(waitTime)
                             request.queuePosition = Int16(queuePosition)
-                            request.status = done ? "done" : "active"
+                            request.status = done ? "downloading" : "active"
                             request.message = "\(waiting) sleeping, \(processing) dreaming, \(finished) waking"
-                            if request.status == "done" {
+                            if request.status == "downloading" {
                                 request.message = "Deciphering \(finished) images..."
                             }
                             try mainManagedObjectContext.save()
@@ -441,12 +488,18 @@ class ImageDatabase {
         }
     }
 
-    func updatePendingRequestFinishedState(request: HordeRequest, status: RequestStatusStable, images: [GeneratedImage]) {
+    func updatePendingRequestWithKudosCost(request: HordeRequest, status: RequestStatusStable) {
+        if let kudosCost = (status.kudos as? NSDecimalNumber)?.intValue {
+            request.totalKudosCost = Int16(kudosCost)
+            saveContext()
+        }
+    }
+
+    func updatePendingRequestFinishedState(request: HordeRequest, images: [GeneratedImage]) {
         let imageCount = images.count
         request.n = Int16(imageCount)
         request.message = "Finished!"
-        if let kudosCost = (status.kudos as? NSDecimalNumber)?.intValue {
-            request.totalKudosCost = Int16(kudosCost)
+        if let kudosCost = (request.totalKudosCost as? NSDecimalNumber)?.intValue {
             request.message = "Kudos cost: \(kudosCost) total, ~\((kudosCost/imageCount)) per image"
         }
         request.status = "finished"
@@ -456,6 +509,41 @@ class ImageDatabase {
         request.images = mutableItems.copy() as? NSOrderedSet
 
         saveContext()
+    }
+
+    func savePendingDownload(id: String, requestId: String, url: URL, request: HordeRequest, response: GenerationStable) async -> HordePendingDownload? {
+        return await withCheckedContinuation { continuation in
+            mainManagedObjectContext.perform {
+                do {
+                    let fetchRequest: NSFetchRequest<HordePendingDownload> = HordePendingDownload.fetchRequest()
+                    fetchRequest.predicate = NSPredicate(format: "uuid == %@", UUID(uuidString: id)! as CVarArg)
+                    if let pendingDownload = try? self.mainManagedObjectContext.fetch(fetchRequest).first {
+                        Log.debug("Download already found in database, not re-saving.")
+                        continuation.resume(returning: pendingDownload)
+                    }
+
+                    let pendingDownload = HordePendingDownload(context: self.mainManagedObjectContext)
+                    pendingDownload.uri = url
+                    pendingDownload.uuid = UUID(uuidString: id)!
+                    pendingDownload.requestId = UUID(uuidString: requestId)!
+                    pendingDownload.fullRequest = request.fullRequest
+                    var prunedResponse = response
+                    prunedResponse.img = nil
+                    pendingDownload.fullResponse = prunedResponse.toJSONString()
+                    try self.mainManagedObjectContext.save()
+                    continuation.resume(returning: pendingDownload)
+                } catch {
+                    continuation.resume(returning: nil)
+                }
+            }
+        }
+    }
+
+    func deletePendingDownload(_ pendingDownload: HordePendingDownload) {
+        mainManagedObjectContext.perform {
+            self.mainManagedObjectContext.delete(pendingDownload)
+            try? self.mainManagedObjectContext.save()
+        }
     }
 
 //    func fetchGames(completion: @escaping ([Game]?) -> Void) {
