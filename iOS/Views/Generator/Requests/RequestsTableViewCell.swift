@@ -39,8 +39,13 @@ class RequestsTableViewCell: UITableViewCell {
         }
         if request.status == "finished" {
             activityIndicator.stopAnimating()
-            if let images = request.images?.array as? [GeneratedImage], !images.isEmpty, let image = images.last {
-                self.loadImage(generatedImage: image)
+            if var images = request.images?.array as? [GeneratedImage], !images.isEmpty {
+                images = images.sorted(by: { i1, i2 in
+                   i1.dateCreated! < i2.dateCreated!
+                })
+                if let image = images.last {
+                    self.loadImage(generatedImage: image)
+                }
             }
         } else if !activityIndicator.isAnimating {
             activityIndicator.startAnimating()
