@@ -20,13 +20,13 @@ class ImageCollectionViewCell: UICollectionViewCell {
         favoriteIcon.isHidden = !object.isFavorite
 
         DispatchQueue.main.async { [self] in
-            if let cachedImage = ImageCache.standard.getImage(key: NSString(string: object.uuid!.uuidString)) {
-                Log.debug("Reloading cached UIImage...")
-                imageView.image = cachedImage
-            } else {
-                if let image = UIImage(data: object.image!) {
+            if let objUuid = object.uuid {
+                if let cachedImage = ImageCache.standard.getImage(key: NSString(string: objUuid.uuidString)) {
+                    Log.debug("Reloading cached UIImage...")
+                    imageView.image = cachedImage
+                } else if let imageData = object.image, let image = UIImage(data: imageData) {
                     imageView.image = image
-                    ImageCache.standard.cacheImage(image: image, key: NSString(string: object.uuid!.uuidString))
+                    ImageCache.standard.cacheImage(image: image, key: NSString(string: objUuid.uuidString))
                 }
             }
         }

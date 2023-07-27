@@ -14,6 +14,13 @@
         <attribute name="requestId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="uuid" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
     </entity>
+    <entity name="HordePendingDownload" representedClassName="HordePendingDownload" syncable="YES" codeGenerationType="class">
+        <attribute name="fullRequest" optional="YES" attributeType="String"/>
+        <attribute name="fullResponse" optional="YES" attributeType="String"/>
+        <attribute name="requestId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="uri" optional="YES" attributeType="URI"/>
+        <attribute name="uuid" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+    </entity>
     <entity name="HordeRequest" representedClassName="HordeRequest" syncable="YES" codeGenerationType="class">
         <attribute name="dateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="fullRequest" optional="YES" attributeType="String"/>
@@ -25,5 +32,6 @@
         <attribute name="totalKudosCost" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="uuid" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="waitTime" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="GeneratedImage"/>
     </entity>
 </model>

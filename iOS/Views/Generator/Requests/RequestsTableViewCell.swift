@@ -27,22 +27,25 @@ class RequestsTableViewCell: UITableViewCell {
         imageCountLabel.text = "\(request.n) Images"
         messageLabel.text = request.message
         dateLabel.text = request.dateCreated?.formatted()
-        if request.waitTime > 0 {
+        if request.status != "finished" {
             timeLabel.text = "\(request.waitTime)s"
+            if request.queuePosition > 0 {
+                queuePositionLabel.text = "#\(request.queuePosition) in queue"
+            } else {
+                queuePositionLabel.text = "Active"
+            }
         } else {
             timeLabel.text = ""
-        }
-        if request.queuePosition > 0 {
-            queuePositionLabel.text = "#\(request.queuePosition) in queue"
-        } else {
             queuePositionLabel.text = ""
         }
         if request.status == "finished" {
             activityIndicator.stopAnimating()
-            if let requestId = request.uuid {
-                ImageDatabase.standard.fetchFirstImage(requestId: requestId) { image in
-                    guard let generatedImage = image else { return }
-                    self.loadImage(generatedImage: generatedImage)
+            if var images = request.images?.array as? [GeneratedImage], !images.isEmpty {
+                images = images.sorted(by: { i1, i2 in
+                   i1.dateCreated! < i2.dateCreated!
+                })
+                if let image = images.last {
+                    self.loadImage(generatedImage: image)
                 }
             }
         } else if !activityIndicator.isAnimating {
@@ -71,7 +74,8 @@ class RequestsTableViewCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        Log.debug("Unloading image")
         imagePreviewView.image = nil
+        queuePositionLabel.text = ""
+        timeLabel.text = ""
     }
 }

@@ -27,6 +27,7 @@ protocol GenerationTrackerDelegate {
 
 class GenerationTracker {
     var timer: Timer?
+    var downloadTimer: Timer?
     var delegate: GenerationTrackerDelegate?
 
     var currentGenerationRequestIdentifier: String?
@@ -34,6 +35,9 @@ class GenerationTracker {
     var generationsSaved: [String] = []
 
     var createViewNavigationController: UINavigationController
+
+    var pendingCheckInProcess: Bool = false
+    var downloadingInProgress: Bool = false
 
     init() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -53,30 +57,44 @@ class GenerationTracker {
         Log.debug("Started polling...")
         timer = Timer(timeInterval: 2, target: self, selector: #selector(checkForPendingGeneration), userInfo: nil, repeats: true)
         RunLoop.current.add(timer!, forMode: .common)
+
+        downloadTimer = Timer(timeInterval: 1, target: self, selector: #selector(checkForPendingDownloads), userInfo: nil, repeats: true)
+        RunLoop.current.add(downloadTimer!, forMode: .common)
     }
 
     @objc func checkForPendingGeneration() {
         Task {
+            if pendingCheckInProcess { return }
+
             Log.debug("Checking for a pending generation...")
+            pendingCheckInProcess = true
             let requests = await ImageDatabase.standard.fetchPendingRequests() ?? []
             for request in requests {
                 guard let requestId = request.uuid?.uuidString.lowercased() else { return }
                 Log.debug("\(requestId) - Checking request status")
 
                 do {
-                    let data = try await HordeV2API.getImageAsyncCheck(_id: requestId, clientAgent: hordeClientAgent())
-                    Log.debug("\(data)")
-
-                    guard await ImageDatabase.standard.updatePendingRequest(
-                        request: request,
-                        check: data
-                    ) != nil else {
-                        throw TrackerException.FailureToUpdatePendingRequest
+                    if request.status == "active" {
+                        let data = try await HordeV2API.getImageAsyncCheck(_id: requestId, clientAgent: hordeClientAgent())
+                        Log.debug("\(data)")
+                        
+                        guard await ImageDatabase.standard.updatePendingRequest(
+                            request: request,
+                            check: data
+                        ) != nil else {
+                            throw TrackerException.FailureToUpdatePendingRequest
+                        }
+                        
+                        guard data.done ?? false else { continue }
+                        Log.debug("\(requestId) - Horde says done!")
+                        await self.saveFinishedGenerations(request: request)
+                    } else if request.status == "downloading" {
+                        let pendingDownloads = await ImageDatabase.standard.getPendingDownloads(for: request)
+                        if pendingDownloads?.count == 0 {
+                            let images = await ImageDatabase.standard.fetchImages(for: request.uuid!) ?? []
+                            ImageDatabase.standard.updatePendingRequestFinishedState(request: request, images: images)
+                        }
                     }
-
-                    guard data.done ?? false else { continue }
-                    Log.debug("\(requestId) - Horde says done!")
-                    await self.saveFinishedGenerations(request: request)
                 } catch {
                     if error.code == 404 {
                         guard await ImageDatabase.standard.updatePendingRequestErrorState(
@@ -90,6 +108,32 @@ class GenerationTracker {
                     }
                 }
             }
+            pendingCheckInProcess = false
+        }
+    }
+
+    @objc func checkForPendingDownloads() {
+        Task {
+            if downloadingInProgress { return }
+
+            Log.debug("Checking for a pending downloads...")
+            downloadingInProgress = true
+            let downloads = await ImageDatabase.standard.fetchPendingDownloads() ?? []
+            for download in downloads {
+                if let url = download.uri,
+                   let imageData = try? Data(contentsOf: url),
+                   let generatedImage = await ImageDatabase.standard.saveImage(
+                    id: download.uuid!,
+                    requestId: download.requestId!,
+                      image: imageData,
+                      fullRequest: download.fullRequest!,
+                      fullResponse: download.fullResponse!
+                   ) {
+                    ImageDatabase.standard.deletePendingDownload(download)
+                }
+
+            }
+            downloadingInProgress = false
         }
     }
 
@@ -106,14 +150,13 @@ class GenerationTracker {
             guard data.done ?? false, let generations = data.generations, !generations.isEmpty else {
                 throw TrackerException.NoGenerationsFound
             }
-            for (index, generation) in generations.enumerated() {
+            for generation in generations {
                 guard let urlString = generation.img,
                       let imageUrl = URL(string: urlString),
-                      let imageData = try? Data(contentsOf: imageUrl),
-                      let generatedImage = await ImageDatabase.standard.saveImage(
+                      let pendingDownload = await ImageDatabase.standard.savePendingDownload(
                           id: generation._id!,
                           requestId: requestId,
-                          image: imageData,
+                          url: imageUrl,
                           request: request,
                           response: generation
                       )
@@ -121,10 +164,8 @@ class GenerationTracker {
                     throw TrackerException.ImageSaveFailure
                 }
 
-                Log.info("\(requestId) - Saved Image ID \(generatedImage.uuid!)")
-                if index == generations.endIndex - 1 {
-                    ImageDatabase.standard.updatePendingRequestFinishedState(request: request, status: data)
-                }
+                Log.info("\(requestId) - Saved Pending Download \(pendingDownload.uuid!)")
+                ImageDatabase.standard.updatePendingRequestWithKudosCost(request: request, status: data)
             }
         } catch {
             Log.error("\(requestId) - Encountered error trying to fetch images: \(error.localizedDescription)")

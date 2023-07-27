@@ -502,7 +502,7 @@ extension GeneratorViewController {
             sourceMask: nil,
             r2: true,
             shared: UserPreferences.standard.shareWithLaion,
-            replacementFilter: !UserPreferences.standard.debugMode,
+            replacementFilter: true,
             dryRun: dryRun
         )
         return input
