@@ -14,7 +14,6 @@ class GeneratorViewController: UIViewController {
 
     var kudosEstimateTimer: Timer?
     var saveGenerationSettingsTimer: Timer?
-    var generationPollingTimer: Timer?
 
     var firstLaunch: Bool = true
 
@@ -148,7 +147,7 @@ class GeneratorViewController: UIViewController {
     }
 
     @IBOutlet var generateButtonLabel: UILabel!
-
+    @IBOutlet var statusLabel: UILabel!
     @IBOutlet var gfpganToggleButton: UIButton!
     @IBAction func gfpganToggleButonChanged(_ sender: UIButton) {
         if sender.isSelected {
@@ -265,6 +264,7 @@ class GeneratorViewController: UIViewController {
         } else {
             updateSliderLabels()
         }
+        loadUserKudos()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
@@ -409,9 +409,11 @@ extension GeneratorViewController {
         kudosEstimateTimer?.invalidate()
         if customWait == 1 {
             generateButtonLabel.text = "Updating Kudos Estimate..."
+            statusLabel.text = "Loading your total Kudos..."
         }
         kudosEstimateTimer = Timer.scheduledTimer(withTimeInterval: customWait, repeats: false, block: { timer in
             self.fetchAndDisplayKudosEstimate()
+            self.loadUserKudos()
             timer.invalidate()
         })
 
@@ -523,9 +525,24 @@ extension GeneratorViewController {
 
         imageQuantitySliderLabel.text = "\(Int(imageQuantitySlider.value))"
     }
+
+    func loadUserKudos() {
+        statusLabel.text = "Loading your total Kudos..."
+        DispatchQueue.global(qos: .background).async {
+            HordeV2API.getFindUser(apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
+                if let data = data, let kudos = data.kudos {
+                    DispatchQueue.main.async {
+                        self.statusLabel.text = "Your Kudos: \(kudos.formatted())"
+                    }
+                } else if let error = error {
+                    Log.debug(error.localizedDescription)
+                }
+            }
+        }
+    }
 }
 
-// Let us know the prompt was changed
+// MARK: - Text View Delegate
 
 extension GeneratorViewController: UITextViewDelegate {
     func textViewDidEndEditing(_: UITextView) {
@@ -537,7 +554,7 @@ extension GeneratorViewController: UITextViewDelegate {
 
 extension GeneratorViewController: GenerationTrackerDelegate {
     func showUpdate(type: UpdateType, message: String) {
-        generateButtonLabel.text = message
+        statusLabel.text = message
         if type == .success || type == .error {
             generateButton.isEnabled = true
             generationSettingsUpdated(customWait: 2)
@@ -548,46 +565,7 @@ extension GeneratorViewController: GenerationTrackerDelegate {
     }
 }
 
-// MARK: - Keyboard Stuff
-
-//
-// extension GeneratorViewController {
-//    @objc func keyboardWillShow(notification: NSNotification) {
-////        let userInfo: NSDictionary = notification.userInfo! as NSDictionary
-////        let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
-////
-////        // TODO: This should check if the text entry point will be off screen when the keyboard appears and only scroll if needed
-////
-////        let tabbarHeight = tabBarController?.tabBar.frame.size.height ?? 0
-////        let toolbarHeight = navigationController?.toolbar.frame.size.height ?? 0
-////        let bottomInset = keyboardSize.height - tabbarHeight - toolbarHeight
-////
-////        scrollView.contentInset.bottom = bottomInset
-////        scrollView.verticalScrollIndicatorInsets.bottom = bottomInset
-////        scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + bottomInset), animated: true)
-//    }
-//
-//    @objc func keyboardWillHide(notification _: NSNotification) {
-////        scrollView.contentInset = .zero
-////        scrollView.scrollIndicatorInsets = .zero
-//    }
-//
-//    func registerKeyboardNotifications() {
-//        NotificationCenter.default.addObserver(self,
-//                                               selector: #selector(keyboardWillShow(notification:)),
-//                                               name: UIResponder.keyboardWillShowNotification,
-//                                               object: nil)
-//        NotificationCenter.default.addObserver(self,
-//                                               selector: #selector(keyboardWillHide(notification:)),
-//                                               name: UIResponder.keyboardWillHideNotification,
-//                                               object: nil)
-//    }
-//
-//    func tearDownKeyboardNotifications() {
-//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-//    }
-// }
+// MARK: - Model Picker
 
 extension GeneratorViewController: ModelsTableViewControllerDelegate {
     func selectedModel(name: String) {
