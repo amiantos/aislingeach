@@ -73,24 +73,23 @@ class ImageDatabase {
                     if let image = try? self.mainManagedObjectContext.fetch(fetchRequest).first {
                         Log.debug("Image already found in database, not re-saving.")
                         continuation.resume(returning: image)
-                        return
-                    }
-
-                    let generatedImage = GeneratedImage(context: self.mainManagedObjectContext)
-                    generatedImage.image = image
-                    generatedImage.uuid = id
-                    generatedImage.requestId = requestId
-                    generatedImage.dateCreated = Date()
-                    generatedImage.fullRequest = fullRequest
-                    if let jsonString = generatedImage.fullRequest,
-                    let jsonData = jsonString.data(using: .utf8),
-                        let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData) {
-                        generatedImage.promptSimple = settings.prompt
+                    } else {
+                        let generatedImage = GeneratedImage(context: self.mainManagedObjectContext)
+                        generatedImage.image = image
+                        generatedImage.uuid = id
+                        generatedImage.requestId = requestId
+                        generatedImage.dateCreated = Date()
+                        generatedImage.fullRequest = fullRequest
+                        if let jsonString = generatedImage.fullRequest,
+                           let jsonData = jsonString.data(using: .utf8),
+                           let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData) {
+                            generatedImage.promptSimple = settings.prompt
                         }
-                    generatedImage.fullResponse = fullResponse
-                    generatedImage.backend = "horde"
-                    try self.mainManagedObjectContext.save()
-                    continuation.resume(returning: generatedImage)
+                        generatedImage.fullResponse = fullResponse
+                        generatedImage.backend = "horde"
+                        try self.mainManagedObjectContext.save()
+                        continuation.resume(returning: generatedImage)
+                    }
                 } catch {
                     continuation.resume(returning: nil)
                 }
@@ -507,18 +506,18 @@ class ImageDatabase {
                     if let pendingDownload = try? self.mainManagedObjectContext.fetch(fetchRequest).first {
                         Log.debug("Download already found in database, not re-saving.")
                         continuation.resume(returning: pendingDownload)
+                    } else {
+                        let pendingDownload = HordePendingDownload(context: self.mainManagedObjectContext)
+                        pendingDownload.uri = url
+                        pendingDownload.uuid = UUID(uuidString: id)!
+                        pendingDownload.requestId = UUID(uuidString: requestId)!
+                        pendingDownload.fullRequest = request.fullRequest
+                        var prunedResponse = response
+                        prunedResponse.img = nil
+                        pendingDownload.fullResponse = prunedResponse.toJSONString()
+                        try self.mainManagedObjectContext.save()
+                        continuation.resume(returning: pendingDownload)
                     }
-
-                    let pendingDownload = HordePendingDownload(context: self.mainManagedObjectContext)
-                    pendingDownload.uri = url
-                    pendingDownload.uuid = UUID(uuidString: id)!
-                    pendingDownload.requestId = UUID(uuidString: requestId)!
-                    pendingDownload.fullRequest = request.fullRequest
-                    var prunedResponse = response
-                    prunedResponse.img = nil
-                    pendingDownload.fullResponse = prunedResponse.toJSONString()
-                    try self.mainManagedObjectContext.save()
-                    continuation.resume(returning: pendingDownload)
                 } catch {
                     continuation.resume(returning: nil)
                 }
