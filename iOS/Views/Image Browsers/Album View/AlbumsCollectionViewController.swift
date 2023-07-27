@@ -42,8 +42,6 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
             navigationItem.title = "Hidden Gallery"
         }
 
-        NotificationCenter.default.addObserver(self, selector: #selector(loadDataSource), name: .imageDatabaseUpdated, object: nil)
-
         loadDataSource()
     }
 

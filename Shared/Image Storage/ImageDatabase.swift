@@ -117,7 +117,6 @@ class ImageDatabase {
             do {
                 generatedImage.isFavorite = !generatedImage.isFavorite
                 try self.mainManagedObjectContext.save()
-                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImage)
             } catch {
                 completion(nil)
@@ -130,7 +129,6 @@ class ImageDatabase {
             do {
                 generatedImage.isHidden = !generatedImage.isHidden
                 try self.mainManagedObjectContext.save()
-                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImage)
             } catch {
                 completion(nil)
@@ -145,7 +143,6 @@ class ImageDatabase {
                     image.isHidden = true
                 }
                 try self.mainManagedObjectContext.save()
-                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImages)
             } catch {
                 completion(nil)
@@ -160,7 +157,6 @@ class ImageDatabase {
                     image.isHidden = false
                 }
                 try self.mainManagedObjectContext.save()
-                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImages)
             } catch {
                 completion(nil)
@@ -175,7 +171,6 @@ class ImageDatabase {
                     image.isFavorite = true
                 }
                 try self.mainManagedObjectContext.save()
-                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImages)
             } catch {
                 completion(nil)
@@ -190,7 +185,6 @@ class ImageDatabase {
                     image.isFavorite = false
                 }
                 try self.mainManagedObjectContext.save()
-                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(generatedImages)
             } catch {
                 completion(nil)
@@ -202,7 +196,6 @@ class ImageDatabase {
         // TODO: Should trash...
         mainManagedObjectContext.delete(generatedImage)
         saveContext()
-        NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
         completion(nil)
     }
 
@@ -211,7 +204,6 @@ class ImageDatabase {
             mainManagedObjectContext.delete(image)
         }
         saveContext()
-        NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
     }
 
 //    func pruneImages() {
@@ -225,7 +217,7 @@ class ImageDatabase {
 //                    mainManagedObjectContext.delete(image)
 //                }
 //                try mainManagedObjectContext.save()
-//                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
+//
 //            } catch {
 //                Log.debug("Uh oh...")
 //            }
@@ -356,7 +348,6 @@ class ImageDatabase {
                 }
                 mainManagedObjectContext.delete(hordeRequest)
                 try mainManagedObjectContext.save()
-                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
                 completion(nil)
             } catch {
                 completion(nil)
@@ -387,7 +378,6 @@ class ImageDatabase {
                     mainManagedObjectContext.delete(request)
                 }
                 try mainManagedObjectContext.save()
-                NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
             } catch {
                 Log.error("Encountered error trying to batch delete requests: \(error.localizedDescription)")
             }
