@@ -14,6 +14,7 @@
         <attribute name="requestId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="thumbnail" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="uuid" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="request" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HordeRequest" inverseName="images" inverseEntity="HordeRequest"/>
     </entity>
     <entity name="HordePendingDownload" representedClassName="HordePendingDownload" syncable="YES" codeGenerationType="class">
         <attribute name="fullRequest" optional="YES" attributeType="String"/>
@@ -33,6 +34,6 @@
         <attribute name="totalKudosCost" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="uuid" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="waitTime" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="GeneratedImage"/>
+        <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="GeneratedImage" inverseName="request" inverseEntity="GeneratedImage"/>
     </entity>
 </model>
