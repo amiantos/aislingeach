@@ -12,6 +12,7 @@
         <attribute name="isTrashed" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="promptSimple" optional="YES" attributeType="String"/>
         <attribute name="requestId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="thumbnail" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="uuid" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
     </entity>
     <entity name="HordePendingDownload" representedClassName="HordePendingDownload" syncable="YES" codeGenerationType="class">

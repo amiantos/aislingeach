@@ -19,14 +19,29 @@ class ImageCollectionViewCell: UICollectionViewCell {
         generatedImage = object
         favoriteIcon.isHidden = !object.isFavorite
 
-        DispatchQueue.main.async { [self] in
+        DispatchQueue.global(qos:.background).async { [self] in
             if let objUuid = object.uuid {
-                if let cachedImage = ImageCache.standard.getImage(key: NSString(string: objUuid.uuidString)) {
+                let objectIdentifier = "thumb-\(objUuid.uuidString)"
+                if let cachedImage = ImageCache.standard.getImage(key: NSString(string: objectIdentifier)) {
                     Log.debug("Reloading cached UIImage...")
-                    imageView.image = cachedImage
+                    DispatchQueue.main.async {
+                        self.imageView.image = cachedImage
+                    }
+                } else if let imageData = object.thumbnail, let image = UIImage(data: imageData) {
+                    DispatchQueue.main.async {
+                        self.imageView.image = image
+                        ImageCache.standard.cacheImage(image: image, key: NSString(string: objectIdentifier))
+                    }
                 } else if let imageData = object.image, let image = UIImage(data: imageData) {
-                    imageView.image = image
-                    ImageCache.standard.cacheImage(image: image, key: NSString(string: objUuid.uuidString))
+                    image.prepareThumbnail(of: CGSize(width: 300, height: 300)) { thumbnail in
+                        if let thumbnail = thumbnail {
+                            DispatchQueue.main.async {
+                                self.imageView.image = thumbnail
+                                ImageCache.standard.cacheImage(image: thumbnail, key: NSString(string: objectIdentifier))
+                                ImageDatabase.standard.saveThumbnail(for: object, thumbnail: thumbnail)
+                            }
+                        }
+                    }
                 }
             }
         }
