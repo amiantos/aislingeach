@@ -58,10 +58,6 @@ class ImageDatabase {
         }
     }
 
-    func delete(_ object: NSManagedObject) {
-        mainManagedObjectContext.delete(object)
-    }
-
     // MARK: - Images
 
     func saveImage(id: UUID, requestId: UUID, image: Data, fullRequest: String, fullResponse: String) async -> GeneratedImage? {
@@ -207,19 +203,24 @@ class ImageDatabase {
     }
 
     func deleteImage(_ generatedImage: GeneratedImage, completion: @escaping (GeneratedImage?) -> Void) {
-        // TODO: Should trash...
-        mainManagedObjectContext.delete(generatedImage)
-        saveContext()
-        NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
-        completion(nil)
+        mainManagedObjectContext.perform { [self] in
+            // TODO: Should trash...
+            mainManagedObjectContext.delete(generatedImage)
+            try? mainManagedObjectContext.save()
+            NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
+            completion(nil)
+        }
     }
 
     func deleteImages(_ generatedImages: [GeneratedImage]) {
-        for image in generatedImages where !image.isFavorite {
-            mainManagedObjectContext.delete(image)
+        mainManagedObjectContext.perform { [self] in
+            for image in generatedImages where !image.isFavorite {
+                // TODO: Should trash...
+                mainManagedObjectContext.delete(image)
+            }
+            try? mainManagedObjectContext.save()
+            NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
         }
-        saveContext()
-        NotificationCenter.default.post(name: .imageDatabaseUpdated, object: nil)
     }
 
 //    func pruneImages() {
@@ -497,23 +498,27 @@ class ImageDatabase {
     }
 
     func updatePendingRequestWithKudosCost(request: HordeRequest, status: RequestStatusStable) {
-        if let kudosCost = (status.kudos as? NSDecimalNumber)?.intValue {
-            request.totalKudosCost = Int16(kudosCost)
-            saveContext()
+        mainManagedObjectContext.perform {
+            if let kudosCost = (status.kudos as? NSDecimalNumber)?.intValue {
+                request.totalKudosCost = Int16(kudosCost)
+                try? self.mainManagedObjectContext.save()
+            }
         }
     }
 
     func updatePendingRequestFinishedState(request: HordeRequest, images: [GeneratedImage]) {
-        request.n = Int16(images.count)
-        let kudosCost = Int(request.totalKudosCost)
-        request.message = "Kudos cost: \(kudosCost) total, ~\((kudosCost/images.count)) per image"
-        request.status = "finished"
+        mainManagedObjectContext.perform {
+            request.n = Int16(images.count)
+            let kudosCost = Int(request.totalKudosCost)
+            request.message = "Kudos cost: \(kudosCost) total, ~\((kudosCost/images.count)) per image"
+            request.status = "finished"
 
-        let mutableItems = request.images?.mutableCopy() as? NSMutableOrderedSet ?? []
-        mutableItems.addObjects(from: images)
-        request.images = mutableItems.copy() as? NSOrderedSet
+            let mutableItems = request.images?.mutableCopy() as? NSMutableOrderedSet ?? []
+            mutableItems.addObjects(from: images)
+            request.images = mutableItems.copy() as? NSOrderedSet
 
-        saveContext()
+            try? self.mainManagedObjectContext.save()
+        }
     }
 
     func savePendingDownload(id: String, requestId: String, url: URL, request: HordeRequest, response: GenerationStable) async -> HordePendingDownload? {
