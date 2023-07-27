@@ -76,6 +76,8 @@ class ImageDatabase {
                     } else {
                         let generatedImage = GeneratedImage(context: self.mainManagedObjectContext)
                         generatedImage.image = image
+                        let imageObject = UIImage(data: image)
+                        generatedImage.thumbnail = imageObject?.preparingThumbnail(of: CGSize(width: 300, height: 300))?.pngData()
                         generatedImage.uuid = id
                         generatedImage.requestId = requestId
                         generatedImage.dateCreated = Date()
@@ -94,6 +96,13 @@ class ImageDatabase {
                     continuation.resume(returning: nil)
                 }
             }
+        }
+    }
+
+    func saveThumbnail(for image: GeneratedImage, thumbnail: UIImage) {
+        mainManagedObjectContext.perform {
+            image.thumbnail = thumbnail.pngData()
+            try? self.mainManagedObjectContext.save()
         }
     }
 
@@ -457,7 +466,7 @@ class ImageDatabase {
                             request.status = done ? "downloading" : "active"
                             request.message = "\(waiting) sleeping, \(processing) dreaming, \(finished) waking"
                             if request.status == "downloading" {
-                                request.message = "Deciphering \(finished) images..."
+                                request.message = "Downloading \(finished) images..."
                             }
                             try mainManagedObjectContext.save()
                         }
