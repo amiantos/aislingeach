@@ -90,8 +90,8 @@ class GenerationTracker {
                         await self.saveFinishedGenerations(request: request)
                     } else if request.status == "downloading" {
                         let pendingDownloads = await ImageDatabase.standard.getPendingDownloads(for: request)
-                        if pendingDownloads?.count == 0 {
-                            let images = await ImageDatabase.standard.fetchImages(for: request.uuid!) ?? []
+                        let images = await ImageDatabase.standard.fetchImages(for: request.uuid!) ?? []
+                        if pendingDownloads?.count == 0 && !images.isEmpty {
                             ImageDatabase.standard.updatePendingRequestFinishedState(request: request, images: images)
                         }
                     }
@@ -121,6 +121,7 @@ class GenerationTracker {
             let downloads = await ImageDatabase.standard.fetchPendingDownloads() ?? []
             for download in downloads {
                 if let url = download.uri,
+                   let requestId = download.requestId,
                    let imageData = try? Data(contentsOf: url),
                    let generatedImage = await ImageDatabase.standard.saveImage(
                     id: download.uuid!,
@@ -129,6 +130,7 @@ class GenerationTracker {
                       fullRequest: download.fullRequest!,
                       fullResponse: download.fullResponse!
                    ) {
+                    Log.debug("\(requestId) - Successfully saved image ID \(generatedImage.uuid!)")
                     ImageDatabase.standard.deletePendingDownload(download)
                 }
 

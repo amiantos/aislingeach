@@ -187,7 +187,7 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
                 ImageDatabase.standard.deleteRequest(request, pruneImages: false) { request in
                     if request != nil { fatalError("Deleting request did not work?") }
                 }
-            } else if request.status != "finished" {
+            } else if request.status == "active" {
                 let alert = UIAlertController(title: "Delete Refused", message: "This sleeper is still dreaming, you can't delete it yet, sorry.", preferredStyle: .alert)
                 let cancelAction = UIAlertAction(title: "Oh... weird, okay", style: .cancel)
                 alert.addAction(cancelAction)

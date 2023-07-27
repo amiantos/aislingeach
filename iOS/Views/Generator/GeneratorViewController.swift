@@ -527,7 +527,6 @@ extension GeneratorViewController {
     }
 
     func loadUserKudos() {
-        statusLabel.text = "Loading your total Kudos..."
         DispatchQueue.global(qos: .background).async {
             HordeV2API.getFindUser(apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
                 if let data = data, let kudos = data.kudos {
