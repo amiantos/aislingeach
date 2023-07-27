@@ -205,9 +205,12 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
                     seed = generatedSeed
                 }
             }
-            present(appDelegate.generationTracker.createViewNavigationController, animated: true)
-            if let generateView = appDelegate.generationTracker.createViewNavigationController.topViewController as? GeneratorViewController {
-                generateView.loadSettingsIntoUI(settings: settings, seed: seed)
+
+            let navController = appDelegate.generationTracker.createViewNavigationController
+            present(navController, animated: true) {
+                if let generateView = navController.topViewController as? GeneratorViewController {
+                    generateView.loadSettingsIntoUI(settings: settings, seed: seed)
+                }
             }
         }
     }
