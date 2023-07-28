@@ -766,7 +766,7 @@
             </objects>
             <point key="canvasLocation" x="3356" y="-1551"/>
         </scene>
-        <!--Dream History-->
+        <!--Dreams-->
         <scene sceneID="ReN-WP-JUH">
             <objects>
                 <tableViewController id="nxx-mA-pI9" customClass="RequestsTableViewController" customModule="Aislingeach" customModuleProvider="target" sceneMemberID="viewController">
@@ -892,7 +892,7 @@
                             <outlet property="delegate" destination="nxx-mA-pI9" id="9rE-5w-Gj0"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Dream History" id="svT-vJ-9rv"/>
+                    <navigationItem key="navigationItem" title="Dreams" id="svT-vJ-9rv"/>
                     <connections>
                         <outlet property="clearRequestHistoryButton" destination="XgC-5S-1TA" id="7eb-39-YmB"/>
                         <outlet property="createNewRequestButton" destination="bJs-sJ-a1u" id="2dd-PZ-f33"/>
