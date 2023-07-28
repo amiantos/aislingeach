@@ -30,21 +30,25 @@ class RequestsTableViewCell: UITableViewCell {
         timeLabel.text = ""
         queuePositionLabel.text = ""
         if request.waitTime > 0 {
-            timeLabel.text = "\(request.waitTime)s"
+            timeLabel.text = "~\(request.waitTime)s"
         }
+
         if request.queuePosition > 0 {
             queuePositionLabel.text = "#\(request.queuePosition) in queue"
         }
+        
         if request.status == "finished" {
             activityIndicator.stopAnimating()
             if var images = request.images?.array as? [GeneratedImage], !images.isEmpty {
                 images = images.sorted(by: { i1, i2 in
-                   i1.dateCreated! < i2.dateCreated!
+                    i1.dateCreated! < i2.dateCreated!
                 })
                 if let image = images.last {
                     self.loadImage(generatedImage: image)
                 }
             }
+        } else if request.status == "error" {
+            activityIndicator.stopAnimating()
         } else if !activityIndicator.isAnimating {
             activityIndicator.startAnimating()
         }
