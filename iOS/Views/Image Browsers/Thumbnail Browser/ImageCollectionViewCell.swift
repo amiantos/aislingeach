@@ -33,7 +33,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
                         ImageCache.standard.cacheImage(image: image, key: NSString(string: objectIdentifier))
                     }
                 } else if let imageData = object.image, let image = UIImage(data: imageData) {
-                    image.prepareThumbnail(of: CGSize(width: 300, height: 300)) { thumbnail in
+                    image.prepareThumbnail(of: CGSize(width: 512, height: 512)) { thumbnail in
                         if let thumbnail = thumbnail {
                             DispatchQueue.main.async {
                                 self.imageView.image = thumbnail

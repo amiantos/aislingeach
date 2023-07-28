@@ -73,7 +73,7 @@ class ImageDatabase {
                         let generatedImage = GeneratedImage(context: self.mainManagedObjectContext)
                         generatedImage.image = image
                         let imageObject = UIImage(data: image)
-                        generatedImage.thumbnail = imageObject?.preparingThumbnail(of: CGSize(width: 300, height: 300))?.pngData()
+                        generatedImage.thumbnail = imageObject?.preparingThumbnail(of: CGSize(width: 512, height: 512))?.pngData()
                         generatedImage.uuid = id
                         generatedImage.requestId = requestId
                         generatedImage.dateCreated = Date()
