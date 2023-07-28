@@ -1004,7 +1004,7 @@
                         <constraint firstAttribute="bottom" secondItem="bJs-sJ-a1u" secondAttribute="bottom" constant="8" id="yD6-1v-APa"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" id="BU0-og-PHY" userLabel="Footer View">
+                <view contentMode="scaleToFill" ambiguous="YES" id="BU0-og-PHY" userLabel="Footer View">
                     <rect key="frame" x="0.0" y="0.0" width="388" height="53"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -1014,7 +1014,7 @@
                                 <constraint firstAttribute="height" constant="34" id="9oG-XA-G1E"/>
                             </constraints>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                            <buttonConfiguration key="configuration" style="filled" imagePlacement="leading" title="Clear History" imagePadding="6" titleAlignment="automatic">
+                            <buttonConfiguration key="configuration" style="filled" imagePlacement="leading" title="Clear Dream History" imagePadding="6" titleAlignment="automatic">
                                 <imageReference key="image" image="clear" catalog="system" symbolScale="default"/>
                                 <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="default"/>
                             </buttonConfiguration>
