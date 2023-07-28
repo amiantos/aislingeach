@@ -27,27 +27,28 @@ class RequestsTableViewCell: UITableViewCell {
         imageCountLabel.text = "\(request.n) Images"
         messageLabel.text = request.message
         dateLabel.text = request.dateCreated?.formatted()
-        if request.status != "finished" {
-            timeLabel.text = "\(request.waitTime)s"
-            if request.queuePosition > 0 {
-                queuePositionLabel.text = "#\(request.queuePosition) in queue"
-            } else {
-                queuePositionLabel.text = "Active"
-            }
-        } else {
-            timeLabel.text = ""
-            queuePositionLabel.text = ""
+        timeLabel.text = ""
+        queuePositionLabel.text = ""
+        if request.waitTime > 0 {
+            timeLabel.text = "~\(request.waitTime)s"
         }
+
+        if request.queuePosition > 0 {
+            queuePositionLabel.text = "#\(request.queuePosition) in queue"
+        }
+
         if request.status == "finished" {
             activityIndicator.stopAnimating()
             if var images = request.images?.array as? [GeneratedImage], !images.isEmpty {
                 images = images.sorted(by: { i1, i2 in
-                   i1.dateCreated! < i2.dateCreated!
+                    i1.dateCreated! < i2.dateCreated!
                 })
                 if let image = images.last {
-                    self.loadImage(generatedImage: image)
+                    loadImage(generatedImage: image)
                 }
             }
+        } else if request.status == "error" {
+            activityIndicator.stopAnimating()
         } else if !activityIndicator.isAnimating {
             activityIndicator.startAnimating()
         }

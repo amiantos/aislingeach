@@ -19,7 +19,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
         generatedImage = object
         favoriteIcon.isHidden = !object.isFavorite
 
-        DispatchQueue.global(qos:.background).async { [self] in
+        DispatchQueue.global(qos: .background).async { [self] in
             if let objUuid = object.uuid {
                 let objectIdentifier = "thumb-\(objUuid.uuidString)"
                 if let cachedImage = ImageCache.standard.getImage(key: NSString(string: objectIdentifier)) {

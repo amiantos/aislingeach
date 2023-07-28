@@ -98,11 +98,9 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
             if let cachedImage = ImageCache.standard.getImage(key: NSString(string: "\(object.id)")) {
                 Log.debug("Reloading cached UIImage...")
                 imageView.image = cachedImage
-            } else {
-                if let image = UIImage(data: object.image!) {
-                    imageView.image = image
-                    ImageCache.standard.cacheImage(image: image, key: NSString(string: "\(object.id)"))
-                }
+            } else if let objImage = object.image, let image = UIImage(data: objImage) {
+                imageView.image = image
+                ImageCache.standard.cacheImage(image: image, key: NSString(string: "\(object.id)"))
             }
             setScale()
         }

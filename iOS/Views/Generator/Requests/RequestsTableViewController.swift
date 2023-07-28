@@ -16,8 +16,9 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
     @IBAction func createNewRequestButtonAction(_: UIButton) {
         present(appDelegate.generationTracker.createViewNavigationController, animated: true)
     }
-    @IBOutlet weak var clearRequestHistoryButton: UIButton!
-    @IBAction func clearRequestHistoryButtonAction(_ sender: UIButton) {
+
+    @IBOutlet var clearRequestHistoryButton: UIButton!
+    @IBAction func clearRequestHistoryButtonAction(_: UIButton) {
         let alert = UIAlertController(title: "Clear Dreams", message: "This will clear your dream history, and optionally you may \"prune\" any images you have not hidden or favorited from those dreams.", preferredStyle: .alert)
         let deleteImagesAction = UIAlertAction(title: "Prune images", style: .destructive) { _ in
             ImageDatabase.standard.deleteRequests(pruneImages: true)
@@ -31,7 +32,6 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
         alert.addAction(cancelAction)
         present(alert, animated: true)
     }
-
 
     var resultsController: NSFetchedResultsController<HordeRequest>?
 
@@ -187,7 +187,7 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
                 ImageDatabase.standard.deleteRequest(request, pruneImages: false) { request in
                     if request != nil { fatalError("Deleting request did not work?") }
                 }
-            } else if request.status != "finished" {
+            } else if request.status == "active" {
                 let alert = UIAlertController(title: "Delete Refused", message: "This sleeper is still dreaming, you can't delete it yet, sorry.", preferredStyle: .alert)
                 let cancelAction = UIAlertAction(title: "Oh... weird, okay", style: .cancel)
                 alert.addAction(cancelAction)
