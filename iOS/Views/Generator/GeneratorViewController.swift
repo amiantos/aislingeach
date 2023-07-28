@@ -557,7 +557,7 @@ extension GeneratorViewController: GenerationTrackerDelegate {
         if type == .success || type == .error {
             generateButton.isEnabled = true
             generationSettingsUpdated(customWait: 2)
-            if UserPreferences.standard.autoCloseCreatePanel {
+            if UserPreferences.standard.autoCloseCreatePanel && type == .success {
                 navigationController?.dismiss(animated: true)
             }
         }
