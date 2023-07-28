@@ -77,21 +77,21 @@ class GenerationTracker {
                     if request.status == "active" {
                         let data = try await HordeV2API.getImageAsyncCheck(_id: requestId, clientAgent: hordeClientAgent())
                         Log.debug("\(data)")
-                        
+
                         guard await ImageDatabase.standard.updatePendingRequest(
                             request: request,
                             check: data
                         ) != nil else {
                             throw TrackerException.FailureToUpdatePendingRequest
                         }
-                        
+
                         guard data.done ?? false else { continue }
                         Log.debug("\(requestId) - Horde says done!")
                         await self.saveFinishedGenerations(request: request)
                     } else if request.status == "downloading" {
                         let pendingDownloads = await ImageDatabase.standard.getPendingDownloads(for: request)
                         let images = await ImageDatabase.standard.fetchImages(for: request.uuid!) ?? []
-                        if pendingDownloads?.count == 0 && !images.isEmpty {
+                        if pendingDownloads?.count == 0, !images.isEmpty {
                             ImageDatabase.standard.updatePendingRequestFinishedState(request: request, images: images)
                         }
                     }
@@ -124,16 +124,16 @@ class GenerationTracker {
                    let requestId = download.requestId,
                    let imageData = try? Data(contentsOf: url),
                    let generatedImage = await ImageDatabase.standard.saveImage(
-                    id: download.uuid!,
-                    requestId: download.requestId!,
-                      image: imageData,
-                      fullRequest: download.fullRequest!,
-                      fullResponse: download.fullResponse!
-                   ) {
+                       id: download.uuid!,
+                       requestId: download.requestId!,
+                       image: imageData,
+                       fullRequest: download.fullRequest!,
+                       fullResponse: download.fullResponse!
+                   )
+                {
                     Log.debug("\(requestId) - Successfully saved image ID \(generatedImage.uuid!)")
                     ImageDatabase.standard.deletePendingDownload(download)
                 }
-
             }
             downloadingInProgress = false
         }

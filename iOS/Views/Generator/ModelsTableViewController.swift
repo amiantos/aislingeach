@@ -12,7 +12,6 @@ protocol ModelsTableViewControllerDelegate {
 }
 
 class ModelsTableViewController: UITableViewController, UISearchResultsUpdating {
-
     var activeModels: [ActiveModel] = []
     var allModels: [ActiveModel] = []
     var delegate: ModelsTableViewControllerDelegate?
@@ -74,7 +73,7 @@ class ModelsTableViewController: UITableViewController, UISearchResultsUpdating 
         if text.isEmpty {
             activeModels = allModels
         } else {
-            activeModels = allModels.filter({ $0.name!.lowercased().contains(text.lowercased()) })
+            activeModels = allModels.filter { $0.name!.lowercased().contains(text.lowercased()) }
         }
         tableView.reloadData()
     }

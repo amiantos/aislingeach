@@ -36,7 +36,7 @@ class RequestsTableViewCell: UITableViewCell {
         if request.queuePosition > 0 {
             queuePositionLabel.text = "#\(request.queuePosition) in queue"
         }
-        
+
         if request.status == "finished" {
             activityIndicator.stopAnimating()
             if var images = request.images?.array as? [GeneratedImage], !images.isEmpty {
@@ -44,7 +44,7 @@ class RequestsTableViewCell: UITableViewCell {
                     i1.dateCreated! < i2.dateCreated!
                 })
                 if let image = images.last {
-                    self.loadImage(generatedImage: image)
+                    loadImage(generatedImage: image)
                 }
             }
         } else if request.status == "error" {

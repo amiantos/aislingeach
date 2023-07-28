@@ -80,7 +80,8 @@ class ImageDatabase {
                         generatedImage.fullRequest = fullRequest
                         if let jsonString = generatedImage.fullRequest,
                            let jsonData = jsonString.data(using: .utf8),
-                           let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData) {
+                           let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData)
+                        {
                             generatedImage.promptSimple = settings.prompt
                         }
                         generatedImage.fullResponse = fullResponse
@@ -510,7 +511,7 @@ class ImageDatabase {
         mainManagedObjectContext.perform {
             request.n = Int16(images.count)
             let kudosCost = Int(request.totalKudosCost)
-            request.message = "Kudos cost: \(kudosCost) total, ~\((kudosCost/images.count)) per image"
+            request.message = "Kudos cost: \(kudosCost) total, ~\(kudosCost / images.count) per image"
             request.status = "finished"
 
             let mutableItems = request.images?.mutableCopy() as? NSMutableOrderedSet ?? []
