@@ -465,7 +465,7 @@ class ImageDatabase {
                             request.waitTime = Int16(waitTime)
                             request.queuePosition = Int16(queuePosition)
                             request.status = done ? "downloading" : "active"
-                            request.message = "\(waiting) sleeping, \(processing) dreaming, \(finished) waking"
+                            request.message = "\(waiting) queued, \(processing) processing, \(finished) finished"
                             if request.status == "downloading" {
                                 request.message = "Downloading \(finished) images..."
                             }
