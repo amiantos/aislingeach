@@ -275,6 +275,11 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         detectVisibleCell()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        detectVisibleCell()
+    }
+
     func detectVisibleCell() {
         var visibleRect = CGRect()
         visibleRect.origin = collectionView.contentOffset
