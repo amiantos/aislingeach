@@ -275,11 +275,6 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         detectVisibleCell()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        detectVisibleCell()
-    }
-
     func detectVisibleCell() {
         var visibleRect = CGRect()
         visibleRect.origin = collectionView.contentOffset
@@ -343,7 +338,10 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
     func controllerDidChangeContent(_: NSFetchedResultsController<NSFetchRequestResult>) {
         collectionView.performBatchUpdates({ () in
             for op: BlockOperation in self.ops { op.start() }
-        }, completion: { _ in self.ops.removeAll() })
+        }, completion: { _ in
+            self.ops.removeAll()
+            self.detectVisibleCell()
+        })
     }
 
     deinit {
