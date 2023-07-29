@@ -24,7 +24,7 @@ class ThumbnailBrowserViewController: UICollectionViewController, NSFetchedResul
     var imageDetailNavigationController: UINavigationController?
     var imageDetailViewController: ImageDetailCollectionViewController?
 
-    private let itemsPerRow: CGFloat = 3
+    private var itemsPerRow: CGFloat = 3
     private let sectionInsets = UIEdgeInsets(
         top: 2,
         left: 2,
@@ -36,6 +36,11 @@ class ThumbnailBrowserViewController: UICollectionViewController, NSFetchedResul
         super.viewDidLoad()
 
         navigationController?.navigationBar.prefersLargeTitles = true
+
+        // detect idiom
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            itemsPerRow = 5
+        }
 
         // setup menu
         menuButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: nil)
@@ -61,8 +66,13 @@ class ThumbnailBrowserViewController: UICollectionViewController, NSFetchedResul
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.setToolbarHidden(true, animated: false)
+        collectionView.collectionViewLayout.invalidateLayout()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
     @objc func toggleEditing() {
         setEditing(!isEditing, animated: true)
     }

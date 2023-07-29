@@ -66,7 +66,7 @@ class GenerationTracker {
         Task {
             if pendingCheckInProcess { return }
 
-            Log.debug("Checking for a pending generation...")
+//            Log.debug("Checking for a pending generation...")
             pendingCheckInProcess = true
             let requests = await ImageDatabase.standard.fetchPendingRequests() ?? []
             for request in requests {
@@ -116,7 +116,7 @@ class GenerationTracker {
         Task {
             if downloadingInProgress { return }
 
-            Log.debug("Checking for a pending downloads...")
+//            Log.debug("Checking for a pending downloads...")
             downloadingInProgress = true
             let downloads = await ImageDatabase.standard.fetchPendingDownloads() ?? []
             for download in downloads {

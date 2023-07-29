@@ -47,6 +47,11 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
         loadDataSource()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+
     @objc fileprivate func loadDataSource() {
         if isLoading { return }
 

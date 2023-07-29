@@ -204,7 +204,8 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
     }
 
     func toggleMetadataView(isHidden: Bool, animated: Bool) {
-        layoutIfNeeded()
+        if (metaDataView.layer.opacity == 0 && isHidden) || (metaDataView.layer.opacity == 1 && !isHidden) { return }
+//        layoutIfNeeded()
         if isHidden {
             metaDataViewCenterYConstraint.constant = 50
         } else {
@@ -230,6 +231,11 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
                 self.layoutIfNeeded()
             }
         }
+    }
+
+    func resetZoom() {
+        setScale()
+        scrollView.setZoomScale(defaultScale, animated: true)
     }
 
     func setScale() {
