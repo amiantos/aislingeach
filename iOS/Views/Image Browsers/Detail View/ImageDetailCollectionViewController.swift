@@ -61,6 +61,16 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .done, target: self, action: #selector(cancelAction))
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        Log.info(collectionView.indexPathsForVisibleItems)
+        super.viewWillTransition(to: size, with: coordinator)
+        collectionView.reloadData()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [self] in
+            jumpToIndexPath()
+        }
+    }
+
+
     func jumpToIndexPath() {
         if let startingIndexPath = startingIndexPath {
             collectionView.isPagingEnabled = false
@@ -76,6 +86,8 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         }
         jumpToIndexPath()
     }
+
+
 
     override func viewWillDisappear(_ animated: Bool) {
         metaDataViewIsHidden = true
@@ -254,12 +266,28 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         return 0
     }
 
-    override func collectionView(_: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt _: IndexPath) {
-        guard let cell = cell as? ImageDetailCollectionViewCell, let image = cell.generatedImage else { return }
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        detectVisibleCell()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        detectVisibleCell()
+    }
+
+    func detectVisibleCell() {
+        var visibleRect = CGRect()
+        visibleRect.origin = collectionView.contentOffset
+        visibleRect.size = collectionView.bounds.size
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        guard let indexPath = collectionView.indexPathForItem(at: visiblePoint) else { return }
+        startingIndexPath = indexPath
+        guard let cell = collectionView.cellForItem(at: indexPath) as? ImageDetailCollectionViewCell, let image = cell.generatedImage else { return }
         navigationItem.title = image.promptSimple
         setupToolbarItems(image: image)
         Log.debug("Wiill display cell \(metaDataViewIsHidden)")
         cell.toggleMetadataView(isHidden: metaDataViewIsHidden, animated: false)
+
     }
 
     override func collectionView(_: UICollectionView, numberOfItemsInSection section: Int) -> Int {
