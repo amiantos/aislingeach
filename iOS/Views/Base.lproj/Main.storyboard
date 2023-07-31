@@ -1743,32 +1743,6 @@ Note: If you have not entered an API key, you will not earn any kudos!</string>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Other" id="ye5-t4-obA">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="hiddenContentCell" textLabel="k3w-Kd-Pg0" imageView="QTA-OD-6Gy" style="IBUITableViewCellStyleDefault" id="Rio-Re-210">
-                                        <rect key="frame" x="20" y="157.66666221618652" width="353" height="43.666667938232422"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rio-Re-210" id="ldg-VX-4bD">
-                                            <rect key="frame" x="0.0" y="0.0" width="322.66666666666669" height="43.666667938232422"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="View Hidden Content" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="k3w-Kd-Pg0">
-                                                    <rect key="frame" x="60.166666666666686" y="0.0" width="254.5" height="43.666667938232422"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="QTA-OD-6Gy">
-                                                    <rect key="frame" x="18.833333333333336" y="12.999999999999998" width="26.333333333333332" height="17.333333333333332"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <imageReference key="image" image="eye.slash" catalog="system" symbolScale="default"/>
-                                                </imageView>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="LDh-hx-IdB" id="UEm-qq-SBJ"/>
@@ -2332,7 +2306,6 @@ Note: If you have not entered an API key, you will not earn any kudos!</string>
         <image name="chevron.right" catalog="system" width="97" height="128"/>
         <image name="clear" catalog="system" width="128" height="114"/>
         <image name="dice.fill" catalog="system" width="128" height="116"/>
-        <image name="eye.slash" catalog="system" width="128" height="84"/>
         <image name="eyedropper.halffull" catalog="system" width="128" height="118"/>
         <image name="heart.fill" catalog="system" width="128" height="107"/>
         <image name="lock.open" catalog="system" width="128" height="110"/>

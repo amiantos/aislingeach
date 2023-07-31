@@ -5,7 +5,6 @@
 //  Created by Brad Root on 5/27/23.
 //
 
-import LocalAuthentication
 import UIKit
 
 class SettingsTableViewController: UITableViewController, UITextFieldDelegate {
@@ -30,22 +29,5 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        if cell.reuseIdentifier == "hiddenContentCell" {
-            let context = LAContext()
-            let reason = "Get access to Hidden Content"
-            context.evaluatePolicy(
-                .deviceOwnerAuthentication,
-                localizedReason: reason
-            ) { success, _ in
-                if success {
-                    DispatchQueue.main.async {
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                        let controller = storyboard.instantiateViewController(withIdentifier: "albumGalleryView") as! AlbumsCollectionViewController
-                        controller.showHidden = true
-                        self.navigationController?.pushViewController(controller, animated: true)
-                    }
-                }
-            }
-        }
     }
 }
