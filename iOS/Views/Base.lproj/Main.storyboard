@@ -1175,7 +1175,7 @@
         <!--Add API Key-->
         <scene sceneID="ZjO-vU-CWL">
             <objects>
-                <viewController id="R56-fj-5pf" sceneMemberID="viewController">
+                <viewController id="R56-fj-5pf" customClass="AddAPIKeyViewController" customModule="Aislingeach" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="BUg-4Z-YYx">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1195,6 +1195,9 @@
                                 <rect key="frame" x="299" y="251.33333333333337" width="78" height="35"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Submit"/>
+                                <connections>
+                                    <action selector="submitButtonAction:" destination="R56-fj-5pf" eventType="touchUpInside" id="Mso-7m-7lq"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EWN-uv-9px">
                                 <rect key="frame" x="16" y="355.33333333333331" width="361" height="174.33333333333331"/>
@@ -1215,6 +1218,9 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                 <rect key="frame" x="16" y="685" width="361" height="35"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Visit aihorde.net to get an API key"/>
+                                <connections>
+                                    <action selector="registerHordeButtonAction:" destination="R56-fj-5pf" eventType="touchUpInside" id="USQ-dy-9XK"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eHw-21-YXZ">
                                 <rect key="frame" x="16" y="582.66666666666663" width="361" height="86.333333333333371"/>
@@ -1269,8 +1275,16 @@ You can also get an anonymous API key, no third party sign in required. But don'
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Add API Key" largeTitleDisplayMode="always" id="4Cs-WG-kgC">
-                        <barButtonItem key="rightBarButtonItem" title="Close" id="GlA-BQ-BAQ"/>
+                        <barButtonItem key="rightBarButtonItem" title="Close" id="GlA-BQ-BAQ">
+                            <connections>
+                                <action selector="closeButtonAction:" destination="R56-fj-5pf" id="WTt-AN-kX1"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="apiKeyTextField" destination="fuS-F4-rAc" id="mLt-lR-N3v"/>
+                        <outlet property="submitButton" destination="eqq-Nc-hRY" id="T3O-Nc-aQ9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P5j-e5-e2w" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1335,17 +1349,19 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="393"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="h66-cL-SjW">
-                                                        <rect key="frame" x="20" y="128.66666666666669" width="353" height="135.66666666666669"/>
+                                                        <rect key="frame" x="20" y="98.333333333333357" width="353" height="196.66666666666663"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QIt-oh-pZC">
-                                                                <rect key="frame" x="9" y="0.0" width="335.33333333333331" height="81.333333333333329"/>
-                                                                <string key="text">Earn kudos by rating images based on aesthetic preferences. This system will help LAION (the non-profit which helped trained Stable Diffusion) improve their library.</string>
+                                                                <rect key="frame" x="1.3333333333333428" y="0.0" width="350.33333333333326" height="142.33333333333334"/>
+                                                                <string key="text">Earn kudos by rating images based on aesthetic preferences. This system will help LAION (the non-profit which helped trained Stable Diffusion) improve their library.
+
+Note: If you have not entered an API key, you will not earn any kudos!</string>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="53R-dI-kda">
-                                                                <rect key="frame" x="119.66666666666666" y="101.33333333333334" width="114" height="34.333333333333343"/>
+                                                                <rect key="frame" x="119.66666666666666" y="162.33333333333334" width="114" height="34.333333333333343"/>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="gray" title="Start Rating"/>
                                                                 <connections>
@@ -2284,7 +2300,7 @@ You can also get an anonymous API key, no third party sign in required. But don'
         <!--Navigation Controller-->
         <scene sceneID="avn-Vt-qNn">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="G6t-j4-iRh" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="addAPIKeyNavController" automaticallyAdjustsScrollViewInsets="NO" id="G6t-j4-iRh" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="whs-Q8-U74">
                         <rect key="frame" x="0.0" y="59" width="393" height="96"/>

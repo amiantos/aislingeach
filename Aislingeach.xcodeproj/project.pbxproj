@@ -11,6 +11,7 @@
 		4401A7542A54C44000C875E4 /* AlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4401A7532A54C44000C875E4 /* AlbumCollectionViewCell.swift */; };
 		4401A7562A56505400C875E4 /* AlbumSimpleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4401A7552A56505400C875E4 /* AlbumSimpleCollectionViewCell.swift */; };
 		4401A7582A5652DB00C875E4 /* AlbumSectionTitleCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4401A7572A5652DB00C875E4 /* AlbumSectionTitleCollectionReusableView.swift */; };
+		440DA8042A77767C00C87EAE /* AddAPIKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440DA8032A77767C00C87EAE /* AddAPIKeyViewController.swift */; };
 		44142AC42A242B4E0096FFBA /* .swift-version in Resources */ = {isa = PBXBuildFile; fileRef = 44142AC22A242B4E0096FFBA /* .swift-version */; };
 		44142AC52A242B4E0096FFBA /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = 44142AC32A242B4E0096FFBA /* .swiftformat */; };
 		44142ACA2A25D0380096FFBA /* Cosmos in Frameworks */ = {isa = PBXBuildFile; productRef = 44142AC92A25D0380096FFBA /* Cosmos */; };
@@ -163,6 +164,7 @@
 		4401A7532A54C44000C875E4 /* AlbumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCollectionViewCell.swift; sourceTree = "<group>"; };
 		4401A7552A56505400C875E4 /* AlbumSimpleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumSimpleCollectionViewCell.swift; sourceTree = "<group>"; };
 		4401A7572A5652DB00C875E4 /* AlbumSectionTitleCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumSectionTitleCollectionReusableView.swift; sourceTree = "<group>"; };
+		440DA8032A77767C00C87EAE /* AddAPIKeyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAPIKeyViewController.swift; sourceTree = "<group>"; };
 		44142AC22A242B4E0096FFBA /* .swift-version */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
 		44142AC32A242B4E0096FFBA /* .swiftformat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .swiftformat; sourceTree = "<group>"; };
 		441EB36C2A21DC1E00E449BE /* Aislingeach.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aislingeach.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -567,6 +569,7 @@
 			isa = PBXGroup;
 			children = (
 				44C6B6982A22ADDD00C2F013 /* SettingsTableViewController.swift */,
+				440DA8032A77767C00C87EAE /* AddAPIKeyViewController.swift */,
 			);
 			path = Preferences;
 			sourceTree = "<group>";
@@ -779,6 +782,7 @@
 				44C6B6412A228D8200C2F013 /* NoValidRequestFoundStable.swift in Sources */,
 				44F2AA6D2A26B81200FB8E93 /* DatasetImagePopResponse.swift in Sources */,
 				44C6B63E2A228D8200C2F013 /* PutNewFilter.swift in Sources */,
+				440DA8042A77767C00C87EAE /* AddAPIKeyViewController.swift in Sources */,
 				44C6B6462A228D8200C2F013 /* RequestStatusStable.swift in Sources */,
 				44C6B64C2A228D8200C2F013 /* UserAmountRecords.swift in Sources */,
 				44C6B67B2A228D8200C2F013 /* SinglePeriodImgStat.swift in Sources */,

@@ -152,7 +152,7 @@ class GenerationTracker {
             guard data.done ?? false, let generations = data.generations, !generations.isEmpty else {
                 throw TrackerException.NoGenerationsFound
             }
-            for generation in generations {
+            for generation in generations where !(generation.censored ?? false) {
                 guard let urlString = generation.img,
                       let imageUrl = URL(string: urlString),
                       let pendingDownload = await ImageDatabase.standard.savePendingDownload(
@@ -167,8 +167,8 @@ class GenerationTracker {
                 }
 
                 Log.info("\(requestId) - Saved Pending Download \(pendingDownload.uuid!)")
-                ImageDatabase.standard.updatePendingRequestWithKudosCost(request: request, status: data)
             }
+            ImageDatabase.standard.updatePendingRequestWithKudosCost(request: request, status: data)
         } catch {
             Log.error("\(requestId) - Encountered error trying to fetch images: \(error.localizedDescription)")
             generationsSaved = generationsSaved.filter { $0 != requestId }
