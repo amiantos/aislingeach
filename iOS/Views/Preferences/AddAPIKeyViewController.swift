@@ -21,6 +21,7 @@ class AddAPIKeyViewController: UIViewController {
                     let alert = UIAlertController(title: "Verify API Key", message: "This API key is assigned to the user \(username), does that look right?", preferredStyle: .alert)
                     let alertAction = UIAlertAction(title: "Yes", style: .default) { _ in
                         UserPreferences.standard.set(apiKey: apiKey)
+                        NotificationCenter.default.post(name: .newAPIKeySubmitted, object: nil)
                         DispatchQueue.main.async {
                             self.submitButton.isEnabled = true
                             self.dismiss(animated: true)
