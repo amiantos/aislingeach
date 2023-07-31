@@ -1172,23 +1172,109 @@
             </objects>
             <point key="canvasLocation" x="3356" y="15"/>
         </scene>
-        <!--Log In to the Horde-->
+        <!--Add API Key-->
         <scene sceneID="ZjO-vU-CWL">
             <objects>
                 <viewController id="R56-fj-5pf" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="BUg-4Z-YYx">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add your AI Horde API key to unlock the ability to rate images to accrue more kudos, and increase your queue position." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v6x-Ca-pMe">
+                                <rect key="frame" x="16" y="171" width="361" height="64.333333333333314"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your Horde API key here" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fuS-F4-rAc">
+                                <rect key="frame" x="16" y="252" width="275" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eqq-Nc-hRY">
+                                <rect key="frame" x="299" y="251.33333333333337" width="78" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Submit"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EWN-uv-9px">
+                                <rect key="frame" x="16" y="355.33333333333331" width="361" height="174.33333333333331"/>
+                                <string key="text">Head over to the AI Horde website to get one. Registration is entirely free, and can be linked to a Google, Discord, or GitHub account.
+
+You can also get an anonymous API key, no third party sign in required. But don't lose it! Without any way to verify your identity, it can never be recovered.</string>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't have an API key for the horde? " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sd1-sL-y4c">
+                                <rect key="frame" x="16" y="318.33333333333331" width="361" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUq-cr-94o">
+                                <rect key="frame" x="16" y="685" width="361" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Visit aihorde.net to get an API key"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eHw-21-YXZ">
+                                <rect key="frame" x="16" y="582.66666666666663" width="361" height="86.333333333333371"/>
+                                <string key="text">The main benefit of registration is the ability to increase your kudos by rating images. Increasing your kudos can raise your queue positon, speeding up generation time.</string>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Should I get an API key?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lms-CN-MsG">
+                                <rect key="frame" x="16" y="545.66666666666663" width="361" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rB1-5o-0wO">
+                                <rect key="frame" x="32" y="302.33333333333331" width="329" height="1"/>
+                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="GSL-PM-801"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="qOx-HF-jbs"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="rB1-5o-0wO" secondAttribute="trailing" constant="16" id="1Ey-QH-lWM"/>
+                            <constraint firstItem="qOx-HF-jbs" firstAttribute="trailing" secondItem="v6x-Ca-pMe" secondAttribute="trailing" constant="16" id="4Em-Dz-2Rm"/>
+                            <constraint firstItem="aUq-cr-94o" firstAttribute="top" secondItem="eHw-21-YXZ" secondAttribute="bottom" constant="16" id="7iR-bQ-rX7"/>
+                            <constraint firstItem="rB1-5o-0wO" firstAttribute="leading" secondItem="BUg-4Z-YYx" secondAttribute="leadingMargin" constant="16" id="C8L-2R-XIN"/>
+                            <constraint firstItem="EWN-uv-9px" firstAttribute="top" secondItem="sd1-sL-y4c" secondAttribute="bottom" constant="16" id="Hma-BL-Vdi"/>
+                            <constraint firstItem="aUq-cr-94o" firstAttribute="leading" secondItem="qOx-HF-jbs" secondAttribute="leading" constant="16" id="IQm-dS-zjt"/>
+                            <constraint firstItem="fuS-F4-rAc" firstAttribute="centerY" secondItem="eqq-Nc-hRY" secondAttribute="centerY" id="Ica-a6-zAG"/>
+                            <constraint firstItem="v6x-Ca-pMe" firstAttribute="top" secondItem="qOx-HF-jbs" secondAttribute="top" constant="16" id="JEe-VE-VGZ"/>
+                            <constraint firstItem="v6x-Ca-pMe" firstAttribute="leading" secondItem="qOx-HF-jbs" secondAttribute="leading" constant="16" id="Kyl-E6-2Xw"/>
+                            <constraint firstItem="qOx-HF-jbs" firstAttribute="trailing" secondItem="eHw-21-YXZ" secondAttribute="trailing" constant="16" id="LFk-wl-W1H"/>
+                            <constraint firstItem="eHw-21-YXZ" firstAttribute="top" secondItem="lms-CN-MsG" secondAttribute="bottom" constant="16" id="SPR-7W-XxJ"/>
+                            <constraint firstItem="sd1-sL-y4c" firstAttribute="top" secondItem="eqq-Nc-hRY" secondAttribute="bottom" constant="32" id="UEs-w1-gVc"/>
+                            <constraint firstItem="qOx-HF-jbs" firstAttribute="trailing" secondItem="sd1-sL-y4c" secondAttribute="trailing" constant="16" id="W8v-J4-QLt"/>
+                            <constraint firstItem="EWN-uv-9px" firstAttribute="leading" secondItem="qOx-HF-jbs" secondAttribute="leading" constant="16" id="XmC-DI-MFh"/>
+                            <constraint firstItem="lms-CN-MsG" firstAttribute="top" secondItem="EWN-uv-9px" secondAttribute="bottom" constant="16" id="b56-0d-zNv"/>
+                            <constraint firstItem="rB1-5o-0wO" firstAttribute="top" secondItem="eqq-Nc-hRY" secondAttribute="bottom" constant="16" id="cT8-bP-g4F"/>
+                            <constraint firstItem="fuS-F4-rAc" firstAttribute="leading" secondItem="qOx-HF-jbs" secondAttribute="leading" constant="16" id="csa-xr-Vl8"/>
+                            <constraint firstItem="eqq-Nc-hRY" firstAttribute="top" secondItem="v6x-Ca-pMe" secondAttribute="bottom" constant="16" id="ebL-lG-4js"/>
+                            <constraint firstItem="qOx-HF-jbs" firstAttribute="trailing" secondItem="aUq-cr-94o" secondAttribute="trailing" constant="16" id="mfT-zp-azr"/>
+                            <constraint firstItem="sd1-sL-y4c" firstAttribute="leading" secondItem="qOx-HF-jbs" secondAttribute="leading" constant="16" id="njG-JM-D32"/>
+                            <constraint firstItem="qOx-HF-jbs" firstAttribute="trailing" secondItem="lms-CN-MsG" secondAttribute="trailing" constant="16" id="qXq-oq-67v"/>
+                            <constraint firstItem="lms-CN-MsG" firstAttribute="leading" secondItem="qOx-HF-jbs" secondAttribute="leading" constant="16" id="rrd-Eg-qxJ"/>
+                            <constraint firstItem="qOx-HF-jbs" firstAttribute="trailing" secondItem="eqq-Nc-hRY" secondAttribute="trailing" constant="16" id="tdn-sA-sNT"/>
+                            <constraint firstItem="qOx-HF-jbs" firstAttribute="trailing" secondItem="EWN-uv-9px" secondAttribute="trailing" constant="16" id="ugu-DK-DrH"/>
+                            <constraint firstItem="eqq-Nc-hRY" firstAttribute="leading" secondItem="fuS-F4-rAc" secondAttribute="trailing" constant="8" symbolic="YES" id="xAm-Th-Zfk"/>
+                            <constraint firstItem="eHw-21-YXZ" firstAttribute="leading" secondItem="qOx-HF-jbs" secondAttribute="leading" constant="16" id="xBb-Mz-Od5"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Log In to the Horde" largeTitleDisplayMode="always" id="4Cs-WG-kgC">
-                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="GlA-BQ-BAQ"/>
+                    <navigationItem key="navigationItem" title="Add API Key" largeTitleDisplayMode="always" id="4Cs-WG-kgC">
+                        <barButtonItem key="rightBarButtonItem" title="Close" id="GlA-BQ-BAQ"/>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P5j-e5-e2w" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3250" y="796"/>
+            <point key="canvasLocation" x="3249.6183206106871" y="795.77464788732402"/>
         </scene>
         <!--Tab Bar View Controller-->
         <scene sceneID="Vht-Lz-lO5">
