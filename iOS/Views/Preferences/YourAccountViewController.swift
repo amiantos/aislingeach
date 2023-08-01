@@ -57,7 +57,6 @@ class YourAccountViewController: UIViewController {
     @objc func setup() {
         if UserPreferences.standard.apiKey == "0000000000" {
             loggedOutUserContentView.isHidden = false
-            showLoginView()
         } else {
             loggedOutUserContentView.isHidden = true
             loadingUserDataContentView.isHidden = false
