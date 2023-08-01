@@ -527,14 +527,18 @@ extension GeneratorViewController {
     }
 
     func loadUserKudos() {
-        DispatchQueue.global(qos: .background).async {
-            HordeV2API.getFindUser(apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
-                if let data = data, let kudos = data.kudos {
-                    DispatchQueue.main.async {
-                        self.statusLabel.text = "Your Kudos: \(kudos.formatted())"
+        if UserPreferences.standard.apiKey == "0000000000" {
+            self.statusLabel.text = "Your kudos: ∞"
+        } else {
+            DispatchQueue.global(qos: .background).async {
+                HordeV2API.getFindUser(apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
+                    if let data = data, let kudos = data.kudos {
+                        DispatchQueue.main.async {
+                            self.statusLabel.text = "Your Kudos: \(kudos.formatted())"
+                        }
+                    } else if let error = error {
+                        Log.debug(error.localizedDescription)
                     }
-                } else if let error = error {
-                    Log.debug(error.localizedDescription)
                 }
             }
         }

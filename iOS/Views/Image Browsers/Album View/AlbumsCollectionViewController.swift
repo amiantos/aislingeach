@@ -5,6 +5,7 @@
 //  Created by Brad Root on 7/4/23.
 //
 
+import LocalAuthentication
 import CoreData
 import UIKit
 
@@ -32,6 +33,8 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     var presetAlbums: [AlbumStruct] = []
     var promptAlbums: [AlbumStruct] = []
 
+    var menuButton: UIBarButtonItem = .init()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -40,6 +43,13 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
 
         if showHidden {
             navigationItem.title = "Hidden Gallery"
+        } else {
+            // setup menu
+            menuButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: nil)
+            navigationItem.rightBarButtonItems = [menuButton]
+            menuButton.menu = UIMenu(children: [UIAction(title: "Show hidden gallery", image: UIImage(systemName: "eye.slash"), state: .off, handler: { [self] _ in
+                showHiddenGallery()
+            })])
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(loadDataSource), name: .imageDatabaseUpdated, object: nil)
@@ -50,6 +60,24 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         collectionView.collectionViewLayout.invalidateLayout()
+    }
+
+    func showHiddenGallery() {
+        let context = LAContext()
+        let reason = "Get access to your hidden gallery"
+        context.evaluatePolicy(
+            .deviceOwnerAuthentication,
+            localizedReason: reason
+        ) { success, _ in
+            if success {
+                DispatchQueue.main.async {
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let controller = storyboard.instantiateViewController(withIdentifier: "albumGalleryView") as! AlbumsCollectionViewController
+                    controller.showHidden = true
+                    self.navigationController?.pushViewController(controller, animated: true)
+                }
+            }
+        }
     }
 
     @objc fileprivate func loadDataSource() {

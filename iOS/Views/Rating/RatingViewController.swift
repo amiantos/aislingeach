@@ -73,6 +73,21 @@ class RatingViewController: UIViewController {
             checkIfEnableRatingButton()
         }
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        checkIfAnonymousUser()
+    }
+
+    func checkIfAnonymousUser() {
+        if UserPreferences.standard.apiKey == "0000000000" {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let controller = storyboard.instantiateViewController(withIdentifier: "addAPIKeyNavController") as! UINavigationController
+            controller.modalPresentationStyle = .pageSheet
+            controller.isModalInPresentation = true
+            present(controller, animated: true)
+        }
+    }
 }
 
 extension RatingViewController {
@@ -181,7 +196,9 @@ extension RatingViewController {
             RatingsV1API.postRate(body: postBody, apikey: UserPreferences.standard.apiKey, imageId: currentImageIdentifier) { data, error in
                 if let data = data {
                     Log.info("\(currentImageIdentifier) - Rating submitted successfully. \(String(describing: data.reward)) kudos rewarded.")
-                    UserPreferences.standard.add(ratingKudos: data.reward ?? 0)
+                    if UserPreferences.standard.apiKey != "0000000000" {
+                        UserPreferences.standard.add(ratingKudos: data.reward ?? 0)
+                    }
                     UserPreferences.standard.add(ratingImages: 1)
                     self.updateStatLabels()
                     self.grabImageToRate()
