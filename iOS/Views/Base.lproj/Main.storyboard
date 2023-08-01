@@ -1833,7 +1833,7 @@ Note: If you have not entered an API key, you will not earn any kudos!</string>
                                             <constraint firstAttribute="trailing" secondItem="rnK-80-g0L" secondAttribute="trailing" constant="20" symbolic="YES" id="zDc-iK-8zs"/>
                                         </constraints>
                                     </view>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b1Q-p8-BkZ" userLabel="Loading Content View">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b1Q-p8-BkZ" userLabel="Loading Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="411" height="614"/>
                                         <subviews>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="uhu-zr-c1S">
