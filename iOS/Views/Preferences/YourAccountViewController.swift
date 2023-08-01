@@ -16,8 +16,15 @@ class YourAccountViewController: UIViewController {
         showLoginView()
     }
     @IBAction func logOutButtonAction(_ sender: UIButton) {
-        UserPreferences.standard.set(apiKey: "0000000000")
-        NotificationCenter.default.post(name: .newAPIKeySubmitted, object: nil)
+        let alert = UIAlertController(title: "Log Out", message: "Are you sure you want to log out? Be sure you've backed up your API key somewhere, as it cannot be recovered from Aislingeach once you log out.", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let yesAction = UIAlertAction(title: "Log Out", style: .destructive) { _ in
+            UserPreferences.standard.set(apiKey: "0000000000")
+            NotificationCenter.default.post(name: .newAPIKeySubmitted, object: nil)
+        }
+        alert.addAction(yesAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
     }
 
     @IBOutlet weak var usernameLabel: UILabel!
