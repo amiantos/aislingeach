@@ -133,8 +133,6 @@
 		44C6B6912A228D8200C2F013 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B62A2A228D8200C2F013 /* Models.swift */; };
 		44C6B6942A228DFA00C2F013 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 44C6B6932A228DFA00C2F013 /* Alamofire */; };
 		44C6B6972A22ACE700C2F013 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6962A22ACE700C2F013 /* UserPreferences.swift */; };
-		44C6B6A02A22B2F000C2F013 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 44C6B69E2A22B2F000C2F013 /* LICENSE */; };
-		44C6B6A12A22B2F000C2F013 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 44C6B69F2A22B2F000C2F013 /* README.md */; };
 		44C6B6A32A22F83900C2F013 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6A22A22F83900C2F013 /* Logging.swift */; };
 		44C6B6A52A23253B00C2F013 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6A42A23253B00C2F013 /* Utils.swift */; };
 		44C6B6A82A232E6200C2F013 /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6A72A232E6200C2F013 /* RatingViewController.swift */; };
@@ -287,8 +285,6 @@
 		44C6B62A2A228D8200C2F013 /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		44C6B6952A22AA3D00C2F013 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		44C6B6962A22ACE700C2F013 /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
-		44C6B69E2A22B2F000C2F013 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		44C6B69F2A22B2F000C2F013 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		44C6B6A22A22F83900C2F013 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		44C6B6A42A23253B00C2F013 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		44C6B6A72A232E6200C2F013 /* RatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingViewController.swift; sourceTree = "<group>"; };
@@ -369,8 +365,6 @@
 			children = (
 				44142AC22A242B4E0096FFBA /* .swift-version */,
 				44142AC32A242B4E0096FFBA /* .swiftformat */,
-				44C6B69F2A22B2F000C2F013 /* README.md */,
-				44C6B69E2A22B2F000C2F013 /* LICENSE */,
 				441EB36E2A21DC1E00E449BE /* iOS */,
 				441EB36D2A21DC1E00E449BE /* Products */,
 			);
@@ -726,12 +720,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				44142AC52A242B4E0096FFBA /* .swiftformat in Resources */,
-				44C6B6A12A22B2F000C2F013 /* README.md in Resources */,
 				441EB37C2A21DC1F00E449BE /* LaunchScreen.storyboard in Resources */,
 				441EB3792A21DC1F00E449BE /* Assets.xcassets in Resources */,
 				441EB3772A21DC1E00E449BE /* Main.storyboard in Resources */,
 				449F967C2A5B4010001AAC82 /* RequestRaterViewController.xib in Resources */,
-				44C6B6A02A22B2F000C2F013 /* LICENSE in Resources */,
 				44142AC42A242B4E0096FFBA /* .swift-version in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
