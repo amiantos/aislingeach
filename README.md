@@ -2,6 +2,15 @@
 
 Aislingeach is a client for the [AI Horde](https://aihorde.net), a distributed open source network of GPUs running Stable Diffusion. With Aislingeach, you can make AI generated art on your device without eating up your battery life; and there's no need for powerful hardware, because the image generation is happening on GPUs all around the world. Best of all? The AI horde is free to use, and can be used totally anonymously with full respect to your privacy.
 
+# Screenshots
+
+<p float="left">
+  <img src="/Images/screenshot1.png" width="25%" />
+  <img src="/Images/screenshot2.png" width="25%" /> 
+  <img src="/Images/screenshot3.png" width="25%" />
+  <img src="/Images/screenshot4.png" width="25%" />
+</p>
+
 # Download
 - [Sign up for the Aislingeach beta on TestFlight](https://testflight.apple.com/join/Q6WyyEpS)
 - Or, support development: [Purchase Aislingeach on the App Store](https://apps.apple.com/us/app/aislingeach/id6449862063)
