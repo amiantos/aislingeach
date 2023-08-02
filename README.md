@@ -5,10 +5,10 @@ Aislingeach is a client for the [AI Horde](https://aihorde.net), a distributed o
 # Screenshots
 
 <p float="left">
-  <img src="/Images/screenshot1.png" width="25%" />
-  <img src="/Images/screenshot2.png" width="25%" /> 
-  <img src="/Images/screenshot3.png" width="25%" />
-  <img src="/Images/screenshot4.png" width="25%" />
+  <img src="/Images/screenshot1.png" width="24%" />
+  <img src="/Images/screenshot2.png" width="24%" /> 
+  <img src="/Images/screenshot3.png" width="24%" />
+  <img src="/Images/screenshot4.png" width="24%" />
 </p>
 
 # Download
