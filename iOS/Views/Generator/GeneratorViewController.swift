@@ -193,12 +193,6 @@ class GeneratorViewController: UIViewController {
         generationSettingsUpdated()
     }
 
-    @IBOutlet var debugModeButton: UIButton!
-    @IBAction func debugModeButtonAction(_ sender: UIButton) {
-        UserPreferences.standard.set(debugMode: sender.isSelected)
-        generationSettingsUpdated()
-    }
-
     @IBOutlet var seedTextField: UITextField!
     @IBOutlet var randomSeedButton: UIButton!
     @IBAction func randomSeedButtonAction(_ sender: UIButton) {
@@ -241,7 +235,7 @@ class GeneratorViewController: UIViewController {
 
         slowWorkersButton.isSelected = UserPreferences.standard.slowWorkers
         trustedWorkersButton.isSelected = UserPreferences.standard.trustedWorkers
-        debugModeButton.isSelected = UserPreferences.standard.debugMode
+//        debugModeButton.isSelected = UserPreferences.standard.debugMode
         shareButton.isSelected = UserPreferences.standard.shareWithLaion
         closeCreatePanelAutomaticallyButton.isSelected = UserPreferences.standard.autoCloseCreatePanel
 
