@@ -19,7 +19,7 @@ struct UserPreferences {
         static let slowWorkers = "slowWorkers"
         static let trustedWorkers = "trustedWorkers"
         static let shareWithLaion = "shareWithLaion"
-        static let debugMode = "debugMode"
+        static let allowNSFW = "allowNSFW"
         static let recentSettings = "recentSettings"
         static let autoCloseCreatePanel = "autoCloseCreatePanel"
     }
@@ -32,7 +32,7 @@ struct UserPreferences {
             Key.ratingImages: 0,
             Key.slowWorkers: true,
             Key.trustedWorkers: true,
-            Key.debugMode: false,
+            Key.allowNSFW: false,
             Key.shareWithLaion: true,
             Key.recentSettings: "{}",
             Key.autoCloseCreatePanel: true,
@@ -83,12 +83,12 @@ extension UserDefaults {
         return bool(forKey: UserPreferences.Key.trustedWorkers)
     }
 
-    func set(debugMode: Bool) {
-        set(debugMode, forKey: UserPreferences.Key.debugMode)
+    func set(allowNSFW: Bool) {
+        set(allowNSFW, forKey: UserPreferences.Key.allowNSFW)
     }
 
-    var debugMode: Bool {
-        return bool(forKey: UserPreferences.Key.debugMode)
+    var allowNSFW: Bool {
+        return bool(forKey: UserPreferences.Key.allowNSFW)
     }
 
     func set(shareWithLaion: Bool) {
