@@ -183,7 +183,7 @@ class GeneratorViewController: UIViewController {
 
     @IBOutlet var trustedWorkersButton: UIButton!
     @IBAction func trustedWorkersButtonAction(_ sender: UIButton) {
-        UserPreferences.standard.set(trustedWorkers: sender.isSelected)
+        UserPreferences.standard.set(trustedWorkers: !sender.isSelected)
         generationSettingsUpdated()
     }
 
@@ -199,6 +199,12 @@ class GeneratorViewController: UIViewController {
         if sender.isSelected {
             seedTextField.text = nil
         }
+    }
+
+    @IBOutlet weak var allowNSFWButton: UIButton!
+    @IBAction func allowNSFWButtonAction(_ sender: UIButton) {
+        UserPreferences.standard.set(allowNSFW: sender.isSelected)
+        generationSettingsUpdated()
     }
 
     @IBAction func seedTextFieldEditingDidBegin(_: UITextField) {
@@ -234,8 +240,8 @@ class GeneratorViewController: UIViewController {
         samplerPickButton.changesSelectionAsPrimaryAction = true
 
         slowWorkersButton.isSelected = UserPreferences.standard.slowWorkers
-        trustedWorkersButton.isSelected = UserPreferences.standard.trustedWorkers
-//        debugModeButton.isSelected = UserPreferences.standard.debugMode
+        trustedWorkersButton.isSelected = !UserPreferences.standard.trustedWorkers
+        allowNSFWButton.isSelected = UserPreferences.standard.allowNSFW
         shareButton.isSelected = UserPreferences.standard.shareWithLaion
         closeCreatePanelAutomaticallyButton.isSelected = UserPreferences.standard.autoCloseCreatePanel
 
@@ -486,10 +492,10 @@ extension GeneratorViewController {
         let input = GenerationInputStable(
             prompt: generationText,
             params: modelParams,
-            nsfw: UserPreferences.standard.debugMode,
+            nsfw: UserPreferences.standard.allowNSFW,
             trustedWorkers: UserPreferences.standard.trustedWorkers,
             slowWorkers: UserPreferences.standard.slowWorkers,
-            censorNsfw: !UserPreferences.standard.debugMode,
+            censorNsfw: !UserPreferences.standard.allowNSFW,
             workers: nil,
             workerBlacklist: nil,
             models: [modelPickButton.titleLabel?.text ?? "stable_diffusion"],
