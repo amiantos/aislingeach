@@ -152,7 +152,7 @@ class GenerationTracker {
             guard data.done ?? false, let generations = data.generations, !generations.isEmpty else {
                 throw TrackerException.NoGenerationsFound
             }
-            for generation in generations where !(generation.censored ?? false) {
+            for generation in generations {
                 guard let urlString = generation.img,
                       let imageUrl = URL(string: urlString),
                       let pendingDownload = await ImageDatabase.standard.savePendingDownload(
