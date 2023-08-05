@@ -1477,13 +1477,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How much do you like this image, personally?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nh2-wr-FFc">
-                                                <rect key="frame" x="32.333333333333343" y="417" width="328.66666666666663" height="19.333333333333314"/>
+                                                <rect key="frame" x="32.333333333333343" y="409" width="328.66666666666663" height="19.333333333333314"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vvx-UT-rwg" customClass="CosmosView" customModule="Cosmos">
-                                                <rect key="frame" x="20" y="444.33333333333331" width="353" height="125.66666666666669"/>
+                                                <rect key="frame" x="20" y="436.33333333333331" width="353" height="149.66666666666669"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="rating">
@@ -1513,19 +1513,19 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZC-be-azg">
-                                                <rect key="frame" x="195" y="578" width="3.3333333333333428" height="13.333333333333371"/>
+                                                <rect key="frame" x="195" y="594" width="3.3333333333333428" height="13.333333333333371"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is the objective quality of this image? How flawed is it by artifacts, distortions, etc?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fJ6-WF-Po3">
-                                                <rect key="frame" x="21.333333333333343" y="607.33333333333337" width="350.66666666666663" height="40.333333333333371"/>
+                                                <rect key="frame" x="21.333333333333343" y="623.33333333333337" width="350.66666666666663" height="40.333333333333371"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="maj-AT-NcT" customClass="CosmosView" customModule="Cosmos">
-                                                <rect key="frame" x="74" y="655.66666666666663" width="245" height="106"/>
+                                                <rect key="frame" x="74" y="671.66666666666663" width="245" height="106"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="rating">
@@ -1552,13 +1552,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LVv-qk-u3e">
-                                                <rect key="frame" x="195" y="769.66666666666663" width="3.3333333333333428" height="13.333333333333371"/>
+                                                <rect key="frame" x="195" y="785.66666666666663" width="3.3333333333333428" height="13.333333333333371"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="xLT-tJ-wg2">
-                                                <rect key="frame" x="20" y="807" width="353" height="67.333333333333371"/>
+                                                <rect key="frame" x="20" y="815" width="353" height="67.333333333333371"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zlf-3k-JIM">
                                                         <rect key="frame" x="0.0" y="0.0" width="109.66666666666667" height="67.333333333333329"/>
@@ -1662,14 +1662,14 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                             <constraint firstAttribute="trailing" secondItem="Du0-4v-bYB" secondAttribute="trailing" constant="20" symbolic="YES" id="FhG-FO-JtQ"/>
                                             <constraint firstItem="vvx-UT-rwg" firstAttribute="centerX" secondItem="YhJ-JC-7Yq" secondAttribute="centerX" id="KId-fh-fEa"/>
                                             <constraint firstItem="Du0-4v-bYB" firstAttribute="leading" secondItem="YhJ-JC-7Yq" secondAttribute="leading" constant="20" symbolic="YES" id="M4o-Bs-ZW1"/>
-                                            <constraint firstItem="Du0-4v-bYB" firstAttribute="top" secondItem="xLT-tJ-wg2" secondAttribute="bottom" constant="24" id="Nhs-xt-aDS"/>
+                                            <constraint firstItem="Du0-4v-bYB" firstAttribute="top" secondItem="xLT-tJ-wg2" secondAttribute="bottom" constant="16" id="Nhs-xt-aDS"/>
                                             <constraint firstItem="fJ6-WF-Po3" firstAttribute="centerX" secondItem="YhJ-JC-7Yq" secondAttribute="centerX" id="PDu-yi-GNV"/>
                                             <constraint firstItem="LZC-be-azg" firstAttribute="top" secondItem="vvx-UT-rwg" secondAttribute="bottom" constant="8" symbolic="YES" id="ckz-GI-3MV"/>
                                             <constraint firstItem="LVv-qk-u3e" firstAttribute="top" secondItem="maj-AT-NcT" secondAttribute="bottom" constant="8" symbolic="YES" id="dv6-Ya-O5x"/>
                                             <constraint firstAttribute="trailing" secondItem="R4W-uW-89c" secondAttribute="trailing" id="gk3-7b-OoJ"/>
                                             <constraint firstAttribute="bottom" secondItem="Du0-4v-bYB" secondAttribute="bottom" constant="20" symbolic="YES" id="hBF-HB-d7g"/>
-                                            <constraint firstItem="Nh2-wr-FFc" firstAttribute="top" secondItem="R4W-uW-89c" secondAttribute="bottom" constant="24" id="hLw-bH-8Ne"/>
-                                            <constraint firstItem="xLT-tJ-wg2" firstAttribute="top" secondItem="LVv-qk-u3e" secondAttribute="bottom" constant="24" id="meO-EY-QjQ"/>
+                                            <constraint firstItem="Nh2-wr-FFc" firstAttribute="top" secondItem="R4W-uW-89c" secondAttribute="bottom" constant="16" id="hLw-bH-8Ne"/>
+                                            <constraint firstItem="xLT-tJ-wg2" firstAttribute="top" secondItem="LVv-qk-u3e" secondAttribute="bottom" constant="16" id="meO-EY-QjQ"/>
                                             <constraint firstItem="maj-AT-NcT" firstAttribute="centerX" secondItem="YhJ-JC-7Yq" secondAttribute="centerX" id="s9u-1M-WXn"/>
                                             <constraint firstItem="Nh2-wr-FFc" firstAttribute="centerX" secondItem="YhJ-JC-7Yq" secondAttribute="centerX" id="sXW-oa-HjL"/>
                                             <constraint firstItem="R4W-uW-89c" firstAttribute="leading" secondItem="YhJ-JC-7Yq" secondAttribute="leading" id="t7D-1O-YFC"/>
