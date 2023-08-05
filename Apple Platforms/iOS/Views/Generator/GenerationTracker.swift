@@ -67,14 +67,12 @@ class GenerationTracker {
             if pendingCheckInProcess { return }
 
             pendingCheckInProcess = true
-            let requests = await ImageDatabase.standard.fetchPendingRequests() ?? []
-            Log.debug(requests)
+            let requests = await ImageDatabase.standard.fetchActiveRequests() ?? []
 
             if requests.count < 5 {
-                Log.debug("Time to submit requests...")
                 let unsubmittedRequests = await ImageDatabase.standard.fetchRequestsToSubmit(limit: 5 - requests.count) ?? []
-                Log.debug(unsubmittedRequests)
                 for request in unsubmittedRequests {
+                    Log.info("Submitting new request for \(request.n) images...")
                     guard let jsonString = request.fullRequest,
                           let jsonData = jsonString.data(using: .utf8),
                           let body = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData) else { continue }
@@ -82,9 +80,8 @@ class GenerationTracker {
                     do {
                         let result = try await HordeV2API.postImageAsyncGenerate(body: body, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent())
                         if let generationIdentifier = result._id {
-                            Log.debug("\(result)")
                             ImageDatabase.standard.updateRequestWithUUID(hordeRequest: request, uuid: UUID(uuidString: generationIdentifier)!) { _ in
-                                Log.debug("\(request.uuid?.uuidString) - Request saved successfully.")
+                                Log.info("\(generationIdentifier) - Request submitted successfully.")
                             }
                         }
                     } catch {
@@ -106,11 +103,10 @@ class GenerationTracker {
                 guard let requestId = request.uuid?.uuidString.lowercased() else {
                     fatalError("Received a pending request without a UUID, this shouldn't happen.")
                 }
-                Log.debug("\(requestId) - Checking request status")
+                Log.info("\(requestId) - Checking request status")
                 do {
                     if request.status == "active" {
                         let data = try await HordeV2API.getImageAsyncCheck(_id: requestId, clientAgent: hordeClientAgent())
-                        Log.debug("\(data)")
 
                         guard await ImageDatabase.standard.updatePendingRequest(
                             request: request,
@@ -120,7 +116,7 @@ class GenerationTracker {
                         }
 
                         guard data.done ?? false else { continue }
-                        Log.debug("\(requestId) - Horde says done!")
+                        Log.info("\(requestId) - Horde says done!")
                         await self.saveFinishedGenerations(request: request)
                     } else if request.status == "downloading" {
                         let pendingDownloads = await ImageDatabase.standard.getPendingDownloads(for: request)
@@ -164,7 +160,7 @@ class GenerationTracker {
                        fullResponse: download.fullResponse!
                    )
                 {
-                    Log.debug("\(requestId) - Successfully saved image ID \(generatedImage.uuid!)")
+                    Log.info("\(requestId) - Successfully saved image ID \(generatedImage.uuid!)")
                     ImageDatabase.standard.deletePendingDownload(download)
                 }
             }
@@ -180,7 +176,6 @@ class GenerationTracker {
 
         do {
             let data = try await HordeV2API.getImageAsyncStatus(_id: requestId, clientAgent: hordeClientAgent())
-            Log.debug("\(data)")
 
             guard data.done ?? false, let generations = data.generations, !generations.isEmpty else {
                 throw TrackerException.NoGenerationsFound
@@ -217,27 +212,5 @@ class GenerationTracker {
                 self.delegate?.showUpdate(type: .success, message: "Dream was queued successfully!")
             }
         }
-//        HordeV2API.postImageAsyncGenerate(body: body, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
-//            if let data = data, let generationIdentifier = data._id {
-//                Log.debug("\(data)")
-//                ImageDatabase.standard.saveRequest(id: UUID(uuidString: generationIdentifier)!, request: body) { _ in
-//                    Log.debug("\(generationIdentifier) - Request saved successfully.")
-//                }
-//                self.delegate?.showUpdate(type: .success, message: "Dream was sent successfully!")
-//            } else if let error = error {
-//                Log.debug("Error: \(error.localizedDescription)")
-//                if error.code == 401 {
-//                    self.delegate?.showUpdate(type: .error, message: "401 - Invalid API key")
-//                } else if error.code == 500 {
-//                    self.delegate?.showUpdate(type: .error, message: "500 - Could not connect to server, try again?")
-//                } else if error.code == 403, body.models!.contains("SDXL_beta::stability.ai#6901") {
-//                    self.delegate?.showUpdate(type: .error, message: "403 - Anonymous users cannot use the SDXL beta.")
-//                } else if error.code == 403 {
-//                    self.delegate?.showUpdate(type: .error, message: "403 - Generation request was rejected by the server.")
-//                } else {
-//                    self.delegate?.showUpdate(type: .error, message: error.localizedDescription)
-//                }
-//            }
-//        }
     }
 }
