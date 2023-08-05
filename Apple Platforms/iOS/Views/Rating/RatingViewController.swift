@@ -179,26 +179,28 @@ extension RatingViewController {
         currentImageIdentifierAssociatedApiKey = UserPreferences.standard.apiKey
         Log.info("\(String(describing: currentImageIdentifier)) - New image to rate received, downloading image...")
         if let urlString = imageResponse.url, let imageUrl = URL(string: urlString) {
-            DispatchQueue.global().async {
-                if let data = try? Data(contentsOf: imageUrl), let image = UIImage(data: data) {
-                    DispatchQueue.main.async { [self] in
-                        self.view.layoutIfNeeded()
-                        self.imageView.image = image
-                        self.setScale()
-                        self.imageView.isHidden = false
-                        self.imageScrollView.isHidden = false
-                        self.sixStarsView.rating = 0
-                        self.tenStarsView.rating = 0
-                        self.submitRatingButton.isEnabled = false
-                        submitRatingButton.setTitle("Submit", for: .normal)
-                        submitRatingButton.setImage(UIImage(systemName: "paperplane"), for: .normal)
-                        self.hideLoadingDisplay()
-                        Log.info("\(String(describing: self.currentImageIdentifier)) - Image loaded.")
-                    }
+            Task {
+                let request = URLRequest(url: imageUrl)
+                let (data, response) = try await URLSession.shared.data(for: request)
+                guard (response as? HTTPURLResponse)?.statusCode == 200, let image = UIImage(data: data) else {
+                    setErrorState(message: "Unable to load image from URL.")
+                    return
+                }
+                DispatchQueue.main.async { [self] in
+                    self.view.layoutIfNeeded()
+                    self.imageView.image = image
+                    self.setScale()
+                    self.imageView.isHidden = false
+                    self.imageScrollView.isHidden = false
+                    self.sixStarsView.rating = 0
+                    self.tenStarsView.rating = 0
+                    self.submitRatingButton.isEnabled = false
+                    submitRatingButton.setTitle("Submit", for: .normal)
+                    submitRatingButton.setImage(UIImage(systemName: "paperplane"), for: .normal)
+                    self.hideLoadingDisplay()
+                    Log.info("\(String(describing: self.currentImageIdentifier)) - Image loaded.")
                 }
             }
-        } else {
-            setErrorState(message: "Unable to load image URL.")
         }
     }
 
