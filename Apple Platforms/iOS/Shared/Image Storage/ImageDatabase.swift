@@ -329,17 +329,29 @@ class ImageDatabase {
 
     // MARK: - Requests
 
-    func saveRequest(id: UUID, request: GenerationInputStable, completion: @escaping (HordeRequest?) -> Void) {
+    func saveNewRequest(request: GenerationInputStable, completion: @escaping (HordeRequest?) -> Void) {
         mainManagedObjectContext.perform {
             do {
                 let hordeRequest = HordeRequest(context: self.mainManagedObjectContext)
-                hordeRequest.uuid = id
                 hordeRequest.prompt = request.prompt
                 hordeRequest.dateCreated = Date()
                 hordeRequest.fullRequest = request.toJSONString()
                 hordeRequest.n = Int16(request.params?.n ?? 0)
-                hordeRequest.message = "Falling asleep..."
+                hordeRequest.message = "Dream queued for submission..."
                 hordeRequest.status = "active"
+                try self.mainManagedObjectContext.save()
+                completion(hordeRequest)
+            } catch {
+                completion(nil)
+            }
+        }
+    }
+
+    func updateRequestWithUUID(hordeRequest: HordeRequest, uuid: UUID, completion: @escaping (HordeRequest?) -> Void) {
+        mainManagedObjectContext.perform {
+            do {
+                hordeRequest.uuid = uuid
+                hordeRequest.message = "Dream submitted successfully..."
                 try self.mainManagedObjectContext.save()
                 completion(hordeRequest)
             } catch {
@@ -409,8 +421,35 @@ class ImageDatabase {
             mainManagedObjectContext.perform { [self] in
                 do {
                     let fetchRequest1: NSFetchRequest<HordeRequest> = HordeRequest.fetchRequest()
-                    fetchRequest1.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [NSPredicate(format: "status = %@", "active"), NSPredicate(format: "status = %@", "downloading")])
+                    fetchRequest1.predicate = NSCompoundPredicate(
+                        andPredicateWithSubpredicates: [
+                            NSCompoundPredicate(
+                                orPredicateWithSubpredicates: [
+                                    NSPredicate(format: "status = %@", "active"),
+                                    NSPredicate(format: "status = %@", "downloading")
+                                ]
+                            ),
+                            NSPredicate(format: "uuid != nil")
+                        ]
+                    )
                     fetchRequest1.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: true)]
+                    let requests = try mainManagedObjectContext.fetch(fetchRequest1) as [HordeRequest]
+                    continuation.resume(returning: requests)
+                } catch {
+                    continuation.resume(returning: nil)
+                }
+            }
+        }
+    }
+
+    func fetchRequestsToSubmit(limit: Int = 5) async -> [HordeRequest]? {
+        return await withCheckedContinuation { continuation in
+            mainManagedObjectContext.perform { [self] in
+                do {
+                    let fetchRequest1: NSFetchRequest<HordeRequest> = HordeRequest.fetchRequest()
+                    fetchRequest1.predicate = NSPredicate(format: "uuid = nil")
+                    fetchRequest1.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
+                    fetchRequest1.fetchLimit = limit
                     let requests = try mainManagedObjectContext.fetch(fetchRequest1) as [HordeRequest]
                     continuation.resume(returning: requests)
                 } catch {

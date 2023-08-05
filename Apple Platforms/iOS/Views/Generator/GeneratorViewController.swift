@@ -136,13 +136,25 @@ class GeneratorViewController: UIViewController {
         imageQuantitySliderLabel.text = "\(Int(sender.value))"
         generationSettingsUpdated()
     }
+    @IBOutlet weak var requestQuantitySlider: UISlider!
+    @IBOutlet weak var requestQuantitySliderLabel: UILabel!
+    @IBAction func requestQuantitySliderChanged(_ sender: UISlider) {
+        requestQuantitySliderLabel.text = "\(Int(sender.value))"
+        generationSettingsUpdated()
+    }
 
     @IBOutlet var generateButton: UIButton!
     @IBAction func generateButtonPressed(_: UIButton) {
         promptTextView.resignFirstResponder()
         if let generationBody = createGeneratonBodyForCurrentSettings() {
             generateButton.isEnabled = false
-            generationTracker?.createNewGenerationRequest(body: generationBody)
+            for _ in 1...Int(requestQuantitySlider.value) {
+                generationTracker?.createNewGenerationRequest(body: generationBody)
+            }
+            generateButton.isEnabled = true
+            if UserPreferences.standard.autoCloseCreatePanel {
+                navigationController?.dismiss(animated: true)
+            }
         }
     }
 
@@ -388,12 +400,15 @@ extension GeneratorViewController {
 
         if selectedModel == "SDXL_beta::stability.ai#6901" {
             imageQuantitySlider.setValue(2.0, animated: false)
+            requestQuantitySlider.setValue(1.0, animated: false)
         } else if let seed = seed {
             seedTextField.text = seed
             randomSeedButton.isSelected = false
             imageQuantitySlider.setValue(1.0, animated: false)
+            requestQuantitySlider.setValue(1.0, animated: false)
         } else {
             imageQuantitySlider.setValue(Float(settings?.params?.n ?? 1), animated: false)
+            requestQuantitySlider.setValue(1.0, animated: false)
         }
 
         generationSettingsUpdated()
@@ -427,15 +442,13 @@ extension GeneratorViewController {
 
     func fetchAndDisplayKudosEstimate() {
         guard let currentGen = createGeneratonBodyForCurrentSettings(dryRun: true) else { return }
-        DispatchQueue.global().async {
-            HordeV2API.postImageAsyncGenerate(body: currentGen, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
-                if let data = data, let kudosEstimate = data.kudos {
-                    Log.debug(data)
-                    DispatchQueue.main.async {
-                        self.generateButtonLabel.text = "Estimated Kudos Cost: ~\(kudosEstimate) total, ~\(kudosEstimate / (currentGen.params?.n ?? 1)) per image"
-                    }
-                } else if let error = error {
-                    Log.error(error)
+        Task(priority: .userInitiated) {
+            if let result = try? await HordeV2API.postImageAsyncGenerate(body: currentGen, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()), let kudosEstimate = result.kudos {
+                DispatchQueue.main.async {
+                    let requestCount = Int(self.requestQuantitySlider.value)
+                    let adjustedKudosEstimate = kudosEstimate * requestCount
+                    let adjustedImageCount = (currentGen.params?.n ?? 1) * requestCount
+                    self.generateButtonLabel.text = "Kudos Cost: ~\(adjustedKudosEstimate) for \(adjustedImageCount) images, ~\(adjustedKudosEstimate / adjustedImageCount) per image"
                 }
             }
         }
@@ -524,6 +537,7 @@ extension GeneratorViewController {
         aspectRatioButton.sizeToFit()
 
         imageQuantitySliderLabel.text = "\(Int(imageQuantitySlider.value))"
+        requestQuantitySliderLabel.text = "\(Int(requestQuantitySlider.value))"
     }
 
     func loadUserKudos() {
@@ -561,9 +575,6 @@ extension GeneratorViewController: GenerationTrackerDelegate {
         if type == .success || type == .error {
             generateButton.isEnabled = true
             generationSettingsUpdated(customWait: 2)
-            if UserPreferences.standard.autoCloseCreatePanel && type == .success {
-                navigationController?.dismiss(animated: true)
-            }
         }
     }
 }
