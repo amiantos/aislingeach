@@ -447,8 +447,8 @@ extension GeneratorViewController {
                 DispatchQueue.main.async {
                     let requestCount = Int(self.requestQuantitySlider.value)
                     let adjustedKudosEstimate = kudosEstimate * requestCount
-                    let adjustedImageCount = currentGen.params?.n ?? 1 * requestCount
-                    self.generateButtonLabel.text = "Estimated Kudos Cost: ~\(adjustedKudosEstimate) total, ~\(kudosEstimate / adjustedImageCount) per image"
+                    let adjustedImageCount = (currentGen.params?.n ?? 1) * requestCount
+                    self.generateButtonLabel.text = "Kudos Cost: ~\(adjustedKudosEstimate) for \(adjustedImageCount) images, ~\(adjustedKudosEstimate / adjustedImageCount) per image"
                 }
             }
         }
