@@ -166,9 +166,10 @@ extension RatingViewController {
                 self.setNewImageToRate(imageResponse: data)
             } else if let error = error {
                 if error.code == 403 {
-                    self.setErrorState(message: "Unauthorized - Check your API key!")
+                    self.setErrorState(message: "Invalid API key, please check your API key and try again.")
+                } else {
+                    self.setErrorState(message: "\(error.localizedDescription)")
                 }
-                self.setErrorState(message: "\(error)")
             }
         }
     }
@@ -181,18 +182,18 @@ extension RatingViewController {
             DispatchQueue.global().async {
                 if let data = try? Data(contentsOf: imageUrl), let image = UIImage(data: data) {
                     DispatchQueue.main.async { [self] in
-                        UIView.animate(withDuration: 0.3) {
-                            self.view.layoutIfNeeded()
-                            self.imageView.image = image
-                            self.imageView.isHidden = false
-                            self.imageScrollView.isHidden = false
-                            self.sixStarsView.rating = 0
-                            self.tenStarsView.rating = 0
-                            self.submitRatingButton.isEnabled = false
-                            self.hideLoadingDisplay()
-                            Log.info("\(String(describing: self.currentImageIdentifier)) - Image loaded.")
-                        }
+                        self.view.layoutIfNeeded()
+                        self.imageView.image = image
                         self.setScale()
+                        self.imageView.isHidden = false
+                        self.imageScrollView.isHidden = false
+                        self.sixStarsView.rating = 0
+                        self.tenStarsView.rating = 0
+                        self.submitRatingButton.isEnabled = false
+                        submitRatingButton.setTitle("Submit", for: .normal)
+                        submitRatingButton.setImage(UIImage(systemName: "paperplane"), for: .normal)
+                        self.hideLoadingDisplay()
+                        Log.info("\(String(describing: self.currentImageIdentifier)) - Image loaded.")
                     }
                 }
             }
@@ -224,13 +225,19 @@ extension RatingViewController {
                     self.updateStatLabels()
                     self.grabImageToRate()
                 } else if let error = error {
-                    self.setErrorState(message: "\(error)")
+                    if error.code == 401 {
+                        self.setErrorState(message: "Invalid API key, please check your API key and try again.")
+                    } else {
+                        Log.debug("Unable to rate image for some reason, just load a new one.")
+                        self.grabImageToRate()
+                    }
                 }
             }
         }
     }
 
     func startLoadingSpinner() {
+        submitRatingButton.isEnabled = false
         startMessageView.isHidden = true
         loadingMessageContainer.isHidden = false
         loadingMessageTitleLabel.text = ""
@@ -247,6 +254,10 @@ extension RatingViewController {
         loadingMessageTitleLabel.text = "Error"
         loadingMessageActivityIndicator.stopAnimating()
         loadingMessageSubtitleLabel.text = message
+
+        submitRatingButton.setTitle("Retry", for: .normal)
+        submitRatingButton.setImage(UIImage(systemName: "arrow.uturn.backward"), for: .normal)
+        submitRatingButton.isEnabled = true
     }
 
     func checkIfEnableRatingButton() {
