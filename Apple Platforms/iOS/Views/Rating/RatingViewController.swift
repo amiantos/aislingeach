@@ -8,14 +8,24 @@
 import Cosmos
 import UIKit
 
-class RatingViewController: UIViewController {
+class RatingViewController: UIViewController, UIScrollViewDelegate {
     var currentImageIdentifier: String?
     var currentImageIdentifierAssociatedApiKey: String?
 
+    @IBAction func addAPIKeyButtonAction(_ sender: UIButton) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "addAPIKeyNavController") as! UINavigationController
+        controller.modalPresentationStyle = .pageSheet
+        controller.isModalInPresentation = true
+        present(controller, animated: true)
+    }
+
+    @IBOutlet weak var loggedOutContentView: UIView!
     @IBOutlet var startMessageView: UIStackView!
     @IBOutlet var tenStarsView: CosmosView!
     @IBOutlet var sixStarsView: CosmosView!
     @IBOutlet var imageContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var imageScrollView: UIScrollView!
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var ratingButton: UIButton!
     @IBOutlet var loadingMessageTitleLabel: UILabel!
@@ -41,6 +51,8 @@ class RatingViewController: UIViewController {
         submitRating()
     }
 
+    var defaultScale = 1.0
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -52,6 +64,9 @@ class RatingViewController: UIViewController {
         imageStatsContainer.layer.cornerRadius = 5
 
         updateStatLabels()
+
+        imageScrollView.minimumZoomScale = 0.01
+        imageScrollView.maximumZoomScale = 6.0
 
         loadingMessageSubtitleLabel.text = ""
 
@@ -72,21 +87,78 @@ class RatingViewController: UIViewController {
             setRatingLabel(rating: Int(rating))
             checkIfEnableRatingButton()
         }
+
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(doubleTapAction))
+        doubleTapGesture.numberOfTapsRequired = 2
+        imageScrollView.addGestureRecognizer(doubleTapGesture)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(setup), name: .newAPIKeySubmitted, object: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        checkIfAnonymousUser()
+        setup()
     }
 
-    func checkIfAnonymousUser() {
+    @objc func setup() {
         if UserPreferences.standard.apiKey == "0000000000" {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let controller = storyboard.instantiateViewController(withIdentifier: "addAPIKeyNavController") as! UINavigationController
-            controller.modalPresentationStyle = .pageSheet
-            controller.isModalInPresentation = true
-            present(controller, animated: true)
+            loggedOutContentView.isHidden = false
+        } else {
+            loggedOutContentView.isHidden = true
         }
+    }
+
+    @objc func doubleTapAction(gesture: UITapGestureRecognizer) {
+        // TODO: Would be awesome if this recongized tap location on image and zoomed to into that area
+        if gesture.state == UIGestureRecognizer.State.ended {
+            if imageScrollView.zoomScale != defaultScale {
+                imageScrollView.setZoomScale(defaultScale, animated: true)
+            } else {
+                imageScrollView.setZoomScale(1.0, animated: true)
+            }
+        }
+    }
+
+    func resetZoom() {
+        setScale()
+        imageScrollView.setZoomScale(defaultScale, animated: true)
+    }
+
+    func setScale() {
+        if imageView.intrinsicContentSize.width != 0 {
+            let scaleWidth = imageScrollView.bounds.width / imageView.intrinsicContentSize.width
+            let scaleHeight = imageScrollView.safeAreaLayoutGuide.layoutFrame.height / imageView.intrinsicContentSize.height
+            let scale = min(scaleWidth, scaleHeight)
+
+            Log.debug("Scale: \(scale)")
+            imageScrollView.minimumZoomScale = scale
+            imageScrollView.zoomScale = scale
+            defaultScale = scale
+
+            setContentOffset()
+        }
+    }
+
+    func setContentOffset() {
+        let scaledHeight = imageView.intrinsicContentSize.height * imageScrollView.zoomScale
+        let scaledWidth = imageView.intrinsicContentSize.width * imageScrollView.zoomScale
+        var offsetY = 0.0
+        var offsetX = 0.0
+        if scaledHeight < imageScrollView.safeAreaLayoutGuide.layoutFrame.height {
+            offsetY = max((imageScrollView.safeAreaLayoutGuide.layoutFrame.height - scaledHeight) * 0.5, 0)
+        }
+        if scaledWidth < imageScrollView.safeAreaLayoutGuide.layoutFrame.width {
+            offsetX = max((imageScrollView.safeAreaLayoutGuide.layoutFrame.width - scaledWidth) * 0.5, 0)
+        }
+        imageScrollView.contentInset = UIEdgeInsets(top: offsetY, left: offsetX, bottom: offsetY, right: offsetX)
+    }
+
+    func viewForZooming(in _: UIScrollView) -> UIView? {
+        return imageView
+    }
+
+    func scrollViewDidZoom(_: UIScrollView) {
+        setContentOffset()
     }
 }
 
@@ -164,6 +236,7 @@ extension RatingViewController {
                             self.view.layoutIfNeeded()
                             self.imageView.image = image
                             self.imageView.isHidden = false
+                            self.imageScrollView.isHidden = false
                             self.sixStarsView.rating = 0
                             self.tenStarsView.rating = 0
                             self.ratingLabel.text = " "
@@ -172,6 +245,7 @@ extension RatingViewController {
                             self.hideLoadingDisplay()
                             Log.info("\(String(describing: self.currentImageIdentifier)) - Image loaded.")
                         }
+                        self.setScale()
                     }
                 }
             }

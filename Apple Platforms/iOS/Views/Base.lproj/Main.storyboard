@@ -216,16 +216,16 @@
                                                                                 <rect key="frame" x="0.0" y="0.0" width="313" height="72"/>
                                                                                 <subviews>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ak8-vP-6PT">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="1.3333333333333333" height="72"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="72"/>
                                                                                         <subviews>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Width" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oLr-MB-8la">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="1.3333333333333333" height="30"/>
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="30"/>
                                                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Height" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0fG-06-TML">
-                                                                                                <rect key="frame" x="0.0" y="42" width="1.3333333333333333" height="30"/>
+                                                                                                <rect key="frame" x="0.0" y="42" width="0.0" height="30"/>
                                                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
@@ -242,16 +242,16 @@
                                                                                         </constraints>
                                                                                     </stackView>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="OIW-T5-zXP">
-                                                                                        <rect key="frame" x="13.333333333333329" y="0.0" width="245.66666666666669" height="72"/>
+                                                                                        <rect key="frame" x="12" y="0.0" width="247" height="72"/>
                                                                                         <subviews>
                                                                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="32" translatesAutoresizingMaskIntoConstraints="NO" id="fG1-FY-hQM">
-                                                                                                <rect key="frame" x="-2" y="0.0" width="249.66666666666666" height="31"/>
+                                                                                                <rect key="frame" x="-2" y="0.0" width="251" height="31"/>
                                                                                                 <connections>
                                                                                                     <action selector="widthSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="v0p-f8-o7a"/>
                                                                                                 </connections>
                                                                                             </slider>
                                                                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="32" translatesAutoresizingMaskIntoConstraints="NO" id="37z-oU-lmB">
-                                                                                                <rect key="frame" x="-2" y="42" width="249.66666666666666" height="31"/>
+                                                                                                <rect key="frame" x="-2" y="42" width="251" height="31"/>
                                                                                                 <connections>
                                                                                                     <action selector="heightSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="PKb-et-l1d"/>
                                                                                                 </connections>
@@ -590,13 +590,13 @@
                                                                                 <rect key="frame" x="0.0" y="253.33333333333303" width="313" height="30"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Face Fix Strength" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NQb-Im-Aqd">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="82.333333333333329" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="78.333333333333329" height="30"/>
                                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                         <color key="textColor" systemColor="tertiaryLabelColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.75" minValue="0.050000000000000003" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Y93-XZ-MTJ">
-                                                                                        <rect key="frame" x="92.333333333333357" y="0.0" width="176.66666666666663" height="31"/>
+                                                                                        <rect key="frame" x="88.333333333333357" y="0.0" width="180.66666666666663" height="31"/>
                                                                                         <connections>
                                                                                             <action selector="faceFixStrengthSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="7Ck-Dl-Akm"/>
                                                                                         </connections>
@@ -1371,6 +1371,55 @@ You can also get an anonymous API key, no third party sign in required. But don'
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ztP-LB-vza" userLabel="Logged Out Content View">
+                                <rect key="frame" x="0.0" y="59" width="393" height="710"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FAV-L5-xke">
+                                        <rect key="frame" x="20" y="280.66666666666669" width="353" height="149"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="API Key Required" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QPi-Sw-KdM">
+                                                <rect key="frame" x="0.0" y="0.0" width="353" height="26.333333333333332"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Once you've input an API key, this screen will allow you to rate image generations to earn more kudos." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h59-9q-Ah1">
+                                                <rect key="frame" x="0.0" y="34.333333333333307" width="353" height="64.333333333333314"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uu5-ae-8bW">
+                                                <rect key="frame" x="86.000000000000014" y="114.66666666666661" width="181.33333333333337" height="34.333333333333329"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="filled" title="Add a Horde API Key"/>
+                                                <connections>
+                                                    <action selector="addAPIKeyButtonAction:" destination="j2z-b5-dLB" eventType="touchUpInside" id="0aO-mh-Y67"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="QPi-Sw-KdM" secondAttribute="trailing" id="0Vp-AT-TAU"/>
+                                            <constraint firstAttribute="trailing" secondItem="h59-9q-Ah1" secondAttribute="trailing" id="7A5-RN-hjg"/>
+                                            <constraint firstItem="h59-9q-Ah1" firstAttribute="top" secondItem="QPi-Sw-KdM" secondAttribute="bottom" constant="8" symbolic="YES" id="7D2-2H-dnX"/>
+                                            <constraint firstItem="QPi-Sw-KdM" firstAttribute="top" secondItem="FAV-L5-xke" secondAttribute="top" id="CN1-5E-wa5"/>
+                                            <constraint firstItem="Uu5-ae-8bW" firstAttribute="centerX" secondItem="FAV-L5-xke" secondAttribute="centerX" id="ERC-be-Y32"/>
+                                            <constraint firstItem="h59-9q-Ah1" firstAttribute="leading" secondItem="FAV-L5-xke" secondAttribute="leading" id="EyH-Kc-73o"/>
+                                            <constraint firstItem="QPi-Sw-KdM" firstAttribute="leading" secondItem="FAV-L5-xke" secondAttribute="leading" id="IDf-KB-ejP"/>
+                                            <constraint firstAttribute="bottom" secondItem="Uu5-ae-8bW" secondAttribute="bottom" id="em3-Lp-Fu5"/>
+                                            <constraint firstItem="Uu5-ae-8bW" firstAttribute="top" secondItem="h59-9q-Ah1" secondAttribute="bottom" constant="16" id="h4C-vx-PhT"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="FAV-L5-xke" firstAttribute="centerX" secondItem="ztP-LB-vza" secondAttribute="centerX" id="0Go-Cm-5dN"/>
+                                    <constraint firstItem="FAV-L5-xke" firstAttribute="leading" secondItem="ztP-LB-vza" secondAttribute="leading" constant="20" symbolic="YES" id="LA7-Tj-OQw"/>
+                                    <constraint firstItem="FAV-L5-xke" firstAttribute="centerY" secondItem="ztP-LB-vza" secondAttribute="centerY" id="ls3-jy-D7T"/>
+                                    <constraint firstAttribute="trailing" secondItem="FAV-L5-xke" secondAttribute="trailing" constant="20" symbolic="YES" id="nb1-dd-3kW"/>
+                                </constraints>
+                            </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4o2-PF-cro">
                                 <rect key="frame" x="0.0" y="59" width="393" height="710"/>
                                 <subviews>
@@ -1381,19 +1430,17 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="393"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="h66-cL-SjW">
-                                                        <rect key="frame" x="20" y="98.333333333333357" width="353" height="196.66666666666663"/>
+                                                        <rect key="frame" x="20" y="128.66666666666669" width="353" height="135.66666666666669"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QIt-oh-pZC">
-                                                                <rect key="frame" x="1.3333333333333428" y="0.0" width="350.33333333333326" height="142.33333333333334"/>
-                                                                <string key="text">Earn kudos by rating images based on aesthetic preferences. This system will help LAION (the non-profit which helped trained Stable Diffusion) improve their library.
-
-Note: If you have not entered an API key, you will not earn any kudos!</string>
+                                                                <rect key="frame" x="9" y="0.0" width="335.33333333333331" height="81.333333333333329"/>
+                                                                <string key="text">Earn kudos by rating images based on your aesthetic preferences. This system will help LAION (the non-profit which helped trained Stable Diffusion) improve their library.</string>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="53R-dI-kda">
-                                                                <rect key="frame" x="119.66666666666666" y="162.33333333333334" width="114" height="34.333333333333343"/>
+                                                                <rect key="frame" x="119.66666666666666" y="101.33333333333334" width="114" height="34.333333333333343"/>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="gray" title="Start Rating"/>
                                                                 <connections>
@@ -1402,9 +1449,27 @@ Note: If you have not entered an API key, you will not earn any kudos!</string>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
-                                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BdB-sW-Vdn">
+                                                    <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentInsetAdjustmentBehavior="never" translatesAutoresizingMaskIntoConstraints="NO" id="49D-2U-vYr">
                                                         <rect key="frame" x="0.0" y="0.0" width="393" height="393"/>
-                                                    </imageView>
+                                                        <subviews>
+                                                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BdB-sW-Vdn">
+                                                                <rect key="frame" x="0.0" y="0.0" width="393" height="393"/>
+                                                            </imageView>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstItem="BdB-sW-Vdn" firstAttribute="leading" secondItem="hzM-MD-Iv1" secondAttribute="leading" id="64x-Fa-lR2"/>
+                                                            <constraint firstItem="BdB-sW-Vdn" firstAttribute="width" secondItem="JdC-QY-KW7" secondAttribute="width" placeholder="YES" id="Sbj-ew-v3b"/>
+                                                            <constraint firstItem="BdB-sW-Vdn" firstAttribute="height" secondItem="JdC-QY-KW7" secondAttribute="height" placeholder="YES" id="UCu-tP-nwm"/>
+                                                            <constraint firstItem="BdB-sW-Vdn" firstAttribute="top" secondItem="hzM-MD-Iv1" secondAttribute="top" id="dZy-Hz-CRR"/>
+                                                            <constraint firstItem="BdB-sW-Vdn" firstAttribute="bottom" secondItem="hzM-MD-Iv1" secondAttribute="bottom" id="dti-X9-c71"/>
+                                                            <constraint firstItem="BdB-sW-Vdn" firstAttribute="trailing" secondItem="hzM-MD-Iv1" secondAttribute="trailing" id="zpq-VF-pmQ"/>
+                                                        </constraints>
+                                                        <viewLayoutGuide key="contentLayoutGuide" id="hzM-MD-Iv1"/>
+                                                        <viewLayoutGuide key="frameLayoutGuide" id="JdC-QY-KW7"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="j2z-b5-dLB" id="vs6-0x-FLW"/>
+                                                        </connections>
+                                                    </scrollView>
                                                     <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mvC-mW-GUv">
                                                         <rect key="frame" x="0.0" y="0.0" width="393" height="393"/>
                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="yNk-k3-jUY">
@@ -1446,17 +1511,17 @@ Note: If you have not entered an API key, you will not earn any kudos!</string>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="trailing" secondItem="BdB-sW-Vdn" secondAttribute="trailing" id="1xP-5d-sSe"/>
-                                                    <constraint firstItem="BdB-sW-Vdn" firstAttribute="leading" secondItem="R4W-uW-89c" secondAttribute="leading" id="7X5-KE-usI"/>
+                                                    <constraint firstAttribute="bottom" secondItem="49D-2U-vYr" secondAttribute="bottom" id="0l0-Ch-Y71"/>
+                                                    <constraint firstItem="49D-2U-vYr" firstAttribute="top" secondItem="R4W-uW-89c" secondAttribute="top" id="5X4-sa-CZJ"/>
                                                     <constraint firstAttribute="bottom" secondItem="mvC-mW-GUv" secondAttribute="bottom" id="AUP-rE-gMO"/>
-                                                    <constraint firstAttribute="bottom" secondItem="BdB-sW-Vdn" secondAttribute="bottom" id="GH0-st-enC"/>
+                                                    <constraint firstItem="49D-2U-vYr" firstAttribute="leading" secondItem="R4W-uW-89c" secondAttribute="leading" id="DlH-jY-RfU"/>
                                                     <constraint firstAttribute="height" constant="393" id="LKN-7P-HDS"/>
                                                     <constraint firstItem="mvC-mW-GUv" firstAttribute="leading" secondItem="R4W-uW-89c" secondAttribute="leading" id="R2e-QI-Wcx"/>
+                                                    <constraint firstAttribute="trailing" secondItem="49D-2U-vYr" secondAttribute="trailing" id="Sb4-3N-gjW"/>
                                                     <constraint firstItem="h66-cL-SjW" firstAttribute="centerY" secondItem="R4W-uW-89c" secondAttribute="centerY" id="apD-kI-Bac"/>
                                                     <constraint firstAttribute="trailing" secondItem="mvC-mW-GUv" secondAttribute="trailing" id="cNw-wz-aFw"/>
                                                     <constraint firstItem="h66-cL-SjW" firstAttribute="leading" secondItem="R4W-uW-89c" secondAttribute="leading" constant="20" symbolic="YES" id="hrV-iw-gsb"/>
                                                     <constraint firstAttribute="trailing" secondItem="h66-cL-SjW" secondAttribute="trailing" constant="20" symbolic="YES" id="p3n-wx-6vP"/>
-                                                    <constraint firstItem="BdB-sW-Vdn" firstAttribute="top" secondItem="R4W-uW-89c" secondAttribute="top" id="rRI-Jb-nP5"/>
                                                     <constraint firstItem="mvC-mW-GUv" firstAttribute="top" secondItem="R4W-uW-89c" secondAttribute="top" id="tMW-Op-P84"/>
                                                 </constraints>
                                             </view>
@@ -1467,7 +1532,7 @@ Note: If you have not entered an API key, you will not earn any kudos!</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vvx-UT-rwg" customClass="CosmosView" customModule="Cosmos">
-                                                <rect key="frame" x="20" y="444.33333333333331" width="353" height="117.66666666666669"/>
+                                                <rect key="frame" x="20" y="444.33333333333331" width="353" height="125.66666666666669"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="rating">
@@ -1497,7 +1562,7 @@ Note: If you have not entered an API key, you will not earn any kudos!</string>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZC-be-azg">
-                                                <rect key="frame" x="195" y="570" width="3.3333333333333428" height="13.333333333333371"/>
+                                                <rect key="frame" x="195" y="578" width="3.3333333333333428" height="13.333333333333371"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
@@ -1605,7 +1670,7 @@ Note: If you have not entered an API key, you will not earn any kudos!</string>
                                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XUy-yc-jFz" userLabel="Submit">
                                                         <rect key="frame" x="243.33333333333329" y="0.0" width="109.66666666666666" height="67.333333333333329"/>
                                                         <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="tinted" imagePlacement="top" title="Submit">
+                                                        <buttonConfiguration key="configuration" style="filled" imagePlacement="top" title="Submit">
                                                             <imageReference key="image" image="paperplane" catalog="system" symbolScale="default"/>
                                                         </buttonConfiguration>
                                                         <connections>
@@ -1642,7 +1707,7 @@ Note: If you have not entered an API key, you will not earn any kudos!</string>
                                             <constraint firstItem="maj-AT-NcT" firstAttribute="top" secondItem="fJ6-WF-Po3" secondAttribute="bottom" constant="8" symbolic="YES" id="AVr-Xd-TUU"/>
                                             <constraint firstItem="xLT-tJ-wg2" firstAttribute="leading" secondItem="YhJ-JC-7Yq" secondAttribute="leading" constant="20" symbolic="YES" id="Dd3-Pe-jNo"/>
                                             <constraint firstItem="R4W-uW-89c" firstAttribute="top" secondItem="YhJ-JC-7Yq" secondAttribute="top" id="Dkk-lm-sl1"/>
-                                            <constraint firstItem="fJ6-WF-Po3" firstAttribute="top" secondItem="LZC-be-azg" secondAttribute="bottom" constant="24" id="EVk-qV-14E"/>
+                                            <constraint firstItem="fJ6-WF-Po3" firstAttribute="top" secondItem="LZC-be-azg" secondAttribute="bottom" constant="16" id="EVk-qV-14E"/>
                                             <constraint firstAttribute="trailing" secondItem="Du0-4v-bYB" secondAttribute="trailing" constant="20" symbolic="YES" id="FhG-FO-JtQ"/>
                                             <constraint firstItem="vvx-UT-rwg" firstAttribute="centerX" secondItem="YhJ-JC-7Yq" secondAttribute="centerX" id="KId-fh-fEa"/>
                                             <constraint firstItem="Du0-4v-bYB" firstAttribute="leading" secondItem="YhJ-JC-7Yq" secondAttribute="leading" constant="20" symbolic="YES" id="M4o-Bs-ZW1"/>
@@ -1677,8 +1742,12 @@ Note: If you have not entered an API key, you will not earn any kudos!</string>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="1sD-Ve-tfh" firstAttribute="trailing" secondItem="4o2-PF-cro" secondAttribute="trailing" id="0NI-wM-Oo4"/>
+                            <constraint firstItem="ztP-LB-vza" firstAttribute="bottom" secondItem="1sD-Ve-tfh" secondAttribute="bottom" id="Glz-SZ-MVl"/>
+                            <constraint firstItem="ztP-LB-vza" firstAttribute="leading" secondItem="1sD-Ve-tfh" secondAttribute="leading" id="UMh-va-gft"/>
                             <constraint firstItem="1sD-Ve-tfh" firstAttribute="bottom" secondItem="4o2-PF-cro" secondAttribute="bottom" id="c3Y-Sf-M2A"/>
+                            <constraint firstItem="ztP-LB-vza" firstAttribute="trailing" secondItem="1sD-Ve-tfh" secondAttribute="trailing" id="hQZ-lB-TDV"/>
                             <constraint firstItem="4o2-PF-cro" firstAttribute="top" secondItem="1sD-Ve-tfh" secondAttribute="top" id="jlI-kX-lFY"/>
+                            <constraint firstItem="ztP-LB-vza" firstAttribute="top" secondItem="1sD-Ve-tfh" secondAttribute="top" id="kB3-KK-OrG"/>
                             <constraint firstItem="4o2-PF-cro" firstAttribute="leading" secondItem="1sD-Ve-tfh" secondAttribute="leading" id="oQU-8S-Zlx"/>
                         </constraints>
                     </view>
@@ -1687,6 +1756,7 @@ Note: If you have not entered an API key, you will not earn any kudos!</string>
                     <connections>
                         <outlet property="artifactRatingLabel" destination="LVv-qk-u3e" id="dcy-OY-Xnx"/>
                         <outlet property="imageContainerHeightConstraint" destination="LKN-7P-HDS" id="8vn-Gg-R1a"/>
+                        <outlet property="imageScrollView" destination="49D-2U-vYr" id="6R8-dX-Roy"/>
                         <outlet property="imageStatsContainer" destination="ZsF-0n-jVZ" id="qtD-oa-Svr"/>
                         <outlet property="imageStatsLabel" destination="cy4-dq-YIh" id="lir-G0-J2s"/>
                         <outlet property="imageView" destination="BdB-sW-Vdn" id="nzj-q4-lNf"/>
@@ -1696,6 +1766,7 @@ Note: If you have not entered an API key, you will not earn any kudos!</string>
                         <outlet property="loadingMessageContainer" destination="mvC-mW-GUv" id="mtH-xA-zwx"/>
                         <outlet property="loadingMessageSubtitleLabel" destination="tNR-xa-MyX" id="Gus-uU-Jx5"/>
                         <outlet property="loadingMessageTitleLabel" destination="918-Nl-ikO" id="2sH-rb-aBG"/>
+                        <outlet property="loggedOutContentView" destination="ztP-LB-vza" id="3nq-0u-Qde"/>
                         <outlet property="ratingButton" destination="53R-dI-kda" id="5qq-fm-DmU"/>
                         <outlet property="ratingLabel" destination="LZC-be-azg" id="sy2-nb-rWP"/>
                         <outlet property="sixStarsView" destination="maj-AT-NcT" id="sYB-1V-fQR"/>
@@ -1706,7 +1777,7 @@ Note: If you have not entered an API key, you will not earn any kudos!</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sfc-FY-qxb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1236" y="752"/>
+            <point key="canvasLocation" x="1235.8778625954199" y="751.4084507042254"/>
         </scene>
         <!--Settings-->
         <scene sceneID="c6K-OV-IfO">
