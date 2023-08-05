@@ -416,7 +416,7 @@ class ImageDatabase {
         }
     }
 
-    func fetchPendingRequests() async -> [HordeRequest]? {
+    func fetchActiveRequests() async -> [HordeRequest]? {
         return await withCheckedContinuation { continuation in
             mainManagedObjectContext.perform { [self] in
                 do {
