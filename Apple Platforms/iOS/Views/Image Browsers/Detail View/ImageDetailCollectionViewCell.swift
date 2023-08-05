@@ -244,7 +244,6 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
             let scaleHeight = scrollView.safeAreaLayoutGuide.layoutFrame.height / imageView.intrinsicContentSize.height
             let scale = min(scaleWidth, scaleHeight)
 
-            Log.debug("Scale: \(scale)")
             scrollView.minimumZoomScale = scale
             scrollView.zoomScale = scale
             defaultScale = scale
