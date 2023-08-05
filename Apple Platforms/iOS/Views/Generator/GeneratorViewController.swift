@@ -427,15 +427,10 @@ extension GeneratorViewController {
 
     func fetchAndDisplayKudosEstimate() {
         guard let currentGen = createGeneratonBodyForCurrentSettings(dryRun: true) else { return }
-        DispatchQueue.global().async {
-            HordeV2API.postImageAsyncGenerate(body: currentGen, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
-                if let data = data, let kudosEstimate = data.kudos {
-                    Log.debug(data)
-                    DispatchQueue.main.async {
-                        self.generateButtonLabel.text = "Estimated Kudos Cost: ~\(kudosEstimate) total, ~\(kudosEstimate / (currentGen.params?.n ?? 1)) per image"
-                    }
-                } else if let error = error {
-                    Log.error(error)
+        Task(priority: .userInitiated) {
+            if let result = try? await HordeV2API.postImageAsyncGenerate(body: currentGen, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()), let kudosEstimate = result.kudos {
+                DispatchQueue.main.async {
+                    self.generateButtonLabel.text = "Estimated Kudos Cost: ~\(kudosEstimate) total, ~\(kudosEstimate / (currentGen.params?.n ?? 1)) per image"
                 }
             }
         }
