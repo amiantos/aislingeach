@@ -72,19 +72,15 @@ class RatingViewController: UIViewController, UIScrollViewDelegate {
 
         imageContainerHeightConstraint.constant = view.frame.width
         tenStarsView.didTouchCosmos = { [self] rating in
-            setRatingLabel(rating: Int(rating))
             checkIfEnableRatingButton()
         }
         sixStarsView.didTouchCosmos = { [self] rating in
-            setArtifactLabel(rating: Int(rating))
             checkIfEnableRatingButton()
         }
         sixStarsView.didFinishTouchingCosmos = { [self] rating in
-            setArtifactLabel(rating: Int(rating))
             checkIfEnableRatingButton()
         }
         tenStarsView.didFinishTouchingCosmos = { [self] rating in
-            setRatingLabel(rating: Int(rating))
             checkIfEnableRatingButton()
         }
 
@@ -162,52 +158,6 @@ class RatingViewController: UIViewController, UIScrollViewDelegate {
 }
 
 extension RatingViewController {
-    func setRatingLabel(rating: Int) {
-        switch Int(rating) {
-        case 1:
-            ratingLabel.text = "1 - Worst"
-        case 2:
-            ratingLabel.text = "2 - Terrible"
-        case 3:
-            ratingLabel.text = "3 - Very Bad"
-        case 4:
-            ratingLabel.text = "4 - Rather Bad"
-        case 5:
-            ratingLabel.text = "5 - OK"
-        case 6:
-            ratingLabel.text = "6 - Not Bad"
-        case 7:
-            ratingLabel.text = "7 - Rather Good"
-        case 8:
-            ratingLabel.text = "8 - Very Good"
-        case 9:
-            ratingLabel.text = "9 - Excellent"
-        case 10:
-            ratingLabel.text = "10 - The Best"
-        default:
-            ratingLabel.text = " "
-        }
-    }
-
-    func setArtifactLabel(rating: Int) {
-        switch Int(rating) {
-        case 1:
-            artifactRatingLabel.text = "1 - Complete Mess"
-        case 2:
-            artifactRatingLabel.text = "2 - Serious Issues"
-        case 3:
-            artifactRatingLabel.text = "3 - Minor Issues"
-        case 4:
-            artifactRatingLabel.text = "4 - Noticable Flaws"
-        case 5:
-            artifactRatingLabel.text = "5 - Small Errors"
-        case 6:
-            artifactRatingLabel.text = "6 - Flawless"
-        default:
-            artifactRatingLabel.text = " "
-        }
-    }
-
     func grabImageToRate() {
         startLoadingSpinner()
         RatingsV1API.getDefaultDatasetImagePop(apikey: UserPreferences.standard.apiKey) { data, error in
@@ -238,8 +188,6 @@ extension RatingViewController {
                             self.imageScrollView.isHidden = false
                             self.sixStarsView.rating = 0
                             self.tenStarsView.rating = 0
-                            self.ratingLabel.text = " "
-                            self.artifactRatingLabel.text = " "
                             self.submitRatingButton.isEnabled = false
                             self.hideLoadingDisplay()
                             Log.info("\(String(describing: self.currentImageIdentifier)) - Image loaded.")
