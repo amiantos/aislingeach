@@ -14,7 +14,6 @@ Aislingeach is a client for the [AI Horde](https://aihorde.net), a distributed o
 # Download
 - [Sign up for the Aislingeach beta on TestFlight](https://testflight.apple.com/join/Q6WyyEpS)
 - Or, support development: [Purchase Aislingeach on the App Store](https://apps.apple.com/us/app/aislingeach/id6449862063)
-- Or, find a way to contact Brad and he will give you a promo code for a free copy.
 
 # Development
 1. `git clone https://github.com/amiantos/aislingeach.git`
