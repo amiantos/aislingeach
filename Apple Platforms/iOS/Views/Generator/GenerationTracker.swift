@@ -79,6 +79,8 @@ class GenerationTracker {
 
                     do {
                         let result = try await HordeV2API.postImageAsyncGenerate(body: body, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent())
+                        var prunedRequestBody = body
+                        prunedRequestBody.sourceImage = "[true]"
                         if let generationIdentifier = result._id {
                             ImageDatabase.standard.updateRequestWithUUID(hordeRequest: request, uuid: UUID(uuidString: generationIdentifier)!) { _ in
                                 Log.info("\(generationIdentifier) - Request submitted successfully.")

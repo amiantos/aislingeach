@@ -242,3 +242,9 @@ extension CGPoint {
         return CGPoint(x: x, y: y)
     }
 }
+
+func convertBase64StringToImage (imageBase64String:String) -> UIImage {
+    let imageData = Data(base64Encoded: imageBase64String)
+    let image = UIImage(data: imageData!)
+    return image!
+}

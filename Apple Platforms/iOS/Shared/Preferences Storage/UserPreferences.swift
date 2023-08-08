@@ -108,13 +108,11 @@ extension UserDefaults {
     }
 
     func set(recentSettings: GenerationInputStable) {
-        Log.debug("Setting: \(recentSettings.toJSONString())")
         set(recentSettings.toJSONString(), forKey: UserPreferences.Key.recentSettings)
     }
 
     var recentSettings: GenerationInputStable? {
         guard let string = string(forKey: UserPreferences.Key.recentSettings) else { return nil }
-        Log.debug("Fetching: \(string)")
         return try? JSONDecoder().decode(
             GenerationInputStable.self,
             from: string.data(using: .utf8)!

@@ -23,6 +23,45 @@ class GeneratorViewController: UIViewController {
         }
     }
 
+    var imageToImageImage: UIImage? {
+        didSet {
+            Log.debug("Got image...")
+            if let image = imageToImageImage {
+                imageToImagePreviewImageView.image = image
+                imageToImagePreviewImageView.isHidden = false
+                pasteImageButton.setTitle("Remove Image", for: .normal)
+                controlTypeButton.isEnabled = true
+                denoisStrengthSlider.isEnabled = true
+
+                let imageWidth: Float = Float(image.size.width / 64)
+                let imageHeight: Float = Float(image.size.height / 64)
+                Log.debug("Width: \(imageWidth) Height: \(imageHeight)")
+                let aspectRatio: Float = imageWidth / imageHeight
+                Log.debug("Aspect: \(aspectRatio)")
+
+                var finalWidth: Int = Int(imageWidth)
+                var finalHeight: Int = Int(imageHeight)
+                if imageWidth > 32 {
+                    finalWidth = 32
+                    finalHeight = Int(Float(imageHeight) * aspectRatio)
+                } else if imageHeight > 32 {
+                    finalHeight = 32
+                    finalWidth = Int(Float(imageWidth) * aspectRatio)
+                }
+
+                widthSlider.setValue(Float(finalWidth), animated: false)
+                heightSlider.setValue(Float(finalHeight), animated: false)
+                updateSliderLabels()
+            } else {
+                imageToImagePreviewImageView.isHidden = true
+                imageToImagePreviewImageView.image = nil
+                pasteImageButton.setTitle("Paste Image or URL", for: .normal)
+                controlTypeButton.isEnabled = false
+                denoisStrengthSlider.isEnabled = false
+            }
+        }
+    }
+
     // MARK: - IBOutlets
 
     @IBAction func doneButtonAction(_: UIBarButtonItem) {
@@ -234,6 +273,49 @@ class GeneratorViewController: UIViewController {
         UserPreferences.standard.set(autoCloseCreatePanel: sender.isSelected)
     }
 
+    @IBOutlet weak var controlTypeButton: UIButton!
+
+    @IBOutlet weak var denoisStrengthSlider: UISlider!
+    @IBOutlet weak var denoiseStrengthSliderLabelLabel: UILabel!
+    @IBOutlet weak var denoiseStrengthSliderLabel: UILabel!
+    @IBAction func denoisStrengthSliderChanged(_ sender: UISlider) {
+        denoiseStrengthSliderLabel.text = "\(round(sender.value * 100) / 100.0)"
+        generationSettingsUpdated()
+    }
+
+    @IBOutlet weak var imageToImagePreviewImageView: UIImageView!
+    @IBOutlet weak var pasteImageStackView: UIStackView!
+    @IBOutlet weak var pasteImageButton: UIButton!
+    @IBAction func pasteImageButtonAction(_ sender: UIButton) {
+        if imageToImageImage != nil {
+            imageToImageImage = nil
+        } else {
+            DispatchQueue.global().async {
+                if let string = UIPasteboard.general.string,
+                   let url = URL(string: string),
+                   let imageData = try? Data(contentsOf: url),
+                   let image = UIImage(data: imageData) {
+                    DispatchQueue.main.async {
+                        self.imageToImageImage = image
+                    }
+                } else if let image = UIPasteboard.general.image {
+                    Log.debug("Got image from clipboard")
+                    DispatchQueue.main.async {
+                        self.imageToImageImage = image
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        let alert = UIAlertController(title: "Paste Error", message: "Did not find any content in the clipboard suitable for pasting.", preferredStyle: .alert)
+                        let alertAction = UIAlertAction(title: "Oh, okay...", style: .cancel)
+                        alert.addAction(alertAction)
+                        self.present(alert, animated: true)
+                    }
+                }
+            }
+        }
+    }
+
+
     // MARK: - View Setup
 
     override func viewDidLoad() {
@@ -290,6 +372,16 @@ class GeneratorViewController: UIViewController {
 
 extension GeneratorViewController {
     func loadSettingsIntoUI(settings: GenerationInputStable?, seed: String?) {
+        if let imageString = settings?.sourceImage {
+            let image = convertBase64StringToImage(imageBase64String: imageString)
+            imageToImageImage = image
+        }
+
+        let denoiseStrength = settings?.params?.denoisingStrength ?? 0.75
+        let denoiseFloat = Float(truncating: denoiseStrength as NSNumber)
+        denoiseStrengthSliderLabel.text = "\(denoiseStrength)"
+        denoisStrengthSlider.setValue(denoiseFloat, animated: false)
+
         let initialWidth = ((settings?.params?.width) != nil) ? (settings?.params?.width)! / 64 : 8
         let initialHeight = ((settings?.params?.height) != nil) ? (settings?.params?.height)! / 64 : 8
         widthSlider.setValue(Float(initialWidth), animated: false)
@@ -312,7 +404,6 @@ extension GeneratorViewController {
             upscalerOptions.forEach { option in
                 var state: UIMenuElement.State = .off
                 if let postProcessing = settings?.params?.postProcessing {
-                    Log.debug(postProcessing)
                     state = postProcessing.contains(where: { opt in
                         opt == ModelGenerationInputStable.PostProcessing(rawValue: option)
                     }) ? .on : .off
@@ -481,10 +572,19 @@ extension GeneratorViewController {
         var seed: String? = seedTextField.text ?? ""
         if let seedCheck = seed, seedCheck.isEmpty { seed = nil }
 
+
+        var sourceImage: String? = nil
+        var denoisingStrength: Decimal = Decimal(round(Double(denoisStrengthSlider.value) * 100.0) / 100.0)
+        var sourceProcessing: GenerationInputStable.SourceProcessing? = nil
+        if let image = imageToImageImage {
+            sourceImage = image.jpegData(compressionQuality: 1)?.base64EncodedString()
+            sourceProcessing = .img2img
+        }
+
         let modelParams = ModelGenerationInputStable(
             samplerName: samplerName,
             cfgScale: Decimal(Int(guidanceSlider.value)),
-            denoisingStrength: 0.75,
+            denoisingStrength: denoisingStrength,
             seed: seed,
             height: 64 * currentDimensions.1,
             width: 64 * currentDimensions.0,
@@ -502,6 +602,7 @@ extension GeneratorViewController {
             steps: Int(stepsSlider.value),
             n: Int(imageQuantitySlider.value)
         )
+
         let input = GenerationInputStable(
             prompt: generationText,
             params: modelParams,
@@ -512,8 +613,8 @@ extension GeneratorViewController {
             workers: nil,
             workerBlacklist: nil,
             models: [modelPickButton.titleLabel?.text ?? "stable_diffusion"],
-            sourceImage: nil,
-            sourceProcessing: nil,
+            sourceImage: sourceImage,
+            sourceProcessing: sourceProcessing,
             sourceMask: nil,
             r2: true,
             shared: UserPreferences.standard.shareWithLaion,
