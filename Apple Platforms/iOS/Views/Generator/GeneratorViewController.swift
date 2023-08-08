@@ -290,6 +290,8 @@ class GeneratorViewController: UIViewController {
         if imageToImageImage != nil {
             imageToImageImage = nil
         } else {
+            pasteImageButton.isEnabled = false
+            pasteImageButton.setTitle("Please wait...", for: .disabled)
             DispatchQueue.global().async {
                 if let string = UIPasteboard.general.string,
                    let url = URL(string: string),
@@ -297,14 +299,17 @@ class GeneratorViewController: UIViewController {
                    let image = UIImage(data: imageData) {
                     DispatchQueue.main.async {
                         self.imageToImageImage = image
+                        self.pasteImageButton.isEnabled = true
                     }
                 } else if let image = UIPasteboard.general.image {
                     Log.debug("Got image from clipboard")
                     DispatchQueue.main.async {
                         self.imageToImageImage = image
+                        self.pasteImageButton.isEnabled = true
                     }
                 } else {
                     DispatchQueue.main.async {
+                        self.pasteImageButton.isEnabled = true
                         let alert = UIAlertController(title: "Paste Error", message: "Did not find any content in the clipboard suitable for pasting.", preferredStyle: .alert)
                         let alertAction = UIAlertAction(title: "Oh, okay...", style: .cancel)
                         alert.addAction(alertAction)
@@ -389,8 +394,38 @@ extension GeneratorViewController {
 
         let selectedModel = settings?.models?.first ?? "stable_diffusion"
         modelPickButton.setTitle(selectedModel, for: .normal)
+        modelPickButton.showsMenuAsPrimaryAction = true
+        modelPickButton.changesSelectionAsPrimaryAction = true
 
         // setup button?
+        let controlTypeOptions: [String] = [
+            "None",
+            "canny",
+            "hed",
+            "depth",
+            "normal",
+            "openpose",
+            "seg",
+            "scribble",
+            "fakescribbles",
+            "hough",
+        ]
+        let controlTypeMenuChildren: [UIAction] = {
+            var actions: [UIAction] = []
+            controlTypeOptions.forEach { option in
+                let state: UIMenuElement.State = settings?.params?.controlType?.rawValue == option ? .on : .off
+                actions.append(UIAction(title: option, state: state, handler: { _ in
+                    self.generationSettingsUpdated()
+                }))
+            }
+
+            return actions
+        }()
+        controlTypeButton.menu = UIMenu(children: controlTypeMenuChildren)
+        controlTypeButton.showsMenuAsPrimaryAction = true
+        controlTypeButton.changesSelectionAsPrimaryAction = true
+
+
         let upscalerOptions: [String] = [
             "No Upscaler",
             "RealESRGAN_x4plus",
@@ -442,6 +477,8 @@ extension GeneratorViewController {
             return actions
         }()
         samplerPickButton.menu = UIMenu(children: samplerMenuChildren)
+        samplerPickButton.showsMenuAsPrimaryAction = true
+        samplerPickButton.changesSelectionAsPrimaryAction = true
 
         if let recentGuidance = settings?.params?.cfgScale {
             let floatScale = Float(truncating: recentGuidance as NSNumber)
@@ -574,11 +611,15 @@ extension GeneratorViewController {
 
 
         var sourceImage: String? = nil
-        var denoisingStrength: Decimal = Decimal(round(Double(denoisStrengthSlider.value) * 100.0) / 100.0)
+        var controlType: ModelGenerationInputStable.ControlType? = nil
+        let denoisingStrength: Decimal = Decimal(round(Double(denoisStrengthSlider.value) * 100.0) / 100.0)
         var sourceProcessing: GenerationInputStable.SourceProcessing? = nil
         if let image = imageToImageImage {
             sourceImage = image.jpegData(compressionQuality: 1)?.base64EncodedString()
             sourceProcessing = .img2img
+            if let controlTypeString = controlTypeButton.menu?.selectedElements[0].title {
+                controlType = ModelGenerationInputStable.ControlType(rawValue: controlTypeString)
+            }
         }
 
         let modelParams = ModelGenerationInputStable(
@@ -594,7 +635,7 @@ extension GeneratorViewController {
             tiling: tilingToggleButton.isSelected,
             hiresFix: hiresFixToggleButton.isSelected,
             clipSkip: Int(clipSkipSlider.value),
-            controlType: nil,
+            controlType: controlType,
             imageIsControl: false,
             returnControlMap: nil,
             facefixerStrength: Decimal(round(Double(faceFixerStrengthSlider.value) * 100.0) / 100.0),
