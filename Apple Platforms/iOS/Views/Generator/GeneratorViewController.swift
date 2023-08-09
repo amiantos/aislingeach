@@ -61,7 +61,7 @@ class GeneratorViewController: UIViewController {
 
                 widthSlider.setValue(Float(finalWidth), animated: false)
                 heightSlider.setValue(Float(finalHeight), animated: false)
-                updateSliderLabels()
+                generationSettingsUpdated()
             } else {
                 imageToImagePreviewImageView.isHidden = true
                 imageToImagePreviewImageView.image = nil
@@ -70,6 +70,7 @@ class GeneratorViewController: UIViewController {
                 imageIsControlMapButton.isEnabled = false
                 returnControlMapButton.isEnabled = false
                 denoisStrengthSlider.isEnabled = false
+                generationSettingsUpdated()
             }
         }
     }
@@ -300,7 +301,14 @@ class GeneratorViewController: UIViewController {
     @IBOutlet weak var pasteImageButton: UIButton!
     @IBAction func pasteImageButtonAction(_ sender: UIButton) {
         if imageToImageImage != nil {
-            imageToImageImage = nil
+            let alert = UIAlertController(title: "Clear Image?", message: "Are you sure you want to clear this image?", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "No", style: .cancel)
+            let confirmAction = UIAlertAction(title: "Yes", style: .destructive) { _ in
+                self.imageToImageImage = nil
+            }
+            alert.addAction(cancelAction)
+            alert.addAction(confirmAction)
+            self.present(alert, animated: true)
         } else {
             pasteImageButton.isEnabled = false
             pasteImageButton.setTitle("Please wait...", for: .disabled)
