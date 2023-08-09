@@ -41,12 +41,20 @@ class GeneratorViewController: UIViewController {
 
                 var finalWidth: Int = Int(imageWidth)
                 var finalHeight: Int = Int(imageHeight)
-                if imageWidth > 32 {
+                if imageWidth > 32 && imageHeight > 32 {
+                    if imageWidth > imageHeight {
+                        finalWidth = 32
+                        finalHeight = Int(Float(32) * aspectRatio)
+                    } else {
+                        finalHeight = 32
+                        finalWidth = Int(Float(32) * aspectRatio)
+                    }
+                } else if imageWidth > 32 {
                     finalWidth = 32
-                    finalHeight = Int(Float(imageHeight) * aspectRatio)
+                    finalHeight = Int(Float(32) * aspectRatio)
                 } else if imageHeight > 32 {
                     finalHeight = 32
-                    finalWidth = Int(Float(imageWidth) * aspectRatio)
+                    finalWidth = Int(Float(32) * aspectRatio)
                 }
 
                 widthSlider.setValue(Float(finalWidth), animated: false)
@@ -550,6 +558,7 @@ extension GeneratorViewController {
         })
 
         kudosEstimateTimer?.invalidate()
+        self.generateButton.isEnabled = false
         if customWait == 1 {
             generateButtonLabel.text = "Updating Kudos Estimate..."
             statusLabel.text = "Loading your total Kudos..."
@@ -571,13 +580,20 @@ extension GeneratorViewController {
     func fetchAndDisplayKudosEstimate() {
         guard let currentGen = createGeneratonBodyForCurrentSettings(dryRun: true) else { return }
         Task(priority: .userInitiated) {
-            if let result = try? await HordeV2API.postImageAsyncGenerate(body: currentGen, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()), let kudosEstimate = result.kudos {
-                DispatchQueue.main.async {
-                    let requestCount = Int(self.requestQuantitySlider.value)
-                    let adjustedKudosEstimate = kudosEstimate * requestCount
-                    let adjustedImageCount = (currentGen.params?.n ?? 1) * requestCount
-                    self.generateButtonLabel.text = "Kudos Cost: ~\(adjustedKudosEstimate) for \(adjustedImageCount) images, ~\(adjustedKudosEstimate / adjustedImageCount) per image"
+            do {
+                let result = try await HordeV2API.postImageAsyncGenerate(body: currentGen, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent())
+                if let kudosEstimate = result.kudos {
+                    DispatchQueue.main.async {
+                        self.generateButton.isEnabled = true
+                        let requestCount = Int(self.requestQuantitySlider.value)
+                        let adjustedKudosEstimate = kudosEstimate * requestCount
+                        let adjustedImageCount = (currentGen.params?.n ?? 1) * requestCount
+                        self.generateButtonLabel.text = "Kudos Cost: ~\(adjustedKudosEstimate) for \(adjustedImageCount) images, ~\(adjustedKudosEstimate / adjustedImageCount) per image"
+                    }
                 }
+            } catch {
+                self.generateButton.isEnabled = false
+                self.generateButtonLabel.text = "This request bundle has errors and cannot be sent as is."
             }
         }
     }
@@ -614,7 +630,7 @@ extension GeneratorViewController {
         var controlType: ModelGenerationInputStable.ControlType? = nil
         let denoisingStrength: Decimal = Decimal(round(Double(denoisStrengthSlider.value) * 100.0) / 100.0)
         var sourceProcessing: GenerationInputStable.SourceProcessing? = nil
-        if let image = imageToImageImage {
+        if let image = imageToImageImage?.resized(toWidth: CGFloat(64 * currentDimensions.0)) {
             sourceImage = image.jpegData(compressionQuality: 1)?.base64EncodedString()
             sourceProcessing = .img2img
             if let controlTypeString = controlTypeButton.menu?.selectedElements[0].title {
