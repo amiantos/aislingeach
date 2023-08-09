@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xaC-7g-J2s">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
@@ -216,16 +216,16 @@
                                                                                 <rect key="frame" x="0.0" y="0.0" width="334" height="72"/>
                                                                                 <subviews>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ak8-vP-6PT">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="13.5" height="72"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="21.5" height="72"/>
                                                                                         <subviews>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Width" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oLr-MB-8la">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="13.5" height="30"/>
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="21.5" height="30"/>
                                                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Height" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0fG-06-TML">
-                                                                                                <rect key="frame" x="0.0" y="42" width="13.5" height="30"/>
+                                                                                                <rect key="frame" x="0.0" y="42" width="21.5" height="30"/>
                                                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
@@ -242,16 +242,16 @@
                                                                                         </constraints>
                                                                                     </stackView>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="OIW-T5-zXP">
-                                                                                        <rect key="frame" x="25.5" y="0.0" width="254.5" height="72"/>
+                                                                                        <rect key="frame" x="33.5" y="0.0" width="246.5" height="72"/>
                                                                                         <subviews>
                                                                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="32" translatesAutoresizingMaskIntoConstraints="NO" id="fG1-FY-hQM">
-                                                                                                <rect key="frame" x="-2" y="0.0" width="258.5" height="31"/>
+                                                                                                <rect key="frame" x="-2" y="0.0" width="250.5" height="31"/>
                                                                                                 <connections>
                                                                                                     <action selector="widthSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="v0p-f8-o7a"/>
                                                                                                 </connections>
                                                                                             </slider>
                                                                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="32" translatesAutoresizingMaskIntoConstraints="NO" id="37z-oU-lmB">
-                                                                                                <rect key="frame" x="-2" y="42" width="258.5" height="31"/>
+                                                                                                <rect key="frame" x="-2" y="42" width="250.5" height="31"/>
                                                                                                 <connections>
                                                                                                     <action selector="heightSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="PKb-et-l1d"/>
                                                                                                 </connections>
@@ -706,13 +706,13 @@
                                                                                 <rect key="frame" x="0.0" y="393" width="334" height="30"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Face Fix Strength" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NQb-Im-Aqd">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="94.5" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="102.5" height="30"/>
                                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                         <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.75" minValue="0.050000000000000003" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Y93-XZ-MTJ">
-                                                                                        <rect key="frame" x="104.5" y="0.0" width="185.5" height="31"/>
+                                                                                        <rect key="frame" x="112.5" y="0.0" width="177.5" height="31"/>
                                                                                         <connections>
                                                                                             <action selector="faceFixStrengthSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="7Ck-Dl-Akm"/>
                                                                                         </connections>
@@ -1556,21 +1556,19 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="393"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="h66-cL-SjW">
-                                                        <rect key="frame" x="20" y="93" width="374" height="207"/>
+                                                        <rect key="frame" x="20" y="126" width="374" height="141"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QIt-oh-pZC">
-                                                                <rect key="frame" x="8.5" y="0.0" width="357" height="152.5"/>
-                                                                <string key="text">Earn kudos by rating images based on your aesthetic preferences. This system will help LAION (the non-profit which helped trained Stable Diffusion) improve their library.
-
-Rate images based on your aesthetic preferences, and based on your </string>
+                                                                <rect key="frame" x="3" y="0.0" width="368.5" height="86.5"/>
+                                                                <string key="text">Earn kudos by rating images based on your aesthetic preferences. This system helps LAION (the non-profit which helped trained Stable Diffusion) improve their library.</string>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="53R-dI-kda">
-                                                                <rect key="frame" x="130" y="172.5" width="114" height="34.5"/>
+                                                                <rect key="frame" x="130" y="106.5" width="114" height="34.5"/>
                                                                 <state key="normal" title="Button"/>
-                                                                <buttonConfiguration key="configuration" style="gray" title="Start Rating"/>
+                                                                <buttonConfiguration key="configuration" style="filled" title="Start Rating"/>
                                                                 <connections>
                                                                     <action selector="ratingButtonAction:" destination="j2z-b5-dLB" eventType="touchUpInside" id="LFJ-nu-ELq"/>
                                                                 </connections>
@@ -1746,7 +1744,7 @@ Rate images based on your aesthetic preferences, and based on your </string>
                                                                 </subviews>
                                                             </stackView>
                                                         </subviews>
-                                                        <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
+                                                        <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="trailing" secondItem="4e9-fC-LS1" secondAttribute="trailing" constant="8" id="BJt-um-5nt"/>
                                                             <constraint firstItem="4e9-fC-LS1" firstAttribute="top" secondItem="zlf-3k-JIM" secondAttribute="top" constant="8" id="HSr-AH-nch"/>
@@ -1775,7 +1773,7 @@ Rate images based on your aesthetic preferences, and based on your </string>
                                                                 </subviews>
                                                             </stackView>
                                                         </subviews>
-                                                        <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
+                                                        <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="trailing" secondItem="abJ-8P-5LS" secondAttribute="trailing" constant="8" id="8HD-Ep-lj6"/>
                                                             <constraint firstItem="abJ-8P-5LS" firstAttribute="leading" secondItem="ZsF-0n-jVZ" secondAttribute="leading" constant="8" id="IZE-RR-sjL"/>
