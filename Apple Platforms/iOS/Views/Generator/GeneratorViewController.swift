@@ -334,6 +334,7 @@ class GeneratorViewController: UIViewController {
                         let alertAction = UIAlertAction(title: "Oh, okay...", style: .cancel)
                         alert.addAction(alertAction)
                         self.present(alert, animated: true)
+                        self.pasteImageButton.setTitle("Paste Image or URL", for: .normal)
                     }
                 }
             }
@@ -416,8 +417,6 @@ extension GeneratorViewController {
 
         let selectedModel = settings?.models?.first ?? "stable_diffusion"
         modelPickButton.setTitle(selectedModel, for: .normal)
-        modelPickButton.showsMenuAsPrimaryAction = true
-        modelPickButton.changesSelectionAsPrimaryAction = true
 
         // setup button?
         let controlTypeOptions: [String] = [
