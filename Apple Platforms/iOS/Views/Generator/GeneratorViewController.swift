@@ -31,6 +31,8 @@ class GeneratorViewController: UIViewController {
                 imageToImagePreviewImageView.isHidden = false
                 pasteImageButton.setTitle("Remove Image", for: .normal)
                 controlTypeButton.isEnabled = true
+                imageIsControlMapButton.isEnabled = true
+                returnControlMapButton.isEnabled = true
                 denoisStrengthSlider.isEnabled = true
 
                 let imageWidth: Float = Float(image.size.width / 64)
@@ -65,6 +67,8 @@ class GeneratorViewController: UIViewController {
                 imageToImagePreviewImageView.image = nil
                 pasteImageButton.setTitle("Paste Image or URL", for: .normal)
                 controlTypeButton.isEnabled = false
+                imageIsControlMapButton.isEnabled = false
+                returnControlMapButton.isEnabled = false
                 denoisStrengthSlider.isEnabled = false
             }
         }
@@ -646,8 +650,8 @@ extension GeneratorViewController {
             }
         }
 
-        let imageIsControl = imageIsControlMapButton.isSelected
-        let returnControlMap = returnControlMapButton.isSelected
+        let imageIsControl = imageIsControlMapButton.isEnabled ? imageIsControlMapButton.isSelected : false
+        let returnControlMap = returnControlMapButton.isEnabled ? returnControlMapButton.isSelected : false
 
         let modelParams = ModelGenerationInputStable(
             samplerName: samplerName,
