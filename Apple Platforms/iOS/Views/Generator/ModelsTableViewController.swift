@@ -49,7 +49,7 @@ class ModelsTableViewController: UITableViewController, UISearchResultsUpdating 
         activeModels = []
         tableView.reloadData()
         DispatchQueue.global(qos: .userInitiated).async {
-            HordeV2API.getModels(clientAgent: hordeClientAgent(), minCount: 1) { data, error in
+            HordeV2API.getModels(clientAgent: hordeClientAgent()) { data, error in
                 DispatchQueue.main.async {
                     if var data = data {
                         data.sort { $0.count ?? 0 > $1.count ?? 0 }
