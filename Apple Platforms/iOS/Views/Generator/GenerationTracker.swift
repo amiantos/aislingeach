@@ -95,7 +95,7 @@ class GenerationTracker {
                             _ = await ImageDatabase.standard.updatePendingRequestErrorState(request: request, message: "403 - Generation request was rejected by the server.")
                         } else {
                             // Otherwise we ignore the error
-                            Log.error("Unhandled error: \(error.localizedDescription)")
+                            Log.error("Unhandled error: \(error.code) \(error.localizedDescription)")
                         }
                     }
                 }
