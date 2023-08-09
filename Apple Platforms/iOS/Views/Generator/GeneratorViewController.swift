@@ -327,6 +327,8 @@ class GeneratorViewController: UIViewController {
             }
         }
     }
+    @IBOutlet weak var returnControlMapButton: UIButton!
+    @IBOutlet weak var imageIsControlMapButton: UIButton!
 
 
     // MARK: - View Setup
@@ -547,6 +549,12 @@ extension GeneratorViewController {
             requestQuantitySlider.setValue(1.0, animated: false)
         }
 
+        let returnControlMap = settings?.params?.returnControlMap ?? false
+        returnControlMapButton.isSelected = returnControlMap
+
+        let imageIsControlMap = settings?.params?.imageIsControl ?? false
+        imageIsControlMapButton.isSelected = imageIsControlMap
+
         generationSettingsUpdated()
     }
 
@@ -582,14 +590,14 @@ extension GeneratorViewController {
         Task(priority: .userInitiated) {
             do {
                 let result = try await HordeV2API.postImageAsyncGenerate(body: currentGen, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent())
-                if let kudosEstimate = result.kudos {
-                    DispatchQueue.main.async {
-                        self.generateButton.isEnabled = true
-                        let requestCount = Int(self.requestQuantitySlider.value)
-                        let adjustedKudosEstimate = kudosEstimate * requestCount
-                        let adjustedImageCount = (currentGen.params?.n ?? 1) * requestCount
-                        self.generateButtonLabel.text = "Kudos Cost: ~\(adjustedKudosEstimate) for \(adjustedImageCount) images, ~\(adjustedKudosEstimate / adjustedImageCount) per image"
-                    }
+                Log.debug("Kudos estimate result: \(result)")
+                let kudosEstimate = result.kudos ?? 0
+                DispatchQueue.main.async {
+                    self.generateButton.isEnabled = true
+                    let requestCount = Int(self.requestQuantitySlider.value)
+                    let adjustedKudosEstimate = kudosEstimate * requestCount
+                    let adjustedImageCount = (currentGen.params?.n ?? 1) * requestCount
+                    self.generateButtonLabel.text = "Kudos Cost: ~\(adjustedKudosEstimate) for \(adjustedImageCount) images, ~\(adjustedKudosEstimate / adjustedImageCount) per image"
                 }
             } catch {
                 self.generateButton.isEnabled = false
@@ -638,6 +646,9 @@ extension GeneratorViewController {
             }
         }
 
+        let imageIsControl = imageIsControlMapButton.isSelected
+        let returnControlMap = returnControlMapButton.isSelected
+
         let modelParams = ModelGenerationInputStable(
             samplerName: samplerName,
             cfgScale: Decimal(Int(guidanceSlider.value)),
@@ -652,8 +663,8 @@ extension GeneratorViewController {
             hiresFix: hiresFixToggleButton.isSelected,
             clipSkip: Int(clipSkipSlider.value),
             controlType: controlType,
-            imageIsControl: false,
-            returnControlMap: nil,
+            imageIsControl: imageIsControl,
+            returnControlMap: returnControlMap,
             facefixerStrength: Decimal(round(Double(faceFixerStrengthSlider.value) * 100.0) / 100.0),
             loras: nil,
             steps: Int(stepsSlider.value),
