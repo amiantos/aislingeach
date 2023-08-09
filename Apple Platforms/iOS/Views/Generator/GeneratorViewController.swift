@@ -44,14 +44,14 @@ class GeneratorViewController: UIViewController {
                 if imageWidth > 32 && imageHeight > 32 {
                     if imageWidth > imageHeight {
                         finalWidth = 32
-                        finalHeight = Int(Float(32) * aspectRatio)
+                        finalHeight = Int(Float(32) / aspectRatio)
                     } else {
                         finalHeight = 32
                         finalWidth = Int(Float(32) * aspectRatio)
                     }
                 } else if imageWidth > 32 {
                     finalWidth = 32
-                    finalHeight = Int(Float(32) * aspectRatio)
+                    finalHeight = Int(Float(32) / aspectRatio)
                 } else if imageHeight > 32 {
                     finalHeight = 32
                     finalWidth = Int(Float(32) * aspectRatio)
