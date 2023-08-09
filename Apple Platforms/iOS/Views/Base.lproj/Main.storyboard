@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22146" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xaC-7g-J2s">
-    <device id="retina6_1" orientation="portrait" appearance="dark"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xaC-7g-J2s">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22122"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -216,16 +216,16 @@
                                                                                 <rect key="frame" x="0.0" y="0.0" width="334" height="72"/>
                                                                                 <subviews>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ak8-vP-6PT">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="33.5" height="72"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="13.5" height="72"/>
                                                                                         <subviews>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Width" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oLr-MB-8la">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="33.5" height="30"/>
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="13.5" height="30"/>
                                                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Height" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0fG-06-TML">
-                                                                                                <rect key="frame" x="0.0" y="42" width="33.5" height="30"/>
+                                                                                                <rect key="frame" x="0.0" y="42" width="13.5" height="30"/>
                                                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                                 <nil key="highlightedColor"/>
@@ -242,16 +242,16 @@
                                                                                         </constraints>
                                                                                     </stackView>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="OIW-T5-zXP">
-                                                                                        <rect key="frame" x="45.5" y="0.0" width="234.5" height="72"/>
+                                                                                        <rect key="frame" x="25.5" y="0.0" width="254.5" height="72"/>
                                                                                         <subviews>
                                                                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="32" translatesAutoresizingMaskIntoConstraints="NO" id="fG1-FY-hQM">
-                                                                                                <rect key="frame" x="-2" y="0.0" width="238.5" height="31"/>
+                                                                                                <rect key="frame" x="-2" y="0.0" width="258.5" height="31"/>
                                                                                                 <connections>
                                                                                                     <action selector="widthSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="v0p-f8-o7a"/>
                                                                                                 </connections>
                                                                                             </slider>
                                                                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="32" translatesAutoresizingMaskIntoConstraints="NO" id="37z-oU-lmB">
-                                                                                                <rect key="frame" x="-2" y="42" width="238.5" height="31"/>
+                                                                                                <rect key="frame" x="-2" y="42" width="258.5" height="31"/>
                                                                                                 <connections>
                                                                                                     <action selector="heightSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="PKb-et-l1d"/>
                                                                                                 </connections>
@@ -706,13 +706,13 @@
                                                                                 <rect key="frame" x="0.0" y="393" width="334" height="30"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Face Fix Strength" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NQb-Im-Aqd">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="114.5" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="94.5" height="30"/>
                                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                         <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.75" minValue="0.050000000000000003" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Y93-XZ-MTJ">
-                                                                                        <rect key="frame" x="124.5" y="0.0" width="165.5" height="31"/>
+                                                                                        <rect key="frame" x="104.5" y="0.0" width="185.5" height="31"/>
                                                                                         <connections>
                                                                                             <action selector="faceFixStrengthSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="7Ck-Dl-Akm"/>
                                                                                         </connections>
@@ -1158,7 +1158,7 @@
                         <constraint firstAttribute="bottom" secondItem="bJs-sJ-a1u" secondAttribute="bottom" constant="8" id="yD6-1v-APa"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" id="BU0-og-PHY" userLabel="Footer View">
+                <view contentMode="scaleToFill" ambiguous="YES" id="BU0-og-PHY" userLabel="Footer View">
                     <rect key="frame" x="0.0" y="0.0" width="388" height="53"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -2053,7 +2053,7 @@ Rate images based on your aesthetic preferences, and based on your </string>
                                                 <rect key="frame" x="188.5" y="316" width="37" height="37"/>
                                             </activityIndicatorView>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="uhu-zr-c1S" firstAttribute="centerY" secondItem="b1Q-p8-BkZ" secondAttribute="centerY" id="12D-rX-bPp"/>
                                             <constraint firstItem="uhu-zr-c1S" firstAttribute="centerX" secondItem="b1Q-p8-BkZ" secondAttribute="centerX" id="wDc-20-YmM"/>
@@ -2707,7 +2707,7 @@ Rate images based on your aesthetic preferences, and based on your </string>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="chevron.right" catalog="system" width="97" height="128"/>
         <image name="clear" catalog="system" width="128" height="114"/>
-        <image name="dice.fill" catalog="system" width="128" height="120"/>
+        <image name="dice.fill" catalog="system" width="128" height="116"/>
         <image name="eyedropper.halffull" catalog="system" width="128" height="118"/>
         <image name="heart.fill" catalog="system" width="128" height="107"/>
         <image name="lock.open" catalog="system" width="128" height="110"/>
@@ -2717,7 +2717,7 @@ Rate images based on your aesthetic preferences, and based on your </string>
         <image name="photo.on.rectangle.angled" catalog="system" width="128" height="98"/>
         <image name="rectangle.2.swap" catalog="system" width="128" height="102"/>
         <image name="rectangle.expand.vertical" catalog="system" width="128" height="122"/>
-        <image name="square.and.pencil" catalog="system" width="128" height="121"/>
+        <image name="square.and.pencil" catalog="system" width="128" height="113"/>
         <image name="star" catalog="system" width="128" height="116"/>
         <image name="star.fill" catalog="system" width="128" height="116"/>
         <namedColor name="AccentColor">
@@ -2727,7 +2727,7 @@ Rate images based on your aesthetic preferences, and based on your </string>
             <color red="1" green="1" blue="1" alpha="0.75" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
