@@ -23,6 +23,58 @@ class GeneratorViewController: UIViewController {
         }
     }
 
+    var imageToImageImage: UIImage? {
+        didSet {
+            Log.debug("Got image...")
+            if let image = imageToImageImage {
+                imageToImagePreviewImageView.image = image
+                imageToImagePreviewImageView.isHidden = false
+                pasteImageButton.setTitle("Remove Image", for: .normal)
+                controlTypeButton.isEnabled = true
+                imageIsControlMapButton.isEnabled = true
+                returnControlMapButton.isEnabled = true
+                denoisStrengthSlider.isEnabled = true
+
+                let imageWidth: Float = Float(image.size.width / 64)
+                let imageHeight: Float = Float(image.size.height / 64)
+                Log.debug("Width: \(imageWidth) Height: \(imageHeight)")
+                let aspectRatio: Float = imageWidth / imageHeight
+                Log.debug("Aspect: \(aspectRatio)")
+
+                var finalWidth: Int = Int(imageWidth)
+                var finalHeight: Int = Int(imageHeight)
+                if imageWidth > 32 && imageHeight > 32 {
+                    if imageWidth > imageHeight {
+                        finalWidth = 32
+                        finalHeight = Int(Float(32) / aspectRatio)
+                    } else {
+                        finalHeight = 32
+                        finalWidth = Int(Float(32) * aspectRatio)
+                    }
+                } else if imageWidth > 32 {
+                    finalWidth = 32
+                    finalHeight = Int(Float(32) / aspectRatio)
+                } else if imageHeight > 32 {
+                    finalHeight = 32
+                    finalWidth = Int(Float(32) * aspectRatio)
+                }
+
+                widthSlider.setValue(Float(finalWidth), animated: false)
+                heightSlider.setValue(Float(finalHeight), animated: false)
+                generationSettingsUpdated()
+            } else {
+                imageToImagePreviewImageView.isHidden = true
+                imageToImagePreviewImageView.image = nil
+                pasteImageButton.setTitle("Paste Image or URL", for: .normal)
+                controlTypeButton.isEnabled = false
+                imageIsControlMapButton.isEnabled = false
+                returnControlMapButton.isEnabled = false
+                denoisStrengthSlider.isEnabled = false
+                generationSettingsUpdated()
+            }
+        }
+    }
+
     // MARK: - IBOutlets
 
     @IBAction func doneButtonAction(_: UIBarButtonItem) {
@@ -234,6 +286,63 @@ class GeneratorViewController: UIViewController {
         UserPreferences.standard.set(autoCloseCreatePanel: sender.isSelected)
     }
 
+    @IBOutlet weak var controlTypeButton: UIButton!
+
+    @IBOutlet weak var denoisStrengthSlider: UISlider!
+    @IBOutlet weak var denoiseStrengthSliderLabelLabel: UILabel!
+    @IBOutlet weak var denoiseStrengthSliderLabel: UILabel!
+    @IBAction func denoisStrengthSliderChanged(_ sender: UISlider) {
+        denoiseStrengthSliderLabel.text = "\(round(sender.value * 100) / 100.0)"
+        generationSettingsUpdated()
+    }
+
+    @IBOutlet weak var imageToImagePreviewImageView: UIImageView!
+    @IBOutlet weak var pasteImageStackView: UIStackView!
+    @IBOutlet weak var pasteImageButton: UIButton!
+    @IBAction func pasteImageButtonAction(_ sender: UIButton) {
+        if imageToImageImage != nil {
+            let alert = UIAlertController(title: "Clear Image?", message: "Are you sure you want to clear this image?", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "No", style: .cancel)
+            let confirmAction = UIAlertAction(title: "Yes", style: .destructive) { _ in
+                self.imageToImageImage = nil
+            }
+            alert.addAction(cancelAction)
+            alert.addAction(confirmAction)
+            self.present(alert, animated: true)
+        } else {
+            pasteImageButton.isEnabled = false
+            pasteImageButton.setTitle("Please wait...", for: .disabled)
+            DispatchQueue.global().async {
+                if let string = UIPasteboard.general.string,
+                   let url = URL(string: string),
+                   let imageData = try? Data(contentsOf: url),
+                   let image = UIImage(data: imageData) {
+                    DispatchQueue.main.async {
+                        self.imageToImageImage = image
+                        self.pasteImageButton.isEnabled = true
+                    }
+                } else if let image = UIPasteboard.general.image {
+                    Log.debug("Got image from clipboard")
+                    DispatchQueue.main.async {
+                        self.imageToImageImage = image
+                        self.pasteImageButton.isEnabled = true
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.pasteImageButton.isEnabled = true
+                        let alert = UIAlertController(title: "Paste Error", message: "Did not find any content in the clipboard suitable for pasting.", preferredStyle: .alert)
+                        let alertAction = UIAlertAction(title: "Oh, okay...", style: .cancel)
+                        alert.addAction(alertAction)
+                        self.present(alert, animated: true)
+                    }
+                }
+            }
+        }
+    }
+    @IBOutlet weak var returnControlMapButton: UIButton!
+    @IBOutlet weak var imageIsControlMapButton: UIButton!
+
+
     // MARK: - View Setup
 
     override func viewDidLoad() {
@@ -290,6 +399,16 @@ class GeneratorViewController: UIViewController {
 
 extension GeneratorViewController {
     func loadSettingsIntoUI(settings: GenerationInputStable?, seed: String?) {
+        if let imageString = settings?.sourceImage {
+            let image = convertBase64StringToImage(imageBase64String: imageString)
+            imageToImageImage = image
+        }
+
+        let denoiseStrength = settings?.params?.denoisingStrength ?? 0.75
+        let denoiseFloat = Float(truncating: denoiseStrength as NSNumber)
+        denoiseStrengthSliderLabel.text = "\(denoiseStrength)"
+        denoisStrengthSlider.setValue(denoiseFloat, animated: false)
+
         let initialWidth = ((settings?.params?.width) != nil) ? (settings?.params?.width)! / 64 : 8
         let initialHeight = ((settings?.params?.height) != nil) ? (settings?.params?.height)! / 64 : 8
         widthSlider.setValue(Float(initialWidth), animated: false)
@@ -297,8 +416,38 @@ extension GeneratorViewController {
 
         let selectedModel = settings?.models?.first ?? "stable_diffusion"
         modelPickButton.setTitle(selectedModel, for: .normal)
+        modelPickButton.showsMenuAsPrimaryAction = true
+        modelPickButton.changesSelectionAsPrimaryAction = true
 
         // setup button?
+        let controlTypeOptions: [String] = [
+            "None",
+            "canny",
+            "hed",
+            "depth",
+            "normal",
+            "openpose",
+            "seg",
+            "scribble",
+            "fakescribbles",
+            "hough",
+        ]
+        let controlTypeMenuChildren: [UIAction] = {
+            var actions: [UIAction] = []
+            controlTypeOptions.forEach { option in
+                let state: UIMenuElement.State = settings?.params?.controlType?.rawValue == option ? .on : .off
+                actions.append(UIAction(title: option, state: state, handler: { _ in
+                    self.generationSettingsUpdated()
+                }))
+            }
+
+            return actions
+        }()
+        controlTypeButton.menu = UIMenu(children: controlTypeMenuChildren)
+        controlTypeButton.showsMenuAsPrimaryAction = true
+        controlTypeButton.changesSelectionAsPrimaryAction = true
+
+
         let upscalerOptions: [String] = [
             "No Upscaler",
             "RealESRGAN_x4plus",
@@ -312,7 +461,6 @@ extension GeneratorViewController {
             upscalerOptions.forEach { option in
                 var state: UIMenuElement.State = .off
                 if let postProcessing = settings?.params?.postProcessing {
-                    Log.debug(postProcessing)
                     state = postProcessing.contains(where: { opt in
                         opt == ModelGenerationInputStable.PostProcessing(rawValue: option)
                     }) ? .on : .off
@@ -351,6 +499,8 @@ extension GeneratorViewController {
             return actions
         }()
         samplerPickButton.menu = UIMenu(children: samplerMenuChildren)
+        samplerPickButton.showsMenuAsPrimaryAction = true
+        samplerPickButton.changesSelectionAsPrimaryAction = true
 
         if let recentGuidance = settings?.params?.cfgScale {
             let floatScale = Float(truncating: recentGuidance as NSNumber)
@@ -411,6 +561,12 @@ extension GeneratorViewController {
             requestQuantitySlider.setValue(1.0, animated: false)
         }
 
+        let returnControlMap = settings?.params?.returnControlMap ?? false
+        returnControlMapButton.isSelected = returnControlMap
+
+        let imageIsControlMap = settings?.params?.imageIsControl ?? false
+        imageIsControlMapButton.isSelected = imageIsControlMap
+
         generationSettingsUpdated()
     }
 
@@ -422,6 +578,7 @@ extension GeneratorViewController {
         })
 
         kudosEstimateTimer?.invalidate()
+        self.generateButton.isEnabled = false
         if customWait == 1 {
             generateButtonLabel.text = "Updating Kudos Estimate..."
             statusLabel.text = "Loading your total Kudos..."
@@ -443,13 +600,20 @@ extension GeneratorViewController {
     func fetchAndDisplayKudosEstimate() {
         guard let currentGen = createGeneratonBodyForCurrentSettings(dryRun: true) else { return }
         Task(priority: .userInitiated) {
-            if let result = try? await HordeV2API.postImageAsyncGenerate(body: currentGen, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()), let kudosEstimate = result.kudos {
+            do {
+                let result = try await HordeV2API.postImageAsyncGenerate(body: currentGen, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent())
+                Log.debug("Kudos estimate result: \(result)")
+                let kudosEstimate = result.kudos ?? 0
                 DispatchQueue.main.async {
+                    self.generateButton.isEnabled = true
                     let requestCount = Int(self.requestQuantitySlider.value)
                     let adjustedKudosEstimate = kudosEstimate * requestCount
                     let adjustedImageCount = (currentGen.params?.n ?? 1) * requestCount
                     self.generateButtonLabel.text = "Kudos Cost: ~\(adjustedKudosEstimate) for \(adjustedImageCount) images, ~\(adjustedKudosEstimate / adjustedImageCount) per image"
                 }
+            } catch {
+                self.generateButton.isEnabled = false
+                self.generateButtonLabel.text = "This request bundle has errors and cannot be sent as is."
             }
         }
     }
@@ -481,10 +645,26 @@ extension GeneratorViewController {
         var seed: String? = seedTextField.text ?? ""
         if let seedCheck = seed, seedCheck.isEmpty { seed = nil }
 
+
+        var sourceImage: String? = nil
+        var controlType: ModelGenerationInputStable.ControlType? = nil
+        let denoisingStrength: Decimal = Decimal(round(Double(denoisStrengthSlider.value) * 100.0) / 100.0)
+        var sourceProcessing: GenerationInputStable.SourceProcessing? = nil
+        if let image = imageToImageImage?.resized(toWidth: CGFloat(64 * currentDimensions.0)) {
+            sourceImage = image.jpegData(compressionQuality: 1)?.base64EncodedString()
+            sourceProcessing = .img2img
+            if let controlTypeString = controlTypeButton.menu?.selectedElements[0].title {
+                controlType = ModelGenerationInputStable.ControlType(rawValue: controlTypeString)
+            }
+        }
+
+        let imageIsControl = imageIsControlMapButton.isEnabled ? imageIsControlMapButton.isSelected : false
+        let returnControlMap = returnControlMapButton.isEnabled ? returnControlMapButton.isSelected : false
+
         let modelParams = ModelGenerationInputStable(
             samplerName: samplerName,
             cfgScale: Decimal(Int(guidanceSlider.value)),
-            denoisingStrength: 0.75,
+            denoisingStrength: denoisingStrength,
             seed: seed,
             height: 64 * currentDimensions.1,
             width: 64 * currentDimensions.0,
@@ -494,14 +674,15 @@ extension GeneratorViewController {
             tiling: tilingToggleButton.isSelected,
             hiresFix: hiresFixToggleButton.isSelected,
             clipSkip: Int(clipSkipSlider.value),
-            controlType: nil,
-            imageIsControl: false,
-            returnControlMap: nil,
+            controlType: controlType,
+            imageIsControl: imageIsControl,
+            returnControlMap: returnControlMap,
             facefixerStrength: Decimal(round(Double(faceFixerStrengthSlider.value) * 100.0) / 100.0),
             loras: nil,
             steps: Int(stepsSlider.value),
             n: Int(imageQuantitySlider.value)
         )
+
         let input = GenerationInputStable(
             prompt: generationText,
             params: modelParams,
@@ -512,8 +693,8 @@ extension GeneratorViewController {
             workers: nil,
             workerBlacklist: nil,
             models: [modelPickButton.titleLabel?.text ?? "stable_diffusion"],
-            sourceImage: nil,
-            sourceProcessing: nil,
+            sourceImage: sourceImage,
+            sourceProcessing: sourceProcessing,
             sourceMask: nil,
             r2: true,
             shared: UserPreferences.standard.shareWithLaion,

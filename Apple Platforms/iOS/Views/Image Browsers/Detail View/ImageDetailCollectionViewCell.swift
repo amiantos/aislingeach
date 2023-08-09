@@ -149,8 +149,12 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
             requestResponse = response
         }
 
-        if let fullRequest = generatedImage?.fullRequest {
-            let jsonData = Data(fullRequest.utf8)
+        if let fullRequest = generatedImage?.fullRequest,
+           let jsonData = fullRequest.data(using: .utf8),
+           let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData) {
+            var prunedSettings = settings
+            prunedSettings.sourceImage = prunedSettings.sourceImage != nil ? "[true]" : nil
+            let jsonData = Data(prunedSettings.toJSONString().utf8)
             requestDetailsTextView.text = jsonData.printJson()
         }
 
