@@ -97,6 +97,9 @@ class GeneratorViewController: UIViewController {
     @IBOutlet var promptTextViewContainerView: UIView!
     @IBOutlet var promptTextView: UITextView!
 
+    @IBOutlet weak var negativePromptContainerView: UIView!
+    @IBOutlet weak var negativePromptTextView: UITextView!
+
     @IBOutlet var stepsSlider: UISlider!
     @IBOutlet var stepsLabel: UILabel!
     @IBAction func stepsSliderChanged(_ sender: UISlider) {
@@ -198,6 +201,7 @@ class GeneratorViewController: UIViewController {
     @IBOutlet var generateButton: UIButton!
     @IBAction func generateButtonPressed(_: UIButton) {
         promptTextView.resignFirstResponder()
+        negativePromptTextView.resignFirstResponder()
         if let generationBody = createGeneratonBodyForCurrentSettings() {
             generateButton.isEnabled = false
             for _ in 1...Int(requestQuantitySlider.value) {
@@ -371,6 +375,9 @@ class GeneratorViewController: UIViewController {
 
         promptTextView.layer.cornerRadius = 5
         promptTextViewContainerView.layer.cornerRadius = 5
+
+        negativePromptTextView.layer.cornerRadius = 5
+        negativePromptContainerView.layer.cornerRadius = 5
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -545,7 +552,21 @@ extension GeneratorViewController {
             faceFixStrengthLabel.text = "\(faceFixStrength)"
             faceFixerStrengthSlider.setValue(float, animated: false)
         }
-        promptTextView.text = settings?.prompt ?? "temple in ruins, forest, stairs, columns, cinematic, detailed, atmospheric, epic, concept art, Matte painting, background, mist, photo-realistic, concept art, volumetric light, cinematic epic + rule of thirds octane render, 8k, corona render, movie concept art, octane render, cinematic, trending on artstation, movie concept art, cinematic composition, ultra-detailed, realistic, hyper-realistic, volumetric lighting, 8k"
+
+        if let prompt = settings?.prompt {
+            let splitPrompt = prompt.components(separatedBy: "###")
+            if let positivePrompt = splitPrompt.first {
+                promptTextView.text = positivePrompt.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+            if splitPrompt.first != splitPrompt.last, let negativePrompt = splitPrompt.last {
+                negativePromptTextView.text = negativePrompt.trimmingCharacters(in: .whitespacesAndNewlines)
+            } else {
+                negativePromptTextView.text = ""
+            }
+        } else {
+            promptTextView.text = "temple in ruins, forest, stairs, columns, cinematic, detailed, atmospheric, epic, concept art, Matte painting, background, mist, photo-realistic, concept art, volumetric light, cinematic epic + rule of thirds octane render, 8k, corona render, movie concept art, octane render, cinematic, trending on artstation, movie concept art, cinematic composition, ultra-detailed, realistic, hyper-realistic, volumetric lighting, 8k"
+            negativePromptTextView.text = "bad quality, worst quality"
+        }
 
         if selectedModel == "SDXL_beta::stability.ai#6901" {
             imageQuantitySlider.setValue(2.0, animated: false)
@@ -618,7 +639,11 @@ extension GeneratorViewController {
     }
 
     func createGeneratonBodyForCurrentSettings(dryRun: Bool = false) -> GenerationInputStable? {
-        guard let generationText = promptTextView.text, generationText != "" else { return nil }
+        let promptText = promptTextView.text ?? ""
+        let negativePrompt = negativePromptTextView.text ?? ""
+
+        let generationText = negativePrompt.isEmpty ? promptText : "\(promptText) ### \(negativePrompt)"
+
         let currentDimensions = getCurrentWidthAndHeight()
         let samplerString = samplerPickButton.menu?.selectedElements[0].title ?? "k_euler_a"
         let samplerName = ModelGenerationInputStable.SamplerName(rawValue: samplerString)
