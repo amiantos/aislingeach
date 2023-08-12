@@ -410,6 +410,8 @@ extension GeneratorViewController {
         if let imageString = settings?.sourceImage {
             let image = convertBase64StringToImage(imageBase64String: imageString)
             imageToImageImage = image
+        } else {
+            imageToImageImage = nil
         }
 
         let denoiseStrength = settings?.params?.denoisingStrength ?? 0.75
