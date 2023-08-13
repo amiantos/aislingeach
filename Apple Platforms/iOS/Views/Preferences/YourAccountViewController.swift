@@ -27,6 +27,8 @@ class YourAccountViewController: UIViewController {
         present(alert, animated: true)
     }
 
+    @IBOutlet weak var manageWorkersButton: UIButton!
+
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var totalKudosLabel: UILabel!
     @IBOutlet weak var totalImagesRequestedLabel: UILabel!
@@ -84,6 +86,10 @@ class YourAccountViewController: UIViewController {
                     workerQuantityLabel.text = workerCount.formatted()
                     workerImagesGeneratedLabel.text = imagesGenerated.formatted()
                     loadingUserDataContentView.isHidden = true
+
+                    if workerCount > 0 {
+                        manageWorkersButton.isEnabled = true
+                    }
                 }
             }
         }
