@@ -170,6 +170,8 @@ extension RatingViewController {
                 } else {
                     self.setErrorState(message: "\(error.localizedDescription)")
                 }
+            } else {
+                self.setErrorState(message: "This shouldn't happen...")
             }
         }
     }
@@ -230,8 +232,7 @@ extension RatingViewController {
                     if error.code == 401 {
                         self.setErrorState(message: "Invalid API key, please check your API key and try again.")
                     } else {
-                        Log.debug("Unable to rate image for some reason, just load a new one.")
-                        self.grabImageToRate()
+                        self.setErrorState(message: "Unable to grab the image, please retry? (\(error.localizedDescription))")
                     }
                 }
             }
