@@ -16,6 +16,7 @@ class RequestsTableViewCell: UITableViewCell {
     @IBOutlet var messageLabel: UILabel!
     @IBOutlet var timeLabel: UILabel!
     @IBOutlet var queuePositionLabel: UILabel!
+    @IBOutlet weak var chevronIcon: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -46,11 +47,16 @@ class RequestsTableViewCell: UITableViewCell {
                 if let image = images.last {
                     loadImage(generatedImage: image)
                 }
+                chevronIcon.isHidden = false
             }
         } else if request.status == "error" {
             activityIndicator.stopAnimating()
+            chevronIcon.isHidden = true
         } else if !activityIndicator.isAnimating {
             activityIndicator.startAnimating()
+            chevronIcon.isHidden = true
+        } else {
+            chevronIcon.isHidden = true
         }
     }
 
