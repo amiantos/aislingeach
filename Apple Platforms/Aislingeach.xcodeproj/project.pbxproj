@@ -158,6 +158,8 @@
 		44F2AA772A26B81200FB8E93 /* RatingsAPIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F2AA6A2A26B81200FB8E93 /* RatingsAPIs.swift */; };
 		44F2AA782A26B81200FB8E93 /* RatingsV1API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F2AA6B2A26B81200FB8E93 /* RatingsV1API.swift */; };
 		44F2AA792A26B81200FB8E93 /* RatingsAlamofireImplementations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F2AA6C2A26B81200FB8E93 /* RatingsAlamofireImplementations.swift */; };
+		44FCEFB02A91830500B409A8 /* StylesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44FCEFAF2A91830500B409A8 /* StylesTableViewController.swift */; };
+		44FCEFB22A91834C00B409A8 /* StyleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44FCEFB12A91834C00B409A8 /* StyleTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -313,6 +315,8 @@
 		44F2AA6A2A26B81200FB8E93 /* RatingsAPIs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingsAPIs.swift; sourceTree = "<group>"; };
 		44F2AA6B2A26B81200FB8E93 /* RatingsV1API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingsV1API.swift; sourceTree = "<group>"; };
 		44F2AA6C2A26B81200FB8E93 /* RatingsAlamofireImplementations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingsAlamofireImplementations.swift; sourceTree = "<group>"; };
+		44FCEFAF2A91830500B409A8 /* StylesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylesTableViewController.swift; sourceTree = "<group>"; };
+		44FCEFB12A91834C00B409A8 /* StyleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -585,6 +589,8 @@
 				441EB3732A21DC1E00E449BE /* GeneratorViewController.swift */,
 				447362DB2A2D49CE00823D0C /* ModelsTableViewController.swift */,
 				447362DD2A2D6AA900823D0C /* ModelsCache.swift */,
+				44FCEFAF2A91830500B409A8 /* StylesTableViewController.swift */,
+				44FCEFB12A91834C00B409A8 /* StyleTableViewCell.swift */,
 			);
 			path = Generator;
 			sourceTree = "<group>";
@@ -784,6 +790,7 @@
 				44C6B6412A228D8200C2F013 /* NoValidRequestFoundStable.swift in Sources */,
 				44F2AA6D2A26B81200FB8E93 /* DatasetImagePopResponse.swift in Sources */,
 				44C6B63E2A228D8200C2F013 /* PutNewFilter.swift in Sources */,
+				44FCEFB22A91834C00B409A8 /* StyleTableViewCell.swift in Sources */,
 				440DA8042A77767C00C87EAE /* AddAPIKeyViewController.swift in Sources */,
 				44C6B6462A228D8200C2F013 /* RequestStatusStable.swift in Sources */,
 				44C6B64C2A228D8200C2F013 /* UserAmountRecords.swift in Sources */,
@@ -848,6 +855,7 @@
 				44C6B64E2A228D8200C2F013 /* PopInput.swift in Sources */,
 				446643C42A5367610047F26B /* ImageDetailCollectionViewCell.swift in Sources */,
 				44F2AA792A26B81200FB8E93 /* RatingsAlamofireImplementations.swift in Sources */,
+				44FCEFB02A91830500B409A8 /* StylesTableViewController.swift in Sources */,
 				44C6B6772A228D8200C2F013 /* GenerationPayload.swift in Sources */,
 				44C6B62D2A228D8200C2F013 /* DeletedWorker.swift in Sources */,
 				44C6B6422A228D8200C2F013 /* ModifyUser.swift in Sources */,
