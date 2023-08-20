@@ -664,7 +664,7 @@ extension GeneratorViewController {
                 }
             } catch {
                 self.generateButton.isEnabled = false
-                self.generateButtonLabel.text = "This request bundle has errors and cannot be sent as is."
+                self.generateButtonLabel.text = error.localizedDescription
             }
         }
     }
