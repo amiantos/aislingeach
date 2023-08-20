@@ -351,6 +351,7 @@ class ImageDatabase {
         mainManagedObjectContext.perform {
             do {
                 hordeRequest.uuid = uuid
+                hordeRequest.status = "active"
                 hordeRequest.message = "Dream submitted successfully..."
                 try self.mainManagedObjectContext.save()
                 completion(hordeRequest)
