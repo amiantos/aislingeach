@@ -379,7 +379,7 @@ class GeneratorViewController: UIViewController {
 
         var recentSettings = UserPreferences.standard.recentSettings
         if recentSettings == nil {
-            recentSettings = self.defaultSettings.randomElement()!
+            recentSettings = self.defaultSettings[0]
         }
 
         hideKeyboardWhenTappedAround()
