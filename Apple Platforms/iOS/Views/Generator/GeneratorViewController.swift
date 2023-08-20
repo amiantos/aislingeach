@@ -15,6 +15,9 @@ class GeneratorViewController: UIViewController {
     var kudosEstimateTimer: Timer?
     var saveGenerationSettingsTimer: Timer?
 
+    var currentSelectedStyleTitle: String?
+    var currentSelectedStyle: Style?
+
     var firstLaunch: Bool = true
 
     weak var generationTracker: GenerationTracker? {
@@ -99,6 +102,8 @@ class GeneratorViewController: UIViewController {
 
     @IBOutlet weak var negativePromptContainerView: UIView!
     @IBOutlet weak var negativePromptTextView: UITextView!
+
+    @IBOutlet weak var styleButton: UIButton!
 
     @IBOutlet var stepsSlider: UISlider!
     @IBOutlet var stepsLabel: UILabel!
@@ -399,6 +404,8 @@ class GeneratorViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         if segue.identifier == "openModelsViewSegue", let destinationView = segue.destination as? ModelsTableViewController {
             destinationView.delegate = self
+        } else if segue.identifier == "openStylesViewSegue", let destinationView = segue.destination as? StylesTableViewController {
+            destinationView.delegate = self
         }
     }
 }
@@ -615,7 +622,7 @@ extension GeneratorViewController {
     }
 
     func saveGenerationSettings() {
-        guard let settings = createGeneratonBodyForCurrentSettings() else { return }
+        guard let settings = createGeneratonBodyForCurrentSettings(ignoreStyle: true) else { return }
         UserPreferences.standard.set(recentSettings: settings)
     }
 
@@ -640,14 +647,16 @@ extension GeneratorViewController {
         }
     }
 
-    func createGeneratonBodyForCurrentSettings(dryRun: Bool = false) -> GenerationInputStable? {
+    func createGeneratonBodyForCurrentSettings(dryRun: Bool = false, ignoreStyle: Bool = false) -> GenerationInputStable? {
         let promptText = promptTextView.text ?? ""
         let negativePrompt = negativePromptTextView.text ?? ""
 
-        let generationText = negativePrompt.isEmpty ? promptText : "\(promptText) ### \(negativePrompt)"
+        var generationText = negativePrompt.isEmpty ? promptText : "\(promptText) ### \(negativePrompt)"
 
-        let currentDimensions = getCurrentWidthAndHeight()
-        let samplerString = samplerPickButton.menu?.selectedElements[0].title ?? "k_euler_a"
+        var currentDimensions = getCurrentWidthAndHeight()
+
+        var samplerString = samplerPickButton.menu?.selectedElements[0].title ?? "k_euler_a"
+
         let samplerName = ModelGenerationInputStable.SamplerName(rawValue: samplerString)
 
         var postprocessing: [ModelGenerationInputStable.PostProcessing]? = []
@@ -671,6 +680,7 @@ extension GeneratorViewController {
         var seed: String? = seedTextField.text ?? ""
         if let seedCheck = seed, seedCheck.isEmpty { seed = nil }
 
+        var modelName = modelPickButton.titleLabel?.text ?? "stable_diffusion"
 
         var sourceImage: String? = nil
         var controlType: ModelGenerationInputStable.ControlType? = nil
@@ -687,9 +697,62 @@ extension GeneratorViewController {
         let imageIsControl = imageIsControlMapButton.isEnabled ? imageIsControlMapButton.isSelected : false
         let returnControlMap = returnControlMapButton.isEnabled ? returnControlMapButton.isSelected : false
 
+        var steps = Int(stepsSlider.value)
+        var cfgScale = Decimal(Int(guidanceSlider.value))
+
+        var loras: [ModelPayloadLorasStable]? = nil
+
+        var numberOfImages = Int(imageQuantitySlider.value)
+
+        if !ignoreStyle, let style = currentSelectedStyle {
+            if let styleSteps = style.steps {
+                Log.debug("Set steps from style \(styleSteps)")
+                steps = styleSteps
+            }
+
+            if let styleCfg = style.cfg_scale {
+                Log.debug("Set cfg from style \(styleCfg)")
+                cfgScale = styleCfg
+            }
+
+            generationText = style.prompt.replacingOccurrences(of: "{p}", with: promptText)
+            if negativePrompt.isEmpty {
+                generationText = generationText.replacingOccurrences(of: "{np},", with: "")
+                generationText = generationText.replacingOccurrences(of: "{np}", with: "")
+            } else if generationText.contains("###") {
+                generationText = generationText.replacingOccurrences(of: "{np}", with: negativePrompt)
+            } else {
+                generationText = generationText.replacingOccurrences(of: "{np}", with: " ### \(negativePrompt)")
+            }
+
+            if let model = style.model {
+                Log.debug("Set model from style: \(model)")
+                if model == "SDXL_beta::stability.ai#6901" {
+                    numberOfImages = 2
+                }
+                modelName = model
+            }
+
+            if let string = style.samplerName {
+                Log.debug("Set sampler from style: \(string)")
+                samplerString = string
+            }
+
+            if let width = style.width, let height = style.height {
+                Log.debug("Set dimensions from style: \(width/64) x \(height/64)")
+                currentDimensions = (width/64, height/64)
+            }
+
+            if let styleLoras = style.loras {
+                Log.debug("Set loras from style: \(styleLoras)")
+                loras = styleLoras
+            }
+
+        }
+
         let modelParams = ModelGenerationInputStable(
             samplerName: samplerName,
-            cfgScale: Decimal(Int(guidanceSlider.value)),
+            cfgScale: cfgScale,
             denoisingStrength: denoisingStrength,
             seed: seed,
             height: 64 * currentDimensions.1,
@@ -704,9 +767,9 @@ extension GeneratorViewController {
             imageIsControl: imageIsControl,
             returnControlMap: returnControlMap,
             facefixerStrength: Decimal(round(Double(faceFixerStrengthSlider.value) * 100.0) / 100.0),
-            loras: nil,
-            steps: Int(stepsSlider.value),
-            n: Int(imageQuantitySlider.value)
+            loras: loras,
+            steps: steps,
+            n: numberOfImages
         )
 
         let input = GenerationInputStable(
@@ -718,7 +781,7 @@ extension GeneratorViewController {
             censorNsfw: !UserPreferences.standard.allowNSFW,
             workers: nil,
             workerBlacklist: nil,
-            models: [modelPickButton.titleLabel?.text ?? "stable_diffusion"],
+            models: [modelName],
             sourceImage: sourceImage,
             sourceProcessing: sourceProcessing,
             sourceMask: nil,
@@ -802,5 +865,15 @@ extension GeneratorViewController: ModelsTableViewControllerDelegate {
             imageQuantitySlider.isEnabled = true
         }
         generationSettingsUpdated()
+    }
+}
+
+// MARK: - Style Picker
+
+extension GeneratorViewController: StylesTableViewControllerDelegate {
+    func selectedStyle(title: String, style: Style?) {
+        styleButton.setTitle(title, for: .normal)
+        currentSelectedStyleTitle = title
+        currentSelectedStyle = style
     }
 }

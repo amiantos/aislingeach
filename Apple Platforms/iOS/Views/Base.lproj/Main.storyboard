@@ -180,7 +180,7 @@
                                                                                                 <state key="normal" title="Button"/>
                                                                                                 <buttonConfiguration key="configuration" style="filled" title="None"/>
                                                                                                 <connections>
-                                                                                                    <segue destination="H9W-vy-zj4" kind="show" id="YD6-jx-Szm"/>
+                                                                                                    <segue destination="H9W-vy-zj4" kind="show" identifier="openStylesViewSegue" id="YD6-jx-Szm"/>
                                                                                                 </connections>
                                                                                             </button>
                                                                                         </subviews>
@@ -972,6 +972,7 @@
                         <outlet property="statusLabel" destination="YOS-L1-76n" id="yvP-QT-nE2"/>
                         <outlet property="stepsLabel" destination="oPc-DW-WST" id="5NY-jW-7Dq"/>
                         <outlet property="stepsSlider" destination="bFo-sQ-8IW" id="iZT-6L-haf"/>
+                        <outlet property="styleButton" destination="mgF-9t-NQ4" id="cqM-Ix-d43"/>
                         <outlet property="tilingToggleButton" destination="0Zl-Wf-mBa" id="dME-40-LNc"/>
                         <outlet property="trustedWorkersButton" destination="UdA-wq-fDY" id="2Gn-2L-YAr"/>
                         <outlet property="upscalerPickButton" destination="kEh-ef-XWK" id="A2z-j9-S5Y"/>
@@ -1014,7 +1015,16 @@
                             <outlet property="delegate" destination="H9W-vy-zj4" id="6Pr-x9-6le"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Styles" id="VyM-tr-blB"/>
+                    <navigationItem key="navigationItem" title="Styles" id="VyM-tr-blB">
+                        <barButtonItem key="rightBarButtonItem" title="Help" image="questionmark.circle" catalog="system" id="DiK-2E-5os">
+                            <connections>
+                                <action selector="helpButtonAction:" destination="H9W-vy-zj4" id="gKw-7V-A6C"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="helpButton" destination="DiK-2E-5os" id="wF2-WK-wEF"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QE3-dS-mD8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2990,6 +3000,7 @@ https://amiantos.net</string>
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
         <image name="photo" catalog="system" width="128" height="93"/>
         <image name="photo.on.rectangle.angled" catalog="system" width="128" height="98"/>
+        <image name="questionmark.circle" catalog="system" width="128" height="123"/>
         <image name="rectangle.2.swap" catalog="system" width="128" height="102"/>
         <image name="rectangle.expand.vertical" catalog="system" width="128" height="122"/>
         <image name="square.and.pencil" catalog="system" width="128" height="113"/>

@@ -33,7 +33,7 @@ class ModelsTableViewController: UITableViewController, UISearchResultsUpdating 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if let cache = ModelsCache.standard.get() {
+        if let cache = ModelsCache.standard.getModels() {
             allModels = cache
             activeModels = cache
             tableView.reloadData()
