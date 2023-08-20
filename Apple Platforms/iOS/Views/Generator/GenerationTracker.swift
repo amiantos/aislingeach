@@ -108,8 +108,8 @@ class GenerationTracker {
                 Log.info("\(requestId) - Checking request status")
                 do {
                     if request.status == "active" {
+                        sleep(1)
                         let data = try await HordeV2API.getImageAsyncCheck(_id: requestId, clientAgent: hordeClientAgent())
-                        await sleep(1)
 
                         guard await ImageDatabase.standard.updatePendingRequest(
                             request: request,
