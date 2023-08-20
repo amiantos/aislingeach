@@ -875,5 +875,6 @@ extension GeneratorViewController: StylesTableViewControllerDelegate {
         styleButton.setTitle(title, for: .normal)
         currentSelectedStyleTitle = title
         currentSelectedStyle = style
+        generationSettingsUpdated()
     }
 }
