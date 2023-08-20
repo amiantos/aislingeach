@@ -421,6 +421,8 @@ extension GeneratorViewController {
             imageToImageImage = nil
         }
 
+        selectedStyle(title: "None", style: nil)
+
         let denoiseStrength = settings?.params?.denoisingStrength ?? 0.75
         let denoiseFloat = Float(truncating: denoiseStrength as NSNumber)
         denoiseStrengthSliderLabel.text = "\(denoiseStrength)"
