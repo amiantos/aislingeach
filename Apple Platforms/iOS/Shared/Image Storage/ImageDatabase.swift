@@ -242,23 +242,25 @@ class ImageDatabase {
 //        }
 //    }
 
-    func getCountAndRecentImageForPredicate(predicate: NSPredicate, completion: @escaping ((Int, GeneratedImage?)) -> Void) {
-        privateManagedObjectContext.perform { [self] in
-            do {
-                let fetchRequest: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
-                fetchRequest.predicate = predicate
-                fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
+    func getCountAndRecentImageForPredicate(predicate: NSPredicate) async -> (Int, GeneratedImage?) {
+        return await withCheckedContinuation { continuation in
+            privateManagedObjectContext.perform { [self] in
+                do {
+                    let fetchRequest1: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
+                    fetchRequest1.predicate = predicate
+                    fetchRequest1.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
 
-                let count = try privateManagedObjectContext.count(for: fetchRequest)
-                if count == 0 {
-                    completion((0, nil))
-                } else {
-                    fetchRequest.fetchLimit = 1
-                    let images = try privateManagedObjectContext.fetch(fetchRequest) as [GeneratedImage]
-                    completion((count, images[0]))
+                    let count1 = try privateManagedObjectContext.count(for: fetchRequest1)
+                    if count1 == 0 {
+                        continuation.resume(returning: (0, nil))
+                    } else {
+                        fetchRequest1.fetchLimit = 1
+                        let images = try privateManagedObjectContext.fetch(fetchRequest1) as [GeneratedImage]
+                        continuation.resume(returning: (count1, images[0]))
+                    }
+                } catch {
+                    continuation.resume(returning: (0, nil))
                 }
-            } catch {
-                completion((0, nil))
             }
         }
     }
