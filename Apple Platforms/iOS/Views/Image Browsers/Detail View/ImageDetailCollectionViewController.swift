@@ -275,6 +275,11 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         detectVisibleCell()
     }
 
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let cell = cell as? ImageDetailCollectionViewCell else { return }
+        cell.toggleMetadataView(isHidden: metaDataViewIsHidden, animated: false)
+    }
+
     func detectVisibleCell() {
         var visibleRect = CGRect()
         visibleRect.origin = collectionView.contentOffset
@@ -285,8 +290,6 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         guard let cell = collectionView.cellForItem(at: indexPath) as? ImageDetailCollectionViewCell, let image = cell.generatedImage else { return }
         navigationItem.title = image.promptSimple
         setupToolbarItems(image: image)
-        Log.debug("Wiill display cell \(metaDataViewIsHidden)")
-        cell.toggleMetadataView(isHidden: metaDataViewIsHidden, animated: false)
 
     }
 
@@ -348,37 +351,6 @@ class ImageDetailCollectionViewController: UICollectionViewController, NSFetched
         for o in ops { o.cancel() }
         ops.removeAll()
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-     // Uncomment this method to specify if the specified item should be highlighted during tracking
-     override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-         return true
-     }
-     */
-
-    /*
-     // Uncomment this method to specify if the specified item should be selected
-     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-         return true
-     }
-     */
-
-    /*
-     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-     override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-         return false
-     }
-
-     override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-         return false
-     }
-
-     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-
-     }
-     */
 }
 
 extension ImageDetailCollectionViewController {
