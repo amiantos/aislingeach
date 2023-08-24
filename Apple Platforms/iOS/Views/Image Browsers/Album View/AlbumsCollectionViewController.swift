@@ -11,13 +11,18 @@ import UIKit
 
 private let reuseIdentifier = "albumCell"
 
+enum AlbumType {
+    case normal
+    case keyword
+}
+
 class Album {
     let predicate: NSPredicate
     let title: String
     var count: Int?
     var generatedImage: GeneratedImage?
 
-    init(predicate: NSPredicate, title: String, count: Int? = nil, generatedImage: GeneratedImage? = nil) {
+    init( predicate: NSPredicate, title: String, count: Int? = nil, generatedImage: GeneratedImage? = nil) {
         self.predicate = predicate
         self.title = title
         self.count = count
@@ -123,19 +128,15 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
 
             let result = await ImageDatabase.standard.getPopularPromptKeywords(hidden: self.showHidden)
             let sortedResults = result.sorted { lhs, rhs in
-                if lhs.value.0 == rhs.value.0 {
-                    return lhs.key.lowercased() < rhs.key.lowercased()
-                }
-                return lhs.value.0 > rhs.value.0
+                return lhs.key.lowercased() < rhs.key.lowercased()
             }
 
-            for data in sortedResults {
+
+            for (index, data) in sortedResults.enumerated() {
                 smartAlbums.append(
                     Album(
-                        predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "promptSimple CONTAINS %@", data.key), NSPredicate(format: "isHidden = %d", showHidden)]),
-                        title: data.key,
-                        count: data.value.0,
-                        generatedImage: data.value.1
+                        predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "promptSimple CONTAINS %@", data.key), NSPredicate(format: "isHidden = %d", self.showHidden)]),
+                        title: data.key
                     )
                 )
             }
@@ -189,7 +190,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
             }
             switch indexPath.section {
             case 1:
-                sectionHeader.sectionLabel.text = smartAlbums.count > 0 ? "Your Keywords" : ""
+                sectionHeader.sectionLabel.text = smartAlbums.count > 0 ? "Recent Phrases" : ""
             default:
                 sectionHeader.sectionLabel.text = "Section \(indexPath.section)"
             }

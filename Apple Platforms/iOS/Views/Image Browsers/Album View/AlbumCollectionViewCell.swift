@@ -14,7 +14,8 @@ class AlbumCollectionViewCell: UICollectionViewCell {
     @IBOutlet var favoriteIcon: UIImageView!
     @IBOutlet var cellBackgroundView: UIView!
     @IBOutlet var imageView: UIImageView!
-
+    @IBOutlet weak var imageLabelBottomConstraint: NSLayoutConstraint!
+    
     func setup(album: Album) {
         cellBackgroundView.layer.cornerRadius = 8
         promptLabel.text = album.title

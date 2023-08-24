@@ -270,7 +270,10 @@ class ImageDatabase {
             privateManagedObjectContext.perform { [self] in
                 do {
                     let fetchRequest1: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
-                    fetchRequest1.predicate = NSPredicate(format: "isHidden = %d", hidden)
+                    fetchRequest1.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                        NSPredicate(format: "isFavorite = %d", true),
+                        NSPredicate(format: "isHidden = %d", hidden)
+                    ])
                     fetchRequest1.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
                     let images = try privateManagedObjectContext.fetch(fetchRequest1) as [GeneratedImage]
 
@@ -281,14 +284,25 @@ class ImageDatabase {
                                 prompt.removeSubrange(dotRange.lowerBound ..< prompt.endIndex)
                             }
                             for keyword in prompt.components(separatedBy: ", ") {
-                                var cleanedKeyword = keyword.replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "")
-                                cleanedKeyword = cleanedKeyword.replacing(/:(\d+(?:\.\d+)?)+/, with: "")
+                                var cleanedKeyword = keyword.replacing(/:(\d+(?:\.\d+)?)+/, with: "")
+                                if cleanedKeyword.hasPrefix("(") {
+                                    cleanedKeyword = cleanedKeyword.replacingOccurrences(of: "(", with: "")
+                                }
+                                if cleanedKeyword.hasSuffix(")") {
+                                    cleanedKeyword = cleanedKeyword.replacingOccurrences(of: ")", with: "")
+                                }
                                 if let keyword = keywords[cleanedKeyword]  {
                                     keywords[cleanedKeyword] = (keyword.0 + 1, keyword.1)
                                 } else {
                                     keywords[cleanedKeyword] = (1, obj)
                                 }
+                                if keywords.count == 100 {
+                                    break
+                                }
                             }
+                        }
+                        if keywords.count == 100 {
+                            break
                         }
                     }
 

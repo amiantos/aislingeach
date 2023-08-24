@@ -2540,6 +2540,7 @@ https://amiantos.net</string>
                                     <outlet property="cellBackgroundView" destination="nYL-HP-hgC" id="t9g-Zd-6eh"/>
                                     <outlet property="favoriteIcon" destination="S6d-7A-ja0" id="EuR-dU-ytT"/>
                                     <outlet property="imageCountLabel" destination="7mk-cx-eOM" id="NxZ-nc-GZ5"/>
+                                    <outlet property="imageLabelBottomConstraint" destination="cBU-pz-fh7" id="qiv-g2-xRv"/>
                                     <outlet property="imageView" destination="9eR-Wy-ney" id="Vay-1L-lah"/>
                                     <outlet property="promptLabel" destination="1QV-lw-ip2" id="z8O-AF-q1m"/>
                                 </connections>
