@@ -94,16 +94,14 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
     func setup(object: GeneratedImage, metaDataViewIsHidden: Bool) {
         generatedImage = object
 
-        DispatchQueue.main.async { [self] in
-            if let cachedImage = ImageCache.standard.getImage(key: NSString(string: "\(object.id)")) {
-                Log.debug("Reloading cached UIImage...")
-                imageView.image = cachedImage
-            } else if let objImage = object.image, let image = UIImage(data: objImage) {
-                imageView.image = image
-                ImageCache.standard.cacheImage(image: image, key: NSString(string: "\(object.id)"))
-            }
-            setScale()
+        if let cachedImage = ImageCache.standard.getImage(key: NSString(string: "\(object.id)")) {
+            Log.debug("Reloading cached UIImage...")
+            imageView.image = cachedImage
+        } else if let objImage = object.image, let image = UIImage(data: objImage) {
+            imageView.image = image
+            ImageCache.standard.cacheImage(image: image, key: NSString(string: "\(object.id)"))
         }
+        setScale()
 
         scrollView.minimumZoomScale = 0.01
         scrollView.maximumZoomScale = 6.0
