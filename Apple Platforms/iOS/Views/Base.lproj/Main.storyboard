@@ -2482,7 +2482,7 @@ https://amiantos.net</string>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7mk-cx-eOM">
-                                            <rect key="frame" x="16" y="369" width="361" height="16"/>
+                                            <rect key="frame" x="16" y="369" width="361" height="8"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                             <nil key="highlightedColor"/>
@@ -2528,7 +2528,7 @@ https://amiantos.net</string>
                                         <constraint firstItem="nYL-HP-hgC" firstAttribute="top" secondItem="dyB-Bj-Bke" secondAttribute="top" id="Dq2-uV-W47"/>
                                         <constraint firstItem="1QV-lw-ip2" firstAttribute="leading" secondItem="dyB-Bj-Bke" secondAttribute="leading" constant="16" id="E3V-9z-jY5"/>
                                         <constraint firstAttribute="trailing" secondItem="nYL-HP-hgC" secondAttribute="trailing" constant="16" id="E74-OR-yhB"/>
-                                        <constraint firstAttribute="bottom" secondItem="7mk-cx-eOM" secondAttribute="bottom" constant="8" id="cBU-pz-fh7"/>
+                                        <constraint firstAttribute="bottom" secondItem="7mk-cx-eOM" secondAttribute="bottom" constant="16" id="cBU-pz-fh7"/>
                                         <constraint firstAttribute="trailing" secondItem="7mk-cx-eOM" secondAttribute="trailing" constant="16" id="lcw-LJ-x3I"/>
                                         <constraint firstItem="7mk-cx-eOM" firstAttribute="leading" secondItem="dyB-Bj-Bke" secondAttribute="leading" constant="16" id="n0U-eJ-htN"/>
                                         <constraint firstItem="nYL-HP-hgC" firstAttribute="leading" secondItem="dyB-Bj-Bke" secondAttribute="leading" constant="16" id="vAi-m2-R59"/>
@@ -2604,27 +2604,20 @@ https://amiantos.net</string>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Te2-rE-VGj">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="54"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V9x-5d-5hu">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="16"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="16" id="8Gc-OE-TbB"/>
-                                            </constraints>
-                                        </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6o0-4s-3E6">
-                                            <rect key="frame" x="0.0" y="16" width="414" height="1"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="1"/>
                                             <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="ydy-b6-TK0"/>
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aj5-mj-Zt2">
-                                            <rect key="frame" x="0.0" y="17" width="414" height="43"/>
+                                            <rect key="frame" x="0.0" y="1" width="414" height="53"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K07-9P-okT">
-                                                    <rect key="frame" x="20" y="12" width="374" height="23"/>
+                                                    <rect key="frame" x="20" y="12" width="374" height="33"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -2644,7 +2637,7 @@ https://amiantos.net</string>
                             <constraints>
                                 <constraint firstItem="Te2-rE-VGj" firstAttribute="top" secondItem="dEO-ZY-cwE" secondAttribute="top" id="dTw-OE-9q5"/>
                                 <constraint firstAttribute="trailing" secondItem="Te2-rE-VGj" secondAttribute="trailing" id="kZT-2m-Lg3"/>
-                                <constraint firstAttribute="bottom" secondItem="Te2-rE-VGj" secondAttribute="bottom" id="qt0-Az-6S2"/>
+                                <constraint firstAttribute="bottom" secondItem="Te2-rE-VGj" secondAttribute="bottom" constant="6" id="qt0-Az-6S2"/>
                                 <constraint firstItem="Te2-rE-VGj" firstAttribute="leading" secondItem="dEO-ZY-cwE" secondAttribute="leading" id="rQ8-ZT-83A"/>
                             </constraints>
                             <connections>
