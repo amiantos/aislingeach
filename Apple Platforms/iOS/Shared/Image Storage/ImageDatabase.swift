@@ -277,7 +277,7 @@ class ImageDatabase {
                     var keywords: [String: (Int, GeneratedImage)] = [:]
                     for obj in images {
                         if var prompt = obj.promptSimple {
-                            if let dotRange = prompt.range(of: " ### ") {
+                            if let dotRange = prompt.range(of: "###") {
                                 prompt.removeSubrange(dotRange.lowerBound ..< prompt.endIndex)
                             }
                             for keyword in prompt.components(separatedBy: ", ") {
