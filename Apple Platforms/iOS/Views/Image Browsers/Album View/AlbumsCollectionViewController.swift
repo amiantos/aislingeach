@@ -132,7 +132,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
             }
 
 
-            for (index, data) in sortedResults.enumerated() {
+            for data in sortedResults {
                 smartAlbums.append(
                     Album(
                         predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "promptSimple CONTAINS %@", data.key), NSPredicate(format: "isHidden = %d", self.showHidden)]),
