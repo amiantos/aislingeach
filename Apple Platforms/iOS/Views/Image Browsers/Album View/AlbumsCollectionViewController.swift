@@ -128,7 +128,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
 
             let result = await ImageDatabase.standard.getPopularPromptKeywords(hidden: self.showHidden)
             let sortedResults = result.sorted { lhs, rhs in
-                return lhs.key.lowercased() < rhs.key.lowercased()
+                return lhs.key.replacingOccurrences(of: "(", with: "").lowercased() < rhs.key.replacingOccurrences(of: "(", with: "").lowercased()
             }
 
 
