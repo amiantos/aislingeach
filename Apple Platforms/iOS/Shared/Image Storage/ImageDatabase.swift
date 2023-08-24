@@ -283,16 +283,10 @@ class ImageDatabase {
                             if let dotRange = prompt.range(of: "###") {
                                 prompt.removeSubrange(dotRange.lowerBound ..< prompt.endIndex)
                             }
-                            for keyword in prompt.components(separatedBy: ", ") {
-                                var cleanedKeyword = keyword.replacing(/:(\d+(?:\.\d+)?)+/, with: "")
-                                if cleanedKeyword.hasPrefix("(") {
-                                    cleanedKeyword = cleanedKeyword.replacingOccurrences(of: "(", with: "")
-                                }
-                                if cleanedKeyword.hasSuffix(")") {
-                                    cleanedKeyword = cleanedKeyword.replacingOccurrences(of: ")", with: "")
-                                }
-                                if let keyword = keywords[cleanedKeyword]  {
-                                    keywords[cleanedKeyword] = (keyword.0 + 1, keyword.1)
+                            for keyword in prompt.components(separatedBy: ",") {
+                                let cleanedKeyword = keyword.trimmingCharacters(in: .whitespacesAndNewlines)
+                                if let storedKeyword = keywords[cleanedKeyword]  {
+                                    keywords[cleanedKeyword] = (storedKeyword.0 + 1, storedKeyword.1)
                                 } else {
                                     keywords[cleanedKeyword] = (1, obj)
                                 }
