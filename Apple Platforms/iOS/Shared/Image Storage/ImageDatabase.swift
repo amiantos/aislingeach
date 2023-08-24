@@ -244,18 +244,18 @@ class ImageDatabase {
 
     func getCountAndRecentImageForPredicate(predicate: NSPredicate) async -> (Int, GeneratedImage?) {
         return await withCheckedContinuation { continuation in
-            privateManagedObjectContext.perform { [self] in
+            mainManagedObjectContext.perform { [self] in
                 do {
                     let fetchRequest1: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
                     fetchRequest1.predicate = predicate
-                    fetchRequest1.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
 
-                    let count1 = try privateManagedObjectContext.count(for: fetchRequest1)
+                    let count1 = try mainManagedObjectContext.count(for: fetchRequest1)
                     if count1 == 0 {
                         continuation.resume(returning: (0, nil))
                     } else {
                         fetchRequest1.fetchLimit = 1
-                        let images = try privateManagedObjectContext.fetch(fetchRequest1) as [GeneratedImage]
+                        fetchRequest1.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
+                        let images = try mainManagedObjectContext.fetch(fetchRequest1) as [GeneratedImage]
                         continuation.resume(returning: (count1, images[0]))
                     }
                 } catch {

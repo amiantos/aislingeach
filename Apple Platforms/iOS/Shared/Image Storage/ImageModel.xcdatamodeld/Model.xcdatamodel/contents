@@ -15,6 +15,9 @@
         <attribute name="thumbnail" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="uuid" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <relationship name="request" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HordeRequest" inverseName="images" inverseEntity="HordeRequest"/>
+        <fetchIndex name="byDateCreatedIndex">
+            <fetchIndexElement property="dateCreated" type="Binary" order="descending"/>
+        </fetchIndex>
     </entity>
     <entity name="HordePendingDownload" representedClassName="HordePendingDownload" syncable="YES" codeGenerationType="class">
         <attribute name="fullRequest" optional="YES" attributeType="String"/>
