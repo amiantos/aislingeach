@@ -70,6 +70,7 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
         let fetchRequest = NSFetchRequest<HordeRequest>(entityName: "HordeRequest")
         // Configure the request's entity, and optionally its predicate
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
+        fetchRequest.fetchBatchSize = 30
 
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: ImageDatabase.standard.mainManagedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         resultsController = controller
