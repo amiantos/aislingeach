@@ -65,6 +65,8 @@ class AlbumCollectionViewCell: UICollectionViewCell {
                         }
                     }
                 }
+            } else {
+                imageCountLabel.text = "0"
             }
         }
     }
