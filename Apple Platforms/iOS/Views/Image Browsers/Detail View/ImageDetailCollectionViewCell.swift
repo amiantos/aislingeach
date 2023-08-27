@@ -101,10 +101,11 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
             imageView.image = image
             ImageCache.standard.cacheImage(image: image, key: NSString(string: "\(object.id)"))
         }
-        setScale()
 
         scrollView.minimumZoomScale = 0.01
         scrollView.maximumZoomScale = 6.0
+
+        setScale()
 
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(doubleTapAction))
         doubleTapGesture.numberOfTapsRequired = 2
