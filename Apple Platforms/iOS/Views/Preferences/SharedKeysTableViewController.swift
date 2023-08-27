@@ -10,18 +10,17 @@ import UIKit
 class SharedKeysTableViewController: UITableViewController {
 
     var sharedKeys: [(SharedKeyDetails, UserDetails)] = []
+    var loading: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        loadUserData()
     }
 
     func loadUserData() {
+        if loading { return }
+        loading = true
         Task(priority: .userInitiated) {
             sharedKeys = []
             if let data = try? await HordeV2API.getFindUser(apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()),
@@ -35,14 +34,13 @@ class SharedKeysTableViewController: UITableViewController {
                         }
                     }
                 }
+                self.loading = false
             }
         }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        loadUserData()
     }
 
     // MARK: - Table view data source
@@ -73,6 +71,27 @@ class SharedKeysTableViewController: UITableViewController {
         cell.maxTextTokensLabel.text = sharedKeyData.0.maxTextTokens ?? 0 < 0 ? "None" : sharedKeyData.0.maxTextTokens?.formatted()
 
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let sharedKeyData = sharedKeys[indexPath.row]
+        let actionSheet = UIAlertController(title: "Shared Key Options", message: nil, preferredStyle: .actionSheet)
+        let actions = [
+            UIAlertAction(title: "Copy Shared Key", style: .default),
+            UIAlertAction(title: "Rename Key", style: .default),
+            UIAlertAction(title: "Set Kudos Limit", style: .default),
+            UIAlertAction(title: "Remove Kudos Limit", style: .default),
+//            UIAlertAction(title: "Set Pixel Limit", style: .default),
+//            UIAlertAction(title: "Set Steps Limit", style: .default),
+//            UIAlertAction(title: "Set Text Tokens Limit", style: .default),
+//            UIAlertAction(title: "Set Expiration Date", style: .default),
+            UIAlertAction(title: "Delete Shared Key", style: .destructive),
+            UIAlertAction(title: "Cancel", style: .cancel)]
+        actions.forEach { action in
+            actionSheet.addAction(action)
+        }
+        self.present(actionSheet, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     /*

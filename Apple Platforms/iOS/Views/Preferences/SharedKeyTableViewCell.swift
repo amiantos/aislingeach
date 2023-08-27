@@ -17,7 +17,8 @@ class SharedKeyTableViewCell: UITableViewCell {
     @IBOutlet weak var maxPixelsLabel: UILabel!
     @IBOutlet weak var maxStepsLabel: UILabel!
     @IBOutlet weak var maxTextTokensLabel: UILabel!
-    
+    @IBOutlet weak var roundedCornerView: UIView!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
