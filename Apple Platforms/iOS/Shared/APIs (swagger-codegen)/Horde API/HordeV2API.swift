@@ -602,11 +602,28 @@ open class HordeV2API {
      - parameter xFields: (header) An optional fields mask (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, renamed: "getFindUser(apikey:clientAgent:xFields:)")
     open class func getFindUser(apikey: String? = nil, clientAgent: String? = nil, xFields: String? = nil, completion: @escaping ((_ data: UserDetails?, _ error: Error?) -> Void)) {
         getFindUserWithRequestBuilder(apikey: apikey, clientAgent: clientAgent, xFields: xFields).execute { response, error in
             completion(response?.body, error)
         }
     }
+
+    open class func getFindUser(apikey: String? = nil, clientAgent: String? = nil, xFields: String? = nil) async throws -> UserDetails {
+        return try await withCheckedThrowingContinuation { continuation in
+            getFindUser(apikey: apikey, clientAgent: clientAgent, xFields: xFields) { result, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                guard let result = result else {
+                    fatalError("Expected non-nil result 'result' for nil error")
+                }
+                continuation.resume(returning: result)
+            }
+        }
+    }
+
 
     /**
           Lookup user details based on their API key
@@ -1199,9 +1216,18 @@ open class HordeV2API {
      - parameter xFields: (header) An optional fields mask (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getSharedKeySingle(sharedkeyId: String, clientAgent: String? = nil, xFields: String? = nil, completion: @escaping ((_ data: SharedKeyDetails?, _ error: Error?) -> Void)) {
-        getSharedKeySingleWithRequestBuilder(sharedkeyId: sharedkeyId, clientAgent: clientAgent, xFields: xFields).execute { response, error in
-            completion(response?.body, error)
+    open class func getSharedKeySingle(sharedkeyId: String, clientAgent: String? = nil, xFields: String? = nil) async throws -> SharedKeyDetails {
+        return try await withCheckedThrowingContinuation { continuation in
+            getSharedKeySingleWithRequestBuilder(sharedkeyId: sharedkeyId, clientAgent: clientAgent, xFields: xFields).execute { response, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    guard let result = response?.body else {
+                        fatalError("Expected non-nil result in the non-error case")
+                    }
+                    continuation.resume(returning: result)
+                }
+            }
         }
     }
 

@@ -9,6 +9,7 @@ import UIKit
 
 class YourAccountViewController: UIViewController {
 
+    @IBOutlet weak var loggedInContentView: UIView!
     @IBOutlet weak var loggedOutUserContentView: UIView!
     @IBOutlet weak var loadingUserDataContentView: UIView!
 
@@ -28,13 +29,13 @@ class YourAccountViewController: UIViewController {
     }
 
     @IBOutlet weak var manageWorkersButton: UIButton!
-
+    @IBOutlet weak var manageSharedKeysButton: UIButton!
+    
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var totalKudosLabel: UILabel!
     @IBOutlet weak var totalImagesRequestedLabel: UILabel!
     @IBOutlet weak var kudosGiftedToYouLabel: UILabel!
     @IBOutlet weak var kudosGiftedToOthersLabel: UILabel!
-    @IBOutlet weak var workerQuantityLabel: UILabel!
     @IBOutlet weak var workerImagesGeneratedLabel: UILabel!
 
     override func viewDidLoad() {
@@ -76,6 +77,7 @@ class YourAccountViewController: UIViewController {
                 let giftedKudos = -(data.kudosDetails?.gifted ?? 0)
                 let receivedKudos = data.kudosDetails?.received ?? 0
                 let workerCount = data.workerCount ?? 0
+                let sharedKeyCount = data.sharedkeyIds?.count ?? 0
                 let imagesGenerated = data.contributions?.fulfillments ?? data.records?.fulfillment?.image ?? 0
                 DispatchQueue.main.async { [self] in
                     usernameLabel.text = username
@@ -83,9 +85,9 @@ class YourAccountViewController: UIViewController {
                     totalImagesRequestedLabel.text = totalImages.formatted()
                     kudosGiftedToYouLabel.text = receivedKudos.formatted()
                     kudosGiftedToOthersLabel.text = giftedKudos.formatted()
-                    workerQuantityLabel.text = workerCount.formatted()
                     workerImagesGeneratedLabel.text = imagesGenerated.formatted()
                     loadingUserDataContentView.isHidden = true
+                    loggedInContentView.isHidden = false
 
                     if workerCount > 0 {
                         manageWorkersButton.isEnabled = true
