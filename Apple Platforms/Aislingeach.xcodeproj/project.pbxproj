@@ -22,6 +22,7 @@
 		441EB3792A21DC1F00E449BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 441EB3782A21DC1F00E449BE /* Assets.xcassets */; };
 		441EB37C2A21DC1F00E449BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 441EB37A2A21DC1F00E449BE /* LaunchScreen.storyboard */; };
 		444FC52E2A9AAACF007CA358 /* SharedKeyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444FC52D2A9AAACF007CA358 /* SharedKeyTableViewCell.swift */; };
+		44545F8B2A9DD31D00BCBAEC /* SharedKeyEditorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44545F8A2A9DD31D00BCBAEC /* SharedKeyEditorTableViewController.swift */; };
 		446643C22A53637D0047F26B /* ImageDetailCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446643C12A53637D0047F26B /* ImageDetailCollectionViewController.swift */; };
 		446643C42A5367610047F26B /* ImageDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446643C32A5367610047F26B /* ImageDetailCollectionViewCell.swift */; };
 		446E609E2A6898770073D545 /* RequestsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446E609D2A6898770073D545 /* RequestsTableViewController.swift */; };
@@ -180,7 +181,8 @@
 		441EB3782A21DC1F00E449BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		441EB37B2A21DC1F00E449BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		441EB37D2A21DC1F00E449BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		444FC52D2A9AAACF007CA358 /* SharedKeyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SharedKeyTableViewCell.swift; path = iOS/Views/Preferences/SharedKeyTableViewCell.swift; sourceTree = "<group>"; };
+		444FC52D2A9AAACF007CA358 /* SharedKeyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedKeyTableViewCell.swift; sourceTree = "<group>"; };
+		44545F8A2A9DD31D00BCBAEC /* SharedKeyEditorTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedKeyEditorTableViewController.swift; sourceTree = "<group>"; };
 		446643C12A53637D0047F26B /* ImageDetailCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailCollectionViewController.swift; sourceTree = "<group>"; };
 		446643C32A5367610047F26B /* ImageDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		446E609D2A6898770073D545 /* RequestsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestsTableViewController.swift; sourceTree = "<group>"; };
@@ -303,8 +305,8 @@
 		44C6B6D62A233BFB00C2F013 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		44D13DE52A330714004648CD /* GenerationTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerationTracker.swift; sourceTree = "<group>"; };
 		44D331D82A23588800BE8DDF /* UserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgent.swift; sourceTree = "<group>"; };
-		44D9A0312A89506100987546 /* WorkersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WorkersTableViewController.swift; path = iOS/Views/Preferences/WorkersTableViewController.swift; sourceTree = "<group>"; };
-		44D9A0332A896DA300987546 /* WorkerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WorkerTableViewCell.swift; path = iOS/Views/Preferences/WorkerTableViewCell.swift; sourceTree = "<group>"; };
+		44D9A0312A89506100987546 /* WorkersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkersTableViewController.swift; sourceTree = "<group>"; };
+		44D9A0332A896DA300987546 /* WorkerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkerTableViewCell.swift; sourceTree = "<group>"; };
 		44F24AD52A7B041C00216D26 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		44F2AA602A26B81200FB8E93 /* DatasetImagePopResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatasetImagePopResponse.swift; sourceTree = "<group>"; };
 		44F2AA612A26B81200FB8E93 /* RequestAccepted.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestAccepted.swift; sourceTree = "<group>"; };
@@ -318,7 +320,7 @@
 		44F2AA6A2A26B81200FB8E93 /* RatingsAPIs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingsAPIs.swift; sourceTree = "<group>"; };
 		44F2AA6B2A26B81200FB8E93 /* RatingsV1API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingsV1API.swift; sourceTree = "<group>"; };
 		44F2AA6C2A26B81200FB8E93 /* RatingsAlamofireImplementations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingsAlamofireImplementations.swift; sourceTree = "<group>"; };
-		44F722B32A9AA1100009AE2D /* SharedKeysTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SharedKeysTableViewController.swift; path = iOS/Views/Preferences/SharedKeysTableViewController.swift; sourceTree = "<group>"; };
+		44F722B32A9AA1100009AE2D /* SharedKeysTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedKeysTableViewController.swift; sourceTree = "<group>"; };
 		44FCEFAF2A91830500B409A8 /* StylesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylesTableViewController.swift; sourceTree = "<group>"; };
 		44FCEFB12A91834C00B409A8 /* StyleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -377,10 +379,6 @@
 		441EB3632A21DC1E00E449BE = {
 			isa = PBXGroup;
 			children = (
-				444FC52D2A9AAACF007CA358 /* SharedKeyTableViewCell.swift */,
-				44F722B32A9AA1100009AE2D /* SharedKeysTableViewController.swift */,
-				44D9A0332A896DA300987546 /* WorkerTableViewCell.swift */,
-				44D9A0312A89506100987546 /* WorkersTableViewController.swift */,
 				44F24AD52A7B041C00216D26 /* LICENSE */,
 				44142AC22A242B4E0096FFBA /* .swift-version */,
 				44142AC32A242B4E0096FFBA /* .swiftformat */,
@@ -419,6 +417,25 @@
 				44C6B6952A22AA3D00C2F013 /* README.md */,
 			);
 			path = "APIs (swagger-codegen)";
+			sourceTree = "<group>";
+		};
+		44545F8C2A9DDA4E00BCBAEC /* Shared Keys */ = {
+			isa = PBXGroup;
+			children = (
+				44545F8A2A9DD31D00BCBAEC /* SharedKeyEditorTableViewController.swift */,
+				444FC52D2A9AAACF007CA358 /* SharedKeyTableViewCell.swift */,
+				44F722B32A9AA1100009AE2D /* SharedKeysTableViewController.swift */,
+			);
+			path = "Shared Keys";
+			sourceTree = "<group>";
+		};
+		44545F8D2A9DDA5600BCBAEC /* Workers */ = {
+			isa = PBXGroup;
+			children = (
+				44D9A0332A896DA300987546 /* WorkerTableViewCell.swift */,
+				44D9A0312A89506100987546 /* WorkersTableViewController.swift */,
+			);
+			path = Workers;
 			sourceTree = "<group>";
 		};
 		446643C72A53F81B0047F26B /* Detail View */ = {
@@ -573,18 +590,20 @@
 				44C6B69D2A22B10500C2F013 /* Generator */,
 				44C6B6D32A233AF500C2F013 /* Image Browsers */,
 				44C6B6A62A232E4800C2F013 /* Rating */,
-				44C6B69C2A22B0FD00C2F013 /* Preferences */,
+				44C6B69C2A22B0FD00C2F013 /* Account */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		44C6B69C2A22B0FD00C2F013 /* Preferences */ = {
+		44C6B69C2A22B0FD00C2F013 /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				44545F8C2A9DDA4E00BCBAEC /* Shared Keys */,
+				44545F8D2A9DDA5600BCBAEC /* Workers */,
 				440DA8032A77767C00C87EAE /* AddAPIKeyViewController.swift */,
 				44C2C3222A78739F005B0C7A /* YourAccountViewController.swift */,
 			);
-			path = Preferences;
+			path = Account;
 			sourceTree = "<group>";
 		};
 		44C6B69D2A22B10500C2F013 /* Generator */ = {
@@ -813,6 +832,7 @@
 				44C6B6712A228D8200C2F013 /* SubmitInputStable.swift in Sources */,
 				44C6B6AD2A23351500C2F013 /* TabBarViewController.swift in Sources */,
 				44C6B6542A228D8200C2F013 /* TeamDetailsLite.swift in Sources */,
+				44545F8B2A9DD31D00BCBAEC /* SharedKeyEditorTableViewController.swift in Sources */,
 				44C6B6442A228D8200C2F013 /* WorkerDetails.swift in Sources */,
 				44C6B6912A228D8200C2F013 /* Models.swift in Sources */,
 				44C6B6662A228D8200C2F013 /* GenerationKobold.swift in Sources */,

@@ -9,15 +9,7 @@ import UIKit
 
 class SharedKeyTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var sharedKeyIdLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var kudosLabel: UILabel!
-    @IBOutlet weak var utilizedLabel: UILabel!
-    @IBOutlet weak var expiryLabel: UILabel!
-    @IBOutlet weak var maxPixelsLabel: UILabel!
-    @IBOutlet weak var maxStepsLabel: UILabel!
-    @IBOutlet weak var maxTextTokensLabel: UILabel!
-    @IBOutlet weak var roundedCornerView: UIView!
 
     override func awakeFromNib() {
         super.awakeFromNib()

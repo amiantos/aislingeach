@@ -37,6 +37,7 @@ class YourAccountViewController: UIViewController {
     @IBOutlet weak var kudosGiftedToYouLabel: UILabel!
     @IBOutlet weak var kudosGiftedToOthersLabel: UILabel!
     @IBOutlet weak var workerImagesGeneratedLabel: UILabel!
+    @IBOutlet weak var recurringKudosLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,8 +78,8 @@ class YourAccountViewController: UIViewController {
                 let giftedKudos = -(data.kudosDetails?.gifted ?? 0)
                 let receivedKudos = data.kudosDetails?.received ?? 0
                 let workerCount = data.workerCount ?? 0
-                let sharedKeyCount = data.sharedkeyIds?.count ?? 0
                 let imagesGenerated = data.contributions?.fulfillments ?? data.records?.fulfillment?.image ?? 0
+                let recurringKudos = data.kudosDetails?.recurring ?? 0
                 DispatchQueue.main.async { [self] in
                     usernameLabel.text = username
                     totalKudosLabel.text = totalKudos.formatted()
@@ -88,6 +89,7 @@ class YourAccountViewController: UIViewController {
                     workerImagesGeneratedLabel.text = imagesGenerated.formatted()
                     loadingUserDataContentView.isHidden = true
                     loggedInContentView.isHidden = false
+                    recurringKudosLabel.text = recurringKudos.formatted()
 
                     if workerCount > 0 {
                         manageWorkersButton.isEnabled = true
