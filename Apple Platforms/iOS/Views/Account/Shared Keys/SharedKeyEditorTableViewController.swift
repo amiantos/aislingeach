@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol SharedKeyEditorDelegate {
+    func deletedSharedKey(indexPath: IndexPath)
+}
+
 class SharedKeyEditorTableViewController: UITableViewController {
 
     var sharedKeyData: (SharedKeyDetails, UserDetails)? = nil
+    var indexPath: IndexPath? = nil
+    var delegate: SharedKeyEditorDelegate? = nil
 
 
     @IBOutlet weak var nameTableViewCell: UITableViewCell!
@@ -32,12 +38,12 @@ class SharedKeyEditorTableViewController: UITableViewController {
             maxImagePixelsTableViewCell.detailTextLabel?.text = sharedKeyData.0.maxImagePixels ?? 0 < 0 ? "None" : sharedKeyData.0.maxImagePixels?.formatted()
             maxImageStepsTableViewCell.detailTextLabel?.text = sharedKeyData.0.maxImageSteps ?? 0 < 0 ? "None" : sharedKeyData.0.maxImageSteps?.formatted()
             maxTextTokensTableViewCell.detailTextLabel?.text = sharedKeyData.0.maxTextTokens ?? 0 < 0 ? "None" : sharedKeyData.0.maxTextTokens?.formatted()
-
         }
     }
 
-    func setUp(sharedKeyData: (SharedKeyDetails, UserDetails)) {
+    func setUp(sharedKeyData: (SharedKeyDetails, UserDetails), indexPath: IndexPath) {
         self.sharedKeyData = sharedKeyData
+        self.indexPath = indexPath
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -56,78 +62,21 @@ class SharedKeyEditorTableViewController: UITableViewController {
         case "maxTextTokensTableViewCell":
             Log.debug("maxTextTokensTableViewCell")
         case "deleteKeyCell":
-            Log.debug("deleteKeyCell")
+            if let sharedKeyId = sharedKeyData?.0._id, let indexPath = self.indexPath {
+                HordeV2API.deleteSharedKeySingle(sharedkeyId:sharedKeyId, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
+                    if let data = data {
+                        Log.debug(data)
+                        self.delegate?.deletedSharedKey(indexPath: indexPath)
+                        self.navigationController?.popViewController(animated: true)
+                    } else if let error = error {
+                        Log.debug(error)
+                    }
+                }
+            }
         default:
             Log.debug("No match")
         }
         cell.setSelected(false, animated: true)
     }
-
-    // MARK: - Table view data source
-
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        // #warning Incomplete implementation, return the number of sections
-//        return 0
-//    }
-//
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        // #warning Incomplete implementation, return the number of rows
-//        return 0
-//    }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

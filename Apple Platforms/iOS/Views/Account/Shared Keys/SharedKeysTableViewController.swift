@@ -71,10 +71,19 @@ class SharedKeysTableViewController: UITableViewController {
             if let indexPath = tableView.indexPathForSelectedRow {
                 let sharedKeyData = sharedKeys[indexPath.row]
                 if let view = segue.destination as? SharedKeyEditorTableViewController {
-                    view.setUp(sharedKeyData: sharedKeyData)
+                    view.delegate = self
+                    view.setUp(sharedKeyData: sharedKeyData, indexPath: indexPath)
                 }
             }
         }
+    }
+
+}
+
+extension SharedKeysTableViewController: SharedKeyEditorDelegate {
+    func deletedSharedKey(indexPath: IndexPath) {
+        sharedKeys.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
     }
 
 }
