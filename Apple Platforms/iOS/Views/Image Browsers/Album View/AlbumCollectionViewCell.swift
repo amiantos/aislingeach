@@ -15,8 +15,11 @@ class AlbumCollectionViewCell: UICollectionViewCell {
     @IBOutlet var cellBackgroundView: UIView!
     @IBOutlet var imageView: UIImageView!
     @IBOutlet weak var imageLabelBottomConstraint: NSLayoutConstraint!
-    
+
+    var album: Album?
+
     func setup(album: Album) {
+        self.album = album
         cellBackgroundView.layer.cornerRadius = 8
         promptLabel.text = album.title
         if album.title == "Favorites" {
@@ -24,20 +27,22 @@ class AlbumCollectionViewCell: UICollectionViewCell {
         } else {
             favoriteIcon.isHidden = true
         }
+    }
 
-        Task(priority: .userInitiated) {
+    func willDisplay() {
+        Task {
             var foundCount: Int?
             var foundGeneratedImage: GeneratedImage?
 
-            if let count = album.count, let generatedImage = album.generatedImage {
+            if let count = self.album?.count, let generatedImage = self.album?.generatedImage {
                 foundCount = count
                 foundGeneratedImage = generatedImage
-            } else {
-                let result = await ImageDatabase.standard.getCountAndRecentImageForPredicate(predicate: album.predicate)
+            } else if let predicate = self.album?.predicate {
+                let result = await ImageDatabase.standard.getCountAndRecentImageForPredicate(predicate: predicate)
                 foundCount = result.0
                 foundGeneratedImage = result.1
-                album.count = foundCount
-                album.generatedImage = foundGeneratedImage
+                self.album?.count = foundCount
+                self.album?.generatedImage = foundGeneratedImage
             }
 
             if let object = foundGeneratedImage, let count = foundCount {

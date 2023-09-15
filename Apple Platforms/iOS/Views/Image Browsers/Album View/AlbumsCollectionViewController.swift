@@ -148,7 +148,6 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
 
         self.collectionView.reloadData()
         self.isLoading = false
-
     }
 
     // MARK: UICollectionViewDataSource
@@ -212,6 +211,11 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
         guard let foundAlbum = album else { fatalError() }
         cell.setup(album: foundAlbum)
         return cell
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let albumCell = cell as? AlbumCollectionViewCell else { return }
+        albumCell.willDisplay()
     }
 
     override func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
