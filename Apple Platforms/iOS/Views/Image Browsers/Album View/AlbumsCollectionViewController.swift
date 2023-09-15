@@ -122,6 +122,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
                     generatedImage: favoritesResult.1
                 )
             ]
+            smartAlbums = []
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
