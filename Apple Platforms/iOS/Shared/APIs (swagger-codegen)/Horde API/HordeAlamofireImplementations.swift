@@ -383,6 +383,7 @@ open class HordeAlamofireDecodableRequestBuilder<T: Decodable>: HordeAlamofireRe
                 cleanupRequest()
 
                 guard dataResponse.result.isSuccess else {
+                    Log.error(dataResponse.data?.encodeToJSON())
                     completion(nil, ErrorResponse.error(dataResponse.response?.statusCode ?? 500, dataResponse.data, dataResponse.result.error!))
                     return
                 }

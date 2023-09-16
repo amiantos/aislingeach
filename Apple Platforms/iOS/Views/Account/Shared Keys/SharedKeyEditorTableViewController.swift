@@ -11,8 +11,7 @@ protocol SharedKeyEditorDelegate {
     func deletedSharedKey(indexPath: IndexPath)
 }
 
-class SharedKeyEditorTableViewController: UITableViewController {
-
+class SharedKeyEditorTableViewController: UITableViewController, EditTextFieldViewControllerDelegate {
     var sharedKeyData: (SharedKeyDetails, UserDetails)? = nil
     var indexPath: IndexPath? = nil
     var delegate: SharedKeyEditorDelegate? = nil
@@ -28,6 +27,8 @@ class SharedKeyEditorTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        navigationItem.backButtonTitle = "Cancel"
 
         if let sharedKeyData = sharedKeyData {
             nameTableViewCell.detailTextLabel?.text = sharedKeyData.0.name ?? sharedKeyData.1.username?.replacingOccurrences(of: "\(sharedKeyData.0.username!) (Shared Key: ", with: "").replacingOccurrences(of: ")", with: "")
@@ -51,6 +52,11 @@ class SharedKeyEditorTableViewController: UITableViewController {
         switch cell.reuseIdentifier {
         case "nameTableViewCell":
             Log.debug("nameTableViewCell")
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let view = storyboard.instantiateViewController(withIdentifier: "editFieldViewController") as! EditTextFieldViewController
+            view.setup(fieldName: "Name", initialText: nameTableViewCell.detailTextLabel?.text ?? "", descriptionText: "Note: This key name and your horde account name will be visible to the user utilizing your shared key.")
+            view.delegate = self
+            navigationController?.pushViewController(view, animated: true)
         case "kudosLimitTableViewCell":
             Log.debug("kudosLimitTableViewCell")
         case "expirationDateTableViewCell":
@@ -79,4 +85,18 @@ class SharedKeyEditorTableViewController: UITableViewController {
         cell.setSelected(false, animated: true)
     }
 
+    func saveValueChange(newValue: String) async -> (Bool, String?) {
+        guard let sharedKeyId = sharedKeyData?.0._id else { fatalError("Unable to find shared key to modify")}
+        do {
+            try await HordeV2API.patchSharedKeySingle(
+                body: SharedKeyInput(name: newValue),
+                apikey: UserPreferences.standard.apiKey,
+                sharedkeyId: sharedKeyId,
+                clientAgent: hordeClientAgent()
+            )
+            return (true, nil)
+        } catch {
+            return (false, "Unable to save changes. Try again later?")
+        }
+    }
 }

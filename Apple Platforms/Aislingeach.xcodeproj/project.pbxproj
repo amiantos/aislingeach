@@ -21,6 +21,7 @@
 		441EB3772A21DC1E00E449BE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 441EB3752A21DC1E00E449BE /* Main.storyboard */; };
 		441EB3792A21DC1F00E449BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 441EB3782A21DC1F00E449BE /* Assets.xcassets */; };
 		441EB37C2A21DC1F00E449BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 441EB37A2A21DC1F00E449BE /* LaunchScreen.storyboard */; };
+		444AFB442AB642D700900524 /* EditTextFieldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444AFB432AB642D700900524 /* EditTextFieldViewController.swift */; };
 		444FC52E2A9AAACF007CA358 /* SharedKeyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444FC52D2A9AAACF007CA358 /* SharedKeyTableViewCell.swift */; };
 		44545F8B2A9DD31D00BCBAEC /* SharedKeyEditorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44545F8A2A9DD31D00BCBAEC /* SharedKeyEditorTableViewController.swift */; };
 		446643C22A53637D0047F26B /* ImageDetailCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446643C12A53637D0047F26B /* ImageDetailCollectionViewController.swift */; };
@@ -181,6 +182,7 @@
 		441EB3782A21DC1F00E449BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		441EB37B2A21DC1F00E449BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		441EB37D2A21DC1F00E449BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		444AFB432AB642D700900524 /* EditTextFieldViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTextFieldViewController.swift; sourceTree = "<group>"; };
 		444FC52D2A9AAACF007CA358 /* SharedKeyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedKeyTableViewCell.swift; sourceTree = "<group>"; };
 		44545F8A2A9DD31D00BCBAEC /* SharedKeyEditorTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedKeyEditorTableViewController.swift; sourceTree = "<group>"; };
 		446643C12A53637D0047F26B /* ImageDetailCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailCollectionViewController.swift; sourceTree = "<group>"; };
@@ -591,6 +593,7 @@
 				44C6B6D32A233AF500C2F013 /* Image Browsers */,
 				44C6B6A62A232E4800C2F013 /* Rating */,
 				44C6B69C2A22B0FD00C2F013 /* Account */,
+				444AFB432AB642D700900524 /* EditTextFieldViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -797,6 +800,7 @@
 				44C6B6532A228D8200C2F013 /* ModelPayloadRootKobold.swift in Sources */,
 				44C6B6D52A233B0F00C2F013 /* ImageCollectionViewController.swift in Sources */,
 				44F2AA722A26B81200FB8E93 /* RatePostResponse.swift in Sources */,
+				444AFB442AB642D700900524 /* EditTextFieldViewController.swift in Sources */,
 				4485C63F2A2A9E7F0040D864 /* ImageCache.swift in Sources */,
 				44C6B6872A228D8200C2F013 /* ModifyTeamInput.swift in Sources */,
 				44C6B6672A228D8200C2F013 /* PopInputStable.swift in Sources */,

@@ -1846,9 +1846,18 @@ open class HordeV2API {
      - parameter xFields: (header) An optional fields mask (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func patchSharedKeySingle(body: SharedKeyInput, apikey: String, sharedkeyId: String, clientAgent: String? = nil, xFields: String? = nil, completion: @escaping ((_ data: SharedKeyDetails?, _ error: Error?) -> Void)) {
-        patchSharedKeySingleWithRequestBuilder(body: body, apikey: apikey, sharedkeyId: sharedkeyId, clientAgent: clientAgent, xFields: xFields).execute { response, error in
-            completion(response?.body, error)
+    open class func patchSharedKeySingle(body: SharedKeyInput, apikey: String, sharedkeyId: String, clientAgent: String? = nil, xFields: String? = nil) async throws -> SharedKeyDetails {
+        return try await withCheckedThrowingContinuation { continuation in
+            patchSharedKeySingleWithRequestBuilder(body: body, apikey: apikey, sharedkeyId: sharedkeyId, clientAgent: clientAgent, xFields: xFields).execute { response, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    guard let result = response?.body else {
+                        fatalError("Expected non-nil result in the non-error case")
+                    }
+                    continuation.resume(returning: result)
+                }
+            }
         }
     }
 
