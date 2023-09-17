@@ -7,14 +7,25 @@
 
 import UIKit
 
+enum SharedKeyEditableField {
+    case name
+    case kudos
+    case expiry
+    case max_image_pixels
+    case max_image_steps
+    case max_text_tokens
+}
+
 protocol SharedKeyEditorDelegate {
     func deletedSharedKey(indexPath: IndexPath)
 }
 
 class SharedKeyEditorTableViewController: UITableViewController, EditTextFieldViewControllerDelegate, EditLimitFieldViewControllerDelegate {
-    var sharedKeyData: (SharedKeyDetails, UserDetails)? = nil
-    var indexPath: IndexPath? = nil
-    var delegate: SharedKeyEditorDelegate? = nil
+    var sharedKeyData: (SharedKeyDetails, UserDetails)?
+    var indexPath: IndexPath?
+    var delegate: SharedKeyEditorDelegate?
+
+    var currentlyEditing: SharedKeyEditableField?
 
 
     @IBOutlet weak var nameTableViewCell: UITableViewCell!
@@ -52,6 +63,7 @@ class SharedKeyEditorTableViewController: UITableViewController, EditTextFieldVi
         switch cell.reuseIdentifier {
         case "nameTableViewCell":
             Log.debug("nameTableViewCell")
+            currentlyEditing = .name
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let view = storyboard.instantiateViewController(withIdentifier: "editFieldViewController") as! EditTextFieldViewController
             view.setup(fieldName: "Name", initialText: nameTableViewCell.detailTextLabel?.text ?? "", descriptionText: "Note: This key name and your horde account name will be visible to the user utilizing your shared key.")
@@ -59,6 +71,7 @@ class SharedKeyEditorTableViewController: UITableViewController, EditTextFieldVi
             navigationController?.pushViewController(view, animated: true)
         case "kudosLimitTableViewCell":
             Log.debug("kudosLimitTableViewCell")
+            currentlyEditing = .kudos
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let view = storyboard.instantiateViewController(withIdentifier: "editLimitFieldViewController") as! EditLimitFieldViewController
             view.setup(fieldName: "Kudos Limit", initialValue: sharedKeyData?.0.kudos ?? 0, descriptionText: "Define a manual amount of kudos to limit the shared key to that amount of usage, or set the key to have no kudos limit.")
@@ -66,13 +79,19 @@ class SharedKeyEditorTableViewController: UITableViewController, EditTextFieldVi
             navigationController?.pushViewController(view, animated: true)
         case "expirationDateTableViewCell":
             Log.debug("expirationDateTableViewCell")
+            currentlyEditing = .expiry
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let view = storyboard.instantiateViewController(withIdentifier: "editLimitFieldViewController") as! EditLimitFieldViewController
-            view.setup(fieldName: "Expiration", initialValue: (sharedKeyData?.0.expiry == nil ? -1 : 0), descriptionText: "Enter a number of days until the key should expire, or select No Limit to set the key to never expire.")
+            if let expiry = sharedKeyData?.0.expiry, let day = Calendar.current.dateComponents([.day], from: Date.now, to: expiry).day {
+                view.setup(fieldName: "Expiration", initialValue: day, descriptionText: "Enter a number of days until the key should expire, or select No Limit to set the key to never expire.")
+            } else {
+                view.setup(fieldName: "Expiration", initialValue: -1, descriptionText: "Enter a number of days until the key should expire, or select No Limit to set the key to never expire.")
+            }
             view.delegate = self
             navigationController?.pushViewController(view, animated: true)
         case "maxImagePixelsTableViewCell":
             Log.debug("maxImagePixelsTableViewCell")
+            currentlyEditing = .max_image_pixels
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let view = storyboard.instantiateViewController(withIdentifier: "editLimitFieldViewController") as! EditLimitFieldViewController
             view.setup(fieldName: "Max Image Pixels", initialValue: sharedKeyData?.0.maxImagePixels ?? 0, descriptionText: "Define a maximum pixel limit for generations. Use this to ensure that shared key users do not generate images too large, using too many kudos too quickly.\n\nThis value is measured in total pixel area, for example: to limit the key to 512x512 generations, use the value 262144. Maximum value is 4194304, equivalent to 2048x2048 square pixels.\n\nA value of 0 will disable image generation for this key.")
@@ -80,6 +99,7 @@ class SharedKeyEditorTableViewController: UITableViewController, EditTextFieldVi
             navigationController?.pushViewController(view, animated: true)
         case "maxImageStepsTableViewCell":
             Log.debug("maxImageStepsTableViewCell")
+            currentlyEditing = .max_image_steps
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let view = storyboard.instantiateViewController(withIdentifier: "editLimitFieldViewController") as! EditLimitFieldViewController
             view.setup(fieldName: "Max Image Steps", initialValue: sharedKeyData?.0.maxImageSteps ?? 0, descriptionText: "Define a maximum step limit for generations. This can help prevent shared key users from abusing your shared key for unnecessary high-step generations.\n\nMaximum value is 500. A good rule of thumb is that, with the right sampler selected, as few as 30 steps may be needed for quality generations.")
@@ -87,6 +107,7 @@ class SharedKeyEditorTableViewController: UITableViewController, EditTextFieldVi
             navigationController?.pushViewController(view, animated: true)
         case "maxTextTokensTableViewCell":
             Log.debug("maxTextTokensTableViewCell")
+            currentlyEditing = .max_text_tokens
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let view = storyboard.instantiateViewController(withIdentifier: "editLimitFieldViewController") as! EditLimitFieldViewController
             view.setup(fieldName: "Max Text Tokens", initialValue: sharedKeyData?.0.maxTextTokens ?? 0, descriptionText: "Define a maximum number of text tokens that can be generated per request. The maximum value is 500.")
@@ -126,8 +147,34 @@ class SharedKeyEditorTableViewController: UITableViewController, EditTextFieldVi
     }
 
     func saveValueChange(newValue: Int) async -> (Bool, String?) {
-        Log.debug("New value: \(newValue)")
-        return (true, nil)
+        guard let sharedKeyId = sharedKeyData?.0._id else { fatalError("Unable to find shared key to modify")}
+        var sharedKeyDetails = SharedKeyInput()
+        switch currentlyEditing {
+        case .kudos:
+            sharedKeyDetails.kudos = newValue
+        case .expiry:
+            sharedKeyDetails.expiry = newValue
+        case .max_image_pixels:
+            sharedKeyDetails.max_image_pixels = newValue
+        case .max_image_steps:
+            sharedKeyDetails.max_image_steps = newValue
+        case .max_text_tokens:
+            sharedKeyDetails.max_text_tokens = newValue
+        default:
+            return (false, "Unknown field being edited, this shouldn't happen.")
+        }
+        Log.debug(sharedKeyDetails)
+        do {
+            try await HordeV2API.patchSharedKeySingle(
+                body: sharedKeyDetails,
+                apikey: UserPreferences.standard.apiKey,
+                sharedkeyId: sharedKeyId,
+                clientAgent: hordeClientAgent()
+            )
+            return (true, nil)
+        } catch {
+            return (false, "Unable to save changes. Try again later?")
+        }
     }
 
 }
