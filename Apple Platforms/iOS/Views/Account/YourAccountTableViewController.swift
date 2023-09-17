@@ -18,10 +18,12 @@ class YourAccountTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        loadUserData()
-
         navigationItem.backButtonTitle = "Account"
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        loadUserData()
     }
 
     func loadUserData() {
@@ -45,6 +47,21 @@ class YourAccountTableViewController: UITableViewController {
                     recurringKudosLabel.text = recurringKudos.formatted()
                 }
             }
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 1 && indexPath.row == 2 {
+            let alert = UIAlertController(title: "Log Out", message: "Are you sure you want to log out? Be sure you've backed up your API key somewhere, as it cannot be recovered from Aislingeach once you log out.", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            let yesAction = UIAlertAction(title: "Log Out", style: .destructive) { _ in
+                UserPreferences.standard.set(apiKey: "0000000000")
+                NotificationCenter.default.post(name: .newAPIKeySubmitted, object: nil)
+            }
+            alert.addAction(yesAction)
+            alert.addAction(cancelAction)
+            present(alert, animated: true)
+            tableView.deselectRow(at: indexPath, animated: true)
         }
     }
 }

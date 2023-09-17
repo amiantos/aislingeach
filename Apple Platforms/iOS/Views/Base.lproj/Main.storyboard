@@ -2471,7 +2471,7 @@ https://amiantos.net</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y0y-Ht-sgY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2321.739130434783" y="2150.2232142857142"/>
+            <point key="canvasLocation" x="2322" y="2197"/>
         </scene>
         <!--Key Details-->
         <scene sceneID="U4Q-GL-C0u">
@@ -2708,7 +2708,7 @@ https://amiantos.net</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3V3-jT-v2J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3355" y="2150"/>
+            <point key="canvasLocation" x="3352" y="2197"/>
         </scene>
         <!--Edit Text Field-->
         <scene sceneID="pxK-XC-Uz6">
@@ -2788,7 +2788,7 @@ https://amiantos.net</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MVn-F8-Gkp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4659.420289855073" y="2112.7232142857142"/>
+            <point key="canvasLocation" x="-980" y="-1809"/>
         </scene>
         <!--Your Gallery-->
         <scene sceneID="Bda-sA-bA8">
@@ -3423,7 +3423,7 @@ https://amiantos.net</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KoQ-7I-Hog" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5367" y="2113"/>
+            <point key="canvasLocation" x="13" y="-1809"/>
         </scene>
     </scenes>
     <designables>
