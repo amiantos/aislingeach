@@ -22,6 +22,8 @@
 		441EB3792A21DC1F00E449BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 441EB3782A21DC1F00E449BE /* Assets.xcassets */; };
 		441EB37C2A21DC1F00E449BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 441EB37A2A21DC1F00E449BE /* LaunchScreen.storyboard */; };
 		444AFB442AB642D700900524 /* EditTextFieldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444AFB432AB642D700900524 /* EditTextFieldViewController.swift */; };
+		444AFB462AB689B500900524 /* EditLimitFieldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444AFB452AB689B500900524 /* EditLimitFieldViewController.swift */; };
+		444AFB482AB6972900900524 /* YourAccountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444AFB472AB6972900900524 /* YourAccountTableViewController.swift */; };
 		444FC52E2A9AAACF007CA358 /* SharedKeyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444FC52D2A9AAACF007CA358 /* SharedKeyTableViewCell.swift */; };
 		44545F8B2A9DD31D00BCBAEC /* SharedKeyEditorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44545F8A2A9DD31D00BCBAEC /* SharedKeyEditorTableViewController.swift */; };
 		446643C22A53637D0047F26B /* ImageDetailCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446643C12A53637D0047F26B /* ImageDetailCollectionViewController.swift */; };
@@ -183,6 +185,8 @@
 		441EB37B2A21DC1F00E449BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		441EB37D2A21DC1F00E449BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		444AFB432AB642D700900524 /* EditTextFieldViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTextFieldViewController.swift; sourceTree = "<group>"; };
+		444AFB452AB689B500900524 /* EditLimitFieldViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EditLimitFieldViewController.swift; path = iOS/Views/EditLimitFieldViewController.swift; sourceTree = "<group>"; };
+		444AFB472AB6972900900524 /* YourAccountTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = YourAccountTableViewController.swift; path = iOS/Views/Account/YourAccountTableViewController.swift; sourceTree = "<group>"; };
 		444FC52D2A9AAACF007CA358 /* SharedKeyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedKeyTableViewCell.swift; sourceTree = "<group>"; };
 		44545F8A2A9DD31D00BCBAEC /* SharedKeyEditorTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedKeyEditorTableViewController.swift; sourceTree = "<group>"; };
 		446643C12A53637D0047F26B /* ImageDetailCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailCollectionViewController.swift; sourceTree = "<group>"; };
@@ -381,6 +385,8 @@
 		441EB3632A21DC1E00E449BE = {
 			isa = PBXGroup;
 			children = (
+				444AFB472AB6972900900524 /* YourAccountTableViewController.swift */,
+				444AFB452AB689B500900524 /* EditLimitFieldViewController.swift */,
 				44F24AD52A7B041C00216D26 /* LICENSE */,
 				44142AC22A242B4E0096FFBA /* .swift-version */,
 				44142AC32A242B4E0096FFBA /* .swiftformat */,
@@ -785,6 +791,7 @@
 				44C6B6812A228D8200C2F013 /* InterrogateSubmitBody.swift in Sources */,
 				44C6B65D2A228D8200C2F013 /* ImgModelStats.swift in Sources */,
 				447362DC2A2D49CE00823D0C /* ModelsTableViewController.swift in Sources */,
+				444AFB482AB6972900900524 /* YourAccountTableViewController.swift in Sources */,
 				44C6B66F2A228D8200C2F013 /* KudosTransferBody.swift in Sources */,
 				44C6B6562A228D8200C2F013 /* WorkerKudosDetails.swift in Sources */,
 				44D331D92A23588800BE8DDF /* UserAgent.swift in Sources */,
@@ -827,6 +834,7 @@
 				44C6B6512A228D8200C2F013 /* RequestAsync.swift in Sources */,
 				44C6B6A32A22F83900C2F013 /* Logging.swift in Sources */,
 				441EB3742A21DC1E00E449BE /* GeneratorViewController.swift in Sources */,
+				444AFB462AB689B500900524 /* EditLimitFieldViewController.swift in Sources */,
 				446FE7692A67A3F2003203A5 /* ImageDetailSource.swift in Sources */,
 				44C6B62E2A228D8200C2F013 /* TxtModelStats.swift in Sources */,
 				44C6B6452A228D8200C2F013 /* ContributionsDetails.swift in Sources */,

@@ -11,7 +11,7 @@ protocol SharedKeyEditorDelegate {
     func deletedSharedKey(indexPath: IndexPath)
 }
 
-class SharedKeyEditorTableViewController: UITableViewController, EditTextFieldViewControllerDelegate {
+class SharedKeyEditorTableViewController: UITableViewController, EditTextFieldViewControllerDelegate, EditLimitFieldViewControllerDelegate {
     var sharedKeyData: (SharedKeyDetails, UserDetails)? = nil
     var indexPath: IndexPath? = nil
     var delegate: SharedKeyEditorDelegate? = nil
@@ -36,9 +36,9 @@ class SharedKeyEditorTableViewController: UITableViewController, EditTextFieldVi
             kudosLimitTableViewCell.detailTextLabel?.text = sharedKeyKudos < 0 ? "No Limit" : sharedKeyKudos.formatted()
             kudosUtilizedTableViewCell.detailTextLabel?.text = sharedKeyData.0.utilized?.formatted() ?? 0.formatted()
             expirationDateTableViewCell.detailTextLabel?.text = sharedKeyData.0.expiry?.formatted() ?? "Never"
-            maxImagePixelsTableViewCell.detailTextLabel?.text = sharedKeyData.0.maxImagePixels ?? 0 < 0 ? "None" : sharedKeyData.0.maxImagePixels?.formatted()
-            maxImageStepsTableViewCell.detailTextLabel?.text = sharedKeyData.0.maxImageSteps ?? 0 < 0 ? "None" : sharedKeyData.0.maxImageSteps?.formatted()
-            maxTextTokensTableViewCell.detailTextLabel?.text = sharedKeyData.0.maxTextTokens ?? 0 < 0 ? "None" : sharedKeyData.0.maxTextTokens?.formatted()
+            maxImagePixelsTableViewCell.detailTextLabel?.text = sharedKeyData.0.maxImagePixels ?? 0 < 0 ? "No Limit" : sharedKeyData.0.maxImagePixels?.formatted()
+            maxImageStepsTableViewCell.detailTextLabel?.text = sharedKeyData.0.maxImageSteps ?? 0 < 0 ? "No Limit" : sharedKeyData.0.maxImageSteps?.formatted()
+            maxTextTokensTableViewCell.detailTextLabel?.text = sharedKeyData.0.maxTextTokens ?? 0 < 0 ? "No Limit" : sharedKeyData.0.maxTextTokens?.formatted()
         }
     }
 
@@ -59,14 +59,39 @@ class SharedKeyEditorTableViewController: UITableViewController, EditTextFieldVi
             navigationController?.pushViewController(view, animated: true)
         case "kudosLimitTableViewCell":
             Log.debug("kudosLimitTableViewCell")
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let view = storyboard.instantiateViewController(withIdentifier: "editLimitFieldViewController") as! EditLimitFieldViewController
+            view.setup(fieldName: "Kudos Limit", initialValue: sharedKeyData?.0.kudos ?? 0, descriptionText: "Define a manual amount of kudos to limit the shared key to that amount of usage, or set the key to have no kudos limit.")
+            view.delegate = self
+            navigationController?.pushViewController(view, animated: true)
         case "expirationDateTableViewCell":
             Log.debug("expirationDateTableViewCell")
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let view = storyboard.instantiateViewController(withIdentifier: "editLimitFieldViewController") as! EditLimitFieldViewController
+            view.setup(fieldName: "Expiration", initialValue: (sharedKeyData?.0.expiry == nil ? -1 : 0), descriptionText: "Enter a number of days until the key should expire, or select No Limit to set the key to never expire.")
+            view.delegate = self
+            navigationController?.pushViewController(view, animated: true)
         case "maxImagePixelsTableViewCell":
             Log.debug("maxImagePixelsTableViewCell")
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let view = storyboard.instantiateViewController(withIdentifier: "editLimitFieldViewController") as! EditLimitFieldViewController
+            view.setup(fieldName: "Max Image Pixels", initialValue: sharedKeyData?.0.maxImagePixels ?? 0, descriptionText: "Define a maximum pixel limit for generations. Use this to ensure that shared key users do not generate images too large, using too many kudos too quickly.\n\nThis value is measured in total pixel area, for example: to limit the key to 512x512 generations, use the value 262144. Maximum value is 4194304, equivalent to 2048x2048 square pixels.\n\nA value of 0 will disable image generation for this key.")
+            view.delegate = self
+            navigationController?.pushViewController(view, animated: true)
         case "maxImageStepsTableViewCell":
             Log.debug("maxImageStepsTableViewCell")
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let view = storyboard.instantiateViewController(withIdentifier: "editLimitFieldViewController") as! EditLimitFieldViewController
+            view.setup(fieldName: "Max Image Steps", initialValue: sharedKeyData?.0.maxImageSteps ?? 0, descriptionText: "Define a maximum step limit for generations. This can help prevent shared key users from abusing your shared key for unnecessary high-step generations.\n\nMaximum value is 500. A good rule of thumb is that, with the right sampler selected, as few as 30 steps may be needed for quality generations.")
+            view.delegate = self
+            navigationController?.pushViewController(view, animated: true)
         case "maxTextTokensTableViewCell":
             Log.debug("maxTextTokensTableViewCell")
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let view = storyboard.instantiateViewController(withIdentifier: "editLimitFieldViewController") as! EditLimitFieldViewController
+            view.setup(fieldName: "Max Text Tokens", initialValue: sharedKeyData?.0.maxTextTokens ?? 0, descriptionText: "Define a maximum number of text tokens that can be generated per request. The maximum value is 500.")
+            view.delegate = self
+            navigationController?.pushViewController(view, animated: true)
         case "deleteKeyCell":
             if let sharedKeyId = sharedKeyData?.0._id, let indexPath = self.indexPath {
                 HordeV2API.deleteSharedKeySingle(sharedkeyId:sharedKeyId, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
@@ -99,4 +124,10 @@ class SharedKeyEditorTableViewController: UITableViewController, EditTextFieldVi
             return (false, "Unable to save changes. Try again later?")
         }
     }
+
+    func saveValueChange(newValue: Int) async -> (Bool, String?) {
+        Log.debug("New value: \(newValue)")
+        return (true, nil)
+    }
+
 }
