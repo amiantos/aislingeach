@@ -2648,7 +2648,11 @@ https://amiantos.net</string>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Shared Keys" id="z15-Zm-dkJ">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="ZpF-go-SKe"/>
+                        <barButtonItem key="rightBarButtonItem" title="Add Shared Key" id="ZpF-go-SKe">
+                            <connections>
+                                <action selector="addSharedKeyButtonAction:" destination="CHc-rd-FMn" id="vPX-ew-ebL"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y0y-Ht-sgY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2818,7 +2822,7 @@ https://amiantos.net</string>
                             </tableViewSection>
                             <tableViewSection headerTitle="Stats" id="eGq-1d-uoU">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" tag="2" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="kudosUtilizedTableViewCell" textLabel="6rv-gi-Z1j" detailTextLabel="kBA-8c-Xe2" style="IBUITableViewCellStyleValue1" id="bnc-kI-XZ1">
+                                    <tableViewCell clipsSubviews="YES" tag="2" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="kudosUtilizedTableViewCell" textLabel="6rv-gi-Z1j" detailTextLabel="kBA-8c-Xe2" style="IBUITableViewCellStyleValue1" id="bnc-kI-XZ1">
                                         <rect key="frame" x="20" y="414" width="374" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bnc-kI-XZ1" id="KaR-Mk-QJL">

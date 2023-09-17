@@ -12,6 +12,46 @@ class SharedKeysTableViewController: UITableViewController {
     var sharedKeys: [(SharedKeyDetails, UserDetails)] = []
     var loading: Bool = false
 
+    @IBAction func addSharedKeyButtonAction(_ sender: UIBarButtonItem) {
+        let ac = UIAlertController(title: "Add Shared Key", message: "Enter a name for your new shared key", preferredStyle: .alert)
+        ac.addTextField()
+
+        let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned ac] _ in
+            let answer = ac.textFields![0]
+            if answer.hasText, let name = answer.text, !name.isEmpty {
+                Task {
+                    do {
+                        let result = try await HordeV2API.putSharedKey(
+                            body: SharedKeyInput(name: name),
+                            apikey: UserPreferences.standard.apiKey,
+                            clientAgent: hordeClientAgent()
+                        )
+
+
+                        if let sharedKeyId = result._id, let sharedKeyDetails = try? await HordeV2API.getSharedKeySingle(sharedkeyId: sharedKeyId, clientAgent: hordeClientAgent()),
+                           let apiKeyDetails = try? await HordeV2API.getFindUser(apikey: sharedKeyId, clientAgent: hordeClientAgent()) {
+                            DispatchQueue.main.async {
+                                self.sharedKeys.append((sharedKeyDetails, apiKeyDetails))
+                                self.tableView.insertRows(at: [IndexPath(row: self.sharedKeys.count-1, section: 0)], with: .automatic)
+                            }
+                        }
+                    } catch {
+                        Log.error(error)
+                        let alert = UIAlertController(title: "Error", message: "Unable to create new shared key, try again later?", preferredStyle: .alert)
+                        let action = UIAlertAction(title: "Oh, okay...", style: .default)
+                        alert.addAction(action)
+                        self.present(alert, animated: true)
+                    }
+                }
+            }
+        }
+
+        ac.addAction(submitAction)
+        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+        present(ac, animated: true)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -46,12 +86,10 @@ class SharedKeysTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return sharedKeys.count
     }
 
