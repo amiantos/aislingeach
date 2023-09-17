@@ -2655,7 +2655,7 @@ https://amiantos.net</string>
             </objects>
             <point key="canvasLocation" x="2321.739130434783" y="2150.2232142857142"/>
         </scene>
-        <!--Edit Key-->
+        <!--Key Details-->
         <scene sceneID="U4Q-GL-C0u">
             <objects>
                 <tableViewController id="WNE-Wa-nRN" customClass="SharedKeyEditorTableViewController" customModule="Aislingeach" customModuleProvider="target" sceneMemberID="viewController">
@@ -2871,8 +2871,12 @@ https://amiantos.net</string>
                             <outlet property="delegate" destination="WNE-Wa-nRN" id="Rsm-H6-Q2f"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Edit Key" id="py9-LF-hJ6">
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="lki-YN-v6O"/>
+                    <navigationItem key="navigationItem" title="Key Details" id="py9-LF-hJ6">
+                        <barButtonItem key="rightBarButtonItem" title="Copy Shared Key" id="lki-YN-v6O">
+                            <connections>
+                                <action selector="copySharedKeyAction:" destination="WNE-Wa-nRN" id="ngD-g8-sHL"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="expirationDateTableViewCell" destination="HZ2-cn-DnW" id="Zuk-Xk-q0u"/>

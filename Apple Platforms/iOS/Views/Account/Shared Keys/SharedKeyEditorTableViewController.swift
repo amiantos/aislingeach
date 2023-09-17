@@ -36,6 +36,10 @@ class SharedKeyEditorTableViewController: UITableViewController, EditTextFieldVi
     @IBOutlet weak var maxImageStepsTableViewCell: UITableViewCell!
     @IBOutlet weak var maxTextTokensTableViewCell: UITableViewCell!
 
+    @IBAction func copySharedKeyAction(_ sender: UIBarButtonItem) {
+        UIPasteboard.general.string = sharedKeyData?.0._id
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
