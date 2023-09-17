@@ -14,7 +14,6 @@ class SharedKeysTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadUserData()
     }
 
     func loadUserData() {
@@ -22,6 +21,7 @@ class SharedKeysTableViewController: UITableViewController {
         loading = true
         Task(priority: .userInitiated) {
             sharedKeys = []
+            tableView.reloadData()
             if let data = try? await HordeV2API.getFindUser(apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()),
                let sharedKeyIds = data.sharedkeyIds {
                 for sharedKeyId in sharedKeyIds {
@@ -40,6 +40,7 @@ class SharedKeysTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        loadUserData()
     }
 
     // MARK: - Table view data source

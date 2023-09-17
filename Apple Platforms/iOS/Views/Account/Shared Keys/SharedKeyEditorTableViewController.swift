@@ -140,6 +140,8 @@ class SharedKeyEditorTableViewController: UITableViewController, EditTextFieldVi
                 sharedkeyId: sharedKeyId,
                 clientAgent: hordeClientAgent()
             )
+            nameTableViewCell.detailTextLabel?.text = newValue
+            sharedKeyData?.0.name = newValue
             return (true, nil)
         } catch {
             return (false, "Unable to save changes. Try again later?")
@@ -152,14 +154,26 @@ class SharedKeyEditorTableViewController: UITableViewController, EditTextFieldVi
         switch currentlyEditing {
         case .kudos:
             sharedKeyDetails.kudos = newValue
+            kudosLimitTableViewCell.detailTextLabel?.text = newValue < 0 ? "No Limit" : newValue.formatted()
+            sharedKeyData?.0.kudos = newValue
         case .expiry:
             sharedKeyDetails.expiry = newValue
+            if newValue > -1 {
+                expirationDateTableViewCell.detailTextLabel?.text = Calendar.current.date(byAdding: .day, value: newValue, to: Date.now)!.formatted()
+                sharedKeyData?.0.expiry = Calendar.current.date(byAdding: .day, value: newValue, to: Date.now)!
+            } else {
+                expirationDateTableViewCell.detailTextLabel?.text = "Never"
+                sharedKeyData?.0.expiry = nil
+            }
         case .max_image_pixels:
             sharedKeyDetails.max_image_pixels = newValue
+            maxImagePixelsTableViewCell.detailTextLabel?.text = newValue < 0 ? "No Limit" : newValue.formatted()
         case .max_image_steps:
             sharedKeyDetails.max_image_steps = newValue
+            maxImageStepsTableViewCell.detailTextLabel?.text = newValue < 0 ? "No Limit" : newValue.formatted()
         case .max_text_tokens:
             sharedKeyDetails.max_text_tokens = newValue
+            maxTextTokensTableViewCell.detailTextLabel?.text = newValue < 0 ? "No Limit" : newValue.formatted()
         default:
             return (false, "Unknown field being edited, this shouldn't happen.")
         }
