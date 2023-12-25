@@ -190,15 +190,10 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
         if editingStyle == .delete {
             guard let request = resultsController?.object(at: indexPath) else { fatalError("Attempt to delete a row without an object") }
 
-            if request.status == "error" || request.status == "done" {
+            if request.status == "error" || request.status == "done" || request.status == "active" {
                 ImageDatabase.standard.deleteRequest(request, pruneImages: false) { request in
                     if request != nil { fatalError("Deleting request did not work?") }
                 }
-            } else if request.status == "active" {
-                let alert = UIAlertController(title: "Delete Refused", message: "This sleeper is still dreaming, you can't delete it yet, sorry.", preferredStyle: .alert)
-                let cancelAction = UIAlertAction(title: "Oh... weird, okay", style: .cancel)
-                alert.addAction(cancelAction)
-                present(alert, animated: true)
             } else {
                 let alert = UIAlertController(title: "Delete Dream", message: "This will clear this dream from your history, optionally you may \"prune\" any images you have not hidden or favorited from this dream.", preferredStyle: .alert)
                 let deleteImagesAction = UIAlertAction(title: "Prune images", style: .destructive) { _ in
