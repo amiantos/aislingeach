@@ -78,19 +78,22 @@ class StylesTableViewController: UITableViewController {
 
             let (data2, _) = try await urlSession.data(from: url2)
             self.styles = try JSONDecoder().decode([String: Style].self, from: data2)
+            var styleArray = self.styles
 
-            let newCategories: [Category] = categories.compactMap { key, value in
-                let categoriesOnly = {
-                    for styleName in value where styles.contains(where: {
-                        $0.0 == styleName
-                    }) {
-                        return true
+            var newCategories: [Category] = categories.compactMap { key, value in
+                let stylesOnly = value.compactMap { value in
+                    if styleArray.contains(where: { $0.0 == value }) {
+                        styleArray = styleArray.filter { $0.0 != value }
+                        return value
                     }
-                    return false
-                }()
-                if !categoriesOnly { return nil }
-                return Category(title: key, styles: value.sorted())
+                    return nil
+                }
+                if stylesOnly.isEmpty { return nil }
+                return Category(title: key, styles: stylesOnly.sorted())
             }
+            let uncategorizedStyles = styleArray.map { return $0.0 }
+            Log.debug(uncategorizedStyles.sorted().joined(separator: ", "))
+            newCategories.append(Category(title: "uncategorized", styles: uncategorizedStyles.sorted()))
             self.categories = newCategories
         } catch {
             Log.error("Unable to grab style categories: \(error.localizedDescription)")
