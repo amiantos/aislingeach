@@ -46,7 +46,6 @@ class StylesTableViewController: UITableViewController {
             categories.sort { c1, c2 in
                 c1.title < c2.title
             }
-            categories.insert(Category(title: "Featured", styles: ["sdxl"]), at: 0)
             categories.insert(Category(title: "Default", styles: ["None"]), at: 0)
             tableView.reloadData()
         }
@@ -70,18 +69,26 @@ class StylesTableViewController: UITableViewController {
 
     func loadData() async {
         // https://raw.githubusercontent.com/Haidra-Org/AI-Horde-Styles/main/categories.json
-        let url = URL(string: "https://raw.githubusercontent.com/amiantos/AI-Horde-Styles/main/categories.json")!
-        let url2 = URL(string: "https://raw.githubusercontent.com/amiantos/AI-Horde-Styles/main/styles.json")!
+        let url = URL(string: "https://raw.githubusercontent.com/Haidra-Org/AI-Horde-Styles/main/categories.json")!
+        let url2 = URL(string: "https://raw.githubusercontent.com/Haidra-Org/AI-Horde-Styles/main/styles.json")!
         let urlSession = URLSession.shared
         do {
             let (data, _) = try await urlSession.data(from: url)
             let categories = try JSONDecoder().decode([String: [String]].self, from: data)
 
             let (data2, _) = try await urlSession.data(from: url2)
-            Log.debug(String(data: data2, encoding: .utf8))
             self.styles = try JSONDecoder().decode([String: Style].self, from: data2)
 
-            let newCategories = categories.map { key, value in
+            let newCategories: [Category] = categories.compactMap { key, value in
+                let categoriesOnly = {
+                    for styleName in value where styles.contains(where: {
+                        $0.0 == styleName
+                    }) {
+                        return true
+                    }
+                    return false
+                }()
+                if !categoriesOnly { return nil }
                 return Category(title: key, styles: value.sorted())
             }
             self.categories = newCategories
