@@ -2028,141 +2028,55 @@ You can also get an anonymous API key, no third party sign in required. But don'
         <scene sceneID="GcY-5Q-47x">
             <objects>
                 <tableViewController id="24X-JU-ubV" customClass="WorkersTableViewController" customModule="Aislingeach" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="gXM-pz-ibx">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="gXM-pz-ibx">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="workerCell" rowHeight="550" id="QJV-Vp-rRf" customClass="WorkerTableViewCell" customModule="Aislingeach" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="50" width="414" height="550"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="workerCell" rowHeight="77" id="QJV-Vp-rRf" customClass="WorkerTableViewCell" customModule="Aislingeach" customModuleProvider="target">
+                                <rect key="frame" x="20" y="38" width="374" height="77"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QJV-Vp-rRf" id="yup-Kt-2uE">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="550"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="343.5" height="77"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="7kA-Hd-8bO">
-                                            <rect key="frame" x="20" y="20" width="374" height="519"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="amiantos-img" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jON-it-Sfx">
-                                                    <rect key="frame" x="0.0" y="0.0" width="374" height="22"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="346159ca-8de2-4dca-8430-1c34cce9522d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rAb-iF-yCi">
-                                                    <rect key="frame" x="0.0" y="34" width="374" height="14.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                                    <color key="textColor" systemColor="tertiaryLabelColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9eX-O3-COh" userLabel="Separator">
-                                                    <rect key="frame" x="0.0" y="60.5" width="374" height="1"/>
-                                                    <color key="backgroundColor" systemColor="tertiaryLabelColor"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="1" id="SvX-NV-IZW"/>
-                                                    </constraints>
-                                                </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yEn-96-axd">
-                                                    <rect key="frame" x="0.0" y="73.5" width="374" height="42.5"/>
-                                                    <string key="text">RTX 4090
-https://amiantos.net</string>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ppl-g2-cjK" userLabel="Separator">
-                                                    <rect key="frame" x="0.0" y="128" width="374" height="1"/>
-                                                    <color key="backgroundColor" systemColor="tertiaryLabelColor"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="1" id="Fro-fD-MC4"/>
-                                                    </constraints>
-                                                </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CIl-rf-fAY">
-                                                    <rect key="frame" x="0.0" y="141" width="374" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Offline" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9dL-IV-HBS">
-                                                    <rect key="frame" x="0.0" y="173.5" width="374" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Uptime" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BXa-oO-MNI">
-                                                    <rect key="frame" x="0.0" y="206" width="374" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="29d 12m" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HU9-tF-kDL">
-                                                    <rect key="frame" x="0.0" y="238.5" width="374" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max 1:1 Resolution" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zvu-sK-s3X">
-                                                    <rect key="frame" x="0.0" y="271" width="374" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2048 x 2048" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cFd-8g-Xss">
-                                                    <rect key="frame" x="0.0" y="303.5" width="374" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Models Served" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Tf-Kk-ask">
-                                                    <rect key="frame" x="0.0" y="336" width="374" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="227" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ljU-cy-XxU">
-                                                    <rect key="frame" x="0.0" y="368.5" width="374" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kudos Earned" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fKc-ny-BfC">
-                                                    <rect key="frame" x="0.0" y="401" width="374" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7,773,503" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OxP-NR-vsh">
-                                                    <rect key="frame" x="0.0" y="433.5" width="374" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Requests Completed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eKq-pT-8fq">
-                                                    <rect key="frame" x="0.0" y="466" width="374" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="263,230" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NrE-Z5-Xwk">
-                                                    <rect key="frame" x="0.0" y="498.5" width="374" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </stackView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EGf-jy-7or">
+                                            <rect key="frame" x="52" y="20" width="271.5" height="22.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="bdN-7b-WWu">
+                                            <rect key="frame" x="20" y="29" width="20" height="19"/>
+                                            <color key="tintColor" systemColor="systemRedColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="JFO-fp-lAy"/>
+                                                <constraint firstAttribute="width" constant="20" id="jtR-nD-9Wd"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JcC-xL-bBz">
+                                            <rect key="frame" x="52" y="42.5" width="271.5" height="14.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="7kA-Hd-8bO" firstAttribute="top" secondItem="yup-Kt-2uE" secondAttribute="top" constant="20" symbolic="YES" id="JTw-sF-g77"/>
-                                        <constraint firstItem="7kA-Hd-8bO" firstAttribute="leading" secondItem="yup-Kt-2uE" secondAttribute="leadingMargin" id="pog-OO-Hne"/>
-                                        <constraint firstItem="7kA-Hd-8bO" firstAttribute="trailing" secondItem="yup-Kt-2uE" secondAttribute="trailingMargin" id="unN-nL-jt3"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="7kA-Hd-8bO" secondAttribute="bottom" id="w4k-56-rjL"/>
+                                        <constraint firstAttribute="trailing" secondItem="JcC-xL-bBz" secondAttribute="trailing" constant="20" symbolic="YES" id="H4c-rd-LDY"/>
+                                        <constraint firstAttribute="bottom" secondItem="JcC-xL-bBz" secondAttribute="bottom" constant="20" symbolic="YES" id="Sde-09-LOt"/>
+                                        <constraint firstItem="JcC-xL-bBz" firstAttribute="firstBaseline" secondItem="EGf-jy-7or" secondAttribute="baseline" constant="16" symbolType="layoutAnchor" id="T6A-Un-bDr"/>
+                                        <constraint firstAttribute="trailing" secondItem="EGf-jy-7or" secondAttribute="trailing" constant="20" symbolic="YES" id="VP0-U8-KfD"/>
+                                        <constraint firstItem="bdN-7b-WWu" firstAttribute="leading" secondItem="yup-Kt-2uE" secondAttribute="leadingMargin" id="aLP-QP-R29"/>
+                                        <constraint firstItem="bdN-7b-WWu" firstAttribute="centerY" secondItem="yup-Kt-2uE" secondAttribute="centerY" id="hqJ-mS-miA"/>
+                                        <constraint firstItem="EGf-jy-7or" firstAttribute="leading" secondItem="bdN-7b-WWu" secondAttribute="trailing" multiplier="1.1" constant="8" symbolic="YES" id="jJh-Sl-8cL"/>
+                                        <constraint firstItem="JcC-xL-bBz" firstAttribute="leading" secondItem="bdN-7b-WWu" secondAttribute="trailing" multiplier="1.1" constant="8" symbolic="YES" id="ua6-9J-p1a"/>
+                                        <constraint firstItem="EGf-jy-7or" firstAttribute="top" secondItem="yup-Kt-2uE" secondAttribute="top" constant="20" symbolic="YES" id="vlI-w6-nSw"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="descriptionLabel" destination="yEn-96-axd" id="eWH-Sv-Vet"/>
-                                    <outlet property="idLabel" destination="rAb-iF-yCi" id="Cae-cK-y6I"/>
-                                    <outlet property="kudosEarnedLabel" destination="OxP-NR-vsh" id="OT6-dZ-ldx"/>
-                                    <outlet property="maxResolutionLabel" destination="cFd-8g-Xss" id="1xH-fY-GAx"/>
-                                    <outlet property="modelsServedLabel" destination="ljU-cy-XxU" id="NYs-xY-d79"/>
-                                    <outlet property="requestsCompletedLabel" destination="NrE-Z5-Xwk" id="yCS-Xj-8lh"/>
-                                    <outlet property="statusLabel" destination="9dL-IV-HBS" id="uol-Qy-Vsr"/>
-                                    <outlet property="uptimeLabel" destination="HU9-tF-kDL" id="0Cl-xh-14J"/>
-                                    <outlet property="workerNameLabel" destination="jON-it-Sfx" id="HIU-Yh-QWM"/>
+                                    <outlet property="idLabel" destination="JcC-xL-bBz" id="mew-T0-XsN"/>
+                                    <outlet property="onlineStatusLight" destination="bdN-7b-WWu" id="6sN-aM-RMP"/>
+                                    <outlet property="workerNameLabel" destination="EGf-jy-7or" id="BHk-1K-vNj"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -2171,7 +2085,9 @@ https://amiantos.net</string>
                             <outlet property="delegate" destination="24X-JU-ubV" id="Uz3-I3-7qg"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Your Workers" id="o8T-W8-ahf"/>
+                    <navigationItem key="navigationItem" title="Your Workers" id="o8T-W8-ahf">
+                        <barButtonItem key="rightBarButtonItem" title="Sort" image="flowchart" catalog="system" id="kL2-R8-DaQ"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HtK-Uz-Kyc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2186,7 +2102,7 @@ https://amiantos.net</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
                         <sections>
-                            <tableViewSection headerTitle="Stats" id="aZi-GG-UXq">
+                            <tableViewSection headerTitle="Kudos Stats" id="aZi-GG-UXq" userLabel="Kudos Stats">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="HYn-HR-aiT" detailTextLabel="bBu-Mw-aPP" style="IBUITableViewCellStyleValue1" id="jfN-av-6aa">
                                         <rect key="frame" x="20" y="38" width="374" height="43.5"/>
@@ -2195,7 +2111,7 @@ https://amiantos.net</string>
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Kudos Available" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="HYn-HR-aiT">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Available Kudos" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="HYn-HR-aiT">
                                                     <rect key="frame" x="20" y="12" width="119.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -2219,8 +2135,8 @@ https://amiantos.net</string>
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Kudos Accumulated" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="8Ss-Id-Klx">
-                                                    <rect key="frame" x="20" y="12" width="152" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Accumulated Total" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="8Ss-Id-Klx">
+                                                    <rect key="frame" x="20" y="12" width="141" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
@@ -2243,8 +2159,8 @@ https://amiantos.net</string>
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Kudos Rewards" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="fiX-sv-lMg">
-                                                    <rect key="frame" x="20" y="12" width="118" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Awarded to You" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="fiX-sv-lMg">
+                                                    <rect key="frame" x="20" y="12" width="119" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
@@ -2267,8 +2183,8 @@ https://amiantos.net</string>
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Kudos Gifted to You" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="71R-di-6wz">
-                                                    <rect key="frame" x="20" y="12" width="151.5" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Gifted to You" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="71R-di-6wz">
+                                                    <rect key="frame" x="20" y="12" width="99" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
@@ -2291,8 +2207,8 @@ https://amiantos.net</string>
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Kudos Given Away" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Oiw-zw-cwp">
-                                                    <rect key="frame" x="20" y="12" width="139.5" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Gifted to Others" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Oiw-zw-cwp">
+                                                    <rect key="frame" x="20" y="12" width="122.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
@@ -2315,8 +2231,8 @@ https://amiantos.net</string>
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Recurring Monthly Kudos" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="D05-jr-Bo1">
-                                                    <rect key="frame" x="20" y="12" width="192" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Monthly Award" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="D05-jr-Bo1">
+                                                    <rect key="frame" x="20" y="12" width="113" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
@@ -2332,8 +2248,12 @@ https://amiantos.net</string>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Generation Stats" id="DXA-8G-xJZ">
+                                <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="bg3-2K-dOT" detailTextLabel="t0f-l6-pxi" style="IBUITableViewCellStyleValue1" id="3i3-Wq-QUE">
-                                        <rect key="frame" x="20" y="299" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="355" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3i3-Wq-QUE" id="o6R-Wp-RVd">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
@@ -2356,12 +2276,36 @@ https://amiantos.net</string>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="AYH-SO-rYy" detailTextLabel="wPf-fu-gch" style="IBUITableViewCellStyleValue1" id="S3P-od-x2r">
+                                        <rect key="frame" x="20" y="398.5" width="374" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="S3P-od-x2r" id="TiH-gr-hDm">
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Images Generated" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="AYH-SO-rYy">
+                                                    <rect key="frame" x="20" y="12" width="140" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Loading..." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="wPf-fu-gch">
+                                                    <rect key="frame" x="279.5" y="12" width="74.5" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <color key="textColor" name="AccentColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Settings" id="WpR-HX-rwe">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="IWA-sh-34W" style="IBUITableViewCellStyleDefault" id="RQZ-au-NIV">
-                                        <rect key="frame" x="20" y="398.5" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="498" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RQZ-au-NIV" id="ATw-ga-uKO">
                                             <rect key="frame" x="0.0" y="0.0" width="343.5" height="43.5"/>
@@ -2381,7 +2325,7 @@ https://amiantos.net</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="OCm-oV-pLX" style="IBUITableViewCellStyleDefault" id="yeo-5y-L1A">
-                                        <rect key="frame" x="20" y="442" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="541.5" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yeo-5y-L1A" id="LmT-tj-ajk">
                                             <rect key="frame" x="0.0" y="0.0" width="343.5" height="43.5"/>
@@ -2401,7 +2345,7 @@ https://amiantos.net</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Jbk-dn-xhb" style="IBUITableViewCellStyleDefault" id="uET-bh-k5k">
-                                        <rect key="frame" x="20" y="485.5" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="585" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uET-bh-k5k" id="EUM-wm-0hN">
                                             <rect key="frame" x="0.0" y="0.0" width="343.5" height="43.5"/>
@@ -2435,6 +2379,7 @@ https://amiantos.net</string>
                         <outlet property="recurringKudosLabel" destination="6Rn-pL-KuU" id="Vb8-Mw-yBl"/>
                         <outlet property="totalImagesRequestedLabel" destination="t0f-l6-pxi" id="sAi-df-NW6"/>
                         <outlet property="totalKudosLabel" destination="bBu-Mw-aPP" id="6Gf-dD-UZj"/>
+                        <outlet property="workerGenerationsLabel" destination="wPf-fu-gch" id="pqz-I5-j2V"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rUP-UY-r9W" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -3465,9 +3410,11 @@ https://amiantos.net</string>
         <image name="brain.head.profile" catalog="system" width="120" height="128"/>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="chevron.right" catalog="system" width="97" height="128"/>
+        <image name="circle.fill" catalog="system" width="128" height="123"/>
         <image name="clear" catalog="system" width="128" height="114"/>
         <image name="dice.fill" catalog="system" width="128" height="120"/>
         <image name="eyedropper.halffull" catalog="system" width="128" height="118"/>
+        <image name="flowchart" catalog="system" width="128" height="126"/>
         <image name="heart.fill" catalog="system" width="128" height="107"/>
         <image name="lock.open" catalog="system" width="128" height="110"/>
         <image name="paperplane" catalog="system" width="128" height="119"/>

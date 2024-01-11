@@ -16,7 +16,8 @@ class YourAccountTableViewController: UITableViewController {
     @IBOutlet weak var recurringKudosLabel: UILabel!
     @IBOutlet weak var accumulatedKudosLabel: UILabel!
     @IBOutlet weak var kudosRewardsLabel: UILabel!
-
+    @IBOutlet weak var workerGenerationsLabel: UILabel!
+    
     @IBOutlet weak var logOutButtonLabel: UILabel!
     
     override func viewDidLoad() {
@@ -42,6 +43,8 @@ class YourAccountTableViewController: UITableViewController {
                 let recurringKudos = data.kudosDetails?.recurring ?? 0
                 let accumulatedKudos = data.kudosDetails?.accumulated ?? 0
                 let rewardedKudos = data.kudosDetails?.awarded
+                let generatedImages = data.contributions?.fulfillments ?? data.records?.fulfillment?.image ?? 0
+
                 DispatchQueue.main.async { [self] in
                     navigationItem.title = username
                     totalKudosLabel.text = totalKudos.formatted()
@@ -51,6 +54,7 @@ class YourAccountTableViewController: UITableViewController {
                     recurringKudosLabel.text = recurringKudos.formatted()
                     accumulatedKudosLabel.text = accumulatedKudos.formatted()
                     kudosRewardsLabel.text = rewardedKudos?.formatted()
+                    workerGenerationsLabel.text = generatedImages.formatted()
                 }
             }
         }
