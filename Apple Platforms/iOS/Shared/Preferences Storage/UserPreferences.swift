@@ -22,6 +22,7 @@ struct UserPreferences {
         static let allowNSFW = "allowNSFW"
         static let recentSettings = "recentSettings"
         static let autoCloseCreatePanel = "autoCloseCreatePanel"
+        static let favoriteModels = "favoriteModels"
     }
 
     static var standard: UserDefaults {
@@ -36,6 +37,7 @@ struct UserPreferences {
             Key.shareWithLaion: true,
             Key.recentSettings: "{}",
             Key.autoCloseCreatePanel: true,
+            Key.favoriteModels: [],
         ])
 
         return database
@@ -118,6 +120,15 @@ extension UserDefaults {
             from: string.data(using: .utf8)!
         )
     }
+
+    var favoriteModels: [String] {
+        return stringArray(forKey: UserPreferences.Key.favoriteModels) ?? []
+    }
+
+    func set(favoriteModels: [String]) {
+        set(favoriteModels, forKey: UserPreferences.Key.favoriteModels)
+    }
+
 }
 
 private extension UserDefaults {

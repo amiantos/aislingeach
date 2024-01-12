@@ -145,6 +145,8 @@
 		44C6B6D22A2337BC00C2F013 /* ImageDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6D12A2337BC00C2F013 /* ImageDatabase.swift */; };
 		44C6B6D52A233B0F00C2F013 /* ImageCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6D42A233B0F00C2F013 /* ImageCollectionViewController.swift */; };
 		44C6B6D72A233BFB00C2F013 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B6D62A233BFB00C2F013 /* ImageCollectionViewCell.swift */; };
+		44C7F7312B511E160075C8BB /* ModelsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C7F7302B511E160075C8BB /* ModelsTableViewCell.swift */; };
+		44C7F7342B5125E40075C8BB /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 44C7F7332B5125E40075C8BB /* Algorithms */; };
 		44D13DE62A330714004648CD /* GenerationTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D13DE52A330714004648CD /* GenerationTracker.swift */; };
 		44D331D92A23588800BE8DDF /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D331D82A23588800BE8DDF /* UserAgent.swift */; };
 		44D9A0322A89506100987546 /* WorkersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D9A0312A89506100987546 /* WorkersTableViewController.swift */; };
@@ -307,6 +309,7 @@
 		44C6B6D12A2337BC00C2F013 /* ImageDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDatabase.swift; sourceTree = "<group>"; };
 		44C6B6D42A233B0F00C2F013 /* ImageCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewController.swift; sourceTree = "<group>"; };
 		44C6B6D62A233BFB00C2F013 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		44C7F7302B511E160075C8BB /* ModelsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsTableViewCell.swift; sourceTree = "<group>"; };
 		44D13DE52A330714004648CD /* GenerationTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerationTracker.swift; sourceTree = "<group>"; };
 		44D331D82A23588800BE8DDF /* UserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgent.swift; sourceTree = "<group>"; };
 		44D9A0312A89506100987546 /* WorkersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkersTableViewController.swift; sourceTree = "<group>"; };
@@ -334,6 +337,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44C7F7342B5125E40075C8BB /* Algorithms in Frameworks */,
 				44142ACA2A25D0380096FFBA /* Cosmos in Frameworks */,
 				44C6B6942A228DFA00C2F013 /* Alamofire in Frameworks */,
 			);
@@ -622,6 +626,7 @@
 				447362DD2A2D6AA900823D0C /* ModelsCache.swift */,
 				44FCEFAF2A91830500B409A8 /* StylesTableViewController.swift */,
 				44FCEFB12A91834C00B409A8 /* StyleTableViewCell.swift */,
+				44C7F7302B511E160075C8BB /* ModelsTableViewCell.swift */,
 			);
 			path = Generator;
 			sourceTree = "<group>";
@@ -718,6 +723,7 @@
 			packageProductDependencies = (
 				44C6B6932A228DFA00C2F013 /* Alamofire */,
 				44142AC92A25D0380096FFBA /* Cosmos */,
+				44C7F7332B5125E40075C8BB /* Algorithms */,
 			);
 			productName = Aislingeach;
 			productReference = 441EB36C2A21DC1E00E449BE /* Aislingeach.app */;
@@ -750,6 +756,7 @@
 			packageReferences = (
 				44C6B6922A228DFA00C2F013 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				44142AC82A25D0380096FFBA /* XCRemoteSwiftPackageReference "Cosmos" */,
+				44C7F7322B5125E40075C8BB /* XCRemoteSwiftPackageReference "swift-algorithms" */,
 			);
 			productRefGroup = 441EB36D2A21DC1E00E449BE /* Products */;
 			projectDirPath = "";
@@ -897,6 +904,7 @@
 				44C6B64B2A228D8200C2F013 /* FilterDetails.swift in Sources */,
 				44C6B6862A228D8200C2F013 /* FilterRegex.swift in Sources */,
 				44C6B6742A228D8200C2F013 /* KaiUserIdBody.swift in Sources */,
+				44C7F7312B511E160075C8BB /* ModelsTableViewCell.swift in Sources */,
 				44C6B6392A228D8200C2F013 /* UserDetails.swift in Sources */,
 				44C6B6972A22ACE700C2F013 /* UserPreferences.swift in Sources */,
 				44C6B65C2A228D8200C2F013 /* ModelGenerationInputKobold.swift in Sources */,
@@ -1178,6 +1186,14 @@
 				version = 4.9.0;
 			};
 		};
+		44C7F7322B5125E40075C8BB /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1190,6 +1206,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 44C6B6922A228DFA00C2F013 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		44C7F7332B5125E40075C8BB /* Algorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 44C7F7322B5125E40075C8BB /* XCRemoteSwiftPackageReference "swift-algorithms" */;
+			productName = Algorithms;
 		};
 /* End XCSwiftPackageProductDependency section */
 
