@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/evgenyneu/Cosmos.git",
       "state" : {
-        "revision" : "cce521e734d0090494bd4afab5fd2e2f2465c1af",
-        "version" : "23.0.0"
+        "revision" : "1d722aefaba9eafa22e32da46ce473e051c4e445",
+        "version" : "24.0.0"
       }
     },
     {
