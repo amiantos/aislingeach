@@ -665,6 +665,9 @@ extension GeneratorViewController {
             } catch ErrorResponse.error(_, _, let knownError) {
                 self.generateButton.isEnabled = false
                 self.generateButtonLabel.text = "Error: \(knownError.message)"
+            } catch {
+                self.generateButton.isEnabled = false
+                self.generateButtonLabel.text = error.localizedDescription
             }
         }
     }
