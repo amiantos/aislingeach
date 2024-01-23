@@ -16,6 +16,20 @@ extension Error {
         switch err {
         case let ErrorResponse.error(code, _, _):
             return code
+        default:
+            return -1
+        }
+    }
+
+    var message: String {
+        guard let err = self as? ErrorResponse
+        else { return (self as NSError).localizedDescription }
+
+        switch err {
+        case .KnownError(let message):
+            return message
+        default:
+            return ""
         }
     }
 }

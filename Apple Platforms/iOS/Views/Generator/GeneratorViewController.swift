@@ -662,9 +662,9 @@ extension GeneratorViewController {
                     let adjustedImageCount = (currentGen.params?.n ?? 1) * requestCount
                     self.generateButtonLabel.text = "Kudos Cost: ~\(adjustedKudosEstimate) for \(adjustedImageCount) images, ~\(adjustedKudosEstimate / adjustedImageCount) per image"
                 }
-            } catch {
+            } catch ErrorResponse.error(_, _, let knownError) {
                 self.generateButton.isEnabled = false
-                self.generateButtonLabel.text = error.localizedDescription
+                self.generateButtonLabel.text = "Error: \(knownError.message)"
             }
         }
     }

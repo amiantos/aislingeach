@@ -12,6 +12,7 @@ protocol JSONEncodable {
 
 public enum ErrorResponse: Error {
     case error(Int, Data?, Error)
+    case KnownError(String)
 }
 
 open class Response<T> {
@@ -32,5 +33,12 @@ open class Response<T> {
             header[key] = value
         }
         self.init(statusCode: response.statusCode, header: header, body: body)
+    }
+}
+
+public class ResponseError: Codable {
+    public let message: String
+    public init(message: String) {
+        self.message = message
     }
 }
