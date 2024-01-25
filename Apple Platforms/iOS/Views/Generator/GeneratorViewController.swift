@@ -752,9 +752,6 @@ extension GeneratorViewController {
 
             if let model = style.model {
                 Log.debug("Set model from style: \(model)")
-                if model == "SDXL_beta::stability.ai#6901" {
-                    numberOfImages = 2
-                }
                 modelName = model
             }
 
