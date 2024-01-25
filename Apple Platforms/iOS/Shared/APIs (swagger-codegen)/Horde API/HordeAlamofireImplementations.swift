@@ -387,12 +387,10 @@ open class HordeAlamofireDecodableRequestBuilder<T: Decodable>: HordeAlamofireRe
                         if let message = try? JSONDecoder().decode(ResponseError.self, from: errorMessageData) {
                             Log.error(message.message)
                             completion(nil, ErrorResponse.error(dataResponse.response?.statusCode ?? 500, dataResponse.data, ErrorResponse.KnownError(message.message)))
+                            return
                         }
-                        return
                     }
-                    else {
-                         completion(nil, ErrorResponse.error(dataResponse.response?.statusCode ?? 500, dataResponse.data, dataResponse.result.error!))
-                    }
+                    completion(nil, ErrorResponse.error(dataResponse.response?.statusCode ?? 500, dataResponse.data, dataResponse.result.error!))
                     return
                 }
 
