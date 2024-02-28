@@ -12,26 +12,38 @@ public struct SharedKeyDetails: Codable {
     public var _id: String?
     /** The owning user&#x27;s unique Username. It is a combination of their chosen alias plus their ID. */
     public var username: String?
+    public var name: String?
     /** The Kudos limit assigned to this key */
     public var kudos: Int?
     /** The date at which this API key will expire. */
     public var expiry: Date?
     /** How mych kudos has been utilized via this shared key until now. */
     public var utilized: Int?
+    public var maxImagePixels: Int?
+    public var maxImageSteps: Int?
+    public var maxTextTokens: Int?
 
-    public init(_id: String? = nil, username: String? = nil, kudos: Int? = nil, expiry: Date? = nil, utilized: Int? = nil) {
+    public init(_id: String? = nil, username: String? = nil, name: String? = nil, kudos: Int? = nil, expiry: Date? = nil, utilized: Int? = nil, maxImagePixels: Int? = nil, maxImageSteps: Int? = nil, maxTextTokens: Int? = nil) {
         self._id = _id
         self.username = username
+        self.name = name
         self.kudos = kudos
         self.expiry = expiry
         self.utilized = utilized
+        self.maxImagePixels = utilized
+        self.maxImageSteps = utilized
+        self.maxTextTokens = utilized
     }
 
     public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case username
+        case name
         case kudos
         case expiry
         case utilized
+        case maxImagePixels = "max_image_pixels"
+        case maxImageSteps = "max_image_steps"
+        case maxTextTokens = "max_text_tokens"
     }
 }

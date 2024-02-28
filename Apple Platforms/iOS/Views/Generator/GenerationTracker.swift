@@ -66,17 +66,50 @@ class GenerationTracker {
         Task {
             if pendingCheckInProcess { return }
 
-//            Log.debug("Checking for a pending generation...")
             pendingCheckInProcess = true
-            let requests = await ImageDatabase.standard.fetchPendingRequests() ?? []
-            for request in requests {
-                guard let requestId = request.uuid?.uuidString.lowercased() else { return }
-                Log.debug("\(requestId) - Checking request status")
+            let requests = await ImageDatabase.standard.fetchActiveRequests() ?? []
 
+            if requests.count < 5 {
+                let unsubmittedRequests = await ImageDatabase.standard.fetchRequestsToSubmit(limit: 5 - requests.count) ?? []
+                for request in unsubmittedRequests {
+                    Log.info("Submitting new request for \(request.n) images...")
+                    guard let jsonString = request.fullRequest,
+                          let jsonData = jsonString.data(using: .utf8),
+                          let body = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData) else { continue }
+
+                    do {
+                        let result = try await HordeV2API.postImageAsyncGenerate(body: body, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent())
+                        var prunedRequestBody = body
+                        prunedRequestBody.sourceImage = "[true]"
+                        if let generationIdentifier = result._id {
+                            ImageDatabase.standard.updateRequestWithUUID(hordeRequest: request, uuid: UUID(uuidString: generationIdentifier)!) { _ in
+                                Log.info("\(generationIdentifier) - Request submitted successfully.")
+                            }
+                        }
+                    } catch {
+                        if error.code == 401 {
+                            _ = await ImageDatabase.standard.updatePendingRequestErrorState(request: request, message: "401 - Invalid API key")
+                        } else if error.code == 403, body.models!.contains("SDXL_beta::stability.ai#6901") {
+                            _ = await ImageDatabase.standard.updatePendingRequestErrorState(request: request, message: "403 - Anonymous users cannot use the SDXL beta.")
+                        } else if error.code == 403 {
+                            _ = await ImageDatabase.standard.updatePendingRequestErrorState(request: request, message: "403 - Generation request was rejected by the server.")
+                        } else {
+                            // Otherwise we ignore the error
+                            Log.error("Unhandled error: \(error.code) \(error.localizedDescription)")
+                        }
+                    }
+                }
+            }
+
+            for request in requests {
+                guard let requestId = request.uuid?.uuidString.lowercased() else {
+                    fatalError("Received a pending request without a UUID, this shouldn't happen.")
+                }
+                Log.info("\(requestId) - Checking request status")
                 do {
                     if request.status == "active" {
+                        sleep(1)
                         let data = try await HordeV2API.getImageAsyncCheck(_id: requestId, clientAgent: hordeClientAgent())
-                        Log.debug("\(data)")
 
                         guard await ImageDatabase.standard.updatePendingRequest(
                             request: request,
@@ -86,7 +119,7 @@ class GenerationTracker {
                         }
 
                         guard data.done ?? false else { continue }
-                        Log.debug("\(requestId) - Horde says done!")
+                        Log.info("\(requestId) - Horde says done!")
                         await self.saveFinishedGenerations(request: request)
                     } else if request.status == "downloading" {
                         let pendingDownloads = await ImageDatabase.standard.getPendingDownloads(for: request)
@@ -116,7 +149,6 @@ class GenerationTracker {
         Task {
             if downloadingInProgress { return }
 
-//            Log.debug("Checking for a pending downloads...")
             downloadingInProgress = true
             let downloads = await ImageDatabase.standard.fetchPendingDownloads() ?? []
             for download in downloads {
@@ -131,7 +163,7 @@ class GenerationTracker {
                        fullResponse: download.fullResponse!
                    )
                 {
-                    Log.debug("\(requestId) - Successfully saved image ID \(generatedImage.uuid!)")
+                    Log.info("\(requestId) - Successfully saved image ID \(generatedImage.uuid!)")
                     ImageDatabase.standard.deletePendingDownload(download)
                 }
             }
@@ -147,12 +179,11 @@ class GenerationTracker {
 
         do {
             let data = try await HordeV2API.getImageAsyncStatus(_id: requestId, clientAgent: hordeClientAgent())
-            Log.debug("\(data)")
 
             guard data.done ?? false, let generations = data.generations, !generations.isEmpty else {
                 throw TrackerException.NoGenerationsFound
             }
-            for generation in generations where !(generation.censored ?? false) {
+            for generation in generations {
                 guard let urlString = generation.img,
                       let imageUrl = URL(string: urlString),
                       let pendingDownload = await ImageDatabase.standard.savePendingDownload(
@@ -179,27 +210,9 @@ class GenerationTracker {
         Log.info("Submitting a new generation request...")
 
         delegate?.showUpdate(type: .update, message: "Sending your dream...")
-
-        HordeV2API.postImageAsyncGenerate(body: body, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
-            if let data = data, let generationIdentifier = data._id {
-                Log.debug("\(data)")
-                ImageDatabase.standard.saveRequest(id: UUID(uuidString: generationIdentifier)!, request: body) { _ in
-                    Log.debug("\(generationIdentifier) - Request saved successfully.")
-                }
-                self.delegate?.showUpdate(type: .success, message: "Dream was sent successfully!")
-            } else if let error = error {
-                Log.debug("Error: \(error.localizedDescription)")
-                if error.code == 401 {
-                    self.delegate?.showUpdate(type: .error, message: "401 - Invalid API key")
-                } else if error.code == 500 {
-                    self.delegate?.showUpdate(type: .error, message: "500 - Could not connect to server, try again?")
-                } else if error.code == 403, body.models!.contains("SDXL_beta::stability.ai#6901") {
-                    self.delegate?.showUpdate(type: .error, message: "403 - Anonymous users cannot use the SDXL beta.")
-                } else if error.code == 403 {
-                    self.delegate?.showUpdate(type: .error, message: "403 - Generation request was rejected by the server.")
-                } else {
-                    self.delegate?.showUpdate(type: .error, message: error.localizedDescription)
-                }
+        ImageDatabase.standard.saveNewRequest(request: body) { hordeRequest in
+            if hordeRequest != nil {
+                self.delegate?.showUpdate(type: .success, message: "Dream was queued successfully!")
             }
         }
     }

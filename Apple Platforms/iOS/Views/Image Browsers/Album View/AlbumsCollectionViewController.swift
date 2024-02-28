@@ -11,17 +11,22 @@ import UIKit
 
 private let reuseIdentifier = "albumCell"
 
-class AlbumStruct {
-    let count: String
+enum AlbumType {
+    case normal
+    case keyword
+}
+
+class Album {
     let predicate: NSPredicate
     let title: String
-    let image: GeneratedImage?
+    var count: Int?
+    var generatedImage: GeneratedImage?
 
-    init(count: String, predicate: NSPredicate, title: String, image: GeneratedImage?) {
-        self.count = count
+    init( predicate: NSPredicate, title: String, count: Int? = nil, generatedImage: GeneratedImage? = nil) {
         self.predicate = predicate
         self.title = title
-        self.image = image
+        self.count = count
+        self.generatedImage = generatedImage
     }
 }
 
@@ -30,10 +35,13 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
 
     var isLoading: Bool = false
 
-    var presetAlbums: [AlbumStruct] = []
-    var promptAlbums: [AlbumStruct] = []
+    var presetAlbums: [Album] = []
+    var promptAlbums: [Album] = []
+    var smartAlbums: [Album] = []
 
     var menuButton: UIBarButtonItem = .init()
+
+    var infoCache: [String: (Int, GeneratedImage?)] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,9 +55,16 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
             // setup menu
             menuButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: nil)
             navigationItem.rightBarButtonItems = [menuButton]
-            menuButton.menu = UIMenu(children: [UIAction(title: "Show hidden gallery", image: UIImage(systemName: "eye.slash"), state: .off, handler: { [self] _ in
-                showHiddenGallery()
-            })])
+            menuButton.menu = UIMenu(children: [
+                UIAction(
+                    title: "Show hidden gallery",
+                    image: UIImage(systemName: "eye.slash"),
+                    state: .off,
+                    handler: { [self] _ in
+                        showHiddenGallery()
+                    }
+                )
+            ])
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(loadDataSource), name: .imageDatabaseUpdated, object: nil)
@@ -84,44 +99,56 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
         if isLoading { return }
 
         isLoading = true
+        Task {
+            let recentsResult = await ImageDatabase.standard.getCountAndRecentImageForPredicate(predicate: NSPredicate(format: "isHidden = %d", self.showHidden))
+            let favoritesResult = await ImageDatabase.standard.getCountAndRecentImageForPredicate(predicate:NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "isFavorite = %d", true),
+                NSPredicate(format: "isHidden = %d", self.showHidden)
+            ]))
+            presetAlbums = [
+                Album(
+                    predicate: NSPredicate(format: "isHidden = %d", self.showHidden),
+                    title: "Recents",
+                    count: recentsResult.0,
+                    generatedImage: recentsResult.1
+                ),
+                Album(
+                    predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [
+                        NSPredicate(format: "isFavorite = %d", true),
+                        NSPredicate(format: "isHidden = %d", self.showHidden)
+                    ]),
+                    title: "Favorites",
+                    count: favoritesResult.0,
+                    generatedImage: favoritesResult.1
+                )
+            ]
+            smartAlbums = []
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
 
-        presetAlbums = []
-        promptAlbums = []
+            let result = await ImageDatabase.standard.getPopularPromptKeywords(hidden: self.showHidden)
+            let sortedResults = result.sorted { lhs, rhs in
+                return lhs.key.replacingOccurrences(of: "(", with: "").lowercased() < rhs.key.replacingOccurrences(of: "(", with: "").lowercased()
+            }
 
-        ImageDatabase.standard.getCountAndRecentImageForPredicate(predicate: NSPredicate(format: "isHidden = %d", showHidden)) { result in
-            self.presetAlbums.append(AlbumStruct(count: "\((result.0).formatted())", predicate: NSPredicate(format: "isHidden = %d", self.showHidden), title: "Recents", image: result.1))
-        }
 
-        ImageDatabase.standard.getCountAndRecentImageForPredicate(predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "isFavorite = %d", true), NSPredicate(format: "isHidden = %d", showHidden)])) { result in
-            self.presetAlbums.append(AlbumStruct(count: "\((result.0).formatted())", predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "isFavorite = %d", true), NSPredicate(format: "isHidden = %d", self.showHidden)]), title: "Favorites", image: result.1))
-        }
-
-        // Do any additional setup after loading the view.
-        DispatchQueue.global().async { [self] in
-            ImageDatabase.standard.getPopularPromptKeywords(hidden: showHidden) { [self] keywords in
-                let sortedResults = keywords.sorted { lhs, rhs in
-                    if lhs.value == rhs.value {
-                        return lhs.key.lowercased() < rhs.key.lowercased()
-                    }
-                    return lhs.value > rhs.value
-                }
-
-                for data in sortedResults {
-                    promptAlbums.append(
-                        AlbumStruct(
-                            count: "\(data.value.formatted())",
-                            predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "promptSimple CONTAINS %@", data.key), NSPredicate(format: "isHidden = %d", showHidden)]),
-                            title: data.key,
-                            image: nil
-                        )
+            for data in sortedResults {
+                smartAlbums.append(
+                    Album(
+                        predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "promptSimple CONTAINS %@", data.key), NSPredicate(format: "isHidden = %d", self.showHidden)]),
+                        title: data.key
                     )
-                }
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                    self.isLoading = false
-                }
+                )
+            }
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+                self.isLoading = false
             }
         }
+
+        self.collectionView.reloadData()
+        self.isLoading = false
     }
 
     // MARK: UICollectionViewDataSource
@@ -136,7 +163,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
         case 0:
             return presetAlbums.count
         case 1:
-            return promptAlbums.count
+            return smartAlbums.count
         default:
             return 0
         }
@@ -163,7 +190,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
             }
             switch indexPath.section {
             case 1:
-                sectionHeader.sectionLabel.text = promptAlbums.count > 0 ? "Prompt Keywords" : ""
+                sectionHeader.sectionLabel.text = smartAlbums.count > 0 ? "Recent Phrases" : ""
             default:
                 sectionHeader.sectionLabel.text = "Section \(indexPath.section)"
             }
@@ -174,27 +201,28 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "albumCell", for: indexPath) as! AlbumCollectionViewCell
+
+        var album: Album?
         if indexPath.section == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "albumCell", for: indexPath) as! AlbumCollectionViewCell
-
-            let data = presetAlbums[indexPath.row]
-            cell.setup(count: data.count, predicate: data.predicate, title: data.title, image: data.image)
-
-            return cell
+            album = presetAlbums[indexPath.row]
+        } else {
+            album = smartAlbums[indexPath.row]
         }
-
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "simpleAlbumCell", for: indexPath) as! AlbumSimpleCollectionViewCell
-
-        let data = promptAlbums[indexPath.row]
-        cell.setup(count: data.count, predicate: data.predicate, title: data.title)
-
+        guard let foundAlbum = album else { fatalError() }
+        cell.setup(album: foundAlbum)
         return cell
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let albumCell = cell as? AlbumCollectionViewCell else { return }
+        albumCell.willDisplay()
     }
 
     override func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "imageGalleryView") as! ThumbnailBrowserViewController
-        let data = indexPath.section == 0 ? presetAlbums[indexPath.row] : promptAlbums[indexPath.row]
+        let data = indexPath.section == 0 ? presetAlbums[indexPath.row] : smartAlbums[indexPath.row]
         controller.setup(title: data.title, predicate: data.predicate)
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -211,7 +239,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cell = self.collectionView(collectionView, cellForItemAt: indexPath)
 
-        let itemsPerRow: CGFloat = indexPath.section == 0 ? 2 : 1
+        let itemsPerRow: CGFloat = 2
         let widthPerItem = (collectionView.safeAreaLayoutGuide.layoutFrame.width - 1) / itemsPerRow
         return cell.systemLayoutSizeFitting(CGSize(width: widthPerItem, height: UIView.layoutFittingExpandedSize.height),
                                             withHorizontalFittingPriority: .required, // Width is fixed

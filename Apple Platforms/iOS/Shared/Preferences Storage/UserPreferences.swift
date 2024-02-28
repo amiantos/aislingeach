@@ -19,9 +19,10 @@ struct UserPreferences {
         static let slowWorkers = "slowWorkers"
         static let trustedWorkers = "trustedWorkers"
         static let shareWithLaion = "shareWithLaion"
-        static let debugMode = "debugMode"
+        static let allowNSFW = "allowNSFW"
         static let recentSettings = "recentSettings"
         static let autoCloseCreatePanel = "autoCloseCreatePanel"
+        static let favoriteModels = "favoriteModels"
     }
 
     static var standard: UserDefaults {
@@ -32,10 +33,11 @@ struct UserPreferences {
             Key.ratingImages: 0,
             Key.slowWorkers: true,
             Key.trustedWorkers: true,
-            Key.debugMode: false,
+            Key.allowNSFW: false,
             Key.shareWithLaion: true,
             Key.recentSettings: "{}",
             Key.autoCloseCreatePanel: true,
+            Key.favoriteModels: [],
         ])
 
         return database
@@ -83,12 +85,12 @@ extension UserDefaults {
         return bool(forKey: UserPreferences.Key.trustedWorkers)
     }
 
-    func set(debugMode: Bool) {
-        set(debugMode, forKey: UserPreferences.Key.debugMode)
+    func set(allowNSFW: Bool) {
+        set(allowNSFW, forKey: UserPreferences.Key.allowNSFW)
     }
 
-    var debugMode: Bool {
-        return bool(forKey: UserPreferences.Key.debugMode)
+    var allowNSFW: Bool {
+        return bool(forKey: UserPreferences.Key.allowNSFW)
     }
 
     func set(shareWithLaion: Bool) {
@@ -108,18 +110,25 @@ extension UserDefaults {
     }
 
     func set(recentSettings: GenerationInputStable) {
-        Log.debug("Setting: \(recentSettings.toJSONString())")
         set(recentSettings.toJSONString(), forKey: UserPreferences.Key.recentSettings)
     }
 
     var recentSettings: GenerationInputStable? {
         guard let string = string(forKey: UserPreferences.Key.recentSettings) else { return nil }
-        Log.debug("Fetching: \(string)")
         return try? JSONDecoder().decode(
             GenerationInputStable.self,
             from: string.data(using: .utf8)!
         )
     }
+
+    var favoriteModels: [String] {
+        return stringArray(forKey: UserPreferences.Key.favoriteModels) ?? []
+    }
+
+    func set(favoriteModels: [String]) {
+        set(favoriteModels, forKey: UserPreferences.Key.favoriteModels)
+    }
+
 }
 
 private extension UserDefaults {

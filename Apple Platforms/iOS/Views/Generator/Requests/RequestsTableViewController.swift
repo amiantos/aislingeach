@@ -70,6 +70,7 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
         let fetchRequest = NSFetchRequest<HordeRequest>(entityName: "HordeRequest")
         // Configure the request's entity, and optionally its predicate
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
+        fetchRequest.fetchBatchSize = 30
 
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: ImageDatabase.standard.mainManagedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         resultsController = controller
@@ -170,11 +171,17 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
      */
 
     override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let request = resultsController?.object(at: indexPath) else { fatalError("Attempt to select a row without an object") }
+        guard let request = resultsController?.object(at: indexPath) as? HordeRequest else { fatalError("Attempt to select a row without an object") }
+        guard let requestId = request.uuid, request.status == "finished" else {
+            if let cell = tableView.cellForRow(at: indexPath) {
+                cell.setSelected(false, animated: true)
+            }
+            return
+        }
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "imageGalleryView") as! ThumbnailBrowserViewController
-        controller.setup(title: request.prompt ?? request.uuid?.uuidString ?? "", predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "requestId = %@", request.uuid! as CVarArg), NSPredicate(format: "isHidden = %d", false)]))
+        controller.setup(title: request.prompt ?? request.uuid?.uuidString ?? "", predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "requestId = %@", requestId as CVarArg), NSPredicate(format: "isHidden = %d", false)]))
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -183,15 +190,10 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
         if editingStyle == .delete {
             guard let request = resultsController?.object(at: indexPath) else { fatalError("Attempt to delete a row without an object") }
 
-            if request.status == "error" || request.status == "done" {
+            if request.status == "error" || request.status == "done" || request.status == "active" {
                 ImageDatabase.standard.deleteRequest(request, pruneImages: false) { request in
                     if request != nil { fatalError("Deleting request did not work?") }
                 }
-            } else if request.status == "active" {
-                let alert = UIAlertController(title: "Delete Refused", message: "This sleeper is still dreaming, you can't delete it yet, sorry.", preferredStyle: .alert)
-                let cancelAction = UIAlertAction(title: "Oh... weird, okay", style: .cancel)
-                alert.addAction(cancelAction)
-                present(alert, animated: true)
             } else {
                 let alert = UIAlertController(title: "Delete Dream", message: "This will clear this dream from your history, optionally you may \"prune\" any images you have not hidden or favorited from this dream.", preferredStyle: .alert)
                 let deleteImagesAction = UIAlertAction(title: "Prune images", style: .destructive) { _ in

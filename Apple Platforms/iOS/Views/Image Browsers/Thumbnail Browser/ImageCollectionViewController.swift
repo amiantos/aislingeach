@@ -248,6 +248,7 @@ extension ThumbnailBrowserViewController {
         let fetchRequest = NSFetchRequest<GeneratedImage>(entityName: "GeneratedImage")
         // Configure the request's entity, and optionally its predicate
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
+        fetchRequest.fetchBatchSize = 30
 
         fetchRequest.predicate = viewPredicate
 

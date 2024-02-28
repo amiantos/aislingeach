@@ -16,7 +16,7 @@ class ModelsCache {
         cache.setObject(models as NSArray, forKey: "default")
     }
 
-    func get() -> [ActiveModel]? {
+    func getModels() -> [ActiveModel]? {
         if let cached = cache.object(forKey: "default") as? [ActiveModel] {
             return cached
         }
