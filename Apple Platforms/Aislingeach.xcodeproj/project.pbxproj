@@ -468,6 +468,7 @@
 		446E609C2A68980C0073D545 /* Requests */ = {
 			isa = PBXGroup;
 			children = (
+				44D13DE52A330714004648CD /* GenerationTracker.swift */,
 				446E609D2A6898770073D545 /* RequestsTableViewController.swift */,
 				446E609F2A6898930073D545 /* RequestsTableViewCell.swift */,
 			);
@@ -598,7 +599,7 @@
 				444AFB432AB642D700900524 /* EditTextFieldViewController.swift */,
 				444AFB452AB689B500900524 /* EditLimitFieldViewController.swift */,
 				446E609C2A68980C0073D545 /* Requests */,
-				44C6B69D2A22B10500C2F013 /* Generator */,
+				44C6B69D2A22B10500C2F013 /* Old Generator */,
 				44C6B6D32A233AF500C2F013 /* Image Browsers */,
 				44C6B6A62A232E4800C2F013 /* Rating */,
 				44C6B69C2A22B0FD00C2F013 /* Account */,
@@ -617,10 +618,9 @@
 			path = Account;
 			sourceTree = "<group>";
 		};
-		44C6B69D2A22B10500C2F013 /* Generator */ = {
+		44C6B69D2A22B10500C2F013 /* Old Generator */ = {
 			isa = PBXGroup;
 			children = (
-				44D13DE52A330714004648CD /* GenerationTracker.swift */,
 				441EB3732A21DC1E00E449BE /* GeneratorViewController.swift */,
 				447362DB2A2D49CE00823D0C /* ModelsTableViewController.swift */,
 				447362DD2A2D6AA900823D0C /* ModelsCache.swift */,
@@ -628,7 +628,7 @@
 				44FCEFB12A91834C00B409A8 /* StyleTableViewCell.swift */,
 				44C7F7302B511E160075C8BB /* ModelsTableViewCell.swift */,
 			);
-			path = Generator;
+			path = "Old Generator";
 			sourceTree = "<group>";
 		};
 		44C6B6A62A232E4800C2F013 /* Rating */ = {
