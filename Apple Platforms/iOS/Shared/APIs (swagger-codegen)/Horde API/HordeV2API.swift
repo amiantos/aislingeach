@@ -9,7 +9,7 @@ import Alamofire
 import Foundation
 
 open class HordeClientAPI {
-    public static var basePath = "https://stablehorde.net/api"
+    public static var basePath = "https://aihorde.net/api"
     public static var credential: URLCredential?
     public static var customHeaders: [String: String] = [:]
     public static var requestBuilderFactory: HordeRequestBuilderFactory = HordeAlamofireRequestBuilderFactory()
