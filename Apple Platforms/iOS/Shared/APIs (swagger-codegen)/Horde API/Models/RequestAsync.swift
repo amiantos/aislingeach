@@ -11,11 +11,11 @@ public struct RequestAsync: Codable {
     /** The UUID of the request. Use this to retrieve the request status in the future */
     public var _id: String?
     /** The expected kudos consumption for this request. */
-    public var kudos: Int?
+    public var kudos: Float?
     /** Any extra information from the horde about this request */
     public var message: String?
 
-    public init(_id: String? = nil, kudos: Int? = nil, message: String? = nil) {
+    public init(_id: String? = nil, kudos: Float? = nil, message: String? = nil) {
         self._id = _id
         self.kudos = kudos
         self.message = message

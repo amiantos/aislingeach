@@ -16,6 +16,20 @@ extension Error {
         switch err {
         case let ErrorResponse.error(code, _, _):
             return code
+        default:
+            return -1
+        }
+    }
+
+    var message: String {
+        guard let err = self as? ErrorResponse
+        else { return (self as NSError).localizedDescription }
+
+        switch err {
+        case .KnownError(let message):
+            return message
+        default:
+            return ""
         }
     }
 }
@@ -240,5 +254,30 @@ extension CGPoint {
         let x = origin.x + radius * cos(newAzimuth)
         let y = origin.y + radius * sin(newAzimuth)
         return CGPoint(x: x, y: y)
+    }
+}
+
+func convertBase64StringToImage (imageBase64String:String) -> UIImage {
+    let imageData = Data(base64Encoded: imageBase64String)
+    let image = UIImage(data: imageData!)
+    return image!
+}
+
+extension UIImage {
+    func resized(withPercentage percentage: CGFloat, isOpaque: Bool = true) -> UIImage? {
+        let canvas = CGSize(width: size.width * percentage, height: size.height * percentage)
+        let format = imageRendererFormat
+        format.opaque = isOpaque
+        return UIGraphicsImageRenderer(size: canvas, format: format).image {
+            _ in draw(in: CGRect(origin: .zero, size: canvas))
+        }
+    }
+    func resized(toWidth width: CGFloat, isOpaque: Bool = true) -> UIImage? {
+        let canvas = CGSize(width: width, height: CGFloat(ceil(width/size.width * size.height)))
+        let format = imageRendererFormat
+        format.opaque = isOpaque
+        return UIGraphicsImageRenderer(size: canvas, format: format).image {
+            _ in draw(in: CGRect(origin: .zero, size: canvas))
+        }
     }
 }

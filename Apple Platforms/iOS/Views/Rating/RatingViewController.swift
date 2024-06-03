@@ -8,14 +8,24 @@
 import Cosmos
 import UIKit
 
-class RatingViewController: UIViewController {
+class RatingViewController: UIViewController, UIScrollViewDelegate {
     var currentImageIdentifier: String?
     var currentImageIdentifierAssociatedApiKey: String?
 
+    @IBAction func addAPIKeyButtonAction(_ sender: UIButton) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "addAPIKeyNavController") as! UINavigationController
+        controller.modalPresentationStyle = .pageSheet
+        controller.isModalInPresentation = true
+        present(controller, animated: true)
+    }
+
+    @IBOutlet weak var loggedOutContentView: UIView!
     @IBOutlet var startMessageView: UIStackView!
     @IBOutlet var tenStarsView: CosmosView!
     @IBOutlet var sixStarsView: CosmosView!
     @IBOutlet var imageContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var imageScrollView: UIScrollView!
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var ratingButton: UIButton!
     @IBOutlet var loadingMessageTitleLabel: UILabel!
@@ -41,6 +51,8 @@ class RatingViewController: UIViewController {
         submitRating()
     }
 
+    var defaultScale = 1.0
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -53,90 +65,99 @@ class RatingViewController: UIViewController {
 
         updateStatLabels()
 
+        imageScrollView.minimumZoomScale = 0.01
+        imageScrollView.maximumZoomScale = 6.0
+
         loadingMessageSubtitleLabel.text = ""
 
         imageContainerHeightConstraint.constant = view.frame.width
         tenStarsView.didTouchCosmos = { [self] rating in
-            setRatingLabel(rating: Int(rating))
             checkIfEnableRatingButton()
         }
         sixStarsView.didTouchCosmos = { [self] rating in
-            setArtifactLabel(rating: Int(rating))
             checkIfEnableRatingButton()
         }
         sixStarsView.didFinishTouchingCosmos = { [self] rating in
-            setArtifactLabel(rating: Int(rating))
             checkIfEnableRatingButton()
         }
         tenStarsView.didFinishTouchingCosmos = { [self] rating in
-            setRatingLabel(rating: Int(rating))
             checkIfEnableRatingButton()
         }
+
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(doubleTapAction))
+        doubleTapGesture.numberOfTapsRequired = 2
+        imageScrollView.addGestureRecognizer(doubleTapGesture)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(setup), name: .newAPIKeySubmitted, object: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        checkIfAnonymousUser()
+        setup()
     }
 
-    func checkIfAnonymousUser() {
+    @objc func setup() {
         if UserPreferences.standard.apiKey == "0000000000" {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let controller = storyboard.instantiateViewController(withIdentifier: "addAPIKeyNavController") as! UINavigationController
-            controller.modalPresentationStyle = .pageSheet
-            controller.isModalInPresentation = true
-            present(controller, animated: true)
+            loggedOutContentView.isHidden = false
+        } else {
+            loggedOutContentView.isHidden = true
         }
+    }
+
+    @objc func doubleTapAction(gesture: UITapGestureRecognizer) {
+        // TODO: Would be awesome if this recongized tap location on image and zoomed to into that area
+        if gesture.state == UIGestureRecognizer.State.ended {
+            if imageScrollView.zoomScale != defaultScale {
+                imageScrollView.setZoomScale(defaultScale, animated: true)
+            } else {
+                imageScrollView.setZoomScale(1.0, animated: true)
+            }
+        }
+    }
+
+    func resetZoom() {
+        setScale()
+        imageScrollView.setZoomScale(defaultScale, animated: true)
+    }
+
+    func setScale() {
+        if imageView.intrinsicContentSize.width != 0 {
+            let scaleWidth = imageScrollView.bounds.width / imageView.intrinsicContentSize.width
+            let scaleHeight = imageScrollView.safeAreaLayoutGuide.layoutFrame.height / imageView.intrinsicContentSize.height
+            let scale = min(scaleWidth, scaleHeight)
+
+            imageScrollView.minimumZoomScale = scale
+            imageScrollView.zoomScale = scale
+            defaultScale = scale
+
+            setContentOffset()
+        }
+    }
+
+    func setContentOffset() {
+        let scaledHeight = imageView.intrinsicContentSize.height * imageScrollView.zoomScale
+        let scaledWidth = imageView.intrinsicContentSize.width * imageScrollView.zoomScale
+        var offsetY = 0.0
+        var offsetX = 0.0
+        if scaledHeight < imageScrollView.safeAreaLayoutGuide.layoutFrame.height {
+            offsetY = max((imageScrollView.safeAreaLayoutGuide.layoutFrame.height - scaledHeight) * 0.5, 0)
+        }
+        if scaledWidth < imageScrollView.safeAreaLayoutGuide.layoutFrame.width {
+            offsetX = max((imageScrollView.safeAreaLayoutGuide.layoutFrame.width - scaledWidth) * 0.5, 0)
+        }
+        imageScrollView.contentInset = UIEdgeInsets(top: offsetY, left: offsetX, bottom: offsetY, right: offsetX)
+    }
+
+    func viewForZooming(in _: UIScrollView) -> UIView? {
+        return imageView
+    }
+
+    func scrollViewDidZoom(_: UIScrollView) {
+        setContentOffset()
     }
 }
 
 extension RatingViewController {
-    func setRatingLabel(rating: Int) {
-        switch Int(rating) {
-        case 1:
-            ratingLabel.text = "1 - Worst"
-        case 2:
-            ratingLabel.text = "2 - Terrible"
-        case 3:
-            ratingLabel.text = "3 - Very Bad"
-        case 4:
-            ratingLabel.text = "4 - Rather Bad"
-        case 5:
-            ratingLabel.text = "5 - OK"
-        case 6:
-            ratingLabel.text = "6 - Not Bad"
-        case 7:
-            ratingLabel.text = "7 - Rather Good"
-        case 8:
-            ratingLabel.text = "8 - Very Good"
-        case 9:
-            ratingLabel.text = "9 - Excellent"
-        case 10:
-            ratingLabel.text = "10 - The Best"
-        default:
-            ratingLabel.text = " "
-        }
-    }
-
-    func setArtifactLabel(rating: Int) {
-        switch Int(rating) {
-        case 1:
-            artifactRatingLabel.text = "1 - Complete Mess"
-        case 2:
-            artifactRatingLabel.text = "2 - Serious Issues"
-        case 3:
-            artifactRatingLabel.text = "3 - Minor Issues"
-        case 4:
-            artifactRatingLabel.text = "4 - Noticable Flaws"
-        case 5:
-            artifactRatingLabel.text = "5 - Small Errors"
-        case 6:
-            artifactRatingLabel.text = "6 - Flawless"
-        default:
-            artifactRatingLabel.text = " "
-        }
-    }
-
     func grabImageToRate() {
         startLoadingSpinner()
         RatingsV1API.getDefaultDatasetImagePop(apikey: UserPreferences.standard.apiKey) { data, error in
@@ -145,9 +166,12 @@ extension RatingViewController {
                 self.setNewImageToRate(imageResponse: data)
             } else if let error = error {
                 if error.code == 403 {
-                    self.setErrorState(message: "Unauthorized - Check your API key!")
+                    self.setErrorState(message: "Invalid API key, please check your API key and try again.")
+                } else {
+                    self.setErrorState(message: "\(error.localizedDescription)")
                 }
-                self.setErrorState(message: "\(error)")
+            } else {
+                self.setErrorState(message: "This shouldn't happen...")
             }
         }
     }
@@ -157,26 +181,28 @@ extension RatingViewController {
         currentImageIdentifierAssociatedApiKey = UserPreferences.standard.apiKey
         Log.info("\(String(describing: currentImageIdentifier)) - New image to rate received, downloading image...")
         if let urlString = imageResponse.url, let imageUrl = URL(string: urlString) {
-            DispatchQueue.global().async {
-                if let data = try? Data(contentsOf: imageUrl), let image = UIImage(data: data) {
-                    DispatchQueue.main.async { [self] in
-                        UIView.animate(withDuration: 0.3) {
-                            self.view.layoutIfNeeded()
-                            self.imageView.image = image
-                            self.imageView.isHidden = false
-                            self.sixStarsView.rating = 0
-                            self.tenStarsView.rating = 0
-                            self.ratingLabel.text = " "
-                            self.artifactRatingLabel.text = " "
-                            self.submitRatingButton.isEnabled = false
-                            self.hideLoadingDisplay()
-                            Log.info("\(String(describing: self.currentImageIdentifier)) - Image loaded.")
-                        }
-                    }
+            Task {
+                let request = URLRequest(url: imageUrl)
+                let (data, response) = try await URLSession.shared.data(for: request)
+                guard (response as? HTTPURLResponse)?.statusCode == 200, let image = UIImage(data: data) else {
+                    setErrorState(message: "Unable to load image from URL.")
+                    return
+                }
+                DispatchQueue.main.async { [self] in
+                    self.view.layoutIfNeeded()
+                    self.imageView.image = image
+                    self.setScale()
+                    self.imageView.isHidden = false
+                    self.imageScrollView.isHidden = false
+                    self.sixStarsView.rating = 0
+                    self.tenStarsView.rating = 0
+                    self.submitRatingButton.isEnabled = false
+                    submitRatingButton.setTitle("Submit", for: .normal)
+                    submitRatingButton.setImage(UIImage(systemName: "paperplane"), for: .normal)
+                    self.hideLoadingDisplay()
+                    Log.info("\(String(describing: self.currentImageIdentifier)) - Image loaded.")
                 }
             }
-        } else {
-            setErrorState(message: "Unable to load image URL.")
         }
     }
 
@@ -203,13 +229,18 @@ extension RatingViewController {
                     self.updateStatLabels()
                     self.grabImageToRate()
                 } else if let error = error {
-                    self.setErrorState(message: "\(error)")
+                    if error.code == 401 {
+                        self.setErrorState(message: "Invalid API key, please check your API key and try again.")
+                    } else {
+                        self.setErrorState(message: "Unable to grab the image, please retry? (\(error.localizedDescription))")
+                    }
                 }
             }
         }
     }
 
     func startLoadingSpinner() {
+        submitRatingButton.isEnabled = false
         startMessageView.isHidden = true
         loadingMessageContainer.isHidden = false
         loadingMessageTitleLabel.text = ""
@@ -226,6 +257,10 @@ extension RatingViewController {
         loadingMessageTitleLabel.text = "Error"
         loadingMessageActivityIndicator.stopAnimating()
         loadingMessageSubtitleLabel.text = message
+
+        submitRatingButton.setTitle("Retry", for: .normal)
+        submitRatingButton.setImage(UIImage(systemName: "arrow.uturn.backward"), for: .normal)
+        submitRatingButton.isEnabled = true
     }
 
     func checkIfEnableRatingButton() {

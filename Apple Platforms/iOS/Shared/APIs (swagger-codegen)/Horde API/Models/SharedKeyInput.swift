@@ -14,8 +14,11 @@ public struct SharedKeyInput: Codable {
     public var expiry: Int?
     /** A descriptive name for this key */
     public var name: String?
+    public var max_image_pixels: Int?
+    public var max_image_steps: Int?
+    public var max_text_tokens: Int?
 
-    public init(kudos: Int? = nil, expiry: Int? = nil, name: String? = nil) {
+    public init(kudos: Int? = nil, expiry: Int? = nil, name: String? = nil, max_image_pixels: Int? = nil, max_image_steps: Int? = nil, max_text_tokens: Int? = nil) {
         self.kudos = kudos
         self.expiry = expiry
         self.name = name

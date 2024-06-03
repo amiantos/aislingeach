@@ -15,11 +15,73 @@ class GeneratorViewController: UIViewController {
     var kudosEstimateTimer: Timer?
     var saveGenerationSettingsTimer: Timer?
 
+    var currentSelectedStyleTitle: String?
+    var currentSelectedStyle: Style?
+
     var firstLaunch: Bool = true
 
     weak var generationTracker: GenerationTracker? {
         didSet {
             generationTracker?.delegate = self
+        }
+    }
+
+    let defaultSettings = [
+        GenerationInputStable(prompt: "Jane Eyre with headphones, natural skin texture, 24mm, 4k textures, soft cinematic light, adobe lightroom, photolab, hdr, intricate, elegant, highly detailed, sharp focus, (cinematic look:1.2), soothing tones, insane details, intricate details, hyperdetailed, low contrast, soft cinematic light, dim colors, exposure blend, hdr, faded ### (deformed, distorted, disfigured:1.3), poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, (mutated hands and fingers:1.4), disconnected limbs, mutation, mutated, ugly, disgusting, blurry, amputation", params: ModelGenerationInputStable(samplerName: .kEuler, cfgScale: 9.0, height: 1024, width: 768, karras: true, hiresFix: true, clipSkip: 1, steps: 20, n: 4), models: ["Deliberate"]),
+        GenerationInputStable(prompt: "end of the world, epic realistic, (hdr:1.4), (muted colors:1.4), apocalypse, freezing, abandoned, neutral colors, night, screen space refractions, (intricate details), (intricate details, hyperdetailed:1.2), artstation, cinematic shot, vignette, complex background, buildings, snowy ### poorly drawn", params: ModelGenerationInputStable(samplerName: .kEuler, cfgScale: 9.0, height: 768, width: 1024, karras: true, hiresFix: false, clipSkip: 1, steps: 20, n: 4), models: ["Deliberate"]),
+        GenerationInputStable(prompt: "medical mask, victorian era, cinematography, intricately detailed, crafted, meticulous, magnificent, maximum details, extremely hyper aesthetic ### deformed, bad anatomy, disfigured, poorly drawn face, mutation, mutated, extra limb, ugly, disgusting, poorly drawn hands, missing limb, floating limbs, disconnected limbs, malformed hands, blurry, (mutated hands and fingers:1.2), watermark, watermarked, oversaturated, censored, distorted hands, amputation, missing hands, obese, doubled face, double hands, b&w, black and white, sepia, flowers, roses", params: ModelGenerationInputStable(samplerName: .kEuler, cfgScale: 9.0, height: 1024, width: 768, karras: true, hiresFix: false, clipSkip: 1, steps: 20, n: 4), models: ["Deliberate"]),
+
+    ]
+
+    var imageToImageImage: UIImage? {
+        didSet {
+            Log.debug("Got image...")
+            if let image = imageToImageImage {
+                imageToImagePreviewImageView.image = image
+                imageToImagePreviewImageView.isHidden = false
+                pasteImageButton.setTitle("Remove Image", for: .normal)
+                controlTypeButton.isEnabled = true
+                imageIsControlMapButton.isEnabled = true
+                returnControlMapButton.isEnabled = true
+                denoisStrengthSlider.isEnabled = true
+
+                let imageWidth: Float = Float(image.size.width / 64)
+                let imageHeight: Float = Float(image.size.height / 64)
+                Log.debug("Width: \(imageWidth) Height: \(imageHeight)")
+                let aspectRatio: Float = imageWidth / imageHeight
+                Log.debug("Aspect: \(aspectRatio)")
+
+                var finalWidth: Int = Int(imageWidth)
+                var finalHeight: Int = Int(imageHeight)
+                if imageWidth > 32 && imageHeight > 32 {
+                    if imageWidth > imageHeight {
+                        finalWidth = 32
+                        finalHeight = Int(Float(32) / aspectRatio)
+                    } else {
+                        finalHeight = 32
+                        finalWidth = Int(Float(32) * aspectRatio)
+                    }
+                } else if imageWidth > 32 {
+                    finalWidth = 32
+                    finalHeight = Int(Float(32) / aspectRatio)
+                } else if imageHeight > 32 {
+                    finalHeight = 32
+                    finalWidth = Int(Float(32) * aspectRatio)
+                }
+
+                widthSlider.setValue(Float(finalWidth), animated: false)
+                heightSlider.setValue(Float(finalHeight), animated: false)
+                generationSettingsUpdated()
+            } else {
+                imageToImagePreviewImageView.isHidden = true
+                imageToImagePreviewImageView.image = nil
+                pasteImageButton.setTitle("Paste Image or URL", for: .normal)
+                controlTypeButton.isEnabled = false
+                imageIsControlMapButton.isEnabled = false
+                returnControlMapButton.isEnabled = false
+                denoisStrengthSlider.isEnabled = false
+                generationSettingsUpdated()
+            }
         }
     }
 
@@ -44,6 +106,11 @@ class GeneratorViewController: UIViewController {
 
     @IBOutlet var promptTextViewContainerView: UIView!
     @IBOutlet var promptTextView: UITextView!
+
+    @IBOutlet weak var negativePromptContainerView: UIView!
+    @IBOutlet weak var negativePromptTextView: UITextView!
+
+    @IBOutlet weak var styleButton: UIButton!
 
     @IBOutlet var stepsSlider: UISlider!
     @IBOutlet var stepsLabel: UILabel!
@@ -136,13 +203,26 @@ class GeneratorViewController: UIViewController {
         imageQuantitySliderLabel.text = "\(Int(sender.value))"
         generationSettingsUpdated()
     }
+    @IBOutlet weak var requestQuantitySlider: UISlider!
+    @IBOutlet weak var requestQuantitySliderLabel: UILabel!
+    @IBAction func requestQuantitySliderChanged(_ sender: UISlider) {
+        requestQuantitySliderLabel.text = "\(Int(sender.value))"
+        generationSettingsUpdated()
+    }
 
     @IBOutlet var generateButton: UIButton!
     @IBAction func generateButtonPressed(_: UIButton) {
         promptTextView.resignFirstResponder()
+        negativePromptTextView.resignFirstResponder()
         if let generationBody = createGeneratonBodyForCurrentSettings() {
             generateButton.isEnabled = false
-            generationTracker?.createNewGenerationRequest(body: generationBody)
+            for _ in 1...Int(requestQuantitySlider.value) {
+                generationTracker?.createNewGenerationRequest(body: generationBody)
+            }
+            generateButton.isEnabled = true
+            if UserPreferences.standard.autoCloseCreatePanel {
+                navigationController?.dismiss(animated: true)
+            }
         }
     }
 
@@ -183,7 +263,7 @@ class GeneratorViewController: UIViewController {
 
     @IBOutlet var trustedWorkersButton: UIButton!
     @IBAction func trustedWorkersButtonAction(_ sender: UIButton) {
-        UserPreferences.standard.set(trustedWorkers: sender.isSelected)
+        UserPreferences.standard.set(trustedWorkers: !sender.isSelected)
         generationSettingsUpdated()
     }
 
@@ -201,6 +281,12 @@ class GeneratorViewController: UIViewController {
         }
     }
 
+    @IBOutlet weak var allowNSFWButton: UIButton!
+    @IBAction func allowNSFWButtonAction(_ sender: UIButton) {
+        UserPreferences.standard.set(allowNSFW: sender.isSelected)
+        generationSettingsUpdated()
+    }
+
     @IBAction func seedTextFieldEditingDidBegin(_: UITextField) {
         randomSeedButton.isSelected = false
     }
@@ -216,6 +302,74 @@ class GeneratorViewController: UIViewController {
         UserPreferences.standard.set(autoCloseCreatePanel: sender.isSelected)
     }
 
+    @IBOutlet weak var controlTypeButton: UIButton!
+
+    @IBOutlet weak var denoisStrengthSlider: UISlider!
+    @IBOutlet weak var denoiseStrengthSliderLabelLabel: UILabel!
+    @IBOutlet weak var denoiseStrengthSliderLabel: UILabel!
+    @IBAction func denoisStrengthSliderChanged(_ sender: UISlider) {
+        denoiseStrengthSliderLabel.text = "\(round(sender.value * 100) / 100.0)"
+        generationSettingsUpdated()
+    }
+
+    @IBOutlet weak var imageToImagePreviewImageView: UIImageView!
+    @IBOutlet weak var pasteImageStackView: UIStackView!
+    @IBOutlet weak var pasteImageButton: UIButton!
+    @IBAction func pasteImageButtonAction(_ sender: UIButton) {
+        if imageToImageImage != nil {
+            let alert = UIAlertController(title: "Clear Image?", message: "Are you sure you want to clear this image?", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "No", style: .cancel)
+            let confirmAction = UIAlertAction(title: "Yes", style: .destructive) { _ in
+                self.imageToImageImage = nil
+            }
+            alert.addAction(cancelAction)
+            alert.addAction(confirmAction)
+            self.present(alert, animated: true)
+        } else {
+            pasteImageButton.isEnabled = false
+            pasteImageButton.setTitle("Please wait...", for: .disabled)
+            DispatchQueue.global().async {
+                if let string = UIPasteboard.general.string,
+                   let url = URL(string: string),
+                   let imageData = try? Data(contentsOf: url),
+                   let image = UIImage(data: imageData) {
+                    DispatchQueue.main.async {
+                        self.imageToImageImage = image
+                        self.pasteImageButton.isEnabled = true
+                    }
+                } else if let image = UIPasteboard.general.image {
+                    Log.debug("Got image from clipboard")
+                    DispatchQueue.main.async {
+                        self.imageToImageImage = image
+                        self.pasteImageButton.isEnabled = true
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.pasteImageButton.isEnabled = true
+                        let alert = UIAlertController(title: "Paste Error", message: "Did not find any content in the clipboard suitable for pasting.", preferredStyle: .alert)
+                        let alertAction = UIAlertAction(title: "Oh, okay...", style: .cancel)
+                        alert.addAction(alertAction)
+                        self.present(alert, animated: true)
+                        self.pasteImageButton.setTitle("Paste Image or URL", for: .normal)
+                    }
+                }
+            }
+        }
+    }
+    @IBOutlet weak var returnControlMapButton: UIButton!
+    @IBOutlet weak var imageIsControlMapButton: UIButton!
+
+    @IBAction func resetButtonAction(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "Reset to Default?", message: "Reset all generation settings to their defaults? A randomized prompt will also be supplied.", preferredStyle: .alert)
+        let yesAction = UIAlertAction(title: "Yes", style: .destructive) { _ in
+            self.loadSettingsIntoUI(settings: self.defaultSettings.randomElement()!, seed: nil)
+        }
+        let noAction = UIAlertAction(title: "No", style: .default)
+        alert.addAction(noAction)
+        alert.addAction(yesAction)
+        present(alert, animated: true)
+    }
+
     // MARK: - View Setup
 
     override func viewDidLoad() {
@@ -223,7 +377,10 @@ class GeneratorViewController: UIViewController {
 
         navigationController?.navigationBar.prefersLargeTitles = true
 
-        let recentSettings = UserPreferences.standard.recentSettings
+        var recentSettings = UserPreferences.standard.recentSettings
+        if recentSettings == nil {
+            recentSettings = self.defaultSettings[0]
+        }
 
         hideKeyboardWhenTappedAround()
 
@@ -234,8 +391,8 @@ class GeneratorViewController: UIViewController {
         samplerPickButton.changesSelectionAsPrimaryAction = true
 
         slowWorkersButton.isSelected = UserPreferences.standard.slowWorkers
-        trustedWorkersButton.isSelected = UserPreferences.standard.trustedWorkers
-//        debugModeButton.isSelected = UserPreferences.standard.debugMode
+        trustedWorkersButton.isSelected = !UserPreferences.standard.trustedWorkers
+        allowNSFWButton.isSelected = UserPreferences.standard.allowNSFW
         shareButton.isSelected = UserPreferences.standard.shareWithLaion
         closeCreatePanelAutomaticallyButton.isSelected = UserPreferences.standard.autoCloseCreatePanel
 
@@ -243,6 +400,9 @@ class GeneratorViewController: UIViewController {
 
         promptTextView.layer.cornerRadius = 5
         promptTextViewContainerView.layer.cornerRadius = 5
+
+        negativePromptTextView.layer.cornerRadius = 5
+        negativePromptContainerView.layer.cornerRadius = 5
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -264,6 +424,8 @@ class GeneratorViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         if segue.identifier == "openModelsViewSegue", let destinationView = segue.destination as? ModelsTableViewController {
             destinationView.delegate = self
+        } else if segue.identifier == "openStylesViewSegue", let destinationView = segue.destination as? StylesTableViewController {
+            destinationView.delegate = self
         }
     }
 }
@@ -272,6 +434,20 @@ class GeneratorViewController: UIViewController {
 
 extension GeneratorViewController {
     func loadSettingsIntoUI(settings: GenerationInputStable?, seed: String?) {
+        if let imageString = settings?.sourceImage {
+            let image = convertBase64StringToImage(imageBase64String: imageString)
+            imageToImageImage = image
+        } else {
+            imageToImageImage = nil
+        }
+
+        selectedStyle(title: "None", style: nil)
+
+        let denoiseStrength = settings?.params?.denoisingStrength ?? 0.75
+        let denoiseFloat = Float(truncating: denoiseStrength as NSNumber)
+        denoiseStrengthSliderLabel.text = "\(denoiseStrength)"
+        denoisStrengthSlider.setValue(denoiseFloat, animated: false)
+
         let initialWidth = ((settings?.params?.width) != nil) ? (settings?.params?.width)! / 64 : 8
         let initialHeight = ((settings?.params?.height) != nil) ? (settings?.params?.height)! / 64 : 8
         widthSlider.setValue(Float(initialWidth), animated: false)
@@ -281,6 +457,34 @@ extension GeneratorViewController {
         modelPickButton.setTitle(selectedModel, for: .normal)
 
         // setup button?
+        let controlTypeOptions: [String] = [
+            "None",
+            "canny",
+            "hed",
+            "depth",
+            "normal",
+            "openpose",
+            "seg",
+            "scribble",
+            "fakescribbles",
+            "hough",
+        ]
+        let controlTypeMenuChildren: [UIAction] = {
+            var actions: [UIAction] = []
+            controlTypeOptions.forEach { option in
+                let state: UIMenuElement.State = settings?.params?.controlType?.rawValue == option ? .on : .off
+                actions.append(UIAction(title: option, state: state, handler: { _ in
+                    self.generationSettingsUpdated()
+                }))
+            }
+
+            return actions
+        }()
+        controlTypeButton.menu = UIMenu(children: controlTypeMenuChildren)
+        controlTypeButton.showsMenuAsPrimaryAction = true
+        controlTypeButton.changesSelectionAsPrimaryAction = true
+
+
         let upscalerOptions: [String] = [
             "No Upscaler",
             "RealESRGAN_x4plus",
@@ -294,7 +498,6 @@ extension GeneratorViewController {
             upscalerOptions.forEach { option in
                 var state: UIMenuElement.State = .off
                 if let postProcessing = settings?.params?.postProcessing {
-                    Log.debug(postProcessing)
                     state = postProcessing.contains(where: { opt in
                         opt == ModelGenerationInputStable.PostProcessing(rawValue: option)
                     }) ? .on : .off
@@ -333,6 +536,8 @@ extension GeneratorViewController {
             return actions
         }()
         samplerPickButton.menu = UIMenu(children: samplerMenuChildren)
+        samplerPickButton.showsMenuAsPrimaryAction = true
+        samplerPickButton.changesSelectionAsPrimaryAction = true
 
         if let recentGuidance = settings?.params?.cfgScale {
             let floatScale = Float(truncating: recentGuidance as NSNumber)
@@ -378,17 +583,40 @@ extension GeneratorViewController {
             faceFixStrengthLabel.text = "\(faceFixStrength)"
             faceFixerStrengthSlider.setValue(float, animated: false)
         }
-        promptTextView.text = settings?.prompt ?? "temple in ruins, forest, stairs, columns, cinematic, detailed, atmospheric, epic, concept art, Matte painting, background, mist, photo-realistic, concept art, volumetric light, cinematic epic + rule of thirds octane render, 8k, corona render, movie concept art, octane render, cinematic, trending on artstation, movie concept art, cinematic composition, ultra-detailed, realistic, hyper-realistic, volumetric lighting, 8k"
+
+        if let prompt = settings?.prompt {
+            let splitPrompt = prompt.components(separatedBy: "###")
+            if let positivePrompt = splitPrompt.first {
+                promptTextView.text = positivePrompt.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+            if splitPrompt.first != splitPrompt.last, let negativePrompt = splitPrompt.last {
+                negativePromptTextView.text = negativePrompt.trimmingCharacters(in: .whitespacesAndNewlines)
+            } else {
+                negativePromptTextView.text = ""
+            }
+        } else {
+            promptTextView.text = "temple in ruins, forest, stairs, columns, cinematic, detailed, atmospheric, epic, concept art, Matte painting, background, mist, photo-realistic, concept art, volumetric light, cinematic epic + rule of thirds octane render, 8k, corona render, movie concept art, octane render, cinematic, trending on artstation, movie concept art, cinematic composition, ultra-detailed, realistic, hyper-realistic, volumetric lighting, 8k"
+            negativePromptTextView.text = "bad quality, worst quality"
+        }
 
         if selectedModel == "SDXL_beta::stability.ai#6901" {
             imageQuantitySlider.setValue(2.0, animated: false)
+            requestQuantitySlider.setValue(1.0, animated: false)
         } else if let seed = seed {
             seedTextField.text = seed
             randomSeedButton.isSelected = false
             imageQuantitySlider.setValue(1.0, animated: false)
+            requestQuantitySlider.setValue(1.0, animated: false)
         } else {
             imageQuantitySlider.setValue(Float(settings?.params?.n ?? 1), animated: false)
+            requestQuantitySlider.setValue(1.0, animated: false)
         }
+
+        let returnControlMap = settings?.params?.returnControlMap ?? false
+        returnControlMapButton.isSelected = returnControlMap
+
+        let imageIsControlMap = settings?.params?.imageIsControl ?? false
+        imageIsControlMapButton.isSelected = imageIsControlMap
 
         generationSettingsUpdated()
     }
@@ -401,6 +629,7 @@ extension GeneratorViewController {
         })
 
         kudosEstimateTimer?.invalidate()
+        self.generateButton.isEnabled = false
         if customWait == 1 {
             generateButtonLabel.text = "Updating Kudos Estimate..."
             statusLabel.text = "Loading your total Kudos..."
@@ -415,30 +644,44 @@ extension GeneratorViewController {
     }
 
     func saveGenerationSettings() {
-        guard let settings = createGeneratonBodyForCurrentSettings() else { return }
+        guard let settings = createGeneratonBodyForCurrentSettings(ignoreStyle: true) else { return }
         UserPreferences.standard.set(recentSettings: settings)
     }
 
     func fetchAndDisplayKudosEstimate() {
         guard let currentGen = createGeneratonBodyForCurrentSettings(dryRun: true) else { return }
-        DispatchQueue.global().async {
-            HordeV2API.postImageAsyncGenerate(body: currentGen, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent()) { data, error in
-                if let data = data, let kudosEstimate = data.kudos {
-                    Log.debug(data)
-                    DispatchQueue.main.async {
-                        self.generateButtonLabel.text = "Estimated Kudos Cost: ~\(kudosEstimate) total, ~\(kudosEstimate / (currentGen.params?.n ?? 1)) per image"
-                    }
-                } else if let error = error {
-                    Log.error(error)
+        Task(priority: .userInitiated) {
+            do {
+                let result = try await HordeV2API.postImageAsyncGenerate(body: currentGen, apikey: UserPreferences.standard.apiKey, clientAgent: hordeClientAgent())
+                Log.debug("Kudos estimate result: \(result)")
+                let kudosEstimate = result.kudos ?? 0
+                DispatchQueue.main.async {
+                    self.generateButton.isEnabled = true
+                    let requestCount = Int(self.requestQuantitySlider.value)
+                    let adjustedKudosEstimate = Int(kudosEstimate) * requestCount
+                    let adjustedImageCount = (currentGen.params?.n ?? 1) * requestCount
+                    self.generateButtonLabel.text = "Kudos Cost: ~\(adjustedKudosEstimate) for \(adjustedImageCount) images, ~\(adjustedKudosEstimate / adjustedImageCount) per image"
                 }
+            } catch ErrorResponse.error(_, _, let knownError) {
+                self.generateButton.isEnabled = false
+                self.generateButtonLabel.text = "Error: \(knownError.message)"
+            } catch {
+                self.generateButton.isEnabled = false
+                self.generateButtonLabel.text = error.localizedDescription
             }
         }
     }
 
-    func createGeneratonBodyForCurrentSettings(dryRun: Bool = false) -> GenerationInputStable? {
-        guard let generationText = promptTextView.text, generationText != "" else { return nil }
-        let currentDimensions = getCurrentWidthAndHeight()
-        let samplerString = samplerPickButton.menu?.selectedElements[0].title ?? "k_euler_a"
+    func createGeneratonBodyForCurrentSettings(dryRun: Bool = false, ignoreStyle: Bool = false) -> GenerationInputStable? {
+        let promptText = promptTextView.text ?? ""
+        let negativePrompt = negativePromptTextView.text ?? ""
+
+        var generationText = negativePrompt.isEmpty ? promptText : "\(promptText) ### \(negativePrompt)"
+
+        var currentDimensions = getCurrentWidthAndHeight()
+
+        var samplerString = samplerPickButton.menu?.selectedElements[0].title ?? "k_euler_a"
+
         let samplerName = ModelGenerationInputStable.SamplerName(rawValue: samplerString)
 
         var postprocessing: [ModelGenerationInputStable.PostProcessing]? = []
@@ -462,10 +705,77 @@ extension GeneratorViewController {
         var seed: String? = seedTextField.text ?? ""
         if let seedCheck = seed, seedCheck.isEmpty { seed = nil }
 
+        var modelName = modelPickButton.titleLabel?.text ?? "stable_diffusion"
+
+        var sourceImage: String? = nil
+        var controlType: ModelGenerationInputStable.ControlType? = nil
+        let denoisingStrength: Decimal = Decimal(round(Double(denoisStrengthSlider.value) * 100.0) / 100.0)
+        var sourceProcessing: GenerationInputStable.SourceProcessing? = nil
+        if let image = imageToImageImage?.resized(toWidth: CGFloat(64 * currentDimensions.0)) {
+            sourceImage = image.jpegData(compressionQuality: 1)?.base64EncodedString()
+            sourceProcessing = .img2img
+            if let controlTypeString = controlTypeButton.menu?.selectedElements[0].title {
+                controlType = ModelGenerationInputStable.ControlType(rawValue: controlTypeString)
+            }
+        }
+
+        let imageIsControl = imageIsControlMapButton.isEnabled ? imageIsControlMapButton.isSelected : false
+        let returnControlMap = returnControlMapButton.isEnabled ? returnControlMapButton.isSelected : false
+
+        var steps = Int(stepsSlider.value)
+        var cfgScale = Decimal(Int(guidanceSlider.value))
+
+        var loras: [ModelPayloadLorasStable]? = nil
+
+        var numberOfImages = Int(imageQuantitySlider.value)
+
+        if !ignoreStyle, let style = currentSelectedStyle {
+            if let styleSteps = style.steps {
+                Log.debug("Set steps from style \(styleSteps)")
+                steps = styleSteps
+            }
+
+            if let styleCfg = style.cfg_scale {
+                Log.debug("Set cfg from style \(styleCfg)")
+                cfgScale = styleCfg
+            }
+
+            generationText = style.prompt.replacingOccurrences(of: "{p}", with: promptText)
+            if negativePrompt.isEmpty {
+                generationText = generationText.replacingOccurrences(of: "{np},", with: "")
+                generationText = generationText.replacingOccurrences(of: "{np}", with: "")
+            } else if generationText.contains("###") {
+                generationText = generationText.replacingOccurrences(of: "{np}", with: negativePrompt)
+            } else {
+                generationText = generationText.replacingOccurrences(of: "{np}", with: " ### \(negativePrompt)")
+            }
+
+            if let model = style.model {
+                Log.debug("Set model from style: \(model)")
+                modelName = model
+            }
+
+            if let string = style.samplerName {
+                Log.debug("Set sampler from style: \(string)")
+                samplerString = string
+            }
+
+            if let width = style.width, let height = style.height {
+                Log.debug("Set dimensions from style: \(width/64) x \(height/64)")
+                currentDimensions = (width/64, height/64)
+            }
+
+            if let styleLoras = style.loras {
+                Log.debug("Set loras from style: \(styleLoras)")
+                loras = styleLoras
+            }
+
+        }
+
         let modelParams = ModelGenerationInputStable(
             samplerName: samplerName,
-            cfgScale: Decimal(Int(guidanceSlider.value)),
-            denoisingStrength: 0.75,
+            cfgScale: cfgScale,
+            denoisingStrength: denoisingStrength,
             seed: seed,
             height: 64 * currentDimensions.1,
             width: 64 * currentDimensions.0,
@@ -475,26 +785,27 @@ extension GeneratorViewController {
             tiling: tilingToggleButton.isSelected,
             hiresFix: hiresFixToggleButton.isSelected,
             clipSkip: Int(clipSkipSlider.value),
-            controlType: nil,
-            imageIsControl: false,
-            returnControlMap: nil,
+            controlType: controlType,
+            imageIsControl: imageIsControl,
+            returnControlMap: returnControlMap,
             facefixerStrength: Decimal(round(Double(faceFixerStrengthSlider.value) * 100.0) / 100.0),
-            loras: nil,
-            steps: Int(stepsSlider.value),
-            n: Int(imageQuantitySlider.value)
+            loras: loras,
+            steps: steps,
+            n: numberOfImages
         )
+
         let input = GenerationInputStable(
             prompt: generationText,
             params: modelParams,
-            nsfw: UserPreferences.standard.debugMode,
+            nsfw: UserPreferences.standard.allowNSFW,
             trustedWorkers: UserPreferences.standard.trustedWorkers,
             slowWorkers: UserPreferences.standard.slowWorkers,
-            censorNsfw: !UserPreferences.standard.debugMode,
+            censorNsfw: !UserPreferences.standard.allowNSFW,
             workers: nil,
             workerBlacklist: nil,
-            models: [modelPickButton.titleLabel?.text ?? "stable_diffusion"],
-            sourceImage: nil,
-            sourceProcessing: nil,
+            models: [modelName],
+            sourceImage: sourceImage,
+            sourceProcessing: sourceProcessing,
             sourceMask: nil,
             r2: true,
             shared: UserPreferences.standard.shareWithLaion,
@@ -518,6 +829,7 @@ extension GeneratorViewController {
         aspectRatioButton.sizeToFit()
 
         imageQuantitySliderLabel.text = "\(Int(imageQuantitySlider.value))"
+        requestQuantitySliderLabel.text = "\(Int(requestQuantitySlider.value))"
     }
 
     func loadUserKudos() {
@@ -555,9 +867,6 @@ extension GeneratorViewController: GenerationTrackerDelegate {
         if type == .success || type == .error {
             generateButton.isEnabled = true
             generationSettingsUpdated(customWait: 2)
-            if UserPreferences.standard.autoCloseCreatePanel && type == .success {
-                navigationController?.dismiss(animated: true)
-            }
         }
     }
 }
@@ -577,6 +886,17 @@ extension GeneratorViewController: ModelsTableViewControllerDelegate {
         } else {
             imageQuantitySlider.isEnabled = true
         }
+        generationSettingsUpdated()
+    }
+}
+
+// MARK: - Style Picker
+
+extension GeneratorViewController: StylesTableViewControllerDelegate {
+    func selectedStyle(title: String, style: Style?) {
+        styleButton.setTitle(title, for: .normal)
+        currentSelectedStyleTitle = title
+        currentSelectedStyle = style
         generationSettingsUpdated()
     }
 }

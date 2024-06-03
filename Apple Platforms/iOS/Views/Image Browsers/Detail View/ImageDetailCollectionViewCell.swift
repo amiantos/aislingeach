@@ -94,19 +94,18 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
     func setup(object: GeneratedImage, metaDataViewIsHidden: Bool) {
         generatedImage = object
 
-        DispatchQueue.main.async { [self] in
-            if let cachedImage = ImageCache.standard.getImage(key: NSString(string: "\(object.id)")) {
-                Log.debug("Reloading cached UIImage...")
-                imageView.image = cachedImage
-            } else if let objImage = object.image, let image = UIImage(data: objImage) {
-                imageView.image = image
-                ImageCache.standard.cacheImage(image: image, key: NSString(string: "\(object.id)"))
-            }
-            setScale()
+        if let cachedImage = ImageCache.standard.getImage(key: NSString(string: "\(object.id)")) {
+            Log.debug("Reloading cached UIImage...")
+            imageView.image = cachedImage
+        } else if let objImage = object.image, let image = UIImage(data: objImage) {
+            imageView.image = image
+            ImageCache.standard.cacheImage(image: image, key: NSString(string: "\(object.id)"))
         }
 
         scrollView.minimumZoomScale = 0.01
         scrollView.maximumZoomScale = 6.0
+
+        setScale()
 
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(doubleTapAction))
         doubleTapGesture.numberOfTapsRequired = 2
@@ -149,8 +148,12 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
             requestResponse = response
         }
 
-        if let fullRequest = generatedImage?.fullRequest {
-            let jsonData = Data(fullRequest.utf8)
+        if let fullRequest = generatedImage?.fullRequest,
+           let jsonData = fullRequest.data(using: .utf8),
+           let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData) {
+            var prunedSettings = settings
+            prunedSettings.sourceImage = prunedSettings.sourceImage != nil ? "[true]" : nil
+            let jsonData = Data(prunedSettings.toJSONString().utf8)
             requestDetailsTextView.text = jsonData.printJson()
         }
 
@@ -244,7 +247,6 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
             let scaleHeight = scrollView.safeAreaLayoutGuide.layoutFrame.height / imageView.intrinsicContentSize.height
             let scale = min(scaleWidth, scaleHeight)
 
-            Log.debug("Scale: \(scale)")
             scrollView.minimumZoomScale = scale
             scrollView.zoomScale = scale
             defaultScale = scale

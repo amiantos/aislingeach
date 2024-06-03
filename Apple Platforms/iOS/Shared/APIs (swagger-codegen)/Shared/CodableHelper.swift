@@ -38,6 +38,7 @@ open class CodableHelper {
                     "yyyy-MM-dd'T'HH:mm:ss.SSS",
                     "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
                     "yyyy-MM-dd HH:mm:ss",
+                    "EEE, dd MMM yyyy HH:mm:ssZ",
                 ].map { (format: String) -> DateFormatter in
                     let formatter = DateFormatter()
                     formatter.locale = Locale(identifier: "en_US_POSIX")
