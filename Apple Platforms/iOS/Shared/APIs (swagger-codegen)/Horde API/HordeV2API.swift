@@ -2108,7 +2108,6 @@ open class HordeV2API {
     open class func postImageAsyncGenerate(body: GenerationInputStable, apikey: String, clientAgent: String? = nil, xFields: String? = nil) async throws -> RequestAsync {
         return try await withCheckedThrowingContinuation { continuation in
             postImageAsyncGenerateWithRequestBuilder(body: body, apikey: apikey, clientAgent: clientAgent, xFields: xFields).execute { response, error in
-                Log.debug(error)
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else {
