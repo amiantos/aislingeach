@@ -1167,7 +1167,6 @@
                     <navigationItem key="navigationItem" title="Your Dreams" id="svT-vJ-9rv"/>
                     <connections>
                         <outlet property="clearRequestHistoryButton" destination="XgC-5S-1TA" id="7eb-39-YmB"/>
-                        <outlet property="createNewRequestButton" destination="bJs-sJ-a1u" id="2dd-PZ-f33"/>
                         <outlet property="footerView" destination="BU0-og-PHY" id="paA-QY-LeX"/>
                         <outlet property="headerView" destination="xAG-h1-35v" id="3tj-am-YZD"/>
                         <outlet property="introductionView" destination="aSd-rc-ltp" id="iX5-bf-hD7"/>
@@ -1252,10 +1251,10 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xAG-h1-35v" userLabel="Header View">
                     <rect key="frame" x="0.0" y="0.0" width="388" height="53"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bJs-sJ-a1u">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gxl-VJ-DIw">
                             <rect key="frame" x="16" y="8" width="356" height="37"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="37" id="fEN-Si-b9p"/>
+                                <constraint firstAttribute="height" constant="37" id="CpH-Wl-Ev6"/>
                             </constraints>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <buttonConfiguration key="configuration" style="filled" imagePlacement="leading" title="Create a New Dream" imagePadding="6" titleAlignment="automatic">
@@ -1263,17 +1262,17 @@
                                 <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="default"/>
                             </buttonConfiguration>
                             <connections>
-                                <action selector="createNewRequestButtonAction:" destination="nxx-mA-pI9" eventType="touchUpInside" id="d16-FO-IuM"/>
-                                <action selector="generateButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="su2-3R-3uQ"/>
+                                <action selector="createNewRequestButtonAction:" destination="nxx-mA-pI9" eventType="touchUpInside" id="Eds-Wz-eAI"/>
+                                <action selector="generateButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xRp-Jj-j9x"/>
                             </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
-                        <constraint firstItem="bJs-sJ-a1u" firstAttribute="top" secondItem="xAG-h1-35v" secondAttribute="top" constant="8" id="HsC-hA-nRi"/>
-                        <constraint firstItem="bJs-sJ-a1u" firstAttribute="leading" secondItem="xAG-h1-35v" secondAttribute="leading" constant="16" id="eYj-bu-1He"/>
-                        <constraint firstAttribute="trailing" secondItem="bJs-sJ-a1u" secondAttribute="trailing" constant="16" id="f4f-Kd-Lvg"/>
-                        <constraint firstAttribute="bottom" secondItem="bJs-sJ-a1u" secondAttribute="bottom" constant="8" id="yD6-1v-APa"/>
+                        <constraint firstAttribute="trailing" secondItem="Gxl-VJ-DIw" secondAttribute="trailing" constant="16" id="FiG-QO-egX"/>
+                        <constraint firstItem="Gxl-VJ-DIw" firstAttribute="top" secondItem="xAG-h1-35v" secondAttribute="top" constant="8" id="VKc-dT-Rxv"/>
+                        <constraint firstAttribute="bottom" secondItem="Gxl-VJ-DIw" secondAttribute="bottom" constant="8" id="VgP-Q1-0kW"/>
+                        <constraint firstItem="Gxl-VJ-DIw" firstAttribute="leading" secondItem="xAG-h1-35v" secondAttribute="leading" constant="16" id="pWV-qO-lk3"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" id="BU0-og-PHY" userLabel="Footer View">
