@@ -67,7 +67,7 @@ class YourAccountTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 && indexPath.row == 2 {
+        if indexPath.section == 2 && indexPath.row == 1 {
             if UserPreferences.standard.apiKey == "0000000000" {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let controller = storyboard.instantiateViewController(withIdentifier: "addAPIKeyNavController") as! UINavigationController
