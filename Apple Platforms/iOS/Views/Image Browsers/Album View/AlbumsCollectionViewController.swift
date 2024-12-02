@@ -100,11 +100,8 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
 
         isLoading = true
         Task {
-            let recentsResult = await ImageDatabase.standard.getCountAndRecentImageForPredicate(predicate: NSPredicate(format: "isHidden = %d", self.showHidden))
-            let favoritesResult = await ImageDatabase.standard.getCountAndRecentImageForPredicate(predicate:NSCompoundPredicate(andPredicateWithSubpredicates: [
-                NSPredicate(format: "isFavorite = %d", true),
-                NSPredicate(format: "isHidden = %d", self.showHidden)
-            ]))
+            let recentsResult = await ImageDatabase.standard.getCountAndRecentImage(hidden: self.showHidden, favorite: false)
+            let favoritesResult = await ImageDatabase.standard.getCountAndRecentImage(hidden: self.showHidden, favorite: true)
             presetAlbums = [
                 Album(
                     predicate: NSPredicate(format: "isHidden = %d", self.showHidden),

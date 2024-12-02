@@ -265,6 +265,38 @@ class ImageDatabase {
         }
     }
 
+    func getCountAndRecentImage(hidden: Bool, favorite: Bool) async -> (Int, GeneratedImage?) {
+        return await withCheckedContinuation { continuation in
+            privateManagedObjectContext.perform { [self] in
+                do {
+                    let fetchRequest1: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
+                        if favorite {
+                            fetchRequest1.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                                NSPredicate(format: "isFavorite = %d", true),
+                                NSPredicate(format: "isHidden = %d", hidden)
+                            ])
+                        } else {
+                            fetchRequest1.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                                NSPredicate(format: "isHidden = %d", hidden)
+                            ])
+                    }
+
+                    let count1 = try privateManagedObjectContext.count(for: fetchRequest1)
+                    if count1 == 0 {
+                        continuation.resume(returning: (0, nil))
+                    } else {
+                        fetchRequest1.fetchLimit = 1
+                        fetchRequest1.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
+                        let images = try privateManagedObjectContext.fetch(fetchRequest1) as [GeneratedImage]
+                        continuation.resume(returning: (count1, images[0]))
+                    }
+                } catch {
+                    continuation.resume(returning: (0, nil))
+                }
+            }
+        }
+    }
+
     func getPopularPromptKeywords(hidden: Bool) async -> [String : (Int, GeneratedImage)] {
         return await withCheckedContinuation { continuation in
             privateManagedObjectContext.perform { [self] in
