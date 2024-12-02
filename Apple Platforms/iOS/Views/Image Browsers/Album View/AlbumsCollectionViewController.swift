@@ -170,23 +170,27 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     }
 
     func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if section == 0 {
-            return CGSize(width: 0, height: 0)
-        } else {
+        if section != 0 {
             let indexPath = IndexPath(row: 0, section: section)
-            let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
+            if let headerView = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: indexPath) {
 
-            // Use this view to calculate the optimal size based on the collection view's width
-            return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width, height: UIView.layoutFittingExpandedSize.height),
-                                                      withHorizontalFittingPriority: .required, // Width is fixed
-                                                      verticalFittingPriority: .fittingSizeLevel) // Height can be as large as needed
+                // Use this view to calculate the optimal size based on the collection view's width
+                return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width, height: UIView.layoutFittingExpandedSize.height),
+                                                          withHorizontalFittingPriority: .required, // Width is fixed
+                                                          verticalFittingPriority: .fittingSizeLevel) // Height can be as large as needed
+            }
         }
+        return CGSize.zero
     }
 
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "albumSectionTitle", for: indexPath) as? AlbumSectionTitleCollectionReusableView {
+        return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "albumSectionTitle", for: indexPath)
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+        if let sectionHeader = view as? AlbumSectionTitleCollectionReusableView {
             if indexPath.section == 0 {
-                return UICollectionReusableView()
+                return
             }
             switch indexPath.section {
             case 1:
@@ -194,29 +198,25 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
             default:
                 sectionHeader.sectionLabel.text = "Section \(indexPath.section)"
             }
-
-            return sectionHeader
         }
-        return UICollectionReusableView()
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "albumCell", for: indexPath) as! AlbumCollectionViewCell
-
-        var album: Album?
-        if indexPath.section == 0 {
-            album = presetAlbums[indexPath.row]
-        } else {
-            album = smartAlbums[indexPath.row]
-        }
-        guard let foundAlbum = album else { fatalError() }
-        cell.setup(album: foundAlbum)
-        return cell
+        return collectionView.dequeueReusableCell(withReuseIdentifier: "albumCell", for: indexPath)
     }
 
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let albumCell = cell as? AlbumCollectionViewCell else { return }
-        albumCell.willDisplay()
+        if let cell = cell as? AlbumCollectionViewCell {
+            var album: Album?
+            if indexPath.section == 0 {
+                album = presetAlbums[indexPath.row]
+            } else {
+                album = smartAlbums[indexPath.row]
+            }
+            guard let foundAlbum = album else { fatalError() }
+            cell.setup(album: foundAlbum)
+            cell.willDisplay()
+        }
     }
 
     override func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -237,13 +237,14 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     )
 
     func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cell = self.collectionView(collectionView, cellForItemAt: indexPath)
-
-        let itemsPerRow: CGFloat = 2
-        let widthPerItem = (collectionView.safeAreaLayoutGuide.layoutFrame.width - 1) / itemsPerRow
-        return cell.systemLayoutSizeFitting(CGSize(width: widthPerItem, height: UIView.layoutFittingExpandedSize.height),
-                                            withHorizontalFittingPriority: .required, // Width is fixed
-                                            verticalFittingPriority: .fittingSizeLevel) // Height can be as large as needed
+        if let cell = collectionView.cellForItem(at: indexPath) {
+            let itemsPerRow: CGFloat = 2
+            let widthPerItem = (collectionView.safeAreaLayoutGuide.layoutFrame.width - 1) / itemsPerRow
+            return cell.systemLayoutSizeFitting(CGSize(width: widthPerItem, height: UIView.layoutFittingExpandedSize.height),
+                                                withHorizontalFittingPriority: .required, // Width is fixed
+                                                verticalFittingPriority: .fittingSizeLevel) // Height can be as large as needed
+        }
+        return CGSize.zero
     }
 
     func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, insetForSectionAt _: Int) -> UIEdgeInsets {
