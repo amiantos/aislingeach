@@ -167,17 +167,11 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     }
 
     func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if section != 0 {
-            let indexPath = IndexPath(row: 0, section: section)
-            if let headerView = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: indexPath) {
-
-                // Use this view to calculate the optimal size based on the collection view's width
-                return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width, height: UIView.layoutFittingExpandedSize.height),
-                                                          withHorizontalFittingPriority: .required, // Width is fixed
-                                                          verticalFittingPriority: .fittingSizeLevel) // Height can be as large as needed
-            }
+        if section == 0 {
+            return CGSize.zero
+        } else {
+            return CGSize(width: collectionView.frame.width, height: 50)
         }
-        return CGSize.zero
     }
 
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -186,15 +180,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
 
     override func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
         if let sectionHeader = view as? AlbumSectionTitleCollectionReusableView {
-            if indexPath.section == 0 {
-                return
-            }
-            switch indexPath.section {
-            case 1:
-                sectionHeader.sectionLabel.text = smartAlbums.count > 0 ? "Recent Phrases" : ""
-            default:
-                sectionHeader.sectionLabel.text = "Section \(indexPath.section)"
-            }
+            sectionHeader.sectionLabel.text = indexPath.section != 0 ? "Recent Phrases" : "Collections"
         }
     }
 
@@ -203,6 +189,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     }
 
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        Log.debug(cell)
         if let cell = cell as? AlbumCollectionViewCell {
             var album: Album?
             if indexPath.section == 0 {
@@ -233,16 +220,11 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
         right: 0
     )
 
-    func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if let cell = collectionView.cellForItem(at: indexPath) {
-            let itemsPerRow: CGFloat = 2
-            let widthPerItem = (collectionView.safeAreaLayoutGuide.layoutFrame.width - 1) / itemsPerRow
-            return cell.systemLayoutSizeFitting(CGSize(width: widthPerItem, height: UIView.layoutFittingExpandedSize.height),
-                                                withHorizontalFittingPriority: .required, // Width is fixed
-                                                verticalFittingPriority: .fittingSizeLevel) // Height can be as large as needed
-        }
-        return CGSize.zero
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        let itemsPerRow: CGFloat = 2
+//        let widthPerItem = (collectionView.safeAreaLayoutGuide.layoutFrame.width) / itemsPerRow
+//        return CGSize(width: widthPerItem, height: widthPerItem * 1.5)
+//    }
 
     func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, insetForSectionAt _: Int) -> UIEdgeInsets {
         return sectionInsets

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xaC-7g-J2s">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xaC-7g-J2s">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -1755,7 +1755,7 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vvx-UT-rwg" customClass="CosmosView" customModule="Cosmos">
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vvx-UT-rwg" customClass="CosmosView" customModule="Cosmos">
                                                 <rect key="frame" x="30.5" y="452.5" width="353" height="159"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <userDefinedRuntimeAttributes>
@@ -1785,13 +1785,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate this image based on visual quality, clarity, and coherence." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fJ6-WF-Po3">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Rate this image based on visual quality, clarity, and coherence." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fJ6-WF-Po3">
                                                 <rect key="frame" x="29" y="627.5" width="356" height="41"/>
                                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="maj-AT-NcT" customClass="CosmosView" customModule="Cosmos">
+                                            <view contentMode="scaleToFill" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="maj-AT-NcT" customClass="CosmosView" customModule="Cosmos">
                                                 <rect key="frame" x="84.5" y="676.5" width="245" height="106"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <userDefinedRuntimeAttributes>
@@ -2780,90 +2780,104 @@ You can also get an anonymous API key, no third party sign in required. But don'
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Nzr-i9-RQl">
                             <size key="itemSize" width="186" height="186"/>
-                            <size key="headerReferenceSize" width="50" height="60"/>
+                            <size key="headerReferenceSize" width="50" height="50"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="albumCell" id="cd6-bt-roB" customClass="AlbumCollectionViewCell" customModule="Aislingeach" customModuleProvider="target">
-                                <rect key="frame" x="10.5" y="60" width="393" height="393"/>
+                                <rect key="frame" x="102.5" y="50" width="209" height="323"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="dyB-Bj-Bke">
-                                    <rect key="frame" x="0.0" y="0.0" width="393" height="393"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="209" height="323"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recents" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1QV-lw-ip2">
-                                            <rect key="frame" x="16" y="369" width="361" height="0.0"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7mk-cx-eOM">
-                                            <rect key="frame" x="16" y="369" width="361" height="8"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" systemColor="secondaryLabelColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nYL-HP-hgC">
-                                            <rect key="frame" x="16" y="0.0" width="361" height="361"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="KjX-jj-NOg">
+                                            <rect key="frame" x="0.0" y="0.0" width="209" height="307"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Iz9-29-68F">
-                                                    <rect key="frame" x="108.5" y="104.5" width="144" height="150.5"/>
-                                                    <color key="tintColor" systemColor="tertiarySystemBackgroundColor"/>
+                                                <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cLZ-La-xBF">
+                                                    <rect key="frame" x="0.0" y="0.0" width="209" height="209"/>
+                                                    <subviews>
+                                                        <view clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nYL-HP-hgC">
+                                                            <rect key="frame" x="0.0" y="0.0" width="209" height="209"/>
+                                                            <subviews>
+                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Iz9-29-68F">
+                                                                    <rect key="frame" x="88.5" y="90.5" width="32.5" height="26.5"/>
+                                                                    <color key="tintColor" systemColor="tertiarySystemBackgroundColor"/>
+                                                                    <imageReference key="image" image="photo.on.rectangle.angled" catalog="system" symbolScale="large"/>
+                                                                </imageView>
+                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9eR-Wy-ney">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="209" height="209"/>
+                                                                </imageView>
+                                                                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S6d-7A-ja0">
+                                                                    <rect key="frame" x="8" y="179.5" width="26.5" height="23.5"/>
+                                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <imageReference key="image" image="heart.fill" catalog="system" symbolScale="large"/>
+                                                                </imageView>
+                                                            </subviews>
+                                                            <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                                            <constraints>
+                                                                <constraint firstItem="Iz9-29-68F" firstAttribute="centerY" secondItem="nYL-HP-hgC" secondAttribute="centerY" id="GYi-2p-ure"/>
+                                                                <constraint firstAttribute="bottom" secondItem="9eR-Wy-ney" secondAttribute="bottom" id="JUE-sc-ge3"/>
+                                                                <constraint firstItem="Iz9-29-68F" firstAttribute="centerX" secondItem="nYL-HP-hgC" secondAttribute="centerX" id="PcJ-aZ-edc"/>
+                                                                <constraint firstItem="S6d-7A-ja0" firstAttribute="leading" secondItem="nYL-HP-hgC" secondAttribute="leading" constant="8" id="T6n-PK-upL"/>
+                                                                <constraint firstAttribute="width" secondItem="nYL-HP-hgC" secondAttribute="height" multiplier="1:1" id="XGO-5r-bYE"/>
+                                                                <constraint firstItem="9eR-Wy-ney" firstAttribute="leading" secondItem="nYL-HP-hgC" secondAttribute="leading" id="ZAn-jS-gdi"/>
+                                                                <constraint firstItem="9eR-Wy-ney" firstAttribute="top" secondItem="nYL-HP-hgC" secondAttribute="top" id="kNm-dS-moV"/>
+                                                                <constraint firstAttribute="bottom" secondItem="S6d-7A-ja0" secondAttribute="bottom" constant="8" id="yBv-EQ-aB5"/>
+                                                                <constraint firstAttribute="trailing" secondItem="9eR-Wy-ney" secondAttribute="trailing" id="yYg-gN-VpM"/>
+                                                            </constraints>
+                                                        </view>
+                                                    </subviews>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" secondItem="Iz9-29-68F" secondAttribute="height" multiplier="1:1" id="8Vf-6h-DmB"/>
+                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="nYL-HP-hgC" secondAttribute="trailing" id="BHg-Jb-OvA"/>
+                                                        <constraint firstItem="nYL-HP-hgC" firstAttribute="top" secondItem="cLZ-La-xBF" secondAttribute="top" id="HpG-3b-nog"/>
+                                                        <constraint firstItem="nYL-HP-hgC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cLZ-La-xBF" secondAttribute="leading" id="bAP-jL-Mbu"/>
+                                                        <constraint firstItem="nYL-HP-hgC" firstAttribute="centerY" secondItem="cLZ-La-xBF" secondAttribute="centerY" id="cWW-T2-m00"/>
+                                                        <constraint firstItem="nYL-HP-hgC" firstAttribute="centerX" secondItem="cLZ-La-xBF" secondAttribute="centerX" id="qTy-WM-dBJ"/>
                                                     </constraints>
-                                                    <imageReference key="image" image="photo.on.rectangle.angled" catalog="system" symbolScale="large"/>
-                                                </imageView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9eR-Wy-ney">
-                                                    <rect key="frame" x="0.0" y="0.0" width="361" height="361"/>
-                                                </imageView>
-                                                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="S6d-7A-ja0">
-                                                    <rect key="frame" x="8" y="331.5" width="26.5" height="23.5"/>
-                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <imageReference key="image" image="heart.fill" catalog="system" symbolScale="large"/>
-                                                </imageView>
+                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" ambiguous="YES" text="Recents" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1QV-lw-ip2">
+                                                    <rect key="frame" x="0.0" y="237.5" width="209" height="20.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Loading..." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7mk-cx-eOM">
+                                                    <rect key="frame" x="0.0" y="286.5" width="209" height="20.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20.5" id="j5b-La-IXp"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
-                                            <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="9eR-Wy-ney" secondAttribute="bottom" id="JUE-sc-ge3"/>
-                                                <constraint firstAttribute="width" secondItem="nYL-HP-hgC" secondAttribute="height" multiplier="1:1" id="OS4-GL-MDy"/>
-                                                <constraint firstItem="Iz9-29-68F" firstAttribute="height" secondItem="nYL-HP-hgC" secondAttribute="height" multiplier="0.4" id="Pb7-wu-gh8"/>
-                                                <constraint firstItem="S6d-7A-ja0" firstAttribute="leading" secondItem="nYL-HP-hgC" secondAttribute="leading" constant="8" id="T6n-PK-upL"/>
-                                                <constraint firstItem="Iz9-29-68F" firstAttribute="centerY" secondItem="nYL-HP-hgC" secondAttribute="centerY" id="Wyu-dY-Tzi"/>
-                                                <constraint firstItem="Iz9-29-68F" firstAttribute="centerX" secondItem="nYL-HP-hgC" secondAttribute="centerX" id="XRs-yq-Hg1"/>
-                                                <constraint firstItem="9eR-Wy-ney" firstAttribute="leading" secondItem="nYL-HP-hgC" secondAttribute="leading" id="ZAn-jS-gdi"/>
-                                                <constraint firstItem="9eR-Wy-ney" firstAttribute="top" secondItem="nYL-HP-hgC" secondAttribute="top" id="kNm-dS-moV"/>
-                                                <constraint firstAttribute="bottom" secondItem="S6d-7A-ja0" secondAttribute="bottom" constant="8" id="yBv-EQ-aB5"/>
-                                                <constraint firstAttribute="trailing" secondItem="9eR-Wy-ney" secondAttribute="trailing" id="yYg-gN-VpM"/>
+                                                <constraint firstItem="cLZ-La-xBF" firstAttribute="leading" secondItem="KjX-jj-NOg" secondAttribute="leading" id="FO5-E7-MWI"/>
+                                                <constraint firstAttribute="trailing" secondItem="cLZ-La-xBF" secondAttribute="trailing" id="dTA-Al-816"/>
                                             </constraints>
-                                        </view>
+                                        </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="1QV-lw-ip2" secondAttribute="trailing" constant="16" id="0zp-2j-qrU"/>
-                                        <constraint firstItem="1QV-lw-ip2" firstAttribute="top" secondItem="nYL-HP-hgC" secondAttribute="bottom" constant="8" id="CPj-K6-qWu"/>
-                                        <constraint firstItem="nYL-HP-hgC" firstAttribute="top" secondItem="dyB-Bj-Bke" secondAttribute="top" id="Dq2-uV-W47"/>
-                                        <constraint firstItem="1QV-lw-ip2" firstAttribute="leading" secondItem="dyB-Bj-Bke" secondAttribute="leading" constant="16" id="E3V-9z-jY5"/>
-                                        <constraint firstAttribute="trailing" secondItem="nYL-HP-hgC" secondAttribute="trailing" constant="16" id="E74-OR-yhB"/>
-                                        <constraint firstAttribute="bottom" secondItem="7mk-cx-eOM" secondAttribute="bottom" constant="16" id="cBU-pz-fh7"/>
-                                        <constraint firstAttribute="trailing" secondItem="7mk-cx-eOM" secondAttribute="trailing" constant="16" id="lcw-LJ-x3I"/>
-                                        <constraint firstItem="7mk-cx-eOM" firstAttribute="leading" secondItem="dyB-Bj-Bke" secondAttribute="leading" constant="16" id="n0U-eJ-htN"/>
-                                        <constraint firstItem="nYL-HP-hgC" firstAttribute="leading" secondItem="dyB-Bj-Bke" secondAttribute="leading" constant="16" id="vAi-m2-R59"/>
-                                        <constraint firstItem="7mk-cx-eOM" firstAttribute="top" secondItem="1QV-lw-ip2" secondAttribute="bottom" id="vhY-mf-M25"/>
+                                        <constraint firstAttribute="trailing" secondItem="KjX-jj-NOg" secondAttribute="trailing" id="Hbe-N8-eAz"/>
+                                        <constraint firstItem="KjX-jj-NOg" firstAttribute="top" secondItem="dyB-Bj-Bke" secondAttribute="top" id="bBi-Ia-b3B"/>
+                                        <constraint firstItem="KjX-jj-NOg" firstAttribute="leading" secondItem="dyB-Bj-Bke" secondAttribute="leading" id="pm0-jq-LtJ"/>
+                                        <constraint firstAttribute="bottom" secondItem="KjX-jj-NOg" secondAttribute="bottom" constant="16" id="qjk-bh-M4N"/>
                                     </constraints>
                                 </collectionViewCellContentView>
-                                <size key="customSize" width="393" height="393"/>
+                                <size key="customSize" width="209" height="323"/>
                                 <connections>
                                     <outlet property="cellBackgroundView" destination="nYL-HP-hgC" id="t9g-Zd-6eh"/>
                                     <outlet property="favoriteIcon" destination="S6d-7A-ja0" id="EuR-dU-ytT"/>
                                     <outlet property="imageCountLabel" destination="7mk-cx-eOM" id="NxZ-nc-GZ5"/>
-                                    <outlet property="imageLabelBottomConstraint" destination="cBU-pz-fh7" id="qiv-g2-xRv"/>
                                     <outlet property="imageView" destination="9eR-Wy-ney" id="Vay-1L-lah"/>
                                     <outlet property="promptLabel" destination="1QV-lw-ip2" id="z8O-AF-q1m"/>
                                 </connections>
                             </collectionViewCell>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="simpleAlbumCell" id="FId-Lw-hln" customClass="AlbumSimpleCollectionViewCell" customModule="Aislingeach" customModuleProvider="target">
-                                <rect key="frame" x="18.5" y="453" width="377" height="58"/>
+                                <rect key="frame" x="18.5" y="373" width="377" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="0GK-5t-VGX">
                                     <rect key="frame" x="0.0" y="0.0" width="377" height="58"/>
@@ -2917,49 +2931,49 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                 </connections>
                             </collectionViewCell>
                         </cells>
-                        <collectionReusableView key="sectionHeaderView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="albumSectionTitle" id="dEO-ZY-cwE" customClass="AlbumSectionTitleCollectionReusableView" customModule="Aislingeach" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="albumSectionTitle" id="CsC-tb-yWF" customClass="AlbumSectionTitleCollectionReusableView" customModule="Aislingeach" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Te2-rE-VGj">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="54"/>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="mlG-Tz-AMC">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6o0-4s-3E6">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YDw-XN-874">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="1"/>
                                             <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="1" id="ydy-b6-TK0"/>
+                                                <constraint firstAttribute="height" constant="1" id="BuI-yG-NRP"/>
                                             </constraints>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aj5-mj-Zt2">
-                                            <rect key="frame" x="0.0" y="1" width="414" height="53"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RBT-5d-yFe">
+                                            <rect key="frame" x="0.0" y="1" width="414" height="43"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K07-9P-okT">
-                                                    <rect key="frame" x="20" y="12" width="374" height="33"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O9k-sf-gx1">
+                                                    <rect key="frame" x="20" y="12" width="374" height="23"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             <constraints>
-                                                <constraint firstItem="K07-9P-okT" firstAttribute="top" secondItem="aj5-mj-Zt2" secondAttribute="top" constant="12" id="6fF-rQ-Ev1"/>
-                                                <constraint firstAttribute="trailing" secondItem="K07-9P-okT" secondAttribute="trailing" constant="20" symbolic="YES" id="GPQ-sq-rDy"/>
-                                                <constraint firstAttribute="bottom" secondItem="K07-9P-okT" secondAttribute="bottom" constant="8" id="Xhw-kV-Zy3"/>
-                                                <constraint firstItem="K07-9P-okT" firstAttribute="leading" secondItem="aj5-mj-Zt2" secondAttribute="leading" constant="20" symbolic="YES" id="m62-Hy-L1N"/>
+                                                <constraint firstAttribute="bottom" secondItem="O9k-sf-gx1" secondAttribute="bottom" constant="8" id="7AU-0x-ydV"/>
+                                                <constraint firstAttribute="trailing" secondItem="O9k-sf-gx1" secondAttribute="trailing" constant="20" symbolic="YES" id="DVa-BP-Mt5"/>
+                                                <constraint firstItem="O9k-sf-gx1" firstAttribute="leading" secondItem="RBT-5d-yFe" secondAttribute="leading" constant="20" symbolic="YES" id="QDQ-CF-SGq"/>
+                                                <constraint firstItem="O9k-sf-gx1" firstAttribute="top" secondItem="RBT-5d-yFe" secondAttribute="top" constant="12" id="vTw-cd-eq5"/>
                                             </constraints>
                                         </view>
                                     </subviews>
                                 </stackView>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="Te2-rE-VGj" firstAttribute="top" secondItem="dEO-ZY-cwE" secondAttribute="top" id="dTw-OE-9q5"/>
-                                <constraint firstAttribute="trailing" secondItem="Te2-rE-VGj" secondAttribute="trailing" id="kZT-2m-Lg3"/>
-                                <constraint firstAttribute="bottom" secondItem="Te2-rE-VGj" secondAttribute="bottom" constant="6" id="qt0-Az-6S2"/>
-                                <constraint firstItem="Te2-rE-VGj" firstAttribute="leading" secondItem="dEO-ZY-cwE" secondAttribute="leading" id="rQ8-ZT-83A"/>
+                                <constraint firstAttribute="trailing" secondItem="mlG-Tz-AMC" secondAttribute="trailing" id="7XT-FK-Jbu"/>
+                                <constraint firstItem="mlG-Tz-AMC" firstAttribute="leading" secondItem="CsC-tb-yWF" secondAttribute="leading" id="I0o-SZ-cUm"/>
+                                <constraint firstItem="mlG-Tz-AMC" firstAttribute="top" secondItem="CsC-tb-yWF" secondAttribute="top" id="RTq-Ec-gHY"/>
+                                <constraint firstAttribute="bottom" secondItem="mlG-Tz-AMC" secondAttribute="bottom" constant="6" id="yWd-e3-rgd"/>
                             </constraints>
                             <connections>
-                                <outlet property="sectionLabel" destination="K07-9P-okT" id="8WK-pr-hii"/>
+                                <outlet property="sectionLabel" destination="O9k-sf-gx1" id="irB-Dr-aA8"/>
                             </connections>
                         </collectionReusableView>
                         <connections>
@@ -2971,7 +2985,7 @@ You can also get an anonymous API key, no third party sign in required. But don'
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7ir-OT-JZ9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1236" y="15"/>
+            <point key="canvasLocation" x="1234.7826086956522" y="14.732142857142856"/>
         </scene>
         <!--Image Detail Navigation Controller-->
         <scene sceneID="7LS-EB-PYJ">
@@ -3040,13 +3054,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="p3F-U7-Rz1">
                                                     <rect key="frame" x="20" y="117.5" width="354" height="558.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Load to Generate View" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uV3-kS-ksT" userLabel="Load to Generate View">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Load to Generate View" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uV3-kS-ksT" userLabel="Load to Generate View">
                                                             <rect key="frame" x="0.0" y="0.0" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillProportionally" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="oxK-m7-9Pi">
+                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="oxK-m7-9Pi">
                                                             <rect key="frame" x="0.0" y="20.5" width="354" height="34.5"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LnC-AN-0lg" userLabel="Prompt Only">
@@ -3067,13 +3081,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 </button>
                                                             </subviews>
                                                         </stackView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Request JSON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Joa-m9-A0Z" userLabel="Request Label">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Request JSON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Joa-m9-A0Z" userLabel="Request Label">
                                                             <rect key="frame" x="0.0" y="61" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gtC-1M-lJw" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gtC-1M-lJw" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="81.5" width="354" height="144"/>
                                                             <subviews>
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="75F-xd-Dv9">
@@ -3096,13 +3110,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 <constraint firstItem="75F-xd-Dv9" firstAttribute="leading" secondItem="gtC-1M-lJw" secondAttribute="leading" constant="12" id="TeI-kx-TQ3"/>
                                                             </constraints>
                                                         </view>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Response JSON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4WL-pC-sSj" userLabel="Response Label">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Response JSON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4WL-pC-sSj" userLabel="Response Label">
                                                             <rect key="frame" x="0.0" y="231.5" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ppF-hp-bz6" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ppF-hp-bz6" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="252" width="354" height="144"/>
                                                             <subviews>
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IlM-F2-3up">
@@ -3125,13 +3139,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 <constraint firstItem="IlM-F2-3up" firstAttribute="leading" secondItem="ppF-hp-bz6" secondAttribute="leading" constant="12" id="uCN-HY-vdG"/>
                                                             </constraints>
                                                         </view>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Copy to Clipboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIt-3e-PgH" userLabel="Copy to Clipboard">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copy to Clipboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIt-3e-PgH" userLabel="Copy to Clipboard">
                                                             <rect key="frame" x="0.0" y="402" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xfD-uw-hyY">
+                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xfD-uw-hyY">
                                                             <rect key="frame" x="0.0" y="422.5" width="354" height="75"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="mgj-Xk-tWe">
@@ -3178,13 +3192,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 </stackView>
                                                             </subviews>
                                                         </stackView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Extras" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sxa-BN-2vY" userLabel="Extras">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Extras" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sxa-BN-2vY" userLabel="Extras">
                                                             <rect key="frame" x="0.0" y="503.5" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L7C-XF-ePg">
+                                                        <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L7C-XF-ePg">
                                                             <rect key="frame" x="0.0" y="524" width="354" height="34.5"/>
                                                             <state key="normal" title="Button"/>
                                                             <buttonConfiguration key="configuration" style="filled" title="SDXL Gen - Pick A Favorite!"/>
@@ -3406,14 +3420,6 @@ You can also get an anonymous API key, no third party sign in required. But don'
             <point key="canvasLocation" x="13" y="-1809"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="maj-AT-NcT">
-            <size key="intrinsicContentSize" width="245" height="106"/>
-        </designable>
-        <designable name="vvx-UT-rwg">
-            <size key="intrinsicContentSize" width="353" height="117.66666666666669"/>
-        </designable>
-    </designables>
     <resources>
         <image name="aspectratio" catalog="system" width="128" height="93"/>
         <image name="brain.head.profile" catalog="system" width="120" height="128"/>
@@ -3446,37 +3452,37 @@ You can also get an anonymous API key, no third party sign in required. But don'
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondarySystemFillColor">
-            <color red="0.47058823529411764" green="0.47058823529411764" blue="0.50196078431372548" alpha="0.16" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.16" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondarySystemGroupedBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="separatorColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGroupedBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tertiaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29803921568627451" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29803921570000003" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tertiarySystemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="tertiarySystemGroupedBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
