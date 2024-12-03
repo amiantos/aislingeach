@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-ios-1024@1x-2.png",
+      "filename" : "icon-ios-1024@1x.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,7 +13,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon-ios-1024@1x-4.png",
+      "filename" : "icon-ios-1024@1x-dark.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
