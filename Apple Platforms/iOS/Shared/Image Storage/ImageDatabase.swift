@@ -490,7 +490,7 @@ class ImageDatabase {
             mainManagedObjectContext.perform { [self] in
                 do {
                     let fetchRequest1: NSFetchRequest<HordeRequest> = HordeRequest.fetchRequest()
-                    fetchRequest1.predicate = NSPredicate(format: "uuid = nil")
+                    fetchRequest1.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "uuid = nil"), NSPredicate(format: "status = %@", "active")])
                     fetchRequest1.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
                     fetchRequest1.fetchLimit = limit
                     let requests = try mainManagedObjectContext.fetch(fetchRequest1) as [HordeRequest]
