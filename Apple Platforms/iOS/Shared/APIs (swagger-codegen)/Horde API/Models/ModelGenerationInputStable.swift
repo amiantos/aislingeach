@@ -74,11 +74,12 @@ public struct ModelGenerationInputStable: Codable {
     public var returnControlMap: Bool?
     public var facefixerStrength: Decimal?
     public var loras: [ModelPayloadLorasStable]?
+    public var tis: [ModelPayloadTextualInversionStable]?
     public var steps: Int?
     /** The amount of images to generate */
     public var n: Int?
 
-    public init(samplerName: SamplerName? = nil, cfgScale: Decimal? = nil, denoisingStrength: Decimal? = nil, seed: String? = nil, height: Int? = nil, width: Int? = nil, seedVariation: Int? = nil, postProcessing: [PostProcessing]? = nil, karras: Bool? = nil, tiling: Bool? = nil, hiresFix: Bool? = nil, clipSkip: Int? = nil, controlType: ControlType? = nil, imageIsControl: Bool? = nil, returnControlMap: Bool? = nil, facefixerStrength: Decimal? = nil, loras: [ModelPayloadLorasStable]? = nil, steps: Int? = nil, n: Int? = nil) {
+    public init(samplerName: SamplerName? = nil, cfgScale: Decimal? = nil, denoisingStrength: Decimal? = nil, seed: String? = nil, height: Int? = nil, width: Int? = nil, seedVariation: Int? = nil, postProcessing: [PostProcessing]? = nil, karras: Bool? = nil, tiling: Bool? = nil, hiresFix: Bool? = nil, clipSkip: Int? = nil, controlType: ControlType? = nil, imageIsControl: Bool? = nil, returnControlMap: Bool? = nil, facefixerStrength: Decimal? = nil, loras: [ModelPayloadLorasStable]? = nil, tis: [ModelPayloadTextualInversionStable]? = nil, steps: Int? = nil, n: Int? = nil) {
         self.samplerName = samplerName
         self.cfgScale = cfgScale
         self.denoisingStrength = denoisingStrength
@@ -96,6 +97,7 @@ public struct ModelGenerationInputStable: Codable {
         self.returnControlMap = returnControlMap
         self.facefixerStrength = facefixerStrength
         self.loras = loras
+        self.tis = tis
         self.steps = steps
         self.n = n
     }
@@ -118,6 +120,7 @@ public struct ModelGenerationInputStable: Codable {
         case returnControlMap = "return_control_map"
         case facefixerStrength = "facefixer_strength"
         case loras
+        case tis
         case steps
         case n
     }

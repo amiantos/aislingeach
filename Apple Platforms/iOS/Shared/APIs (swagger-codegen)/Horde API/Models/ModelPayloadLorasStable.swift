@@ -16,12 +16,15 @@ public struct ModelPayloadLorasStable: Codable {
     public var clip: Decimal?
     /** If set, will try to discover a trigger for this LoRa which matches or is similar to this string and inject it into the prompt. I &#x27;any&#x27; is specified it will be pick the first trigger. */
     public var injectTrigger: String?
+    /** If true, will consider the LoRa ID as a CivitAI version ID and search accordingly. Ensure the name is an integer. */
+    public var isVersion: Bool?
 
-    public init(name: String, model: Decimal? = nil, clip: Decimal? = nil, injectTrigger: String? = nil) {
+    public init(name: String, model: Decimal? = nil, clip: Decimal? = nil, injectTrigger: String? = nil, isVersion: Bool? = nil) {
         self.name = name
         self.model = model
         self.clip = clip
         self.injectTrigger = injectTrigger
+        self.isVersion = isVersion
     }
 
     public enum CodingKeys: String, CodingKey {
@@ -29,5 +32,6 @@ public struct ModelPayloadLorasStable: Codable {
         case model
         case clip
         case injectTrigger = "inject_trigger"
+        case isVersion = "is_version"
     }
 }

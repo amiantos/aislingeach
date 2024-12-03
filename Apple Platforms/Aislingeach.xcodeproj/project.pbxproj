@@ -34,6 +34,7 @@
 		447362DC2A2D49CE00823D0C /* ModelsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447362DB2A2D49CE00823D0C /* ModelsTableViewController.swift */; };
 		447362DE2A2D6AA900823D0C /* ModelsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447362DD2A2D6AA900823D0C /* ModelsCache.swift */; };
 		4485C63F2A2A9E7F0040D864 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4485C63E2A2A9E7F0040D864 /* ImageCache.swift */; };
+		448688432CFF7A1600D76982 /* ModelPayloadTextualInversionStable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448688422CFF7A0100D76982 /* ModelPayloadTextualInversionStable.swift */; };
 		449F967B2A5B4010001AAC82 /* RequestRaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449F96792A5B4010001AAC82 /* RequestRaterViewController.swift */; };
 		449F967C2A5B4010001AAC82 /* RequestRaterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 449F967A2A5B4010001AAC82 /* RequestRaterViewController.xib */; };
 		44C6B62B2A228D8200C2F013 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6B5C22A228D8200C2F013 /* Configuration.swift */; };
@@ -198,6 +199,7 @@
 		447362DB2A2D49CE00823D0C /* ModelsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsTableViewController.swift; sourceTree = "<group>"; };
 		447362DD2A2D6AA900823D0C /* ModelsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsCache.swift; sourceTree = "<group>"; };
 		4485C63E2A2A9E7F0040D864 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		448688422CFF7A0100D76982 /* ModelPayloadTextualInversionStable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelPayloadTextualInversionStable.swift; sourceTree = "<group>"; };
 		449F96792A5B4010001AAC82 /* RequestRaterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestRaterViewController.swift; sourceTree = "<group>"; };
 		449F967A2A5B4010001AAC82 /* RequestRaterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RequestRaterViewController.xib; sourceTree = "<group>"; };
 		44C6B5C22A228D8200C2F013 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
@@ -498,6 +500,7 @@
 		44C6B5C32A228D8200C2F013 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				448688422CFF7A0100D76982 /* ModelPayloadTextualInversionStable.swift */,
 				44C6B5C42A228D8200C2F013 /* Newspiece.swift */,
 				44C6B5C52A228D8200C2F013 /* DeletedWorker.swift */,
 				44C6B5C62A228D8200C2F013 /* TxtModelStats.swift */,
@@ -824,6 +827,7 @@
 				44C6B65A2A228D8200C2F013 /* DeletedTeam.swift in Sources */,
 				44C6B62F2A228D8200C2F013 /* NoValidInterrogationsFound.swift in Sources */,
 				44C6B6602A228D8200C2F013 /* SubmitInput.swift in Sources */,
+				448688432CFF7A1600D76982 /* ModelPayloadTextualInversionStable.swift in Sources */,
 				44F2AA752A26B81200FB8E93 /* RatingSetBody.swift in Sources */,
 				44C6B6472A228D8200C2F013 /* ModelGenerationInputStable.swift in Sources */,
 				446643C22A53637D0047F26B /* ImageDetailCollectionViewController.swift in Sources */,

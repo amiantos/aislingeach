@@ -726,10 +726,17 @@ extension GeneratorViewController {
         var cfgScale = Decimal(Int(guidanceSlider.value))
 
         var loras: [ModelPayloadLorasStable]? = nil
+        var tis: [ModelPayloadTextualInversionStable]? = nil
+
+        var clipSkip: Int = Int(clipSkipSlider.value)
 
         var numberOfImages = Int(imageQuantitySlider.value)
 
+        var karras: Bool = karrasToggleButton.isSelected
+
         if !ignoreStyle, let style = currentSelectedStyle {
+            Log.debug(style)
+            
             if let styleSteps = style.steps {
                 Log.debug("Set steps from style \(styleSteps)")
                 steps = styleSteps
@@ -755,7 +762,7 @@ extension GeneratorViewController {
                 modelName = model
             }
 
-            if let string = style.samplerName {
+            if let string = style.sampler_name {
                 Log.debug("Set sampler from style: \(string)")
                 samplerString = string
             }
@@ -770,6 +777,25 @@ extension GeneratorViewController {
                 loras = styleLoras
             }
 
+            if let styleClipSkip = style.clip_skip {
+                Log.debug("Set clip skip from style: \(styleClipSkip)")
+                clipSkip = styleClipSkip
+            }
+
+            if let styleEnhance = style.enhance {
+                
+            }
+
+            if let styleKarras = style.karras {
+                Log.debug("Set karras from style: \(styleKarras)")
+                karras = styleKarras
+            }
+
+            if let styleTis = style.tis {
+                Log.debug("Set tis from style: \(styleTis)")
+                tis = styleTis
+            }
+
         }
 
         let modelParams = ModelGenerationInputStable(
@@ -781,15 +807,16 @@ extension GeneratorViewController {
             width: 64 * currentDimensions.0,
             seedVariation: nil,
             postProcessing: postprocessing,
-            karras: karrasToggleButton.isSelected,
+            karras: karras,
             tiling: tilingToggleButton.isSelected,
             hiresFix: hiresFixToggleButton.isSelected,
-            clipSkip: Int(clipSkipSlider.value),
+            clipSkip: clipSkip,
             controlType: controlType,
             imageIsControl: imageIsControl,
             returnControlMap: returnControlMap,
             facefixerStrength: Decimal(round(Double(faceFixerStrengthSlider.value) * 100.0) / 100.0),
             loras: loras,
+            tis: tis,
             steps: steps,
             n: numberOfImages
         )

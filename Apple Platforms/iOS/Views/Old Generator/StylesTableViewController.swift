@@ -19,8 +19,13 @@ struct Style: Decodable {
     let height: Int?
     let steps: Int?
     let cfg_scale: Decimal?
-    let samplerName: String?
+    let sampler_name: String?
     let loras: [ModelPayloadLorasStable]?
+    let karras: Bool?
+    let hires_fix: Bool?
+    let clip_skip: Int?
+    let enhance: Bool?
+    let tis: [ModelPayloadTextualInversionStable]?
 }
 
 protocol StylesTableViewControllerDelegate {
