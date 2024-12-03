@@ -43,6 +43,8 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
 
     var infoCache: [String: (Int, GeneratedImage?)] = [:]
 
+    @IBOutlet weak var layout: UICollectionViewFlowLayout!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -151,7 +153,6 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in _: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 2
     }
 
@@ -163,14 +164,6 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
             return smartAlbums.count
         default:
             return 0
-        }
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if section == 0 {
-            return CGSize.zero
-        } else {
-            return CGSize(width: collectionView.frame.width, height: 50)
         }
     }
 
@@ -189,7 +182,6 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     }
 
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        Log.debug(cell)
         if let cell = cell as? AlbumCollectionViewCell {
             var album: Album?
             if indexPath.section == 0 {
@@ -213,25 +205,24 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
 
     // MARK: UICollectionViewDelegateFlowLayout
 
-    private let sectionInsets = UIEdgeInsets(
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0
-    )
-
-//    func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let itemsPerRow: CGFloat = 2
-//        let widthPerItem = (collectionView.safeAreaLayoutGuide.layoutFrame.width) / itemsPerRow
-//        return CGSize(width: widthPerItem, height: widthPerItem * 1.5)
-//    }
-
-    func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, insetForSectionAt _: Int) -> UIEdgeInsets {
-        return sectionInsets
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let contentHorizontalSpaces = layout.minimumInteritemSpacing + layout.sectionInset.left + layout.sectionInset.right
+        let newCellWidth = (collectionView.bounds.width - contentHorizontalSpaces) / 2
+        let data = indexPath.section == 0 ? presetAlbums[indexPath.row] : smartAlbums[indexPath.row]
+        let newHeight = AlbumCollectionViewCell.getProductHeightForWidth(props: data, width: newCellWidth)
+        Log.debug("returning \(newCellWidth)x\(newHeight)")
+        return CGSize(width: newCellWidth, height: newHeight)
     }
 
-    func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, minimumLineSpacingForSectionAt _: Int) -> CGFloat {
-        return sectionInsets.left
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        if section == 0 {
+            Log.debug("Section 0, returning 0...")
+            return CGSize.zero
+        }
+        return CGSize(
+            width: collectionView.bounds.width,
+            height: "Recent Phrases".getHeight(font: UIFont.preferredFont(forTextStyle: .title2), width: collectionView.bounds.width) + 28
+        )
     }
 
     // MARK: UICollectionViewDelegate

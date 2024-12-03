@@ -84,4 +84,40 @@ class AlbumCollectionViewCell: UICollectionViewCell {
         promptLabel.text = ""
         favoriteIcon.isHidden = true
     }
+    
+}
+
+extension AlbumCollectionViewCell {
+    class func getProductHeightForWidth(props: Album, width: CGFloat) -> CGFloat {
+    // magic numbers explanation:
+    // 16 - offset between image and price
+    // 22 - height of price
+    // 8 - offset between price and title
+    var resultingHeight: CGFloat = 16
+    // get image height based on width and aspect ratio
+    let imageHeight = width
+    resultingHeight += imageHeight
+    let titleHeight = props.title.getHeight(
+        font: UIFont.preferredFont(forTextStyle: .body), width: width
+    )
+    resultingHeight += titleHeight * 2
+    return resultingHeight
+    }
+  }
+
+extension String {
+  func getHeight(font: UIFont, width: CGFloat) -> CGFloat {
+  let attributes: [NSAttributedString.Key: Any] = [
+    .font: font
+  ]
+  let attributedText = NSAttributedString(string: self, attributes:
+    attributes)
+  let constraintBox = CGSize(width: width, height:
+    .greatestFiniteMagnitude)
+  let textHeight = attributedText.boundingRect(
+    with: constraintBox, options: [.usesFontLeading,
+    .usesFontLeading], context: nil)
+    .height.rounded(.up)
+  return textHeight
+  }
 }

@@ -2778,96 +2778,77 @@ You can also get an anonymous API key, no third party sign in required. But don'
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Nzr-i9-RQl">
-                            <size key="itemSize" width="186" height="186"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="8" minimumInteritemSpacing="22" id="Nzr-i9-RQl">
+                            <size key="itemSize" width="186" height="250"/>
                             <size key="headerReferenceSize" width="50" height="50"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="sectionInset" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="albumCell" id="cd6-bt-roB" customClass="AlbumCollectionViewCell" customModule="Aislingeach" customModuleProvider="target">
-                                <rect key="frame" x="102.5" y="50" width="209" height="323"/>
+                                <rect key="frame" x="127" y="50" width="160" height="229"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="dyB-Bj-Bke">
-                                    <rect key="frame" x="0.0" y="0.0" width="209" height="323"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="160" height="229"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="KjX-jj-NOg">
-                                            <rect key="frame" x="0.0" y="0.0" width="209" height="307"/>
+                                        <view clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nYL-HP-hgC">
+                                            <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cLZ-La-xBF">
-                                                    <rect key="frame" x="0.0" y="0.0" width="209" height="209"/>
-                                                    <subviews>
-                                                        <view clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nYL-HP-hgC">
-                                                            <rect key="frame" x="0.0" y="0.0" width="209" height="209"/>
-                                                            <subviews>
-                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Iz9-29-68F">
-                                                                    <rect key="frame" x="88.5" y="90.5" width="32.5" height="26.5"/>
-                                                                    <color key="tintColor" systemColor="tertiarySystemBackgroundColor"/>
-                                                                    <imageReference key="image" image="photo.on.rectangle.angled" catalog="system" symbolScale="large"/>
-                                                                </imageView>
-                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9eR-Wy-ney">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="209" height="209"/>
-                                                                </imageView>
-                                                                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S6d-7A-ja0">
-                                                                    <rect key="frame" x="8" y="179.5" width="26.5" height="23.5"/>
-                                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                    <imageReference key="image" image="heart.fill" catalog="system" symbolScale="large"/>
-                                                                </imageView>
-                                                            </subviews>
-                                                            <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
-                                                            <constraints>
-                                                                <constraint firstItem="Iz9-29-68F" firstAttribute="centerY" secondItem="nYL-HP-hgC" secondAttribute="centerY" id="GYi-2p-ure"/>
-                                                                <constraint firstAttribute="bottom" secondItem="9eR-Wy-ney" secondAttribute="bottom" id="JUE-sc-ge3"/>
-                                                                <constraint firstItem="Iz9-29-68F" firstAttribute="centerX" secondItem="nYL-HP-hgC" secondAttribute="centerX" id="PcJ-aZ-edc"/>
-                                                                <constraint firstItem="S6d-7A-ja0" firstAttribute="leading" secondItem="nYL-HP-hgC" secondAttribute="leading" constant="8" id="T6n-PK-upL"/>
-                                                                <constraint firstAttribute="width" secondItem="nYL-HP-hgC" secondAttribute="height" multiplier="1:1" id="XGO-5r-bYE"/>
-                                                                <constraint firstItem="9eR-Wy-ney" firstAttribute="leading" secondItem="nYL-HP-hgC" secondAttribute="leading" id="ZAn-jS-gdi"/>
-                                                                <constraint firstItem="9eR-Wy-ney" firstAttribute="top" secondItem="nYL-HP-hgC" secondAttribute="top" id="kNm-dS-moV"/>
-                                                                <constraint firstAttribute="bottom" secondItem="S6d-7A-ja0" secondAttribute="bottom" constant="8" id="yBv-EQ-aB5"/>
-                                                                <constraint firstAttribute="trailing" secondItem="9eR-Wy-ney" secondAttribute="trailing" id="yYg-gN-VpM"/>
-                                                            </constraints>
-                                                        </view>
-                                                    </subviews>
-                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="nYL-HP-hgC" secondAttribute="trailing" id="BHg-Jb-OvA"/>
-                                                        <constraint firstItem="nYL-HP-hgC" firstAttribute="top" secondItem="cLZ-La-xBF" secondAttribute="top" id="HpG-3b-nog"/>
-                                                        <constraint firstItem="nYL-HP-hgC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cLZ-La-xBF" secondAttribute="leading" id="bAP-jL-Mbu"/>
-                                                        <constraint firstItem="nYL-HP-hgC" firstAttribute="centerY" secondItem="cLZ-La-xBF" secondAttribute="centerY" id="cWW-T2-m00"/>
-                                                        <constraint firstItem="nYL-HP-hgC" firstAttribute="centerX" secondItem="cLZ-La-xBF" secondAttribute="centerX" id="qTy-WM-dBJ"/>
-                                                    </constraints>
-                                                </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" ambiguous="YES" text="Recents" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1QV-lw-ip2">
-                                                    <rect key="frame" x="0.0" y="237.5" width="209" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Loading..." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7mk-cx-eOM">
-                                                    <rect key="frame" x="0.0" y="286.5" width="209" height="20.5"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="20.5" id="j5b-La-IXp"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Iz9-29-68F">
+                                                    <rect key="frame" x="64" y="66" width="32.5" height="26.5"/>
+                                                    <color key="tintColor" systemColor="tertiarySystemBackgroundColor"/>
+                                                    <imageReference key="image" image="photo.on.rectangle.angled" catalog="system" symbolScale="large"/>
+                                                </imageView>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9eR-Wy-ney">
+                                                    <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
+                                                </imageView>
+                                                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="S6d-7A-ja0">
+                                                    <rect key="frame" x="8" y="130.5" width="26.5" height="23.5"/>
+                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <imageReference key="image" image="heart.fill" catalog="system" symbolScale="large"/>
+                                                </imageView>
                                             </subviews>
+                                            <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                             <constraints>
-                                                <constraint firstItem="cLZ-La-xBF" firstAttribute="leading" secondItem="KjX-jj-NOg" secondAttribute="leading" id="FO5-E7-MWI"/>
-                                                <constraint firstAttribute="trailing" secondItem="cLZ-La-xBF" secondAttribute="trailing" id="dTA-Al-816"/>
+                                                <constraint firstItem="Iz9-29-68F" firstAttribute="centerY" secondItem="nYL-HP-hgC" secondAttribute="centerY" id="GYi-2p-ure"/>
+                                                <constraint firstAttribute="bottom" secondItem="9eR-Wy-ney" secondAttribute="bottom" id="JUE-sc-ge3"/>
+                                                <constraint firstItem="Iz9-29-68F" firstAttribute="centerX" secondItem="nYL-HP-hgC" secondAttribute="centerX" id="PcJ-aZ-edc"/>
+                                                <constraint firstItem="S6d-7A-ja0" firstAttribute="leading" secondItem="nYL-HP-hgC" secondAttribute="leading" constant="8" id="T6n-PK-upL"/>
+                                                <constraint firstAttribute="width" secondItem="nYL-HP-hgC" secondAttribute="height" multiplier="1:1" id="XGO-5r-bYE"/>
+                                                <constraint firstItem="9eR-Wy-ney" firstAttribute="leading" secondItem="nYL-HP-hgC" secondAttribute="leading" id="ZAn-jS-gdi"/>
+                                                <constraint firstItem="9eR-Wy-ney" firstAttribute="top" secondItem="nYL-HP-hgC" secondAttribute="top" id="kNm-dS-moV"/>
+                                                <constraint firstAttribute="bottom" secondItem="S6d-7A-ja0" secondAttribute="bottom" constant="8" id="yBv-EQ-aB5"/>
+                                                <constraint firstAttribute="trailing" secondItem="9eR-Wy-ney" secondAttribute="trailing" id="yYg-gN-VpM"/>
                                             </constraints>
-                                        </stackView>
+                                        </view>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" ambiguous="YES" text="Recents" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1QV-lw-ip2">
+                                            <rect key="frame" x="0.0" y="168" width="160" height="21"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" ambiguous="YES" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7mk-cx-eOM">
+                                            <rect key="frame" x="0.0" y="197" width="160" height="24"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="KjX-jj-NOg" secondAttribute="trailing" id="Hbe-N8-eAz"/>
-                                        <constraint firstItem="KjX-jj-NOg" firstAttribute="top" secondItem="dyB-Bj-Bke" secondAttribute="top" id="bBi-Ia-b3B"/>
-                                        <constraint firstItem="KjX-jj-NOg" firstAttribute="leading" secondItem="dyB-Bj-Bke" secondAttribute="leading" id="pm0-jq-LtJ"/>
-                                        <constraint firstAttribute="bottom" secondItem="KjX-jj-NOg" secondAttribute="bottom" constant="16" id="qjk-bh-M4N"/>
+                                        <constraint firstItem="nYL-HP-hgC" firstAttribute="leading" secondItem="dyB-Bj-Bke" secondAttribute="leading" id="3OF-KI-tNa"/>
+                                        <constraint firstAttribute="trailing" secondItem="nYL-HP-hgC" secondAttribute="trailing" id="EbU-cp-2T2"/>
+                                        <constraint firstItem="1QV-lw-ip2" firstAttribute="leading" secondItem="dyB-Bj-Bke" secondAttribute="leading" id="J4i-kG-FfC"/>
+                                        <constraint firstAttribute="bottom" secondItem="7mk-cx-eOM" secondAttribute="bottom" constant="8" id="PF2-yX-aq2"/>
+                                        <constraint firstItem="1QV-lw-ip2" firstAttribute="top" secondItem="nYL-HP-hgC" secondAttribute="bottom" constant="8" symbolic="YES" id="Sci-2Q-sS2"/>
+                                        <constraint firstItem="7mk-cx-eOM" firstAttribute="top" secondItem="1QV-lw-ip2" secondAttribute="bottom" constant="8" symbolic="YES" id="X81-kA-aLH"/>
+                                        <constraint firstItem="7mk-cx-eOM" firstAttribute="leading" secondItem="dyB-Bj-Bke" secondAttribute="leading" id="nkv-M6-Gpk"/>
+                                        <constraint firstItem="nYL-HP-hgC" firstAttribute="top" secondItem="dyB-Bj-Bke" secondAttribute="top" id="rDf-zG-46r"/>
+                                        <constraint firstAttribute="trailing" secondItem="7mk-cx-eOM" secondAttribute="trailing" id="sLz-RB-PU8"/>
+                                        <constraint firstAttribute="trailing" secondItem="1QV-lw-ip2" secondAttribute="trailing" id="ybI-vH-Hrp"/>
                                     </constraints>
                                 </collectionViewCellContentView>
-                                <size key="customSize" width="209" height="323"/>
+                                <size key="customSize" width="160" height="229"/>
                                 <connections>
                                     <outlet property="cellBackgroundView" destination="nYL-HP-hgC" id="t9g-Zd-6eh"/>
                                     <outlet property="favoriteIcon" destination="S6d-7A-ja0" id="EuR-dU-ytT"/>
@@ -2877,7 +2858,7 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                 </connections>
                             </collectionViewCell>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="simpleAlbumCell" id="FId-Lw-hln" customClass="AlbumSimpleCollectionViewCell" customModule="Aislingeach" customModuleProvider="target">
-                                <rect key="frame" x="18.5" y="373" width="377" height="58"/>
+                                <rect key="frame" x="18.5" y="287" width="377" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="0GK-5t-VGX">
                                     <rect key="frame" x="0.0" y="0.0" width="377" height="58"/>
@@ -2949,7 +2930,7 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                             <rect key="frame" x="0.0" y="1" width="414" height="43"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O9k-sf-gx1">
-                                                    <rect key="frame" x="20" y="12" width="374" height="23"/>
+                                                    <rect key="frame" x="20" y="16" width="374" height="19"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -2960,7 +2941,7 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                 <constraint firstAttribute="bottom" secondItem="O9k-sf-gx1" secondAttribute="bottom" constant="8" id="7AU-0x-ydV"/>
                                                 <constraint firstAttribute="trailing" secondItem="O9k-sf-gx1" secondAttribute="trailing" constant="20" symbolic="YES" id="DVa-BP-Mt5"/>
                                                 <constraint firstItem="O9k-sf-gx1" firstAttribute="leading" secondItem="RBT-5d-yFe" secondAttribute="leading" constant="20" symbolic="YES" id="QDQ-CF-SGq"/>
-                                                <constraint firstItem="O9k-sf-gx1" firstAttribute="top" secondItem="RBT-5d-yFe" secondAttribute="top" constant="12" id="vTw-cd-eq5"/>
+                                                <constraint firstItem="O9k-sf-gx1" firstAttribute="top" secondItem="RBT-5d-yFe" secondAttribute="top" constant="16" id="vTw-cd-eq5"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -2982,6 +2963,9 @@ You can also get an anonymous API key, no third party sign in required. But don'
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" title="Your Gallery" largeTitleDisplayMode="always" id="rcT-Kh-TEJ"/>
+                    <connections>
+                        <outlet property="layout" destination="Nzr-i9-RQl" id="ckq-qB-5WI"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7ir-OT-JZ9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -3054,13 +3038,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="p3F-U7-Rz1">
                                                     <rect key="frame" x="20" y="117.5" width="354" height="558.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Load to Generate View" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uV3-kS-ksT" userLabel="Load to Generate View">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Load to Generate View" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uV3-kS-ksT" userLabel="Load to Generate View">
                                                             <rect key="frame" x="0.0" y="0.0" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="oxK-m7-9Pi">
+                                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillProportionally" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="oxK-m7-9Pi">
                                                             <rect key="frame" x="0.0" y="20.5" width="354" height="34.5"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LnC-AN-0lg" userLabel="Prompt Only">
@@ -3081,13 +3065,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 </button>
                                                             </subviews>
                                                         </stackView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Request JSON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Joa-m9-A0Z" userLabel="Request Label">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Request JSON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Joa-m9-A0Z" userLabel="Request Label">
                                                             <rect key="frame" x="0.0" y="61" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gtC-1M-lJw" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
+                                                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gtC-1M-lJw" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="81.5" width="354" height="144"/>
                                                             <subviews>
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="75F-xd-Dv9">
@@ -3110,13 +3094,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 <constraint firstItem="75F-xd-Dv9" firstAttribute="leading" secondItem="gtC-1M-lJw" secondAttribute="leading" constant="12" id="TeI-kx-TQ3"/>
                                                             </constraints>
                                                         </view>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Response JSON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4WL-pC-sSj" userLabel="Response Label">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Response JSON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4WL-pC-sSj" userLabel="Response Label">
                                                             <rect key="frame" x="0.0" y="231.5" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ppF-hp-bz6" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
+                                                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ppF-hp-bz6" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="252" width="354" height="144"/>
                                                             <subviews>
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IlM-F2-3up">
@@ -3139,13 +3123,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 <constraint firstItem="IlM-F2-3up" firstAttribute="leading" secondItem="ppF-hp-bz6" secondAttribute="leading" constant="12" id="uCN-HY-vdG"/>
                                                             </constraints>
                                                         </view>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copy to Clipboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIt-3e-PgH" userLabel="Copy to Clipboard">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Copy to Clipboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIt-3e-PgH" userLabel="Copy to Clipboard">
                                                             <rect key="frame" x="0.0" y="402" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xfD-uw-hyY">
+                                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xfD-uw-hyY">
                                                             <rect key="frame" x="0.0" y="422.5" width="354" height="75"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="mgj-Xk-tWe">
@@ -3192,13 +3176,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 </stackView>
                                                             </subviews>
                                                         </stackView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Extras" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sxa-BN-2vY" userLabel="Extras">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Extras" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sxa-BN-2vY" userLabel="Extras">
                                                             <rect key="frame" x="0.0" y="503.5" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L7C-XF-ePg">
+                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L7C-XF-ePg">
                                                             <rect key="frame" x="0.0" y="524" width="354" height="34.5"/>
                                                             <state key="normal" title="Button"/>
                                                             <buttonConfiguration key="configuration" style="filled" title="SDXL Gen - Pick A Favorite!"/>
