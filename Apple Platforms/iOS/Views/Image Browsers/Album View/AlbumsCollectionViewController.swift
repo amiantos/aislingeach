@@ -173,7 +173,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
 
     override func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
         if let sectionHeader = view as? AlbumSectionTitleCollectionReusableView {
-            sectionHeader.sectionLabel.text = indexPath.section != 0 ? "Recent Phrases" : "Collections"
+            sectionHeader.sectionLabel.text = indexPath.section != 0 ? "Favorite Phrases" : "Collections"
         }
     }
 
@@ -215,13 +215,12 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if section == 0 {
-            Log.debug("Section 0, returning 0...")
+        if section == 0 || smartAlbums.isEmpty {
             return CGSize.zero
         }
         return CGSize(
             width: collectionView.bounds.width,
-            height: "Recent Phrases".getHeight(font: UIFont.preferredFont(forTextStyle: .title2), width: collectionView.bounds.width) + 28
+            height: "Favorite Phrases".getHeight(font: UIFont.preferredFont(forTextStyle: .title2), width: collectionView.bounds.width) + 28
         )
     }
 

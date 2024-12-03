@@ -303,7 +303,7 @@ class ImageDatabase {
                 do {
                     let fetchRequest1: NSFetchRequest<GeneratedImage> = GeneratedImage.fetchRequest()
                     fetchRequest1.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-//                        NSPredicate(format: "isFavorite = %d", true),
+                        NSPredicate(format: "isFavorite = %d", true),
                         NSPredicate(format: "isHidden = %d", hidden)
                     ])
                     fetchRequest1.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
