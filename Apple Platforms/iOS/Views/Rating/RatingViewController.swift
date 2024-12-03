@@ -20,6 +20,7 @@ class RatingViewController: UIViewController, UIScrollViewDelegate {
         present(controller, animated: true)
     }
 
+    @IBOutlet weak var errorIcon: UIImageView!
     @IBOutlet weak var loggedOutContentView: UIView!
     @IBOutlet var startMessageView: UIStackView!
     @IBOutlet var tenStarsView: CosmosView!
@@ -48,7 +49,11 @@ class RatingViewController: UIViewController, UIScrollViewDelegate {
 
     @IBOutlet var submitRatingButton: UIButton!
     @IBAction func submitRatingButtonAction(_: UIButton) {
-        submitRating()
+        if loadingMessageContainer.isHidden {
+            submitRating()
+        } else {
+            grabImageToRate()
+        }
     }
 
     var defaultScale = 1.0
@@ -69,6 +74,7 @@ class RatingViewController: UIViewController, UIScrollViewDelegate {
         imageScrollView.maximumZoomScale = 6.0
 
         loadingMessageSubtitleLabel.text = ""
+        errorIcon.isHidden = true
 
         imageContainerHeightConstraint.constant = view.frame.width
         tenStarsView.didTouchCosmos = { [self] rating in
@@ -167,6 +173,8 @@ extension RatingViewController {
             } else if let error = error {
                 if error.code == 403 {
                     self.setErrorState(message: "Invalid API key, please check your API key and try again.")
+                } else if error.code == 503 {
+                    self.setErrorState(message: "Ratings API is currently down, try again later.")
                 } else {
                     self.setErrorState(message: "\(error.localizedDescription)")
                 }
@@ -246,6 +254,7 @@ extension RatingViewController {
         loadingMessageTitleLabel.text = ""
         loadingMessageActivityIndicator.startAnimating()
         loadingMessageSubtitleLabel.text = ""
+        errorIcon.isHidden = true
     }
 
     func hideLoadingDisplay() {
@@ -254,9 +263,10 @@ extension RatingViewController {
 
     func setErrorState(message: String) {
         loadingMessageContainer.isHidden = false
-        loadingMessageTitleLabel.text = "Error"
+        loadingMessageTitleLabel.text = ""
         loadingMessageActivityIndicator.stopAnimating()
         loadingMessageSubtitleLabel.text = message
+        errorIcon.isHidden = false
 
         submitRatingButton.setTitle("Retry", for: .normal)
         submitRatingButton.setImage(UIImage(systemName: "arrow.uturn.backward"), for: .normal)

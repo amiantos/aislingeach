@@ -1706,9 +1706,12 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                     <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="RzN-09-M7C">
+                                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="RzN-09-M7C">
                                                                     <rect key="frame" x="188.5" y="178" width="37" height="37"/>
                                                                 </activityIndicatorView>
+                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="exclamationmark.triangle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="tJ8-wv-q4K">
+                                                                    <rect key="frame" x="188.5" y="179" width="37" height="35"/>
+                                                                </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Just a long error message to test whether long error messages will wrap properly in this box if needed." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tNR-xa-MyX">
                                                                     <rect key="frame" x="28" y="223" width="358.5" height="64.5"/>
                                                                     <constraints>
@@ -1725,8 +1728,12 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 <constraint firstItem="918-Nl-ikO" firstAttribute="centerX" secondItem="yNk-k3-jUY" secondAttribute="centerX" id="2Ig-P8-whi"/>
                                                                 <constraint firstItem="tNR-xa-MyX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="yNk-k3-jUY" secondAttribute="leading" constant="20" symbolic="YES" id="63h-z8-rkr"/>
                                                                 <constraint firstItem="RzN-09-M7C" firstAttribute="centerY" secondItem="yNk-k3-jUY" secondAttribute="centerY" id="MPW-tr-qvh"/>
+                                                                <constraint firstItem="tJ8-wv-q4K" firstAttribute="trailing" secondItem="RzN-09-M7C" secondAttribute="trailing" id="TDP-wJ-gD7"/>
                                                                 <constraint firstItem="tNR-xa-MyX" firstAttribute="centerX" secondItem="yNk-k3-jUY" secondAttribute="centerX" id="byr-bA-buU"/>
+                                                                <constraint firstItem="tJ8-wv-q4K" firstAttribute="top" secondItem="RzN-09-M7C" secondAttribute="top" id="d1l-Si-tUS"/>
+                                                                <constraint firstItem="tJ8-wv-q4K" firstAttribute="bottom" secondItem="RzN-09-M7C" secondAttribute="bottom" id="eL0-Xw-BZW"/>
                                                                 <constraint firstItem="RzN-09-M7C" firstAttribute="centerX" secondItem="yNk-k3-jUY" secondAttribute="centerX" id="fUG-1d-mV2"/>
+                                                                <constraint firstItem="tJ8-wv-q4K" firstAttribute="leading" secondItem="RzN-09-M7C" secondAttribute="leading" id="ibB-YZ-SnI"/>
                                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="tNR-xa-MyX" secondAttribute="trailing" constant="20" symbolic="YES" id="uLM-5W-Guj"/>
                                                             </constraints>
                                                         </view>
@@ -1755,7 +1762,7 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vvx-UT-rwg" customClass="CosmosView" customModule="Cosmos">
+                                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="353" placeholderIntrinsicHeight="159" translatesAutoresizingMaskIntoConstraints="NO" id="vvx-UT-rwg" customClass="CosmosView" customModule="Cosmos">
                                                 <rect key="frame" x="30.5" y="452.5" width="353" height="159"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <userDefinedRuntimeAttributes>
@@ -1785,13 +1792,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Rate this image based on visual quality, clarity, and coherence." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fJ6-WF-Po3">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate this image based on visual quality, clarity, and coherence." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fJ6-WF-Po3">
                                                 <rect key="frame" x="29" y="627.5" width="356" height="41"/>
                                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="maj-AT-NcT" customClass="CosmosView" customModule="Cosmos">
+                                            <view contentMode="scaleToFill" verticalHuggingPriority="251" placeholderIntrinsicWidth="245" placeholderIntrinsicHeight="106" translatesAutoresizingMaskIntoConstraints="NO" id="maj-AT-NcT" customClass="CosmosView" customModule="Cosmos">
                                                 <rect key="frame" x="84.5" y="676.5" width="245" height="106"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <userDefinedRuntimeAttributes>
@@ -2011,6 +2018,7 @@ You can also get an anonymous API key, no third party sign in required. But don'
                     <tabBarItem key="tabBarItem" title="Earn Kudos" image="star" catalog="system" selectedImage="star.fill" id="0Jo-dJ-ytA"/>
                     <navigationItem key="navigationItem" title="Rate Images" id="QqR-vI-ZLO"/>
                     <connections>
+                        <outlet property="errorIcon" destination="tJ8-wv-q4K" id="KIV-Gf-k4M"/>
                         <outlet property="imageContainerHeightConstraint" destination="LKN-7P-HDS" id="8vn-Gg-R1a"/>
                         <outlet property="imageScrollView" destination="49D-2U-vYr" id="6R8-dX-Roy"/>
                         <outlet property="imageStatsContainer" destination="ZsF-0n-jVZ" id="qtD-oa-Svr"/>
@@ -3412,6 +3420,7 @@ You can also get an anonymous API key, no third party sign in required. But don'
         <image name="circle.fill" catalog="system" width="128" height="123"/>
         <image name="clear" catalog="system" width="128" height="114"/>
         <image name="dice.fill" catalog="system" width="128" height="120"/>
+        <image name="exclamationmark.triangle" catalog="system" width="128" height="109"/>
         <image name="eyedropper.halffull" catalog="system" width="128" height="118"/>
         <image name="flowchart" catalog="system" width="128" height="126"/>
         <image name="heart.fill" catalog="system" width="128" height="107"/>
