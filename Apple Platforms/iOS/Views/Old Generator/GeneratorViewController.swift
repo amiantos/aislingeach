@@ -170,8 +170,6 @@ class GeneratorViewController: UIViewController {
         updateSliderLabels()
     }
 
-    @IBOutlet var sizingButtonsStackView: UIStackView!
-    @IBOutlet var aspectRatioButton: UIButton!
     @IBAction func swapDimensionsButtonAction(_: UIButton) {
         let currentDimensions = getCurrentWidthAndHeight()
         let currW = currentDimensions.0
@@ -195,6 +193,7 @@ class GeneratorViewController: UIViewController {
         }
         lockRatioButton.setPreferredSymbolConfiguration(.init(scale: .default), forImageIn: .normal)
         Log.info("Ratio locked to: \(String(describing: currentRatioLock))")
+        updateSliderLabels()
     }
 
     @IBOutlet var imageQuantitySlider: UISlider!
@@ -278,6 +277,10 @@ class GeneratorViewController: UIViewController {
     @IBAction func randomSeedButtonAction(_ sender: UIButton) {
         if sender.isSelected {
             seedTextField.text = nil
+        } else if !seedTextField.hasText {
+            // generate 9 digit long random int
+            let randomInteger = Int.random(in: 0..<1000000000)
+            seedTextField.text = String(randomInteger)
         }
     }
 
@@ -852,8 +855,9 @@ extension GeneratorViewController {
         heightSliderSizeLabel.text = "\(currentDimensions.1 * 64)"
 
         let gcd = gcdBinaryRecursiveStein(currentDimensions.0, currentDimensions.1)
-        aspectRatioButton.titleLabel?.text = "\(currentDimensions.0 / gcd):\(currentDimensions.1 / gcd)"
-        aspectRatioButton.sizeToFit()
+        let verb = currentRatioLock != nil ? "Locked" : "Lock"
+        lockRatioButton.setTitle("\(verb) to \(currentDimensions.0 / gcd):\(currentDimensions.1 / gcd)", for: .normal)
+        lockRatioButton.sizeToFit()
 
         imageQuantitySliderLabel.text = "\(Int(imageQuantitySlider.value))"
         requestQuantitySliderLabel.text = "\(Int(requestQuantitySlider.value))"
