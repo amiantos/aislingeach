@@ -277,10 +277,12 @@ class GeneratorViewController: UIViewController {
     @IBAction func randomSeedButtonAction(_ sender: UIButton) {
         if sender.isSelected {
             seedTextField.text = nil
+            seedTextField.isHidden = true
         } else if !seedTextField.hasText {
             // generate 9 digit long random int
             let randomInteger = Int.random(in: 0..<1000000000)
             seedTextField.text = String(randomInteger)
+            seedTextField.isHidden = false
         }
     }
 
@@ -427,7 +429,7 @@ class GeneratorViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         if segue.identifier == "openModelsViewSegue", let destinationView = segue.destination as? ModelsTableViewController {
             destinationView.delegate = self
-        } else if segue.identifier == "openStylesViewSegue", let destinationView = segue.destination as? StylesTableViewController {
+        } else if segue.identifier == "openStylesViewSegue", let destinationView = segue.destination as? StylesCollectionViewController {
             destinationView.delegate = self
         }
     }
@@ -613,6 +615,8 @@ extension GeneratorViewController {
         } else {
             imageQuantitySlider.setValue(Float(settings?.params?.n ?? 1), animated: false)
             requestQuantitySlider.setValue(1.0, animated: false)
+            seedTextField.text = ""
+            randomSeedButton.isSelected = true
         }
 
         let returnControlMap = settings?.params?.returnControlMap ?? false
@@ -861,6 +865,12 @@ extension GeneratorViewController {
 
         imageQuantitySliderLabel.text = "\(Int(imageQuantitySlider.value))"
         requestQuantitySliderLabel.text = "\(Int(requestQuantitySlider.value))"
+
+        if !seedTextField.hasText {
+            seedTextField.isHidden = true
+        } else {
+            seedTextField.isHidden = false
+        }
     }
 
     func loadUserKudos() {
