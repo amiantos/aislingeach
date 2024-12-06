@@ -15,6 +15,7 @@
 		441059F92D0176890002EDC1 /* StylesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441059F82D0176890002EDC1 /* StylesCollectionViewController.swift */; };
 		441059FB2D0177B40002EDC1 /* StyleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441059FA2D0177B40002EDC1 /* StyleCollectionViewCell.swift */; };
 		441059FD2D0179190002EDC1 /* StyleCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441059FC2D0179190002EDC1 /* StyleCollectionReusableView.swift */; };
+		44105A002D02C6D50002EDC1 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 441059FF2D02C6D50002EDC1 /* SDWebImage */; };
 		44142AC42A242B4E0096FFBA /* .swift-version in Resources */ = {isa = PBXBuildFile; fileRef = 44142AC22A242B4E0096FFBA /* .swift-version */; };
 		44142AC52A242B4E0096FFBA /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = 44142AC32A242B4E0096FFBA /* .swiftformat */; };
 		44142ACA2A25D0380096FFBA /* Cosmos in Frameworks */ = {isa = PBXBuildFile; productRef = 44142AC92A25D0380096FFBA /* Cosmos */; };
@@ -347,6 +348,7 @@
 			files = (
 				44C7F7342B5125E40075C8BB /* Algorithms in Frameworks */,
 				44142ACA2A25D0380096FFBA /* Cosmos in Frameworks */,
+				44105A002D02C6D50002EDC1 /* SDWebImage in Frameworks */,
 				44C6B6942A228DFA00C2F013 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -736,6 +738,7 @@
 				44C6B6932A228DFA00C2F013 /* Alamofire */,
 				44142AC92A25D0380096FFBA /* Cosmos */,
 				44C7F7332B5125E40075C8BB /* Algorithms */,
+				441059FF2D02C6D50002EDC1 /* SDWebImage */,
 			);
 			productName = Aislingeach;
 			productReference = 441EB36C2A21DC1E00E449BE /* Aislingeach.app */;
@@ -769,6 +772,7 @@
 				44C6B6922A228DFA00C2F013 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				44142AC82A25D0380096FFBA /* XCRemoteSwiftPackageReference "Cosmos" */,
 				44C7F7322B5125E40075C8BB /* XCRemoteSwiftPackageReference "swift-algorithms" */,
+				441059FE2D02C6D50002EDC1 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 			);
 			productRefGroup = 441EB36D2A21DC1E00E449BE /* Products */;
 			projectDirPath = "";
@@ -1186,6 +1190,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		441059FE2D02C6D50002EDC1 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.20.0;
+			};
+		};
 		44142AC82A25D0380096FFBA /* XCRemoteSwiftPackageReference "Cosmos" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/evgenyneu/Cosmos.git";
@@ -1213,6 +1225,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		441059FF2D02C6D50002EDC1 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 441059FE2D02C6D50002EDC1 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
 		44142AC92A25D0380096FFBA /* Cosmos */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 44142AC82A25D0380096FFBA /* XCRemoteSwiftPackageReference "Cosmos" */;

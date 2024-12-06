@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 private let reuseIdentifier = "styleCollectionCell"
 
@@ -13,9 +14,10 @@ struct WrappedStyle {
     let name: String
     let style: Style
     let categories: [String]
+    let aspectRatio: String
 }
 
-class StylesCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UISearchResultsUpdating {
+class StylesCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UISearchResultsUpdating, UISearchBarDelegate {
 
     var delegate: StylesTableViewControllerDelegate?
 
@@ -27,13 +29,19 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
                 c1.title < c2.title
             }
             categories.insert(Category(title: "Default", styles: ["None"]), at: 0)
-            collectionView.reloadData()
         }
     }
 
     var styles: [String: Style] = [:]
     var wrappedStyles: [WrappedStyle] = []
     var activeStyles: [WrappedStyle] = []
+    var stylePreviews: [String: [String: URL]] = [:]
+    var styleHashes: [String: String] = [:]
+
+    var previewType: String = "person"
+    var previewSize: String = "regular"
+
+    var menuButton: UIBarButtonItem = .init()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,11 +51,100 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
         search.obscuresBackgroundDuringPresentation = false
         search.hidesNavigationBarDuringPresentation = false
         search.searchBar.placeholder = "Search styles"
+        search.searchBar.delegate = self
+        search.showsSearchResultsController = true
+        search.automaticallyShowsCancelButton = false
         navigationItem.searchController = search
+        navigationItem.hidesSearchBarWhenScrolling = false
+
+        previewType = UserDefaults.standard.stylesPreviewType
+        previewSize = UserDefaults.standard.stylesPreviewSize
+
+        // setup menu
+        menuButton = UIBarButtonItem(
+            image: UIImage(systemName: "ellipsis.circle"),
+            menu: UIMenu(
+                children: [
+                    UIMenu(
+                        title: "Preview Type",
+                        options: .displayInline,
+                        children: [
+                            UIDeferredMenuElement.uncached { [weak self] completion in
+                                let actions = [
+                                    UIAction(
+                                        title: "Person",
+                                        image: UIImage(systemName: "person"),
+                                        state: self?.previewType == "person" ? .on : .off,
+                                        handler: { [self] _ in
+                                            self?.switchPreviewType("person")
+                                        }
+                                    ),
+                                    UIAction(
+                                        title: "Place",
+                                        image: UIImage(systemName: "building.2"),
+                                        state: self?.previewType == "place" ? .on : .off,
+                                        handler: { [self] _ in
+                                            self?.switchPreviewType("place")
+                                        }
+                                    ),
+                                    UIAction(
+                                        title: "Thing",
+                                        image: UIImage(systemName: "car"),
+                                        state: self?.previewType == "thing" ? .on : .off,
+                                        handler: { [self] _ in
+                                            self?.switchPreviewType("thing")
+                                        }
+                                    )
+                                ]
+                                completion(actions)
+                            }
+                        ]
+                    ),
+                    UIMenu(title: "Preview Size", options: .displayInline, children: [
+                        UIDeferredMenuElement.uncached { [weak self] completion in
+                            let actions = [
+                                UIAction(
+                                    title: "Regular",
+                                    image: UIImage(systemName: "square.resize.down"),
+                                    state: self?.previewSize == "regular" ? .on : .off,
+                                    handler: { [self] _ in
+                                        self?.switchPreviewSize("regular")
+                                    }
+                                ),
+                                UIAction(
+                                    title: "Large",
+                                    image: UIImage(systemName: "square.resize.up"),
+                                    state: self?.previewSize == "large" ? .on : .off,
+                                    handler: { [self] _ in
+                                        self?.switchPreviewSize("large")
+                                    }
+                                )
+                            ]
+                            completion(actions)
+                        }
+                    ])
+                ]
+            )
+        )
+        navigationItem.rightBarButtonItem = menuButton
 
         Task {
             await loadData()
         }
+    }
+
+    func switchPreviewType(_ type: String) {
+        Log.debug("Switching preview type to \(type)")
+        previewType = type
+        UserDefaults.standard.set(stylesPreviewType: type)
+        collectionView.reloadData()
+    }
+
+    func switchPreviewSize(_ size: String) {
+        Log.debug("Switching preview size to \(size)")
+        previewSize = size
+        UserDefaults.standard.set(stylesPreviewSize: size)
+        collectionView.reloadData()
     }
 
     func loadData() async {
@@ -72,7 +169,12 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
                     return nil
                 }
                 Log.debug("Categories for \(key): \(categoriesForStyle)")
-                return WrappedStyle(name: key, style: value, categories: categoriesForStyle)
+                var aspectRatio = ""
+                if value.width != nil && value.height != nil {
+                    let gcd = gcdBinaryRecursiveStein(value.width!, value.height!)
+                    aspectRatio = "\(value.width! / gcd):\(value.height! / gcd)"
+                }
+                return WrappedStyle(name: key, style: value, categories: categoriesForStyle, aspectRatio: aspectRatio)
             }
             wrappedStyles = wrappedStyles.sorted { $0.name < $1.name }
             activeStyles = wrappedStyles
@@ -89,9 +191,22 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
                 return Category(title: key, styles: stylesOnly.sorted())
             }
             let uncategorizedStyles = styleArray.map { return $0.0 }
-            Log.debug(uncategorizedStyles.sorted().joined(separator: ", "))
             newCategories.append(Category(title: "uncategorized", styles: uncategorizedStyles.sorted()))
             self.categories = newCategories
+
+            let hashUrl = URL(string:"https://raw.githubusercontent.com/amiantos/AI-Horde-Styles-Previews/refs/heads/main/hashes.json")!
+            let (hashData, _) = try await urlSession.data(from: hashUrl)
+            self.styleHashes = try JSONDecoder().decode([String: String].self, from: hashData)
+
+            let previewsUrl = URL(string: "https://raw.githubusercontent.com/amiantos/AI-Horde-Styles-Previews/refs/heads/main/previews.json")!
+            let (previewsData, _) = try await urlSession.data(from: previewsUrl)
+            self.stylePreviews = try JSONDecoder().decode([String: [String: URL]].self, from: previewsData)
+
+            collectionView.reloadData()
+
+            if !UserDefaults.standard.stylesLastSearch.isEmpty {
+                navigationItem.searchController?.searchBar.text = UserDefaults.standard.stylesLastSearch
+            }
         } catch {
             Log.error("Unable to grab style categories: \(error.localizedDescription)")
         }
@@ -100,6 +215,7 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
         Log.debug("Searched for: \(text)")
+        UserDefaults.standard.set(stylesLastSearch: text)
         if text.isEmpty {
             activeStyles = wrappedStyles
         } else {
@@ -114,6 +230,11 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
         collectionView.reloadData()
     }
 
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        if searchBar.text?.isEmpty ?? true {
+            UserDefaults.standard.set(stylesLastSearch: "")
+        }
+    }
 
     /*
     // MARK: - Navigation
@@ -142,10 +263,6 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "styleCollectionCell", for: indexPath) as! StyleCollectionViewCell
-
-        // Configure the cell
-        cell.styleNameLabel.text = activeStyles[indexPath.item].name
-
         return cell
     }
 
@@ -153,6 +270,19 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
         let style = activeStyles[indexPath.item]
         delegate?.selectedStyle(title: style.name, style: style.style)
         navigationController?.popViewController(animated: true)
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        // Configure the cell
+        guard let cell = cell as? StyleCollectionViewCell else { return }
+        cell.styleNameLabel.text = activeStyles[indexPath.item].name
+        cell.aspectRatioLabel.text = activeStyles[indexPath.item].aspectRatio
+        if let previewUrls = stylePreviews[activeStyles[indexPath.item].name] {
+            if let previewImageURL = previewUrls[previewType] {
+                cell.previewImageView.sd_setImage(with: previewImageURL)
+
+            }
+        }
     }
 
 //    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -196,12 +326,8 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let contentHorizontalSpaces = layout.minimumInteritemSpacing + layout.sectionInset.left + layout.sectionInset.right
-        let newCellWidth = (collectionView.bounds.width - contentHorizontalSpaces) / 2
-        Log.debug(collectionView.bounds.width)
-        let newHeight = 100.0
-//        let data = indexPath.section == 0 ? presetAlbums[indexPath.row] : smartAlbums[indexPath.row]
-//        let newHeight = AlbumCollectionViewCell.getProductHeightForWidth(props: data, width: newCellWidth)
-        Log.debug("returning \(newCellWidth)x\(newHeight)")
+        let divisor = previewSize == "regular" ? 2.0 : 1.0
+        let newCellWidth = (collectionView.bounds.width - contentHorizontalSpaces) / divisor
         return CGSize(width: newCellWidth, height: newCellWidth)
     }
 

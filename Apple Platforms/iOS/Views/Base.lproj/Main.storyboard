@@ -1009,29 +1009,89 @@
                                     <rect key="frame" x="0.0" y="0.0" width="183" height="167"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xz0-GK-gJO">
-                                            <rect key="frame" x="0.0" y="126.5" width="183" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Ic-sM-Wym">
-                                            <rect key="frame" x="0.0" y="0.0" width="183" height="119"/>
+                                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Ic-sM-Wym" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="183" height="167"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="seu-vY-Gga">
+                                                    <rect key="frame" x="0.0" y="0.0" width="183" height="167"/>
+                                                </imageView>
+                                                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zrz-RW-enr">
+                                                    <rect key="frame" x="0.0" y="136.5" width="55" height="30.5"/>
+                                                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="W1n-IF-bJC">
+                                                        <rect key="frame" x="0.0" y="0.0" width="55" height="30.5"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xz0-GK-gJO">
+                                                                <rect key="frame" x="12" y="8" width="31" height="14.5"/>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstItem="xz0-GK-gJO" firstAttribute="leading" secondItem="W1n-IF-bJC" secondAttribute="leading" constant="12" id="Jed-lh-a1Q"/>
+                                                            <constraint firstItem="xz0-GK-gJO" firstAttribute="top" secondItem="W1n-IF-bJC" secondAttribute="top" constant="8" id="Kt7-ek-i3v"/>
+                                                            <constraint firstAttribute="trailing" secondItem="xz0-GK-gJO" secondAttribute="trailing" constant="12" id="aDW-7k-Fdc"/>
+                                                            <constraint firstAttribute="bottom" secondItem="xz0-GK-gJO" secondAttribute="bottom" constant="8" id="jaL-KK-GVf"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <blurEffect style="prominent"/>
+                                                </visualEffectView>
+                                                <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d4L-Cz-czm">
+                                                    <rect key="frame" x="105" y="0.0" width="78" height="31"/>
+                                                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Yo6-0G-nnL">
+                                                        <rect key="frame" x="0.0" y="0.0" width="78" height="31"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="16:9" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K3a-oB-dNB">
+                                                                <rect key="frame" x="41" y="8" width="24.5" height="14.5"/>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="aspectratio" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="euU-w4-KQA">
+                                                                <rect key="frame" x="9" y="6.5" width="24" height="17.5"/>
+                                                                <color key="tintColor" systemColor="labelColor"/>
+                                                            </imageView>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstItem="K3a-oB-dNB" firstAttribute="leading" secondItem="euU-w4-KQA" secondAttribute="trailing" constant="8" symbolic="YES" id="H7K-N4-28Z"/>
+                                                            <constraint firstAttribute="bottom" secondItem="K3a-oB-dNB" secondAttribute="bottom" constant="8" id="RlB-zL-Z1H"/>
+                                                            <constraint firstItem="K3a-oB-dNB" firstAttribute="top" secondItem="Yo6-0G-nnL" secondAttribute="top" constant="8" id="Rrv-aL-Zdm"/>
+                                                            <constraint firstItem="euU-w4-KQA" firstAttribute="centerY" secondItem="Yo6-0G-nnL" secondAttribute="centerY" id="cTm-LD-QxU"/>
+                                                            <constraint firstItem="euU-w4-KQA" firstAttribute="height" secondItem="K3a-oB-dNB" secondAttribute="height" multiplier="1.37931" id="gnv-V4-fwL"/>
+                                                            <constraint firstItem="euU-w4-KQA" firstAttribute="leading" secondItem="Yo6-0G-nnL" secondAttribute="leading" constant="9" id="iNJ-Ja-EUl"/>
+                                                            <constraint firstAttribute="trailing" secondItem="K3a-oB-dNB" secondAttribute="trailing" constant="12" id="sRZ-uI-5RI"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <blurEffect style="regular"/>
+                                                </visualEffectView>
+                                            </subviews>
                                             <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="Zrz-RW-enr" secondAttribute="bottom" id="0Yg-RN-1fT"/>
+                                                <constraint firstItem="d4L-Cz-czm" firstAttribute="top" secondItem="2Ic-sM-Wym" secondAttribute="top" id="Jkn-pq-T28"/>
+                                                <constraint firstAttribute="trailing" secondItem="d4L-Cz-czm" secondAttribute="trailing" id="KLb-zm-iO8"/>
+                                                <constraint firstItem="seu-vY-Gga" firstAttribute="leading" secondItem="2Ic-sM-Wym" secondAttribute="leading" id="Mfa-uB-oYF"/>
+                                                <constraint firstItem="seu-vY-Gga" firstAttribute="top" secondItem="2Ic-sM-Wym" secondAttribute="top" id="Tbe-V2-xwH"/>
+                                                <constraint firstAttribute="trailing" secondItem="seu-vY-Gga" secondAttribute="trailing" id="Vdu-TK-7CH"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Zrz-RW-enr" secondAttribute="trailing" id="ifK-X0-Nld"/>
+                                                <constraint firstItem="Zrz-RW-enr" firstAttribute="leading" secondItem="2Ic-sM-Wym" secondAttribute="leading" id="nnz-uD-jO4"/>
+                                                <constraint firstAttribute="bottom" secondItem="seu-vY-Gga" secondAttribute="bottom" id="otR-cJ-sUg"/>
+                                            </constraints>
                                         </view>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="2Ic-sM-Wym" firstAttribute="top" secondItem="6e6-Md-dme" secondAttribute="top" id="0kA-xa-u7O"/>
                                         <constraint firstItem="2Ic-sM-Wym" firstAttribute="leading" secondItem="6e6-Md-dme" secondAttribute="leading" id="4SB-7B-ubf"/>
-                                        <constraint firstAttribute="trailing" secondItem="xz0-GK-gJO" secondAttribute="trailing" id="C7q-WF-wYo"/>
-                                        <constraint firstAttribute="bottom" secondItem="xz0-GK-gJO" secondAttribute="bottom" constant="20" symbolic="YES" id="HSk-8O-AfY"/>
                                         <constraint firstAttribute="trailing" secondItem="2Ic-sM-Wym" secondAttribute="trailing" id="bBF-bC-7Of"/>
-                                        <constraint firstItem="xz0-GK-gJO" firstAttribute="leading" secondItem="6e6-Md-dme" secondAttribute="leading" id="gIJ-Yr-jk6"/>
-                                        <constraint firstItem="xz0-GK-gJO" firstAttribute="top" secondItem="2Ic-sM-Wym" secondAttribute="bottom" constant="7.5" id="pGa-vg-OBL"/>
+                                        <constraint firstAttribute="bottom" secondItem="2Ic-sM-Wym" secondAttribute="bottom" id="wUm-IY-vnH"/>
                                     </constraints>
                                 </collectionViewCellContentView>
                                 <size key="customSize" width="183" height="167"/>
                                 <connections>
+                                    <outlet property="aspectRatioLabel" destination="K3a-oB-dNB" id="gZV-FQ-PeR"/>
+                                    <outlet property="previewImageView" destination="seu-vY-Gga" id="P13-V0-DIj"/>
                                     <outlet property="styleNameLabel" destination="xz0-GK-gJO" id="0vz-8f-keD"/>
                                 </connections>
                             </collectionViewCell>
@@ -3059,13 +3119,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="p3F-U7-Rz1">
                                                     <rect key="frame" x="20" y="117.5" width="354" height="558.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Load to Generate View" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uV3-kS-ksT" userLabel="Load to Generate View">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Load to Generate View" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uV3-kS-ksT" userLabel="Load to Generate View">
                                                             <rect key="frame" x="0.0" y="0.0" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillProportionally" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="oxK-m7-9Pi">
+                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="oxK-m7-9Pi">
                                                             <rect key="frame" x="0.0" y="20.5" width="354" height="34.5"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LnC-AN-0lg" userLabel="Prompt Only">
@@ -3086,13 +3146,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 </button>
                                                             </subviews>
                                                         </stackView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Request JSON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Joa-m9-A0Z" userLabel="Request Label">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Request JSON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Joa-m9-A0Z" userLabel="Request Label">
                                                             <rect key="frame" x="0.0" y="61" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gtC-1M-lJw" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gtC-1M-lJw" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="81.5" width="354" height="144"/>
                                                             <subviews>
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="75F-xd-Dv9">
@@ -3115,13 +3175,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 <constraint firstItem="75F-xd-Dv9" firstAttribute="leading" secondItem="gtC-1M-lJw" secondAttribute="leading" constant="12" id="TeI-kx-TQ3"/>
                                                             </constraints>
                                                         </view>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Response JSON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4WL-pC-sSj" userLabel="Response Label">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Response JSON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4WL-pC-sSj" userLabel="Response Label">
                                                             <rect key="frame" x="0.0" y="231.5" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ppF-hp-bz6" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ppF-hp-bz6" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="252" width="354" height="144"/>
                                                             <subviews>
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IlM-F2-3up">
@@ -3144,13 +3204,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 <constraint firstItem="IlM-F2-3up" firstAttribute="leading" secondItem="ppF-hp-bz6" secondAttribute="leading" constant="12" id="uCN-HY-vdG"/>
                                                             </constraints>
                                                         </view>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Copy to Clipboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIt-3e-PgH" userLabel="Copy to Clipboard">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copy to Clipboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIt-3e-PgH" userLabel="Copy to Clipboard">
                                                             <rect key="frame" x="0.0" y="402" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xfD-uw-hyY">
+                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xfD-uw-hyY">
                                                             <rect key="frame" x="0.0" y="422.5" width="354" height="75"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="mgj-Xk-tWe">
@@ -3197,13 +3257,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 </stackView>
                                                             </subviews>
                                                         </stackView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Extras" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sxa-BN-2vY" userLabel="Extras">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Extras" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sxa-BN-2vY" userLabel="Extras">
                                                             <rect key="frame" x="0.0" y="503.5" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L7C-XF-ePg">
+                                                        <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L7C-XF-ePg">
                                                             <rect key="frame" x="0.0" y="524" width="354" height="34.5"/>
                                                             <state key="normal" title="Button"/>
                                                             <buttonConfiguration key="configuration" style="filled" title="SDXL Gen - Pick A Favorite!"/>
@@ -3426,6 +3486,7 @@ You can also get an anonymous API key, no third party sign in required. But don'
         </scene>
     </scenes>
     <resources>
+        <image name="aspectratio" catalog="system" width="128" height="93"/>
         <image name="brain.head.profile" catalog="system" width="120" height="128"/>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="chevron.right" catalog="system" width="97" height="128"/>
