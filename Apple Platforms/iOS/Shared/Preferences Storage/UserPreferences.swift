@@ -26,6 +26,7 @@ struct UserPreferences {
         static let stylesPreviewType = "stylesPreviewType"
         static let stylesPreviewSize = "stylesPreviewSize"
         static let stylesLastSearch = "stylesLastSearch"
+        static let stylesDisplayRatio = "stylesDisplayRatio"
     }
 
     static var standard: UserDefaults {
@@ -43,7 +44,8 @@ struct UserPreferences {
             Key.favoriteModels: [],
             Key.stylesPreviewType: "person",
             Key.stylesPreviewSize: "regular",
-            Key.stylesLastSearch: ""
+            Key.stylesLastSearch: "",
+            Key.stylesDisplayRatio: "zoomed"
         ])
 
         return database
@@ -157,6 +159,14 @@ extension UserDefaults {
     
     func set(stylesLastSearch: String) {
         set(stylesLastSearch, forKey: UserPreferences.Key.stylesLastSearch)
+    }
+
+    var stylesDisplayRatio: String {
+        return string(forKey: UserPreferences.Key.stylesDisplayRatio) ?? "zoomed"
+    }
+
+    func set(stylesDisplayRatio: String) {
+        set(stylesDisplayRatio, forKey: UserPreferences.Key.stylesDisplayRatio)
     }
 
 }

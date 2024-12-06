@@ -40,6 +40,7 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
 
     var previewType: String = "person"
     var previewSize: String = "regular"
+    var previewRatio: String = "zoomed"
 
     var menuButton: UIBarButtonItem = .init()
 
@@ -59,6 +60,7 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
 
         previewType = UserDefaults.standard.stylesPreviewType
         previewSize = UserDefaults.standard.stylesPreviewSize
+        previewRatio = UserDefaults.standard.stylesDisplayRatio
 
         // setup menu
         menuButton = UIBarButtonItem(
@@ -66,7 +68,7 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
             menu: UIMenu(
                 children: [
                     UIMenu(
-                        title: "Preview Type",
+                        title: "Preview Subject",
                         options: .displayInline,
                         children: [
                             UIDeferredMenuElement.uncached { [weak self] completion in
@@ -122,6 +124,29 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
                             ]
                             completion(actions)
                         }
+                    ]),
+                    UIMenu(title: "Preview Type", options: .displayInline, children: [
+                        UIDeferredMenuElement.uncached { [weak self] completion in
+                            let actions = [
+                                UIAction(
+                                    title: "Zoomed",
+                                    image: UIImage(systemName: "square.arrowtriangle.4.outward"),
+                                    state: self?.previewRatio == "zoomed" ? .on : .off,
+                                    handler: { [self] _ in
+                                        self?.switchPreviewRatio("zoomed")
+                                    }
+                                ),
+                                UIAction(
+                                    title: "Actual",
+                                    image: UIImage(systemName: "aspectratio"),
+                                    state: self?.previewRatio == "actual" ? .on : .off,
+                                    handler: { [self] _ in
+                                        self?.switchPreviewRatio("actual")
+                                    }
+                                )
+                            ]
+                            completion(actions)
+                        }
                     ])
                 ]
             )
@@ -144,6 +169,13 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
         Log.debug("Switching preview size to \(size)")
         previewSize = size
         UserDefaults.standard.set(stylesPreviewSize: size)
+        collectionView.reloadData()
+    }
+
+    func switchPreviewRatio(_ ratio: String) {
+        Log.debug("Switching preview ratio to \(ratio)")
+        previewRatio = ratio
+        UserDefaults.standard.set(stylesDisplayRatio: ratio)
         collectionView.reloadData()
     }
 
@@ -280,7 +312,7 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
         if let previewUrls = stylePreviews[activeStyles[indexPath.item].name] {
             if let previewImageURL = previewUrls[previewType] {
                 cell.previewImageView.sd_setImage(with: previewImageURL)
-
+                cell.previewImageView.contentMode = previewRatio == "zoomed" ? .scaleAspectFill : .scaleAspectFit
             }
         }
     }
