@@ -54,7 +54,7 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
         search.searchBar.placeholder = "Search styles"
         search.searchBar.delegate = self
         search.showsSearchResultsController = true
-        search.automaticallyShowsCancelButton = false
+        search.automaticallyShowsCancelButton = true
         navigationItem.searchController = search
         navigationItem.hidesSearchBarWhenScrolling = false
 
