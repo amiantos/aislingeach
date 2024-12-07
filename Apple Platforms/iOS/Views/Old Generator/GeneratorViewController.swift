@@ -111,7 +111,11 @@ class GeneratorViewController: UIViewController {
     @IBOutlet weak var negativePromptTextView: UITextView!
 
     @IBOutlet weak var styleButton: UIButton!
-
+    @IBOutlet weak var removeStyleButton: UIButton!
+    @IBAction func removeStyleButton(_ sender: UIButton) {
+        selectedStyle(title: "Pick a Style", style: nil)
+    }
+    
     @IBOutlet var stepsSlider: UISlider!
     @IBOutlet var stepsLabel: UILabel!
     @IBAction func stepsSliderChanged(_ sender: UISlider) {
@@ -446,7 +450,7 @@ extension GeneratorViewController {
             imageToImageImage = nil
         }
 
-        selectedStyle(title: "None", style: nil)
+        selectedStyle(title: "Pick a Style", style: nil)
 
         let denoiseStrength = settings?.params?.denoisingStrength ?? 0.75
         let denoiseFloat = Float(truncating: denoiseStrength as NSNumber)
@@ -935,6 +939,11 @@ extension GeneratorViewController: ModelsTableViewControllerDelegate {
 
 extension GeneratorViewController: StylesTableViewControllerDelegate {
     func selectedStyle(title: String, style: Style?) {
+        if style != nil {
+            removeStyleButton.isHidden = false
+        } else {
+            removeStyleButton.isHidden = true
+        }
         styleButton.setTitle(title, for: .normal)
         currentSelectedStyleTitle = title
         currentSelectedStyle = style

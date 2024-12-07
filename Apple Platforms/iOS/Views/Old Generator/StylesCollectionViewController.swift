@@ -129,15 +129,15 @@ class StylesCollectionViewController: UICollectionViewController, UICollectionVi
                         UIDeferredMenuElement.uncached { [weak self] completion in
                             let actions = [
                                 UIAction(
-                                    title: "Zoomed",
-                                    image: UIImage(systemName: "square.arrowtriangle.4.outward"),
+                                    title: "Fill",
+                                    image: UIImage(systemName: "square"),
                                     state: self?.previewRatio == "zoomed" ? .on : .off,
                                     handler: { [self] _ in
                                         self?.switchPreviewRatio("zoomed")
                                     }
                                 ),
                                 UIAction(
-                                    title: "Actual",
+                                    title: "Fit",
                                     image: UIImage(systemName: "aspectratio"),
                                     state: self?.previewRatio == "actual" ? .on : .off,
                                     handler: { [self] _ in
