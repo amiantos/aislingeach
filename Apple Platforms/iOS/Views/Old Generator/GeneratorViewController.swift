@@ -41,9 +41,13 @@ class GeneratorViewController: UIViewController {
                 imageToImagePreviewImageView.isHidden = false
                 pasteImageButton.setTitle("Remove Image", for: .normal)
                 controlTypeButton.isEnabled = true
-                imageIsControlMapButton.isEnabled = true
-                returnControlMapButton.isEnabled = true
+                imageIsControlMapSwitch.isEnabled = true
+                returnControlMapSwitch.isEnabled = true
                 denoisStrengthSlider.isEnabled = true
+
+                imageToImageExtraSettings.isHidden = false
+                imageToImageExtraSettingsChevron.isHidden = false
+
 
                 let imageWidth: Float = Float(image.size.width / 64)
                 let imageHeight: Float = Float(image.size.height / 64)
@@ -77,9 +81,11 @@ class GeneratorViewController: UIViewController {
                 imageToImagePreviewImageView.image = nil
                 pasteImageButton.setTitle("Paste Image or URL", for: .normal)
                 controlTypeButton.isEnabled = false
-                imageIsControlMapButton.isEnabled = false
-                returnControlMapButton.isEnabled = false
+                imageIsControlMapSwitch.isEnabled = false
+                returnControlMapSwitch.isEnabled = false
                 denoisStrengthSlider.isEnabled = false
+                imageToImageExtraSettings.isHidden = true
+                imageToImageExtraSettingsChevron.isHidden = true
                 generationSettingsUpdated()
             }
         }
@@ -97,9 +103,15 @@ class GeneratorViewController: UIViewController {
     @IBOutlet var upscalerPickButton: UIButton!
     @IBOutlet var samplerPickButton: UIButton!
 
-    @IBOutlet var karrasToggleButton: UIButton!
-    @IBOutlet var hiresFixToggleButton: UIButton!
-    @IBOutlet var tilingToggleButton: UIButton!
+
+    @IBOutlet weak var karrasSwitch: UISwitch!
+    @IBOutlet weak var hiresFixSwitch: UISwitch!
+    @IBOutlet weak var tilingSwitch: UISwitch!
+    @IBOutlet weak var transparencySwitch: UISwitch!
+    @IBAction func switchChanged() {
+        generationSettingsUpdated()
+    }
+    
     @IBAction func toggleButtonChanged(_: UIButton) {
         generationSettingsUpdated()
     }
@@ -113,7 +125,7 @@ class GeneratorViewController: UIViewController {
     @IBOutlet weak var styleButton: UIButton!
     @IBOutlet weak var removeStyleButton: UIButton!
     @IBAction func removeStyleButton(_ sender: UIButton) {
-        selectedStyle(title: "Pick a Style", style: nil)
+        selectedStyle(title: "No Style Selected", style: nil)
     }
     
     @IBOutlet var stepsSlider: UISlider!
@@ -186,20 +198,17 @@ class GeneratorViewController: UIViewController {
         updateSliderLabels()
     }
 
-    @IBOutlet var lockRatioButton: UIButton!
-    @IBAction func lockRatioButtonAction(_: UIButton) {
-        if currentRatioLock == nil {
+    @IBOutlet weak var lockRatioLabel: UILabel!
+    @IBAction func lockRatioSwitch(_ sender: UISwitch) {
+        if sender.isOn {
             currentRatioLock = Int(widthSlider.value) - Int(heightSlider.value)
-            lockRatioButton.setImage(UIImage(systemName: "lock"), for: .normal)
         } else {
             currentRatioLock = nil
-            lockRatioButton.setImage(UIImage(systemName: "lock.open"), for: .normal)
         }
-        lockRatioButton.setPreferredSymbolConfiguration(.init(scale: .default), forImageIn: .normal)
         Log.info("Ratio locked to: \(String(describing: currentRatioLock))")
         updateSliderLabels()
     }
-
+    
     @IBOutlet var imageQuantitySlider: UISlider!
     @IBOutlet var imageQuantitySliderLabel: UILabel!
     @IBAction func imageQuantitySliderChanged(_ sender: UISlider) {
@@ -231,21 +240,22 @@ class GeneratorViewController: UIViewController {
 
     @IBOutlet var generateButtonLabel: UILabel!
     @IBOutlet var statusLabel: UILabel!
-    @IBOutlet var gfpganToggleButton: UIButton!
-    @IBAction func gfpganToggleButonChanged(_ sender: UIButton) {
-        if sender.isSelected {
+
+    @IBOutlet weak var gfpganSwitch: UISwitch!
+    @IBAction func gfpganSwitchChanged(_ sender: UISwitch) {
+        if sender.isOn {
             faceFixerStrengthSlider.isEnabled = true
-        } else if !codeFormersToggleButton.isSelected {
+        } else {
             faceFixerStrengthSlider.isEnabled = false
         }
         generationSettingsUpdated()
     }
-
-    @IBOutlet var codeFormersToggleButton: UIButton!
-    @IBAction func codeFormersToggleButtonChanged(_ sender: UIButton) {
-        if sender.isSelected {
+    
+    @IBOutlet weak var codeformersSwitch: UISwitch!
+    @IBAction func codeformersSwitchChanged(_ sender: UISwitch) {
+        if sender.isOn {
             faceFixerStrengthSlider.isEnabled = true
-        } else if !gfpganToggleButton.isSelected {
+        } else {
             faceFixerStrengthSlider.isEnabled = false
         }
         generationSettingsUpdated()
@@ -258,57 +268,58 @@ class GeneratorViewController: UIViewController {
         generationSettingsUpdated()
     }
 
-    @IBOutlet var slowWorkersButton: UIButton!
-    @IBAction func slowWorkersButtonAction(_ sender: UIButton) {
-        UserPreferences.standard.set(slowWorkers: sender.isSelected)
+    @IBOutlet weak var slowWorkersSwitch: UISwitch!
+    @IBAction func slowWorkersSwitchChanged(_ sender: UISwitch) {
+        UserPreferences.standard.set(slowWorkers: sender.isOn)
+        generationSettingsUpdated()
+    }
+    
+
+    @IBOutlet weak var trustedWorkersSwitch: UISwitch!
+    @IBAction func trustedWorkersButtonAction(_ sender: UISwitch) {
+        UserPreferences.standard.set(trustedWorkers: !sender.isOn)
         generationSettingsUpdated()
     }
 
-    @IBOutlet var trustedWorkersButton: UIButton!
-    @IBAction func trustedWorkersButtonAction(_ sender: UIButton) {
-        UserPreferences.standard.set(trustedWorkers: !sender.isSelected)
+    @IBOutlet weak var shareSwitch: UISwitch!
+    @IBAction func shareButtonAction(_ sender: UISwitch) {
+        UserPreferences.standard.set(shareWithLaion: sender.isOn)
         generationSettingsUpdated()
     }
 
-    @IBOutlet var shareButton: UIButton!
-    @IBAction func shareButtonAction(_ sender: UIButton) {
-        UserPreferences.standard.set(shareWithLaion: sender.isSelected)
+    @IBOutlet weak var allowNSFWSwitch: UISwitch!
+    @IBAction func allowNSFWButtonAction(_ sender: UISwitch) {
+        UserPreferences.standard.set(allowNSFW: sender.isOn)
         generationSettingsUpdated()
     }
+
+    @IBOutlet weak var closePanelSwitch: UISwitch!
+    @IBAction func closeCreatePanelAutomaticallyButtonAction(_ sender: UISwitch) {
+        UserPreferences.standard.set(autoCloseCreatePanel: sender.isOn)
+    }
+
 
     @IBOutlet var seedTextField: UITextField!
-    @IBOutlet var randomSeedButton: UIButton!
-    @IBAction func randomSeedButtonAction(_ sender: UIButton) {
-        if sender.isSelected {
+    @IBOutlet weak var randomSeedSwitch: UISwitch!
+    @IBAction func randomSeedSwitchChanged(_ sender: UISwitch) {
+        if sender.isOn {
             seedTextField.text = nil
             seedTextField.isHidden = true
-        } else if !seedTextField.hasText {
-            // generate 9 digit long random int
+        } else {
             let randomInteger = Int.random(in: 0..<1000000000)
             seedTextField.text = String(randomInteger)
             seedTextField.isHidden = false
         }
     }
 
-    @IBOutlet weak var allowNSFWButton: UIButton!
-    @IBAction func allowNSFWButtonAction(_ sender: UIButton) {
-        UserPreferences.standard.set(allowNSFW: sender.isSelected)
-        generationSettingsUpdated()
-    }
-
     @IBAction func seedTextFieldEditingDidBegin(_: UITextField) {
-        randomSeedButton.isSelected = false
+        randomSeedSwitch.isOn = false
     }
 
     @IBAction func seedTextFieldEditingDidEnd(_ sender: UITextField) {
         if !sender.hasText {
-            randomSeedButton.isSelected = true
+            randomSeedSwitch.isOn = true
         }
-    }
-
-    @IBOutlet var closeCreatePanelAutomaticallyButton: UIButton!
-    @IBAction func closeCreatePanelAutomaticallyButtonAction(_ sender: UIButton) {
-        UserPreferences.standard.set(autoCloseCreatePanel: sender.isSelected)
     }
 
     @IBOutlet weak var controlTypeButton: UIButton!
@@ -321,6 +332,8 @@ class GeneratorViewController: UIViewController {
         generationSettingsUpdated()
     }
 
+    @IBOutlet weak var imageToImageExtraSettings: UIStackView!
+    @IBOutlet weak var imageToImageExtraSettingsChevron: UIImageView!
     @IBOutlet weak var imageToImagePreviewImageView: UIImageView!
     @IBOutlet weak var pasteImageStackView: UIStackView!
     @IBOutlet weak var pasteImageButton: UIButton!
@@ -365,9 +378,10 @@ class GeneratorViewController: UIViewController {
             }
         }
     }
-    @IBOutlet weak var returnControlMapButton: UIButton!
-    @IBOutlet weak var imageIsControlMapButton: UIButton!
-
+    @IBOutlet weak var returnControlMapSwitch: UISwitch!
+    @IBOutlet weak var imageIsControlMapSwitch: UISwitch!
+    
+    
     @IBAction func resetButtonAction(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(title: "Reset to Default?", message: "Reset all generation settings to their defaults? A randomized prompt will also be supplied.", preferredStyle: .alert)
         let yesAction = UIAlertAction(title: "Yes", style: .destructive) { _ in
@@ -399,11 +413,11 @@ class GeneratorViewController: UIViewController {
         samplerPickButton.showsMenuAsPrimaryAction = true
         samplerPickButton.changesSelectionAsPrimaryAction = true
 
-        slowWorkersButton.isSelected = UserPreferences.standard.slowWorkers
-        trustedWorkersButton.isSelected = !UserPreferences.standard.trustedWorkers
-        allowNSFWButton.isSelected = UserPreferences.standard.allowNSFW
-        shareButton.isSelected = UserPreferences.standard.shareWithLaion
-        closeCreatePanelAutomaticallyButton.isSelected = UserPreferences.standard.autoCloseCreatePanel
+        slowWorkersSwitch.isOn = UserPreferences.standard.slowWorkers
+        trustedWorkersSwitch.isOn = !UserPreferences.standard.trustedWorkers
+        allowNSFWSwitch.isOn = UserPreferences.standard.allowNSFW
+        shareSwitch.isOn = UserPreferences.standard.shareWithLaion
+        closePanelSwitch.isOn = UserPreferences.standard.autoCloseCreatePanel
 
         loadSettingsIntoUI(settings: recentSettings, seed: nil)
 
@@ -450,7 +464,7 @@ extension GeneratorViewController {
             imageToImageImage = nil
         }
 
-        selectedStyle(title: "Pick a Style", style: nil)
+        selectedStyle(title: "No Style Selected", style: nil)
 
         let denoiseStrength = settings?.params?.denoisingStrength ?? 0.75
         let denoiseFloat = Float(truncating: denoiseStrength as NSNumber)
@@ -533,6 +547,7 @@ extension GeneratorViewController {
             "k_dpmpp_2m",
             "k_dpmpp_2s_a",
             "k_dpmpp_sde",
+            "DDIM",
         ]
         let samplerMenuChildren: [UIAction] = {
             var actions: [UIAction] = []
@@ -566,26 +581,27 @@ extension GeneratorViewController {
             clipSkipLabel.text = "\(recentClipSkip)"
         }
 
-        karrasToggleButton.isSelected = settings?.params?.karras ?? true
-        hiresFixToggleButton.isSelected = settings?.params?.hiresFix ?? true
-        tilingToggleButton.isSelected = settings?.params?.tiling ?? false
+        karrasSwitch.isOn = settings?.params?.karras ?? true
+        hiresFixSwitch.isOn = settings?.params?.hiresFix ?? true
+        tilingSwitch.isOn = settings?.params?.tiling ?? false
+        transparencySwitch.isOn = settings?.params?.transparent ?? false
 
-        gfpganToggleButton.isSelected = false
-        codeFormersToggleButton.isSelected = false
+        gfpganSwitch.isOn = false
+        codeformersSwitch.isOn = false
         if let postProcessing = settings?.params?.postProcessing {
             postProcessing.forEach { processor in
                 switch processor {
                 case .gfpgan:
-                    gfpganToggleButton.isSelected = true
+                    gfpganSwitch.isOn = true
                 case .codeFormers:
-                    codeFormersToggleButton.isSelected = true
+                    codeformersSwitch.isOn = true
                 default:
                     break
                 }
             }
         }
 
-        if gfpganToggleButton.isSelected || codeFormersToggleButton.isSelected {
+        if gfpganSwitch.isOn  || codeformersSwitch.isOn {
             faceFixerStrengthSlider.isEnabled = true
             let faceFixStrength = settings?.params?.facefixerStrength ?? 0.75
             let float = Float(truncating: faceFixStrength as NSNumber)
@@ -613,21 +629,21 @@ extension GeneratorViewController {
             requestQuantitySlider.setValue(1.0, animated: false)
         } else if let seed = seed {
             seedTextField.text = seed
-            randomSeedButton.isSelected = false
+            randomSeedSwitch.isOn = false
             imageQuantitySlider.setValue(1.0, animated: false)
             requestQuantitySlider.setValue(1.0, animated: false)
         } else {
             imageQuantitySlider.setValue(Float(settings?.params?.n ?? 1), animated: false)
             requestQuantitySlider.setValue(1.0, animated: false)
             seedTextField.text = ""
-            randomSeedButton.isSelected = true
+            randomSeedSwitch.isOn = true
         }
 
         let returnControlMap = settings?.params?.returnControlMap ?? false
-        returnControlMapButton.isSelected = returnControlMap
+        returnControlMapSwitch.isOn = returnControlMap
 
         let imageIsControlMap = settings?.params?.imageIsControl ?? false
-        imageIsControlMapButton.isSelected = imageIsControlMap
+        imageIsControlMapSwitch.isOn = imageIsControlMap
 
         generationSettingsUpdated()
     }
@@ -697,11 +713,11 @@ extension GeneratorViewController {
 
         var postprocessing: [ModelGenerationInputStable.PostProcessing]? = []
 
-        if gfpganToggleButton.isSelected {
+        if gfpganSwitch.isOn {
             postprocessing?.append(.gfpgan)
         }
 
-        if codeFormersToggleButton.isSelected {
+        if codeformersSwitch.isOn {
             postprocessing?.append(.codeFormers)
         }
 
@@ -730,8 +746,8 @@ extension GeneratorViewController {
             }
         }
 
-        let imageIsControl = imageIsControlMapButton.isEnabled ? imageIsControlMapButton.isSelected : false
-        let returnControlMap = returnControlMapButton.isEnabled ? returnControlMapButton.isSelected : false
+        let imageIsControl = imageIsControlMapSwitch.isEnabled ? imageIsControlMapSwitch.isOn : false
+        let returnControlMap = returnControlMapSwitch.isEnabled ? returnControlMapSwitch.isOn : false
 
         var steps = Int(stepsSlider.value)
         var cfgScale = Decimal(Int(guidanceSlider.value))
@@ -743,7 +759,7 @@ extension GeneratorViewController {
 
         var numberOfImages = Int(imageQuantitySlider.value)
 
-        var karras: Bool = karrasToggleButton.isSelected
+        var karras: Bool = karrasSwitch.isOn
 
         if !ignoreStyle, let style = currentSelectedStyle {
             Log.debug(style)
@@ -809,6 +825,8 @@ extension GeneratorViewController {
 
         }
 
+        let allowDowngrade: Bool = UserPreferences.standard.apiKey == "0000000000"
+
         let modelParams = ModelGenerationInputStable(
             samplerName: samplerName,
             cfgScale: cfgScale,
@@ -819,8 +837,9 @@ extension GeneratorViewController {
             seedVariation: nil,
             postProcessing: postprocessing,
             karras: karras,
-            tiling: tilingToggleButton.isSelected,
-            hiresFix: hiresFixToggleButton.isSelected,
+            tiling: tilingSwitch.isOn,
+            transparent: transparencySwitch.isOn,
+            hiresFix: hiresFixSwitch.isOn,
             clipSkip: clipSkip,
             controlType: controlType,
             imageIsControl: imageIsControl,
@@ -848,7 +867,8 @@ extension GeneratorViewController {
             r2: true,
             shared: UserPreferences.standard.shareWithLaion,
             replacementFilter: true,
-            dryRun: dryRun
+            dryRun: dryRun,
+            allowDowngrade: allowDowngrade
         )
         return input
     }
@@ -864,8 +884,7 @@ extension GeneratorViewController {
 
         let gcd = gcdBinaryRecursiveStein(currentDimensions.0, currentDimensions.1)
         let verb = currentRatioLock != nil ? "Locked" : "Lock"
-        lockRatioButton.setTitle("\(verb) to \(currentDimensions.0 / gcd):\(currentDimensions.1 / gcd)", for: .normal)
-        lockRatioButton.sizeToFit()
+        lockRatioLabel.text = "\(verb) to \(currentDimensions.0 / gcd):\(currentDimensions.1 / gcd)"
 
         imageQuantitySliderLabel.text = "\(Int(imageQuantitySlider.value))"
         requestQuantitySliderLabel.text = "\(Int(requestQuantitySlider.value))"

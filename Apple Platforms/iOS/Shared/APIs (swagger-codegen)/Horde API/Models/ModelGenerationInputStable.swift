@@ -63,6 +63,8 @@ public struct ModelGenerationInputStable: Codable {
     public var karras: Bool?
     /** Set to True to create images that stitch together seamlessly */
     public var tiling: Bool?
+    /** Set to True to generate the image using Layer Diffuse, creating an image with a transparent background. */
+    public var transparent: Bool?
     /** Set to True to process the image at base resolution before upscaling and re-processing */
     public var hiresFix: Bool?
     /** The number of CLIP language processor layers to skip */
@@ -79,7 +81,7 @@ public struct ModelGenerationInputStable: Codable {
     /** The amount of images to generate */
     public var n: Int?
 
-    public init(samplerName: SamplerName? = nil, cfgScale: Decimal? = nil, denoisingStrength: Decimal? = nil, seed: String? = nil, height: Int? = nil, width: Int? = nil, seedVariation: Int? = nil, postProcessing: [PostProcessing]? = nil, karras: Bool? = nil, tiling: Bool? = nil, hiresFix: Bool? = nil, clipSkip: Int? = nil, controlType: ControlType? = nil, imageIsControl: Bool? = nil, returnControlMap: Bool? = nil, facefixerStrength: Decimal? = nil, loras: [ModelPayloadLorasStable]? = nil, tis: [ModelPayloadTextualInversionStable]? = nil, steps: Int? = nil, n: Int? = nil) {
+    public init(samplerName: SamplerName? = nil, cfgScale: Decimal? = nil, denoisingStrength: Decimal? = nil, seed: String? = nil, height: Int? = nil, width: Int? = nil, seedVariation: Int? = nil, postProcessing: [PostProcessing]? = nil, karras: Bool? = nil, tiling: Bool? = nil, transparent: Bool? = nil, hiresFix: Bool? = nil, clipSkip: Int? = nil, controlType: ControlType? = nil, imageIsControl: Bool? = nil, returnControlMap: Bool? = nil, facefixerStrength: Decimal? = nil, loras: [ModelPayloadLorasStable]? = nil, tis: [ModelPayloadTextualInversionStable]? = nil, steps: Int? = nil, n: Int? = nil) {
         self.samplerName = samplerName
         self.cfgScale = cfgScale
         self.denoisingStrength = denoisingStrength
@@ -90,6 +92,7 @@ public struct ModelGenerationInputStable: Codable {
         self.postProcessing = postProcessing
         self.karras = karras
         self.tiling = tiling
+        self.transparent = transparent
         self.hiresFix = hiresFix
         self.clipSkip = clipSkip
         self.controlType = controlType
@@ -113,6 +116,7 @@ public struct ModelGenerationInputStable: Codable {
         case postProcessing = "post_processing"
         case karras
         case tiling
+        case transparent
         case hiresFix = "hires_fix"
         case clipSkip = "clip_skip"
         case controlType = "control_type"
