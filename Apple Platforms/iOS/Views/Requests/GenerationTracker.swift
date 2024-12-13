@@ -55,7 +55,7 @@ class GenerationTracker {
     func startPolling() {
         timer?.invalidate()
         Log.debug("Started polling...")
-        timer = Timer(timeInterval: 2, target: self, selector: #selector(checkForPendingGeneration), userInfo: nil, repeats: true)
+        timer = Timer(timeInterval: 4, target: self, selector: #selector(checkForPendingGeneration), userInfo: nil, repeats: true)
         RunLoop.current.add(timer!, forMode: .common)
 
         downloadTimer = Timer(timeInterval: 1, target: self, selector: #selector(checkForPendingDownloads), userInfo: nil, repeats: true)
@@ -132,7 +132,7 @@ class GenerationTracker {
                     if error.code == 404 {
                         guard await ImageDatabase.standard.updatePendingRequestErrorState(
                             request: request,
-                            message: "This request can no longer be found."
+                            message: "This dream has expired."
                         ) != nil else {
                             fatalError("Unable to update pending request, this should not happen!")
                         }
