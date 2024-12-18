@@ -319,7 +319,7 @@ class ImageDatabase {
                                 let cleanedKeyword = keyword.trimmingCharacters(in: .whitespacesAndNewlines)
                                 if let storedKeyword = keywords[cleanedKeyword]  {
                                     keywords[cleanedKeyword] = (storedKeyword.0 + 1, storedKeyword.1)
-                                } else {
+                                } else if cleanedKeyword.isEmpty == false {
                                     keywords[cleanedKeyword] = (1, obj)
                                 }
                                 if keywords.count == 100 {

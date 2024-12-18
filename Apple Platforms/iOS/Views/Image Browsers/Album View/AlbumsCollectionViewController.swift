@@ -211,7 +211,6 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
         let newCellWidth = (collectionView.bounds.width - contentHorizontalSpaces) / 2
         let data = indexPath.section == 0 ? presetAlbums[indexPath.row] : smartAlbums[indexPath.row]
         let newHeight = AlbumCollectionViewCell.getProductHeightForWidth(props: data, width: newCellWidth)
-        Log.debug("returning \(newCellWidth)x\(newHeight)")
         return CGSize(width: newCellWidth, height: newHeight)
     }
 

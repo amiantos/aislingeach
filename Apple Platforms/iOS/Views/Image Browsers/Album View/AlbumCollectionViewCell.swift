@@ -50,7 +50,6 @@ class AlbumCollectionViewCell: UICollectionViewCell {
                 if let objUuid = object.uuid {
                     let objectIdentifier = "thumb-\(objUuid.uuidString)"
                     if let cachedImage = ImageCache.standard.getImage(key: NSString(string: objectIdentifier)) {
-                        Log.debug("Reloading cached UIImage...")
                         DispatchQueue.main.async {
                             self.imageView.image = cachedImage
                         }
