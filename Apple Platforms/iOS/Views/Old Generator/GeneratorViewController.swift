@@ -97,6 +97,7 @@ class GeneratorViewController: UIViewController {
         dismiss(animated: true)
     }
 
+    @IBOutlet weak var advancedControlsStackView: UIStackView!
     @IBOutlet var scrollView: UIScrollView!
 
     @IBOutlet var modelPickButton: UIButton!
@@ -124,6 +125,7 @@ class GeneratorViewController: UIViewController {
 
     @IBOutlet weak var styleButton: UIButton!
     @IBOutlet weak var removeStyleButton: UIButton!
+    @IBOutlet weak var styleCaptionLabel: UILabel!
     @IBAction func removeStyleButton(_ sender: UIButton) {
         selectedStyle(title: "No Style Selected", style: nil)
     }
@@ -663,7 +665,7 @@ extension GeneratorViewController {
         }
         kudosEstimateTimer = Timer.scheduledTimer(withTimeInterval: customWait, repeats: false, block: { timer in
             self.fetchAndDisplayKudosEstimate()
-            self.loadUserKudos()
+//            self.loadUserKudos()
             timer.invalidate()
         })
 
@@ -709,7 +711,7 @@ extension GeneratorViewController {
 
         var samplerString = samplerPickButton.menu?.selectedElements[0].title ?? "k_euler_a"
 
-        let samplerName = ModelGenerationInputStable.SamplerName(rawValue: samplerString)
+        var samplerName = ModelGenerationInputStable.SamplerName(rawValue: samplerString)
 
         var postprocessing: [ModelGenerationInputStable.PostProcessing]? = []
 
@@ -736,7 +738,8 @@ extension GeneratorViewController {
 
         var sourceImage: String? = nil
         var controlType: ModelGenerationInputStable.ControlType? = nil
-        let denoisingStrength: Decimal = Decimal(round(Double(denoisStrengthSlider.value) * 100.0) / 100.0)
+        var denoisingStrength: Decimal = Decimal(round(Double(denoisStrengthSlider.value) * 100.0) / 100.0)
+        var facefixStrength: Decimal = Decimal(round(Double(faceFixerStrengthSlider.value) * 100.0) / 100.0)
         var sourceProcessing: GenerationInputStable.SourceProcessing? = nil
         if let image = imageToImageImage?.resized(toWidth: CGFloat(64 * currentDimensions.0)) {
             sourceImage = image.jpegData(compressionQuality: 1)?.base64EncodedString()
@@ -746,8 +749,8 @@ extension GeneratorViewController {
             }
         }
 
-        let imageIsControl = imageIsControlMapSwitch.isEnabled ? imageIsControlMapSwitch.isOn : false
-        let returnControlMap = returnControlMapSwitch.isEnabled ? returnControlMapSwitch.isOn : false
+        var imageIsControl = imageIsControlMapSwitch.isEnabled ? imageIsControlMapSwitch.isOn : false
+        var returnControlMap = returnControlMapSwitch.isEnabled ? returnControlMapSwitch.isOn : false
 
         var steps = Int(stepsSlider.value)
         var cfgScale = Decimal(Int(guidanceSlider.value))
@@ -761,9 +764,38 @@ extension GeneratorViewController {
 
         var karras: Bool = karrasSwitch.isOn
 
+        var hiresFix: Bool = hiresFixSwitch.isOn
+
+        var transparentMode: Bool = transparencySwitch.isOn
+
+        var tilingMode: Bool = tilingSwitch.isOn
+
         if !ignoreStyle, let style = currentSelectedStyle {
             Log.debug(style)
-            
+
+            // overwrite all values to horde defaults
+            modelName = "stable_diffusion"
+            steps = 30
+            postprocessing = []
+            cfgScale = 7.5
+            hiresFix = false
+            clipSkip = 1
+            currentDimensions = (512/64, 512/64)
+            tilingMode = false
+            karras = false
+            samplerName = .kEulerA
+            samplerString = "k_euler_a"
+            imageIsControl = false
+            returnControlMap = false
+            controlType = nil
+            denoisingStrength = 0.5
+            facefixStrength = 0.5
+            seed = nil
+            loras = nil
+            tis = nil
+            sourceImage = nil
+            sourceProcessing = nil
+
             if let styleSteps = style.steps {
                 Log.debug("Set steps from style \(styleSteps)")
                 steps = styleSteps
@@ -792,6 +824,7 @@ extension GeneratorViewController {
             if let string = style.sampler_name {
                 Log.debug("Set sampler from style: \(string)")
                 samplerString = string
+                samplerName = ModelGenerationInputStable.SamplerName(rawValue: samplerString)
             }
 
             if let width = style.width, let height = style.height {
@@ -837,14 +870,14 @@ extension GeneratorViewController {
             seedVariation: nil,
             postProcessing: postprocessing,
             karras: karras,
-            tiling: tilingSwitch.isOn,
-            transparent: transparencySwitch.isOn,
-            hiresFix: hiresFixSwitch.isOn,
+            tiling: tilingMode,
+            transparent: transparentMode,
+            hiresFix: hiresFix,
             clipSkip: clipSkip,
             controlType: controlType,
             imageIsControl: imageIsControl,
             returnControlMap: returnControlMap,
-            facefixerStrength: Decimal(round(Double(faceFixerStrengthSlider.value) * 100.0) / 100.0),
+            facefixerStrength: facefixStrength,
             loras: loras,
             tis: tis,
             steps: steps,
@@ -960,8 +993,12 @@ extension GeneratorViewController: StylesTableViewControllerDelegate {
     func selectedStyle(title: String, style: Style?) {
         if style != nil {
             removeStyleButton.isHidden = false
+            advancedControlsStackView.isHidden = true
+            styleCaptionLabel.isHidden = false
         } else {
             removeStyleButton.isHidden = true
+            advancedControlsStackView.isHidden = false
+            styleCaptionLabel.isHidden = true
         }
         styleButton.setTitle(title, for: .normal)
         currentSelectedStyleTitle = title

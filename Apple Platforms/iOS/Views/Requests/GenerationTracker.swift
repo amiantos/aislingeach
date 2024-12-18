@@ -98,6 +98,7 @@ class GenerationTracker {
                             Log.error("Unhandled error: \(error.code) \(error.localizedDescription)")
                         }
                     }
+                    sleep(3)
                 }
             }
 
@@ -108,7 +109,6 @@ class GenerationTracker {
                 Log.info("\(requestId) - Checking request status")
                 do {
                     if request.status == "active" {
-                        sleep(1)
                         let data = try await HordeV2API.getImageAsyncCheck(_id: requestId, clientAgent: hordeClientAgent())
 
                         guard await ImageDatabase.standard.updatePendingRequest(
@@ -140,6 +140,7 @@ class GenerationTracker {
                         Log.error("Polling error: \(error.code) : \(error.localizedDescription)")
                     }
                 }
+                sleep(3)
             }
             pendingCheckInProcess = false
         }
