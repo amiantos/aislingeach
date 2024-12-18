@@ -485,7 +485,7 @@
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="nyV-EE-abS">
                                                                                         <rect key="frame" x="0.0" y="360.5" width="334" height="30"/>
                                                                                         <subviews>
-                                                                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="9" minValue="1" maxValue="30" translatesAutoresizingMaskIntoConstraints="NO" id="1ak-6U-Nj3">
+                                                                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="7.5" minValue="1" maxValue="30" translatesAutoresizingMaskIntoConstraints="NO" id="1ak-6U-Nj3">
                                                                                                 <rect key="frame" x="-2" y="0.0" width="326" height="31"/>
                                                                                                 <connections>
                                                                                                     <action selector="guidanceSliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="x9d-MK-4aR"/>
@@ -1175,14 +1175,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Dream" largeTitleDisplayMode="never" style="editor" id="pdJ-B0-C5E">
-                        <leftBarButtonItems>
-                            <barButtonItem enabled="NO" title="Help" id="Wq1-N5-WGK"/>
-                            <barButtonItem title="Reset" id="fdb-xo-G4i">
-                                <connections>
-                                    <action selector="resetButtonAction:" destination="BYZ-38-t0r" id="w4W-ac-7m8"/>
-                                </connections>
-                            </barButtonItem>
-                        </leftBarButtonItems>
+                        <barButtonItem key="leftBarButtonItem" title="Reset" id="ERh-aM-CoF">
+                            <connections>
+                                <action selector="resetButtonAction:" destination="BYZ-38-t0r" id="PGE-rx-mza"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Close" id="pRP-7g-FZv">
                             <connections>
                                 <action selector="doneButtonAction:" destination="BYZ-38-t0r" id="WIM-BB-HVs"/>
@@ -3432,13 +3429,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="p3F-U7-Rz1">
                                                     <rect key="frame" x="20" y="117.5" width="354" height="558.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Load to Generate View" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uV3-kS-ksT" userLabel="Load to Generate View">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Load to Generate View" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uV3-kS-ksT" userLabel="Load to Generate View">
                                                             <rect key="frame" x="0.0" y="0.0" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillProportionally" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="oxK-m7-9Pi">
+                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="oxK-m7-9Pi">
                                                             <rect key="frame" x="0.0" y="20.5" width="354" height="34.5"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LnC-AN-0lg" userLabel="Prompt Only">
@@ -3459,13 +3456,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 </button>
                                                             </subviews>
                                                         </stackView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Request JSON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Joa-m9-A0Z" userLabel="Request Label">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Request JSON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Joa-m9-A0Z" userLabel="Request Label">
                                                             <rect key="frame" x="0.0" y="61" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gtC-1M-lJw" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gtC-1M-lJw" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="81.5" width="354" height="144"/>
                                                             <subviews>
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="75F-xd-Dv9">
@@ -3488,13 +3485,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 <constraint firstItem="75F-xd-Dv9" firstAttribute="leading" secondItem="gtC-1M-lJw" secondAttribute="leading" constant="12" id="TeI-kx-TQ3"/>
                                                             </constraints>
                                                         </view>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Response JSON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4WL-pC-sSj" userLabel="Response Label">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Response JSON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4WL-pC-sSj" userLabel="Response Label">
                                                             <rect key="frame" x="0.0" y="231.5" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ppF-hp-bz6" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ppF-hp-bz6" customClass="UIRoundedCornerView" customModule="Aislingeach" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="252" width="354" height="144"/>
                                                             <subviews>
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IlM-F2-3up">
@@ -3517,13 +3514,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 <constraint firstItem="IlM-F2-3up" firstAttribute="leading" secondItem="ppF-hp-bz6" secondAttribute="leading" constant="12" id="uCN-HY-vdG"/>
                                                             </constraints>
                                                         </view>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Copy to Clipboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIt-3e-PgH" userLabel="Copy to Clipboard">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copy to Clipboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIt-3e-PgH" userLabel="Copy to Clipboard">
                                                             <rect key="frame" x="0.0" y="402" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xfD-uw-hyY">
+                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xfD-uw-hyY">
                                                             <rect key="frame" x="0.0" y="422.5" width="354" height="75"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="mgj-Xk-tWe">
@@ -3570,13 +3567,13 @@ You can also get an anonymous API key, no third party sign in required. But don'
                                                                 </stackView>
                                                             </subviews>
                                                         </stackView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Extras" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sxa-BN-2vY" userLabel="Extras">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Extras" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sxa-BN-2vY" userLabel="Extras">
                                                             <rect key="frame" x="0.0" y="503.5" width="354" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L7C-XF-ePg">
+                                                        <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L7C-XF-ePg">
                                                             <rect key="frame" x="0.0" y="524" width="354" height="34.5"/>
                                                             <state key="normal" title="Button"/>
                                                             <buttonConfiguration key="configuration" style="filled" title="SDXL Gen - Pick A Favorite!"/>

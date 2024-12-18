@@ -26,12 +26,47 @@ class GeneratorViewController: UIViewController {
         }
     }
 
-    let defaultSettings = [
-        GenerationInputStable(prompt: "Jane Eyre with headphones, natural skin texture, 24mm, 4k textures, soft cinematic light, adobe lightroom, photolab, hdr, intricate, elegant, highly detailed, sharp focus, (cinematic look:1.2), soothing tones, insane details, intricate details, hyperdetailed, low contrast, soft cinematic light, dim colors, exposure blend, hdr, faded ### (deformed, distorted, disfigured:1.3), poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, (mutated hands and fingers:1.4), disconnected limbs, mutation, mutated, ugly, disgusting, blurry, amputation", params: ModelGenerationInputStable(samplerName: .kEuler, cfgScale: 9.0, height: 1024, width: 768, karras: true, hiresFix: true, clipSkip: 1, steps: 20, n: 4), models: ["Deliberate"]),
-        GenerationInputStable(prompt: "end of the world, epic realistic, (hdr:1.4), (muted colors:1.4), apocalypse, freezing, abandoned, neutral colors, night, screen space refractions, (intricate details), (intricate details, hyperdetailed:1.2), artstation, cinematic shot, vignette, complex background, buildings, snowy ### poorly drawn", params: ModelGenerationInputStable(samplerName: .kEuler, cfgScale: 9.0, height: 768, width: 1024, karras: true, hiresFix: false, clipSkip: 1, steps: 20, n: 4), models: ["Deliberate"]),
-        GenerationInputStable(prompt: "medical mask, victorian era, cinematography, intricately detailed, crafted, meticulous, magnificent, maximum details, extremely hyper aesthetic ### deformed, bad anatomy, disfigured, poorly drawn face, mutation, mutated, extra limb, ugly, disgusting, poorly drawn hands, missing limb, floating limbs, disconnected limbs, malformed hands, blurry, (mutated hands and fingers:1.2), watermark, watermarked, oversaturated, censored, distorted hands, amputation, missing hands, obese, doubled face, double hands, b&w, black and white, sepia, flowers, roses", params: ModelGenerationInputStable(samplerName: .kEuler, cfgScale: 9.0, height: 1024, width: 768, karras: true, hiresFix: false, clipSkip: 1, steps: 20, n: 4), models: ["Deliberate"]),
+    let defaultPrompts: [String] = [
+        "An astronaut resting on Mars in a beach chair",
+        "Mountain chalet covered in snow, foggy, sunrise, sharp details, sharp focus, elegant, highly detailed, illustration, by Jordan Grimmer and Greg Rutkowski",
+        "Graffiti-style picture of a Raven, alcohol markers and aerosol paint",
+        "Beautiful portrait oil painting of an aristocrat chipmunk",
+        "San Francisco Downtown, sunset, flat design poster, minimalist, modern, 4k, epic composition, flat vector art illustration, stunning realism, long shot, unreal engine 4d",
+        "Cartoon animation style a cool penguin wearing sunglasses, surfing on a wave. The penguin has a playful expression, standing confidently on a surfboard, with one flipper raised in a thumbs-up gesture. The wave is a vibrant blue with white frothy details, curling dynamically around the penguin. The background includes a sunny sky with a few fluffy clouds. The overall style is bright, colorful, and cheerful, typical of classic Disney animation.",
+        "Plans for a mechanical brain, drawn in the style of Leonardo Da Vinci",
+        ]
 
-    ]
+
+    func createDefaultSettings(prompt: String) -> GenerationInputStable {
+        return GenerationInputStable(
+            prompt: prompt,
+            params: ModelGenerationInputStable(
+                samplerName: .kEulerA,
+                cfgScale: 7,
+                denoisingStrength: 0.5,
+                seed: nil,
+                height: 1024,
+                width: 1024,
+                postProcessing: [],
+                karras: true,
+                tiling: false,
+                transparent: false,
+                hiresFix: false,
+                clipSkip: 1,
+                controlType: nil,
+                returnControlMap: false,
+                facefixerStrength: 0.50,
+                loras: nil,
+                tis: nil,
+                steps: 30,
+                n: 4
+            ),
+            models: ["AlbedoBase XL (SDXL)"],
+            sourceImage: nil,
+            sourceProcessing: nil,
+            sourceMask: nil
+        )
+    }
 
     var imageToImageImage: UIImage? {
         didSet {
@@ -141,8 +176,8 @@ class GeneratorViewController: UIViewController {
     @IBOutlet var guidanceSlider: UISlider!
     @IBOutlet var guidanceLabel: UILabel!
     @IBAction func guidanceSliderChanged(_ sender: UISlider) {
-        let intValue = Int(sender.value)
-        guidanceLabel.text = "\(intValue)"
+        let roundedValue = round(sender.value * 10) / 10.0
+        guidanceLabel.text = "\(roundedValue)"
         generationSettingsUpdated()
     }
 
@@ -236,6 +271,10 @@ class GeneratorViewController: UIViewController {
             generateButton.isEnabled = true
             if UserPreferences.standard.autoCloseCreatePanel {
                 navigationController?.dismiss(animated: true)
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.loadUserKudos()
+                }
             }
         }
     }
@@ -385,9 +424,9 @@ class GeneratorViewController: UIViewController {
     
     
     @IBAction func resetButtonAction(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Reset to Default?", message: "Reset all generation settings to their defaults? A randomized prompt will also be supplied.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Reset to Defaults", message: "Reset all generation settings to their defaults? A randomized prompt will also be supplied.", preferredStyle: .alert)
         let yesAction = UIAlertAction(title: "Yes", style: .destructive) { _ in
-            self.loadSettingsIntoUI(settings: self.defaultSettings.randomElement()!, seed: nil)
+            self.loadSettingsIntoUI(settings: self.createDefaultSettings(prompt: self.defaultPrompts.randomElement()!), seed: nil)
         }
         let noAction = UIAlertAction(title: "No", style: .default)
         alert.addAction(noAction)
@@ -404,7 +443,7 @@ class GeneratorViewController: UIViewController {
 
         var recentSettings = UserPreferences.standard.recentSettings
         if recentSettings == nil {
-            recentSettings = self.defaultSettings[0]
+            recentSettings = self.createDefaultSettings(prompt: self.defaultPrompts.randomElement()!)
         }
 
         hideKeyboardWhenTappedAround()
@@ -661,7 +700,7 @@ extension GeneratorViewController {
         self.generateButton.isEnabled = false
         if customWait == 1 {
             generateButtonLabel.text = "Updating Kudos Estimate..."
-            statusLabel.text = "Loading your total Kudos..."
+//            statusLabel.text = "Loading your total Kudos..."
         }
         kudosEstimateTimer = Timer.scheduledTimer(withTimeInterval: customWait, repeats: false, block: { timer in
             self.fetchAndDisplayKudosEstimate()
@@ -753,7 +792,7 @@ extension GeneratorViewController {
         var returnControlMap = returnControlMapSwitch.isEnabled ? returnControlMapSwitch.isOn : false
 
         var steps = Int(stepsSlider.value)
-        var cfgScale = Decimal(Int(guidanceSlider.value))
+        var cfgScale = round(guidanceSlider.value * 10) / 10.0
 
         var loras: [ModelPayloadLorasStable]? = nil
         var tis: [ModelPayloadTextualInversionStable]? = nil
@@ -795,6 +834,7 @@ extension GeneratorViewController {
             tis = nil
             sourceImage = nil
             sourceProcessing = nil
+            transparentMode = false
 
             if let styleSteps = style.steps {
                 Log.debug("Set steps from style \(styleSteps)")
@@ -803,7 +843,7 @@ extension GeneratorViewController {
 
             if let styleCfg = style.cfg_scale {
                 Log.debug("Set cfg from style \(styleCfg)")
-                cfgScale = styleCfg
+                cfgScale = Float(truncating: styleCfg as NSNumber)
             }
 
             generationText = style.prompt.replacingOccurrences(of: "{p}", with: promptText)
@@ -862,7 +902,7 @@ extension GeneratorViewController {
 
         let modelParams = ModelGenerationInputStable(
             samplerName: samplerName,
-            cfgScale: cfgScale,
+            cfgScale: Decimal(Double(cfgScale)),
             denoisingStrength: denoisingStrength,
             seed: seed,
             height: 64 * currentDimensions.1,
