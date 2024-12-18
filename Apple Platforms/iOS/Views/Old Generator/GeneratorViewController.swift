@@ -160,9 +160,21 @@ class GeneratorViewController: UIViewController {
 
     @IBOutlet weak var styleButton: UIButton!
     @IBOutlet weak var removeStyleButton: UIButton!
+    @IBOutlet weak var applyStyleButton: UIButton!
     @IBOutlet weak var styleCaptionLabel: UILabel!
     @IBAction func removeStyleButton(_ sender: UIButton) {
         selectedStyle(title: "No Style Selected", style: nil)
+    }
+    @IBAction func applyStyleButtonAction(_ sender: UIButton) {
+        let alert = UIAlertController(title: "Apply Style", message: "This will overwrite all generation settings with the currently selected style. Are you sure?", preferredStyle: .alert)
+        let yesAction = UIAlertAction(title: "Yes", style: .destructive) { [self] _ in
+            guard let settings = createGeneratonBodyForCurrentSettings(ignoreStyle: false) else { return }
+            loadSettingsIntoUI(settings: settings, seed: nil)
+        }
+        let noAction = UIAlertAction(title: "No", style: .default)
+        alert.addAction(noAction)
+        alert.addAction(yesAction)
+        present(alert, animated: true)
     }
     
     @IBOutlet var stepsSlider: UISlider!
@@ -1033,10 +1045,12 @@ extension GeneratorViewController: StylesTableViewControllerDelegate {
     func selectedStyle(title: String, style: Style?) {
         if style != nil {
             removeStyleButton.isHidden = false
+            applyStyleButton.isHidden = false
             advancedControlsStackView.isHidden = true
             styleCaptionLabel.isHidden = false
         } else {
             removeStyleButton.isHidden = true
+            applyStyleButton.isHidden = true
             advancedControlsStackView.isHidden = false
             styleCaptionLabel.isHidden = true
         }
