@@ -109,7 +109,6 @@ class RequestRaterViewController: UIViewController {
                 DispatchQueue.main.async { [self] in
 
                     if let cachedImage = ImageCache.standard.getImage(key: NSString(string: image1.uuid!.uuidString)) {
-                        Log.debug("Reloading cached UIImage...")
                         imageView1.image = cachedImage
                     } else {
                         if let image = UIImage(data: image1.image!) {
@@ -119,7 +118,6 @@ class RequestRaterViewController: UIViewController {
                     }
 
                     if let cachedImage = ImageCache.standard.getImage(key: NSString(string: image2.uuid!.uuidString)) {
-                        Log.debug("Reloading cached UIImage...")
                         imageView2.image = cachedImage
                     } else {
                         if let image = UIImage(data: image2.image!) {

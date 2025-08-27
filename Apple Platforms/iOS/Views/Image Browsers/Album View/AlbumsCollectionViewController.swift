@@ -9,6 +9,7 @@ import LocalAuthentication
 import CoreData
 import UIKit
 
+
 private let reuseIdentifier = "albumCell"
 
 enum AlbumType {
@@ -42,6 +43,8 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     var menuButton: UIBarButtonItem = .init()
 
     var infoCache: [String: (Int, GeneratedImage?)] = [:]
+
+    @IBOutlet weak var layout: UICollectionViewFlowLayout!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,11 +103,8 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
 
         isLoading = true
         Task {
-            let recentsResult = await ImageDatabase.standard.getCountAndRecentImageForPredicate(predicate: NSPredicate(format: "isHidden = %d", self.showHidden))
-            let favoritesResult = await ImageDatabase.standard.getCountAndRecentImageForPredicate(predicate:NSCompoundPredicate(andPredicateWithSubpredicates: [
-                NSPredicate(format: "isFavorite = %d", true),
-                NSPredicate(format: "isHidden = %d", self.showHidden)
-            ]))
+            let recentsResult = await ImageDatabase.standard.getCountAndRecentImage(hidden: self.showHidden, favorite: false)
+            let favoritesResult = await ImageDatabase.standard.getCountAndRecentImage(hidden: self.showHidden, favorite: true)
             presetAlbums = [
                 Album(
                     predicate: NSPredicate(format: "isHidden = %d", self.showHidden),
@@ -154,7 +154,6 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in _: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 2
     }
 
@@ -169,54 +168,32 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
         }
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if section == 0 {
-            return CGSize(width: 0, height: 0)
-        } else {
-            let indexPath = IndexPath(row: 0, section: section)
-            let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
-
-            // Use this view to calculate the optimal size based on the collection view's width
-            return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width, height: UIView.layoutFittingExpandedSize.height),
-                                                      withHorizontalFittingPriority: .required, // Width is fixed
-                                                      verticalFittingPriority: .fittingSizeLevel) // Height can be as large as needed
-        }
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "albumSectionTitle", for: indexPath)
     }
 
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "albumSectionTitle", for: indexPath) as? AlbumSectionTitleCollectionReusableView {
-            if indexPath.section == 0 {
-                return UICollectionReusableView()
-            }
-            switch indexPath.section {
-            case 1:
-                sectionHeader.sectionLabel.text = smartAlbums.count > 0 ? "Recent Phrases" : ""
-            default:
-                sectionHeader.sectionLabel.text = "Section \(indexPath.section)"
-            }
-
-            return sectionHeader
+    override func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+        if let sectionHeader = view as? AlbumSectionTitleCollectionReusableView {
+            sectionHeader.sectionLabel.text = indexPath.section != 0 ? "Favorite Phrases" : "Collections"
         }
-        return UICollectionReusableView()
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "albumCell", for: indexPath) as! AlbumCollectionViewCell
-
-        var album: Album?
-        if indexPath.section == 0 {
-            album = presetAlbums[indexPath.row]
-        } else {
-            album = smartAlbums[indexPath.row]
-        }
-        guard let foundAlbum = album else { fatalError() }
-        cell.setup(album: foundAlbum)
-        return cell
+        return collectionView.dequeueReusableCell(withReuseIdentifier: "albumCell", for: indexPath)
     }
 
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let albumCell = cell as? AlbumCollectionViewCell else { return }
-        albumCell.willDisplay()
+        if let cell = cell as? AlbumCollectionViewCell {
+            var album: Album?
+            if indexPath.section == 0 {
+                album = presetAlbums[indexPath.row]
+            } else {
+                album = smartAlbums[indexPath.row]
+            }
+            guard let foundAlbum = album else { fatalError() }
+            cell.setup(album: foundAlbum)
+            cell.willDisplay()
+        }
     }
 
     override func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -229,29 +206,22 @@ class AlbumsCollectionViewController: UICollectionViewController, UICollectionVi
 
     // MARK: UICollectionViewDelegateFlowLayout
 
-    private let sectionInsets = UIEdgeInsets(
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0
-    )
-
-    func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cell = self.collectionView(collectionView, cellForItemAt: indexPath)
-
-        let itemsPerRow: CGFloat = 2
-        let widthPerItem = (collectionView.safeAreaLayoutGuide.layoutFrame.width - 1) / itemsPerRow
-        return cell.systemLayoutSizeFitting(CGSize(width: widthPerItem, height: UIView.layoutFittingExpandedSize.height),
-                                            withHorizontalFittingPriority: .required, // Width is fixed
-                                            verticalFittingPriority: .fittingSizeLevel) // Height can be as large as needed
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let contentHorizontalSpaces = layout.minimumInteritemSpacing + layout.sectionInset.left + layout.sectionInset.right
+        let newCellWidth = (collectionView.bounds.width - contentHorizontalSpaces) / 2
+        let data = indexPath.section == 0 ? presetAlbums[indexPath.row] : smartAlbums[indexPath.row]
+        let newHeight = AlbumCollectionViewCell.getProductHeightForWidth(props: data, width: newCellWidth)
+        return CGSize(width: newCellWidth, height: newHeight)
     }
 
-    func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, insetForSectionAt _: Int) -> UIEdgeInsets {
-        return sectionInsets
-    }
-
-    func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, minimumLineSpacingForSectionAt _: Int) -> CGFloat {
-        return sectionInsets.left
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        if section == 0 || smartAlbums.isEmpty {
+            return CGSize.zero
+        }
+        return CGSize(
+            width: collectionView.bounds.width,
+            height: "Favorite Phrases".getHeight(font: UIFont.preferredFont(forTextStyle: .title2), width: collectionView.bounds.width) + 28
+        )
     }
 
     // MARK: UICollectionViewDelegate

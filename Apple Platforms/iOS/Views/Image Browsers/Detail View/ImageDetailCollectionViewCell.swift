@@ -95,7 +95,6 @@ class ImageDetailCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate 
         generatedImage = object
 
         if let cachedImage = ImageCache.standard.getImage(key: NSString(string: "\(object.id)")) {
-            Log.debug("Reloading cached UIImage...")
             imageView.image = cachedImage
         } else if let objImage = object.image, let image = UIImage(data: objImage) {
             imageView.image = image

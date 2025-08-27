@@ -23,6 +23,10 @@ struct UserPreferences {
         static let recentSettings = "recentSettings"
         static let autoCloseCreatePanel = "autoCloseCreatePanel"
         static let favoriteModels = "favoriteModels"
+        static let stylesPreviewType = "stylesPreviewType"
+        static let stylesPreviewSize = "stylesPreviewSize"
+        static let stylesLastSearch = "stylesLastSearch"
+        static let stylesDisplayRatio = "stylesDisplayRatio"
     }
 
     static var standard: UserDefaults {
@@ -38,6 +42,10 @@ struct UserPreferences {
             Key.recentSettings: "{}",
             Key.autoCloseCreatePanel: true,
             Key.favoriteModels: [],
+            Key.stylesPreviewType: "person",
+            Key.stylesPreviewSize: "regular",
+            Key.stylesLastSearch: "",
+            Key.stylesDisplayRatio: "zoomed"
         ])
 
         return database
@@ -127,6 +135,38 @@ extension UserDefaults {
 
     func set(favoriteModels: [String]) {
         set(favoriteModels, forKey: UserPreferences.Key.favoriteModels)
+    }
+
+    var stylesPreviewType: String {
+        return string(forKey: UserPreferences.Key.stylesPreviewType) ?? "person"
+    }
+
+    func set(stylesPreviewType: String) {
+        set(stylesPreviewType, forKey: UserPreferences.Key.stylesPreviewType)
+    }
+
+    var stylesPreviewSize: String {
+        return string(forKey: UserPreferences.Key.stylesPreviewSize) ?? "regular"
+    }
+
+    func set(stylesPreviewSize: String) {
+        set(stylesPreviewSize, forKey: UserPreferences.Key.stylesPreviewSize)
+    }
+
+    var stylesLastSearch: String {
+        return string(forKey: UserPreferences.Key.stylesLastSearch) ?? ""
+    }
+    
+    func set(stylesLastSearch: String) {
+        set(stylesLastSearch, forKey: UserPreferences.Key.stylesLastSearch)
+    }
+
+    var stylesDisplayRatio: String {
+        return string(forKey: UserPreferences.Key.stylesDisplayRatio) ?? "zoomed"
+    }
+
+    func set(stylesDisplayRatio: String) {
+        set(stylesDisplayRatio, forKey: UserPreferences.Key.stylesDisplayRatio)
     }
 
 }

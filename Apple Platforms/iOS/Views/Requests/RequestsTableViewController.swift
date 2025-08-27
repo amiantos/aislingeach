@@ -185,12 +185,11 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
         navigationController?.pushViewController(controller, animated: true)
     }
 
-    // Override to support editing the table view.
-    override func tableView(_: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            guard let request = resultsController?.object(at: indexPath) else { fatalError("Attempt to delete a row without an object") }
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let request = self.resultsController?.object(at: indexPath) else { fatalError("Attempt to generate swipe actions for a row without an object") }
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completionHandler) in
 
-            if request.status == "error" || request.status == "done" || request.status == "active" {
+            if request.status == "error" || request.status == "active" {
                 ImageDatabase.standard.deleteRequest(request, pruneImages: false) { request in
                     if request != nil { fatalError("Deleting request did not work?") }
                 }
@@ -210,9 +209,36 @@ class RequestsTableViewController: UITableViewController, NSFetchedResultsContro
                 alert.addAction(deleteImagesAction)
                 alert.addAction(deleteRequestAction)
                 alert.addAction(cancelAction)
-                present(alert, animated: true)
+                self.present(alert, animated: true)
             }
+            completionHandler(true)
         }
+        deleteAction.backgroundColor = .red
+
+        let retryAction = UIContextualAction(style: .normal, title: "Retry") { action, sourceView, completionHandler in
+            if request.status == "error", let jsonString = request.fullRequest,
+                   let jsonData = jsonString.data(using: .utf8),
+               let settings = try? JSONDecoder().decode(GenerationInputStable.self, from: jsonData) {
+                ImageDatabase.standard.saveNewRequest(request: settings) { hordeRequest in
+                    if hordeRequest != nil {
+                        ImageDatabase.standard.deleteRequest(request, pruneImages: false) { request in
+                            if request != nil { fatalError("Deleting request did not work?") }
+                        }
+                    }
+                }
+            }
+            completionHandler(true)
+        }
+        var actions: [UIContextualAction] = []
+        if request.status == "error" || request.status == "finished" {
+            actions.append(deleteAction)
+
+        }
+        if request.status == "error" {
+            actions.append(retryAction)
+        }
+        let configuration = UISwipeActionsConfiguration(actions: actions)
+        return configuration
     }
 
     /*

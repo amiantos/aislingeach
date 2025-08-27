@@ -43,8 +43,11 @@ public struct GenerationInputStable: Codable {
     public var replacementFilter: Bool?
     /** When false, the endpoint will simply return the cost of the request in kudos and exit. */
     public var dryRun: Bool?
+    /** When true and the request requires upfront kudos and the account does not have enough The request will be downgraded in steps and resolution so that it does not need upfront kudos. */
+    public var allowDowngrade: Bool?
 
-    public init(prompt: String, params: ModelGenerationInputStable? = nil, nsfw: Bool? = nil, trustedWorkers: Bool? = nil, slowWorkers: Bool? = nil, censorNsfw: Bool? = nil, workers: [String]? = nil, workerBlacklist: Bool? = nil, models: [String]? = nil, sourceImage: String? = nil, sourceProcessing: SourceProcessing? = nil, sourceMask: String? = nil, r2: Bool? = nil, shared: Bool? = nil, replacementFilter: Bool? = nil, dryRun: Bool? = nil) {
+
+    public init(prompt: String, params: ModelGenerationInputStable? = nil, nsfw: Bool? = nil, trustedWorkers: Bool? = nil, slowWorkers: Bool? = nil, censorNsfw: Bool? = nil, workers: [String]? = nil, workerBlacklist: Bool? = nil, models: [String]? = nil, sourceImage: String? = nil, sourceProcessing: SourceProcessing? = nil, sourceMask: String? = nil, r2: Bool? = nil, shared: Bool? = nil, replacementFilter: Bool? = nil, dryRun: Bool? = nil, allowDowngrade: Bool? = nil) {
         self.prompt = prompt
         self.params = params
         self.nsfw = nsfw
@@ -61,6 +64,7 @@ public struct GenerationInputStable: Codable {
         self.shared = shared
         self.replacementFilter = replacementFilter
         self.dryRun = dryRun
+        self.allowDowngrade = allowDowngrade
     }
 
     public enum CodingKeys: String, CodingKey {
@@ -80,5 +84,6 @@ public struct GenerationInputStable: Codable {
         case shared
         case replacementFilter = "replacement_filter"
         case dryRun = "dry_run"
+        case allowDowngrade = "allow_downgrade"
     }
 }

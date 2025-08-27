@@ -63,7 +63,6 @@ class RequestsTableViewCell: UITableViewCell {
     func loadImage(generatedImage: GeneratedImage) {
         DispatchQueue.main.async { [self] in
             if let cachedImage = ImageCache.standard.getImage(key: NSString(string: generatedImage.uuid!.uuidString)) {
-                Log.debug("Reloading cached UIImage...")
                 imagePreviewView.image = cachedImage
             } else {
                 if let image = UIImage(data: generatedImage.image!) {
